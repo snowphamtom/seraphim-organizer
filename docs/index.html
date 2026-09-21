@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta name="description" content="Seraphim organizer: drop a disorganized dump, get an organized field. Soft."/>
+<meta name="description" content="Seraphim organizer: drop disorganized content, get an organized field. Soft."/>
 <meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -528,15 +528,15 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </header>
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
 
-<section id="sortDesk" aria-label="Disorganized dump in, organized figures out">
+<section id="sortDesk" aria-label="Disorganized content in, organized figures out">
   <div id="uploadBox" tabindex="0">
     <div class="uh"><b>Disorganized</b><span>csv · tsv · json · txt · md</span></div>
-    <div class="dropHint">Drop a disorganized dump, or <em>choose</em> / paste below</div>
+    <div class="dropHint">Drop disorganized content, or <em>choose</em> / paste below</div>
     <div class="actions">
       <label class="filebtn">Choose file<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
       <button type="button" id="runSort" class="primary">Sort → figures</button>
       <button type="button" id="clearDesk" class="ghost">Clear</button>
-      <select id="demoDesk" class="ghost-chip" aria-label="Demo dumps" title="Demo dumps">
+      <select id="demoDesk" class="ghost-chip" aria-label="Demo content" title="Demo content">
         <option value="">Demo…</option>
         <option value="quiet">Quiet Noise</option>
         <option value="keepers">Seal Keepers</option>
@@ -564,7 +564,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
     <button type="button" class="ghost" id="btnMore" title="Reveal instrument (I)" aria-label="Reveal instrument" aria-expanded="false">···</button>
   </div>
   <div class="row" id="dropzone">
-    <label class="filebtn" title="Drop a dump or choose a file">Drop<input type="file" id="file" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson"/></label>
+    <label class="filebtn" title="Drop content or choose a file">Drop<input type="file" id="file" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson"/></label>
     <button type="button" class="primary" id="run" title="Sort through S_H (Cmd/Ctrl+Enter)" aria-label="Sort intake">Sort</button>
     <button type="button" class="ghost mob-hide-clear" id="clear" aria-label="Clear intake">Clear</button>
   </div>
@@ -575,7 +575,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
     <option value="nonsense">Constant nonsense</option>
     <option value="mixed">Mixed Drift</option>
   </select>
-  <textarea id="paste" placeholder="drop a dump…" rows="3"></textarea>
+  <textarea id="paste" placeholder="drop content…" rows="3"></textarea>
   <div id="moreWrap">
     <div id="morePanel" role="menu">
       <button type="button" class="ghost" id="clearMobile" aria-label="Clear intake">Clear</button>
@@ -977,7 +977,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -3308,7 +3308,7 @@ function setDeskText(t){
 function runDeskSort(){
   const text=deskText();
   if(!String(text).trim()){
-    tip&&(tip.textContent="Drop or paste a dump first", tip.className="");
+    tip&&(tip.textContent="Drop or paste content first", tip.className="");
     return;
   }
   triggerUploadFX("receive");
