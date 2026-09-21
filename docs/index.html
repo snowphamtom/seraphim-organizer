@@ -319,6 +319,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </head>
 <body>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — crystallize and release field"></canvas>
+<canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.55"></canvas>
 <header id="top">
   <div class="title">SERAPHIM</div>
   <span class="whisper" title="Wizard turns fumbled speech into seal">fumble → seal</span>
@@ -748,7 +749,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:false,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -782,6 +783,108 @@ let focusId=null, lastResult=null, sortAnimT=0, lastCI=0, sealPulse=0, celebrate
 let tipPos={x:0,y:0}, prevSH=false;
 const field=[], nodes=[], voxels=[], afterglow=[], fogShards=[];
 const mintMesh={verts:[],edges:[],parts:[]};
+/* —— maxComplex stack —— */
+const ghostOrbits=[]; // ring buffer last 2–3 organize shells
+const orient={x:0,y:0,ok:false}; // DeviceOrientation gentle
+const KIND_HUE_BAND={
+  doc:[148,168],pdf:[168,190],text:[128,148],image:[198,228],
+  code:[105,128],folder:[85,108],video:[248,278],audio:[278,300],
+  archive:[35,58],slides:[308,330],sheet:[178,198],html:[158,178],
+  json:[135,155],csv:[145,165],docx:[155,175],xlsx:[175,195],other:[155,175]
+};
+function kindHueOf(kind,salt){
+  const b=KIND_HUE_BAND[kind]||KIND_HUE_BAND.other;
+  const span=b[1]-b[0];
+  return b[0]+(((salt>>>0)%10000)/10000)*span;
+}
+function kindLightSplit(decision,baseL){
+  // admit = brighter; release = slightly dimmer (spectral kind stays in hue)
+  if(decision==="admit") return Math.min(66, (baseL||50)+6);
+  return Math.max(28, (baseL||46)-4);
+}
+function parallaxOff(layer){
+  // true parallax: separate factors per layer from mouse + gentle orient
+  const f={star:0.022,hex:0.007,voxel:0.012,mint:0.015,label:0.026,seal:0.005}[layer]||0.01;
+  const mx=mouse.x+(orient.ok?orient.x*0.35:0);
+  const my=mouse.y+(orient.ok?orient.y*0.35:0);
+  const sc=Math.min(W,H);
+  return{ox:mx*f*sc, oy:my*f*sc};
+}
+/* WebGL overlay (points+lines) — graceful fallback */
+let webglOk=false, webglFail=false, gl=null, glCanvas=null, glProg=null, glBuf=null, glFPSBad=0;
+const WEBGL_MARK="webglCore";
+function initWebGL(){
+  if(webglFail||reduceMotion||isTouch&&W<=480){webglOk=false;return false;}
+  try{
+    glCanvas=document.getElementById("fxgl");
+    if(!glCanvas){webglOk=false;return false;}
+    gl=glCanvas.getContext("webgl",{alpha:true,antialias:false,premultipliedAlpha:true,preserveDrawingBuffer:false})
+      ||glCanvas.getContext("experimental-webgl",{alpha:true,antialias:false});
+    if(!gl){webglOk=false;webglFail=true;return false;}
+    const vsSrc="attribute vec2 a; attribute float s; attribute vec3 c; varying vec3 vc; varying float va; void main(){vc=c;va=s; gl_Position=vec4(a,0.0,1.0); gl_PointSize=mix(1.0,3.5,s);}";
+    const fsSrc="precision mediump float; varying vec3 vc; varying float va; void main(){float d=length(gl_PointCoord-vec2(0.5)); if(d>0.5)discard; float a=(1.0-d*1.8)*va*0.55; gl_FragColor=vec4(vc,a);}";
+    function mk(type,src){const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){throw new Error(gl.getShaderInfoLog(sh));}return sh;}
+    const vs=mk(gl.VERTEX_SHADER,vsSrc), fs=mk(gl.FRAGMENT_SHADER,fsSrc);
+    glProg=gl.createProgram(); gl.attachShader(glProg,vs); gl.attachShader(glProg,fs); gl.linkProgram(glProg);
+    if(!gl.getProgramParameter(glProg,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(glProg));
+    glBuf=gl.createBuffer();
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE);
+    gl.clearColor(0,0,0,0);
+    webglOk=true; return true;
+  }catch(e){webglOk=false;webglFail=true;gl=null; if(glCanvas)glCanvas.style.display="none"; return false;}
+}
+function resizeWebGL(){
+  if(!webglOk||!glCanvas||!gl)return;
+  const raw=window.devicePixelRatio||1;
+  const d=Math.min((isTouch||W<=900)?1.25:1.75, raw);
+  glCanvas.width=Math.floor(W*d); glCanvas.height=Math.floor(H*d);
+  glCanvas.style.width=W+"px"; glCanvas.style.height=H+"px";
+  gl.viewport(0,0,glCanvas.width,glCanvas.height);
+}
+function drawWebGLStars(cx,cy,s,t){
+  if(!webglOk||!gl||skipHeavy) return;
+  try{
+    const N=W<=900?900:2200;
+    const data=new Float32Array(N*6); // x,y,size,r,g,b  (clip -1..1)
+    const po=parallaxOff("star");
+    for(let i=0;i<N;i++){
+      const p=field[i%Math.max(1,field.length)]; if(!p)continue;
+      const ang=p.a+t*0.015*(0.4+p.layer);
+      const rr=s*(0.55+0.42*((p.r-0.5)/0.7));
+      const px=cx+Math.cos(ang)*rr*Math.cos(p.b)*0.85+po.ox;
+      const py=cy+Math.sin(ang)*rr*0.55+po.oy;
+      const nx=(px/W)*2-1, ny=1-(py/H)*2;
+      const tw=0.25+0.55*Math.abs(Math.sin(t*p.tws+p.tw));
+      const o=i*6;
+      data[o]=nx; data[o+1]=ny; data[o+2]=tw*(0.3+p.layer*0.7);
+      data[o+3]=0.75+0.2*tw; data[o+4]=0.85+0.1*tw; data[o+5]=1.0;
+    }
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(glProg);
+    gl.bindBuffer(gl.ARRAY_BUFFER,glBuf);
+    gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);
+    const a=gl.getAttribLocation(glProg,"a");
+    const sLoc=gl.getAttribLocation(glProg,"s");
+    const cLoc=gl.getAttribLocation(glProg,"c");
+    gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a,2,gl.FLOAT,false,24,0);
+    gl.enableVertexAttribArray(sLoc); gl.vertexAttribPointer(sLoc,1,gl.FLOAT,false,24,8);
+    gl.enableVertexAttribArray(cLoc); gl.vertexAttribPointer(cLoc,3,gl.FLOAT,false,24,12);
+    gl.drawArrays(gl.POINTS,0,N);
+  }catch(_){ webglOk=false; webglFail=true; if(glCanvas)glCanvas.style.display="none"; }
+}
+try{
+  if(typeof DeviceOrientationEvent!=="undefined"){
+    const onOrient=e=>{
+      if(e.gamma==null&&e.beta==null)return;
+      orient.ok=true;
+      // gentle: map ±30° → ±1
+      orient.x=Math.max(-1,Math.min(1,(e.gamma||0)/30));
+      orient.y=Math.max(-1,Math.min(1,((e.beta||0)-45)/30));
+    };
+    addEventListener("deviceorientation",onOrient,{passive:true});
+  }
+}catch(_){}
+
 
 function resetView(){
   cam.tYaw=cam.yaw=0.35; cam.tPitch=cam.pitch=0.18;
@@ -799,8 +902,10 @@ function resize(){
   canvas.width=Math.floor(W*DPR); canvas.height=Math.floor(H*DPR);
   canvas.style.width=W+"px"; canvas.style.height=H+"px";
   ctx.setTransform(DPR,0,0,DPR,0,0);
+  resizeWebGL();
 }
 addEventListener("resize",resize); resize();
+initWebGL(); resizeWebGL();
 function localXY(e){return{x:e.clientX,y:e.clientY};}
 
 canvas.addEventListener("pointermove",e=>{
@@ -1191,8 +1296,14 @@ function drawSphereWire(cx,cy,s,t){
   g.addColorStop(0,"rgba(40,180,220,0.025)"); g.addColorStop(0.55,"rgba(180,60,160,0.02)"); g.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=g;ctx.beginPath();ctx.arc(ex,ey,s*R*1.05,0,Math.PI*2);ctx.fill(); ctx.restore();
 }
-function hueClampAdmit(h){return 140+((h%50+50)%50);} // 140–190
+function hueClampAdmit(h){return 140+((h%50+50)%50);} // 140–190 (legacy fallback)
 function hueClampRelease(h){const x=((h%90)+90)%90; return x<60?(300+x):(x-60);} // 300–30 wrap
+function hueForVerdict(v,i,decision){
+  // kind-as-hue: spectral band from kind; admit/release = lightness (not hue remap)
+  const kind=(v&&v.kind)||"other";
+  const salt=fnv1a(String((v&&v.id)||i)+kind+(decision||""));
+  return kindHueOf(kind, salt);
+}
 function buildVoxels(admits){
   voxels.length=0; const n=Math.max(32,Math.min(110,admits.length*8+28));
   for(let i=0;i<n;i++){
@@ -1203,8 +1314,9 @@ function buildVoxels(admits){
     // centered on seal axis (hex origin) — cube aligns with frame
     voxels.push({bx:gx*0.042,by:gy*0.042+stagger*0.5,bz:gz*0.042,
       jx:Math.random()*Math.PI*2,jy:Math.random()*Math.PI*2,jz:Math.random()*Math.PI*2,js:8+Math.random()*14,
-      hue:hueClampAdmit(i*47+fnv1a(String(v&&v.id||i))),size:0.015+Math.random()*0.008,
-      id:v?v.id:null,title:v?v.t:"",toks:v?v.toks:[]});
+      hue:hueForVerdict(v,i,"admit"),size:0.015+Math.random()*0.008,
+      kind:v?v.kind:null, id:v?v.id:null,title:v?v.t:"",toks:v?v.toks:[], decision:"admit",
+      S_H:v?v.S_H:null,S_solv:v?v.S_solv:null,R_H:v?v.R_H:null,cause:v?v.cause:null});
   }
 }
 function buildMint(refuses){
@@ -1220,8 +1332,9 @@ function buildMint(refuses){
     const v=refuses[i%Math.max(1,refuses.length)]||null;
     mintMesh.parts.push({a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.18+Math.random()*0.42,
       spin:0.15+Math.random()*0.55,size:1.4+Math.random()*2.6,shard:Math.random()>0.62,
-      hue:hueClampRelease(i*53+fnv1a(String(v&&v.id||i))),
-      id:v?v.id:null,title:v?v.t:"",ph:Math.random()*10});
+      hue:hueForVerdict(v,i,"refuse"),
+      kind:v?v.kind:null, id:v?v.id:null,title:v?v.t:"",ph:Math.random()*10, decision:"refuse",
+      S_H:v?v.S_H:null,S_solv:v?v.S_solv:null,R_H:v?v.R_H:null,cause:v?v.cause:null});
   }
 }
 function paintMetaballIso(centers, dimAlpha){
@@ -1248,6 +1361,7 @@ function paintMetaballIso(centers, dimAlpha){
 function drawVoxels(cx,cy,s,t){
   const aV=layerAlpha("voxel"); if(!voxels.length||aV<0.05)return;
   const dim=focusId!=null?0.22:1;
+  const L=kindLightSplit("admit",50);
   const coa=0.5+0.5*Math.sin(t*0.32);
   const sorted=voxels.map(v=>{
     const j=0.012;
@@ -1270,10 +1384,10 @@ function drawVoxels(cx,cy,s,t){
     const focus=focusId!=null&&it.v.id!=null&&String(it.v.id)===String(focusId);
     const alpha=focus?1:(focusId!=null?dim:1), sz=it.v.size*s*it.persp*(focus?1.55:1), hue=it.v.hue;
     ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=aV*alpha;
-    ctx.fillStyle=hsl(hue,90,34,0.08); ctx.beginPath();ctx.arc(it.px,it.py,sz*1.55,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle=hsl(hue,100,54,0.88); ctx.fillRect(it.px-sz*0.5,it.py-sz*0.5,sz,sz);
-    ctx.fillStyle=hsl(hue,100,40,0.82); ctx.beginPath(); ctx.moveTo(it.px+sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.85,it.py-sz*0.2); ctx.lineTo(it.px+sz*0.85,it.py+sz*0.8); ctx.lineTo(it.px+sz*0.5,it.py+sz*0.5); ctx.fill();
-    ctx.fillStyle=hsl(hue,100,64,0.65); ctx.beginPath(); ctx.moveTo(it.px-sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.85,it.py-sz*0.2); ctx.lineTo(it.px-sz*0.15,it.py-sz*0.2); ctx.fill();
+    ctx.fillStyle=hsl(hue,90,Math.max(28,L-16),0.08); ctx.beginPath();ctx.arc(it.px,it.py,sz*1.55,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=hsl(hue,100,L,0.88); ctx.fillRect(it.px-sz*0.5,it.py-sz*0.5,sz,sz);
+    ctx.fillStyle=hsl(hue,100,Math.max(30,L-12),0.82); ctx.beginPath(); ctx.moveTo(it.px+sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.85,it.py-sz*0.2); ctx.lineTo(it.px+sz*0.85,it.py+sz*0.8); ctx.lineTo(it.px+sz*0.5,it.py+sz*0.5); ctx.fill();
+    ctx.fillStyle=hsl(hue,100,Math.min(66,L+8),0.65); ctx.beginPath(); ctx.moveTo(it.px-sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.85,it.py-sz*0.2); ctx.lineTo(it.px-sz*0.15,it.py-sz*0.2); ctx.fill();
     if(focus){ctx.strokeStyle=hsl(hue,100,66,0.88);ctx.lineWidth=1.2; ctx.strokeRect(it.px-sz*0.7,it.py-sz*0.7,sz*1.4,sz*1.4); ctx.globalCompositeOperation="lighter"; const g=ctx.createRadialGradient(it.px,it.py,0,it.px,it.py,sz*5); g.addColorStop(0,hsl(hue,100,56,0.18)); g.addColorStop(1,"rgba(0,0,0,0)"); ctx.fillStyle=g;ctx.beginPath();ctx.arc(it.px,it.py,sz*5,0,Math.PI*2);ctx.fill();}
     it.v._px=it.px;it.v._py=it.py;it.v._rad=sz;
   }
@@ -1281,6 +1395,7 @@ function drawVoxels(cx,cy,s,t){
 }
 function drawMintRelease(cx,cy,s,t){
   const aM=layerAlpha("mint"); if(aM<0.05)return; const dim=focusId!=null?0.18:1;
+  const Lr=kindLightSplit("refuse",46);
   ctx.save(); ctx.globalAlpha=aM;
   const pts=mintMesh.verts.map(v=>{const wave=0.03*Math.sin(t*1.2+v.u*6+v.v*4); return project(v.x+wave,v.y+0.02*Math.sin(t*0.8+v.u*4),v.z+0.02*Math.cos(t*0.9+v.v*5),cx,cy,s);});
   ctx.globalCompositeOperation="lighter";
@@ -1306,10 +1421,10 @@ function drawMintRelease(cx,cy,s,t){
     const px=p._px,py=p._py,focus=p._focus,alpha=p._alpha,hue=p._hue;
     ctx.globalAlpha=aM*alpha*(0.4+0.45*Math.abs(Math.sin(t*2+p.ph)));
     ctx.globalCompositeOperation="source-over";
-    ctx.fillStyle=hsl(hue,95,30,0.07*alpha); ctx.beginPath();ctx.arc(px,py,p.size*1.25,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=hsl(hue,95,Math.max(22,Lr-14),0.07*alpha); ctx.beginPath();ctx.arc(px,py,p.size*1.25,0,Math.PI*2);ctx.fill();
     ctx.globalCompositeOperation="lighter";
-    if(p.shard){const sz=p.size*(focus?2:1); ctx.strokeStyle=hsl(hue,100,54,0.55); ctx.lineWidth=0.85; ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz*0.8,py+sz*0.5);ctx.lineTo(px-sz*0.7,py+sz*0.4);ctx.closePath();ctx.stroke();}
-    else{ctx.fillStyle=hsl(hue,100,52,0.42*alpha); ctx.fillRect(px,py,p.size*(focus?1.7:1)*0.4,p.size*(focus?1.7:1)*0.4);}
+    if(p.shard){const sz=p.size*(focus?2:1); ctx.strokeStyle=hsl(hue,100,Math.min(58,Lr+8),0.55); ctx.lineWidth=0.85; ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz*0.8,py+sz*0.5);ctx.lineTo(px-sz*0.7,py+sz*0.4);ctx.closePath();ctx.stroke();}
+    else{ctx.fillStyle=hsl(hue,100,Lr,0.42*alpha); ctx.fillRect(px,py,p.size*(focus?1.7:1)*0.4,p.size*(focus?1.7:1)*0.4);}
     if(focus){const g=ctx.createRadialGradient(px,py,0,px,py,36); g.addColorStop(0,hsl(hue,100,52,0.18)); g.addColorStop(1,"rgba(0,0,0,0)"); ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,36,0,Math.PI*2);ctx.fill();}
   }
   ctx.restore();
@@ -1357,6 +1472,180 @@ function drawTrailsAndGlow(cx,cy,s,t){
     p._px=px;p._py=py;
   }
   for(let i=afterglow.length-1;i>=0;i--){const g=afterglow[i]; g.life-=0.016; if(g.life<=0){afterglow.splice(i,1);continue;} ctx.strokeStyle=hsl(g.hue,100,58,g.life*0.35); ctx.lineWidth=1.5; ctx.beginPath();ctx.arc(cx,cy,g.r*s*(1.2-g.life*0.3),0,Math.PI*2);ctx.stroke();}
+  ctx.restore();
+}
+function drawNestedSeals(cx,cy,s,t){
+  /* nested seals: outer=measure, mid=project, inner=admit — 2 rings on mobile */
+  const aHex=layerAlpha("hex");
+  const rings=W<=900?2:3;
+  const scales=rings===2?[1.28,0.72]:[1.32,1.0,0.68];
+  const roles=rings===2?["measure","admit"]:["measure","project","admit"];
+  const pulse=0.08*sealPulse+0.05*celebrate;
+  const po=parallaxOff("seal");
+  ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex;
+  for(let r=0;r<rings;r++){
+    const sc=scales[r]*(1+pulse*(r===rings-1?1.2:0.6));
+    const hue=r===0?200:r===1?160:130;
+    const alpha=(0.10+0.06*Math.sin(t*1.1+r))*(0.7+0.3*sealPulse)+(celebrate>0?0.04*celebrate:0);
+    const verts=[];
+    for(let i=0;i<6;i++){
+      const a=-Math.PI/2+i*Math.PI/3;
+      const [px,py]=project(Math.cos(a)*sc,Math.sin(a)*sc*0.92,0,cx+po.ox,cy+po.oy,s);
+      verts.push([px,py]);
+    }
+    ctx.strokeStyle=hsl(hue+t*12,90,52,alpha);
+    ctx.lineWidth=r===0?1.1:(r===1?0.9:1.35);
+    ctx.beginPath();
+    for(let i=0;i<6;i++){const p=verts[i]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}
+    ctx.closePath(); ctx.stroke();
+    // residual circle between rings (subtle)
+    if(r<rings-1 && W>480){
+      const midR=s*((scales[r]+scales[r+1])*0.5)*0.55*(1+0.015*Math.sin(t*1.6+r));
+      ctx.strokeStyle=hsl(hue+30,80,50,alpha*0.35);
+      ctx.lineWidth=0.6;
+      ctx.beginPath(); ctx.arc(cx+po.ox,cy+po.oy,midR,0,Math.PI*2); ctx.stroke();
+    }
+    // soft pulse tick on celebrate/sealPulse
+    if(sealPulse>0.15||celebrate>0.15){
+      const tick=(t*0.8+r*0.33)%1;
+      const i0=Math.floor(tick*6)%6, i1=(i0+1)%6;
+      const u=tick*6-i0;
+      const sx=verts[i0][0]+(verts[i1][0]-verts[i0][0])*u;
+      const sy=verts[i0][1]+(verts[i1][1]-verts[i0][1])*u;
+      ctx.fillStyle=hsl(hue+40,100,62,(sealPulse*0.45+celebrate*0.25));
+      ctx.beginPath(); ctx.arc(sx,sy,1.6+sealPulse,0,Math.PI*2); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+function pushGhostOrbit(verdicts,ciPct){
+  /* ghost orbits: linger prior sorts as faint shells */
+  const cap=W<=900?2:3;
+  const snap={
+    t0:performance.now(),
+    ci:ciPct||0,
+    n:verdicts?verdicts.length:0,
+    admits:(verdicts||[]).filter(v=>v.decision==="admit").length,
+    spin:cam.yaw+cam.userYaw,
+    pitch:cam.pitch+cam.userPitch,
+    kinds:{}
+  };
+  (verdicts||[]).forEach(v=>{const k=v.kind||"other"; snap.kinds[k]=(snap.kinds[k]||0)+1;});
+  ghostOrbits.unshift(snap);
+  while(ghostOrbits.length>cap) ghostOrbits.pop();
+}
+function drawGhostOrbits(cx,cy,s,t){
+  if(!ghostOrbits.length||reduceMotion) return;
+  // skip drawing current (index 0 is most recent live — ghosts are prior)
+  const start=1; // index 0 is current organize; shells = prior
+  const maxG=W<=900?1:2;
+  let drawn=0;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  for(let gi=start;gi<ghostOrbits.length&&drawn<maxG;gi++){
+    const g=ghostOrbits[gi];
+    const age=(performance.now()-g.t0)*0.001;
+    const fade=Math.max(0.08, Math.min(0.28, 0.26-age*0.008));
+    if(fade<0.09 && age>20) continue;
+    const slow=t*0.08*(0.55+gi*0.12);
+    const sc=1.08+gi*0.06+0.02*Math.sin(slow);
+    const gyaw=g.spin*0.15+slow*0.4, gpitch=g.pitch*0.1;
+    const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
+    const verts=[];
+    for(let i=0;i<6;i++){
+      const a=-Math.PI/2+i*Math.PI/3;
+      let x=Math.cos(a)*sc, y=Math.sin(a)*sc*0.92, z=0;
+      let x1=x*cosy-z*siny, z1=x*siny+z*cosy, y1=y*cosp-z1*sinp; z1=y*sinp+z1*cosp;
+      const persp=1/(1.55+z1*0.35);
+      verts.push([cx+x1*persp*s, cy+(-y1*persp)*s*0.92]);
+    }
+    ctx.strokeStyle=hsl(190+gi*25+g.ci*0.4,70,48,fade);
+    ctx.lineWidth=0.7;
+    ctx.beginPath();
+    for(let i=0;i<6;i++){const p=verts[i]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}
+    ctx.closePath(); ctx.stroke();
+    // faint fill hint
+    if(W>480){
+      ctx.fillStyle=hsl(200+gi*20,60,40,fade*0.08);
+      ctx.fill();
+    }
+    drawn++;
+  }
+  ctx.restore();
+}
+function drawProveBreak(cx,cy,s,t){
+  /* prove-or-break: geometric residual readout around focus — LIGHT not HTML form */
+  if(focusId==null) return;
+  let px=null,py=null,hue=160,vmeta=null;
+  for(const v of voxels){
+    if(v.id!=null&&String(v.id)===String(focusId)&&v._px!=null){px=v._px;py=v._py;hue=v.hue;vmeta=v;break;}
+  }
+  if(px==null){
+    for(const p of mintMesh.parts){
+      if(p.id!=null&&String(p.id)===String(focusId)&&p._px!=null){px=p._px;py=p._py;hue=p._hue!=null?p._hue:p.hue;vmeta=p;break;}
+    }
+  }
+  if(px==null){
+    for(const p of nodes){
+      if(p.id!=null&&String(p.id)===String(focusId)&&p._px!=null){px=p._px;py=p._py;hue=p.hue;vmeta=p.v||p;break;}
+    }
+  }
+  if(px==null) return;
+  // pull verdict fields if available
+  let S_solv=null,R_H=null,S_H=null,cause="";
+  if(lastResult){
+    const vv=lastResult.verdicts.find(x=>String(x.id)===String(focusId));
+    if(vv){S_solv=vv.S_solv;R_H=vv.R_H;S_H=vv.S_H;cause=vv.cause||"";hue=hueForVerdict(vv,0,vv.decision);}
+  }else if(vmeta){
+    S_solv=vmeta.S_solv;R_H=vmeta.R_H;S_H=vmeta.S_H;cause=vmeta.cause||"";
+  }
+  const breath=0.5+0.5*Math.sin(t*2.4);
+  const R0=18+breath*3+8*sealPulse;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  // expanding residual arc triad: S_solv / R_H / S_H
+  const gates=[
+    {ok:S_solv, label:"S", hue:150, a0:-Math.PI*0.9, a1:-Math.PI*0.9+Math.PI*0.55},
+    {ok:R_H, label:"R", hue:200, a0:-Math.PI*0.25, a1:-Math.PI*0.25+Math.PI*0.55},
+    {ok:S_H, label:"H", hue:130, a0:Math.PI*0.4, a1:Math.PI*0.4+Math.PI*0.55}
+  ];
+  gates.forEach((g,i)=>{
+    const on=g.ok===true;
+    const rad=R0+i*7+(on?2:0);
+    ctx.strokeStyle=hsl(g.hue,100,on?60:40,on?0.55:0.18);
+    ctx.lineWidth=on?2.2:1.0;
+    ctx.beginPath(); ctx.arc(px,py,rad,g.a0,g.a1); ctx.stroke();
+    if(on){
+      ctx.fillStyle=hsl(g.hue,100,62,0.35+0.15*breath);
+      const mid=(g.a0+g.a1)/2;
+      ctx.beginPath(); ctx.arc(px+Math.cos(mid)*rad, py+Math.sin(mid)*rad, 2.2,0,Math.PI*2); ctx.fill();
+    }
+  });
+  // Δ bar — residual magnitude as light segment
+  const pass=(S_solv?1:0)+(R_H?1:0)+(S_H?1:0);
+  const delta=pass/3;
+  const barW=42, barH=3;
+  const bx=px-barW/2, by=py+R0+28;
+  ctx.fillStyle="rgba(0,0,0,0.35)";
+  ctx.fillRect(bx-2,by-2,barW+4,barH+4);
+  ctx.fillStyle=hsl(hue,90,30,0.35);
+  ctx.fillRect(bx,by,barW,barH);
+  ctx.fillStyle=hsl(hue,100,58,0.7);
+  ctx.fillRect(bx,by,barW*delta,barH);
+  // cause whisper as tiny canvas glyphs (not form)
+  if(cause){
+    const short=String(cause).slice(0,18);
+    ctx.font="600 8px ui-monospace, Menlo, monospace";
+    ctx.textAlign="center"; ctx.textBaseline="top";
+    ctx.fillStyle="rgba(0,0,0,0.45)";
+    const tw=ctx.measureText(short).width;
+    ctx.fillRect(px-tw*0.5-3, by+8, tw+6, 12);
+    ctx.fillStyle=hsl(hue,90,62,0.75);
+    ctx.fillText(short, px, by+9);
+  }
+  // outer expanding ring
+  const expand=((t*0.55)%1);
+  ctx.strokeStyle=hsl(hue,100,55,(1-expand)*0.35);
+  ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.arc(px,py,R0+10+expand*36,0,Math.PI*2); ctx.stroke();
   ctx.restore();
 }
 function drawSealBreath(cx,cy,s,t){
@@ -1429,9 +1718,10 @@ function ingestVerdicts(verdicts){
   const nField=W<=900?3500:Math.max(8000,Math.min(11000,verdicts.length*90+8000));
   seedField(nField);
   nodes.length=0; const show=verdicts.length>100?verdicts.slice(0,100):verdicts;
-  show.forEach((v,i)=>{const admit=v.decision==="admit"; nodes.push({v,id:v.id,decision:v.decision,a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.12+Math.random()*0.32,spin:0.2+Math.random()*0.55,hue:admit?hueClampAdmit(140+Math.random()*50):hueClampRelease(300+Math.random()*90),size:2.8+Math.random()*3,funnel:i%3,delay:Math.random()*0.65,_px:null,_py:null});});
+  show.forEach((v,i)=>{const admit=v.decision==="admit"; nodes.push({v,id:v.id,decision:v.decision,a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.12+Math.random()*0.32,spin:0.2+Math.random()*0.55,hue:hueForVerdict(v,i,v.decision),size:2.8+Math.random()*3,funnel:i%3,delay:Math.random()*0.65,_px:null,_py:null,kind:v.kind||null});});
   const admits=verdicts.filter(v=>v.decision==="admit"), refuses=verdicts.filter(v=>v.decision==="refuse");
   buildVoxels(admits); buildMint(refuses); sealPulse=1; celebrate=1;
+  pushGhostOrbit(verdicts, lastCI);
   afterglow.push({r:0.5,hue:140,life:1},{r:0.65,hue:160,life:0.9},{r:0.8,hue:190,life:0.8});
   shockwave={t0:performance.now()}; // G: sort pulse radial once
   const shOn=verdicts.some(v=>v.S_H); if(shOn&&!prevSH){sealLockFlash=1; if(chimeOn)softChime();} prevSH=shOn;
@@ -1470,26 +1760,44 @@ function frame(now){
   ctx.fillStyle="#000"; ctx.fillRect(0,0,W,H);
   // mobile: raise cy bias so hex owns mid (≥55% of viewport above dock)
   const s=Math.min(W,H)*(W<=900?0.70:0.66)*cam.zoom;
-  const cx=W*0.50+cam.panX, cy=(W<=900?H*0.30:H*0.50)+cam.panY;
-  if(!skipHeavy) drawAurora(cx,cy,s,t);
-  if(!skipHeavy) drawFogShards(cx,cy,s,t,orbitSpeed);
-  drawDualHexGhost(cx,cy,s,t);
-  const verts=drawHexFrame(cx,cy,s,t);
+  const cx0=W*0.50+cam.panX, cy0=(W<=900?H*0.30:H*0.50)+cam.panY;
+  // true parallax: per-layer offsets from mouse.tx/ty (+ DeviceOrientation)
+  const pStar=parallaxOff("star"), pHex=parallaxOff("hex"), pVox=parallaxOff("voxel");
+  const pMint=parallaxOff("mint"), pLab=parallaxOff("label"), pSeal=parallaxOff("seal");
+  const cxS=cx0+pStar.ox, cyS=cy0+pStar.oy;
+  const cxH=cx0+pHex.ox, cyH=cy0+pHex.oy;
+  const cxV=cx0+pVox.ox, cyV=cy0+pVox.oy;
+  const cxM=cx0+pMint.ox, cyM=cy0+pMint.oy;
+  const cxL=cx0+pLab.ox, cyL=cy0+pLab.oy;
+  const cx=cx0+pSeal.ox, cy=cy0+pSeal.oy;
+  // WebGL star overlay behind canvas fills (graceful no-op if failed)
+  if(webglOk && !skipHeavy) drawWebGLStars(cxS,cyS,s,t);
+  if(!skipHeavy) drawAurora(cxS,cyS,s,t);
+  if(!skipHeavy) drawFogShards(cxS,cyS,s,t,orbitSpeed);
+  drawGhostOrbits(cxH,cyH,s,t);
+  drawDualHexGhost(cxH,cyH,s,t);
+  const verts=drawHexFrame(cxH,cyH,s,t);
+  drawNestedSeals(cxH,cyH,s,t);
   drawChromaticHexEdges(verts,t);
-  if(!reduceMotion) drawStarfieldInPanels(cx,cy,s,t,verts);
-  const mouths=drawFunnelsAndBeams(cx,cy,s,t);
-  if(!skipHeavy) drawSphereWire(cx,cy,s*0.96,t);
+  if(!reduceMotion && !webglOk) drawStarfieldInPanels(cxS,cyS,s,t,verts);
+  else if(!reduceMotion && webglOk) drawStarfieldInPanels(cxS,cyS,s,t,verts); // keep panel clip stars as soft fill
+  const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
+  if(!skipHeavy) drawSphereWire(cxH,cyH,s*0.96,t);
   drawSealBreath(cx,cy,s,t);
-  drawVoxels(cx,cy,s*0.96,t); drawMintRelease(cx,cy,s*0.96,t);
+  drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
   // skip constellation every other frame on mobile
-  if(!(W<=900 && (frameN&1))) drawConstellation(cx,cy,s);
-  drawTrailsAndGlow(cx,cy,s,t);
+  if(!(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
+  drawTrailsAndGlow(cxH,cyH,s,t);
+  drawProveBreak(cx0,cy0,s,t);
   drawSortShockwave(cx,cy,s);
-  drawDepthFogVignette(cx,cy,s);
-  drawBloomClamp(cx,cy,s);
-  drawCanvasLabels(cx,cy,s,mouths,verts); // AFTER bloom
+  drawDepthFogVignette(cx0,cy0,s);
+  drawBloomClamp(cx0,cy0,s);
+  drawCanvasLabels(cxL,cyL,s,mouths,verts); // AFTER bloom
   drawFilmGrain();
   drawSoftCrossVeil();
+  // FPS guard: drop WebGL if frames tank on mobile
+  if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
+  else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog();
