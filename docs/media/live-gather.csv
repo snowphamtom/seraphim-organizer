@@ -1,19 +1,25 @@
 id,title,kind
-1,noise: grocery list thursday errands,text
-2,formal residual solvency note (gibberish),text
-3,noise: Copy of weekend brunch ideas,doc
-4,claimed interior formal outline (public nonsense),doc
-5,noise: Screenshots dump beach trip,folder
-6,residual claimed interior scraps folder,folder
-7,noise: budget doodle for groceries,sheet
-8,solvency claimed worksheet v0 nonsense,sheet
-9,noise: IMG_2201 coffee blur.HEIC,image
-10,formal residual plate sketch.png,image
-11,noise: unsubscribe me from newsletters.pdf,pdf
-12,formal solvency checklist draft.pdf,pdf
-13,noise: vacation montage untitled.mov,video
-14,claimed interior walkthrough clip.mov,video
-15,noise: old downloads zip backup.zip,archive
-16,residual formal pack archive.zip,archive
-17,noise: thread best airport snacks,text
-18,interior claimed residual desk scrap,text
+1-0,noise: coffee blur dump.png,image
+2-0,formal residual plate sketch.png,image
+3-0,noise: grocery budget doodle,sheet
+4-0,solvency claimed worksheet nonsense,sheet
+5-0,noise: downloads backup.zip,archive
+6-0,residual formal pack archive.zip,archive
+7-0,noise: airport snacks thread,text
+8-0,interior claimed residual desk scrap,text
+9-0,noise: beach screenshots dump,folder
+10-0,residual claimed interior scraps folder,folder
+11-1,noise: soft clutter photo.png,image
+12-0,formal residual claimed interior.png,image
+13-0,noise: brunch copy doodle,sheet
+14-0,claimed interior solvency sheet scrap,sheet
+15-0,noise: desktop trash.zip,archive
+16-0,formal residual solvency archive.zip,archive
+17-0,noise: plain errands list,text
+18-0,formal residual solvency note gibberish,text
+19-0,noise: screenshots pile soft,folder
+20-0,claimed interior formal residual folder,folder
+21-1,noise: vacation blur mess.png,image
+22-0,solvency claimed residual plate.png,image
+23-0,noise: shopping list doodle,sheet
+24-0,formal interior claimed solvency sheet,sheet
