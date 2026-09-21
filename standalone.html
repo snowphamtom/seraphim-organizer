@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgHoloCluster|bgHoloClusterWire|bgInvertInkDrops|clusterBehindSeal: inverted light field + black ink wire */
+  /* holoPalette|bgHoloCluster|bgHoloClusterWire|bgInvertInkDrops|clusterBehindSeal|bgWireRemoved: inverted light field + black ink wire */
   --void:#e8ecf4;--ink:#14161f;--mute:#5a6280;
   --admit:#2a8a96;--release:#9a3a96;--mint:#6a9030;
   --cyan:#2a8a96;--mag:#8e2a9e;--warn:#b8860b;
@@ -355,34 +355,13 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   #bgField .meta.blobs{opacity:0.04}
 }
 
-#bgField .meta.cluster{
-  /* inverted ink wire — locked behind dodeca (JS syncs left/top to seal cx/cy) */
-  inset:auto;
-  width:150vmin;height:150vmin;
-  top:50%;left:50%; /* boot fallback; frame overwrites to seal center */
-  transform:translate(-50%,-50%);
-  will-change:left,top;
-  background-image:url(bg-holo-cluster-ink.gif);
-  background-size:contain;
-  background-position:center;
-  background-repeat:no-repeat;
-  opacity:0.55;
-  mix-blend-mode:multiply;
-  filter:contrast(1.15) brightness(0.92);
-  pointer-events:none;
-}
-@media (max-width:900px){
-  #bgField .meta.cluster{width:140vmin;height:140vmin;opacity:0.42;filter:contrast(1.08) brightness(0.95)}
-}
-@media (prefers-reduced-motion:reduce){
-  #bgField .meta.cluster{opacity:0.22;filter:contrast(1.0) brightness(1.0)}
-}
+#bgField .meta.cluster{display:none!important;background:none!important;opacity:0!important}
 
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div><div class="meta cluster"></div></div>
+<div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div></div>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.28"></canvas><!-- polishPass3: WebGL underlay quieter so canvas seal wins -->
 <header id="top">
@@ -837,7 +816,7 @@ const STORIES = {
    - fogShards: skip ≤900; α×0.5
    - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
    - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
-   - bg inverted light field + black ink wire (150vmin) locked to seal cx/cy — drops tether into cluster behind dodeca
+   - bg inverted light field only — black ink wireframe + ink-drop lattice REMOVED (Taylor)
    - chromatic edges: skip ≤900; α×0.5 (magenta/cyan/indigo fringe)
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
@@ -2691,8 +2670,6 @@ function frame(now){
   drawDualHexGhost(cxH,cyH,s,t);
   const verts=projectDodecaSeal(cxH,cyH,s);
   projectInnerCube(cxH,cyH,s);
-  syncClusterBehindSeal(cx,cy);
-  if(!reduceMotion) drawInkMorphDrops(dt/1000,t,cx,cy);
   if(!reduceMotion) drawStarfieldInPanels(cxS,cyS,s,t,verts);
   // 2) mid organize — intake mouths → voxels(admit/cool) + mint(release/warm) → lattice tethers
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
