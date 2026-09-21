@@ -1126,6 +1126,43 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 
+
+/* clientPolish — kill vignette clutter; quieter trio; cleaner windows */
+#bgField::before,
+#bgField::after{
+  display:none!important;
+  content:none!important;
+  opacity:0!important;
+}
+#bgField .spiralField{ opacity:0.78!important; }
+#bgField .tunnelWindowsKeyed{ opacity:0.70!important; }
+#bgField .hexCoreKeyed{ opacity:0.95!important; }
+#uploadBox,
+#sortedFigures .tray,
+#trayAdmit,
+#trayRelease{
+  background:rgba(4,10,20,.32)!important;
+  backdrop-filter:blur(10px) saturate(1.08)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(1.08)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.06),
+    0 12px 32px rgba(0,0,0,.40)!important;
+  border:1px solid rgba(120,200,220,.14)!important;
+}
+#uploadBox .uh b,
+#sortedFigures .tray h3{
+  letter-spacing:.12em!important;
+  font-weight:600!important;
+  opacity:.9!important;
+}
+#uploadBox .dropHint{ opacity:.55!important; font-size:.52rem!important; }
+#uploadBox .scanBar{ display:none!important; }
+#fx{ opacity:0.85!important; } /* canvas whisper under GIFs */
+@keyframes spiralPulse{
+  0%{ transform:scale(1.01); filter:saturate(1.08) contrast(1.05) brightness(0.96); }
+  100%{ transform:scale(1.04); filter:saturate(1.18) contrast(1.08) brightness(1.02); }
+}
+
 /* clientBgFirst — translucent windows parked low so seal/background reads */
 #uploadBox,
 #sortedFigures .tray,
@@ -3609,8 +3646,30 @@ function drawCyberNatureField(cx,cy,s,t){
 }
 
 function drawDodecaFrame(cx,cy,s,t){
-  /* magpieImpressSupersede — full Magpie WORK layer stack */
-  drawCyberNatureField(cx,cy,s,t);
+  /* clientPolish: thin dodeca edges only — no cyberNature densify */
+  const pv=DODECA._projVerts;
+  if(!pv||!pv.length||!DODECA.edges) return;
+  const thin=W<=480, mobile=W<=900;
+  const pulse=0.55+0.45*Math.sin(t*TEMPO.base*1.6);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  for(let ei=0;ei<DODECA.edges.length;ei++){
+    const [i,j]=DODECA.edges[ei];
+    const a=pv[i], b=pv[j];
+    if(!a||!b) continue;
+    const depth=((a.d||0)+(b.d||0))*0.5;
+    const near=Math.max(0.2, Math.min(1, 0.5+depth*0.4));
+    const a0=(0.10+0.08*pulse)*near*(mobile?0.65:1);
+    ctx.strokeStyle=hsl(195+ei*3,90,58,a0);
+    ctx.lineWidth=(thin?0.55:0.8)*near;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+  }
+  for(let i=0;i<pv.length;i++){
+    const v=pv[i];
+    const near=Math.max(0.25, Math.min(1, 0.55+(v.d||0)*0.35));
+    ctx.fillStyle=hsl(200,95,65,(0.18+0.12*pulse)*near);
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.9:1.2,0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
 }
 
 const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
@@ -5822,39 +5881,22 @@ function frame(now){
   const cxS=cx0+pStar.ox, cyS=cy0+pStar.oy;
   /* polishPass3 draw order: bg whisper → intake → organize → seal authority → fate labels
      Story: field → dodeca lock → cube crystallize / mint release. Seal always paints last-but-labels. */
-  /* stripToBones: skeleton only — seal + center lock + organize desk path + φ + light/shadow */
+  /* clientPolish — GIF trio owns the field; canvas only quiet seal + sort FX */
   const verts=projectDodecaSeal(cxH,cyH,s);
   projectInnerCube(cxH,cyH,s);
-  syncGyroSharedCenter(cx,cy,s,t); /* bgSealCenterLock|sameVectors — essential */
-  /* underlay densify/ornament killed — GIF whispers + seal carry atmosphere */
-  if(!reduceMotion && !skipHeavy) drawBeamRain(cx,cy,s,t); /* φ desk↔seal↔trays spine (quiet) */
-  if(!reduceMotion && !skipHeavy) drawCorePlasma(cx,cy,s,t); /* soft hub light only */
-  // organize story — Disorganized → Organized / Aside
-  const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
-  drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
-  if(!skipHeavy) drawTrailsAndGlow(cxH,cyH,s,t);
-  if(!skipHeavy) drawOrganizeLattice(cxH,cyH,s,t); /* clientBgDynamic: lattice every frame */
+  syncGyroSharedCenter(cx,cy,s,t); /* bgSealCenterLock|clientGeoLock */
+  const mouths=[];
   if(!reduceMotion) drawUploadStream(cx,cy,s,t);
   drawSortShockwave(cx,cy,s);
-  drawBloomClamp(cx0,cy0,s); /* clear light/shadow anti-blotch */
   drawSoftCrossVeil();
-  // SEAL AUTHORITY — dodeca3DSphere boss (canvas primary; Three soft underlay)
-  if(!reduceMotion) drawThreeOrbit(cxH,cyH,s,t);
-  drawSealContrastVeil(cx,cy,s); /* stays no-op — no black plate behind seal */
-  drawSphereWire(cxH,cyH,s,t); /* soft sphere core at origin */
-  drawHexFrame(cxH,cyH,s,t); /* projected dodeca edges + face whisper */
-  if(!reduceMotion && !skipHeavy) drawHexCore3D(cxH,cyH,s,t); /* clientHexCore3D */
-  if(!reduceMotion && !skipHeavy) drawHexCoreWires(cxH,cyH,s,t); /* clientHexCore3D tether */
-  if(!reduceMotion && !skipHeavy) drawWindowLightnings(cxH,cyH,s,t); /* clientWinLightning */
-  drawInnerCubeWire(cxH,cyH,s,t);
-  drawSealBreath(cx,cy,s,t);
-  drawCanvasLabels(cxL,cyL,s,mouths,verts);
+  drawHexFrame(cxH,cyH,s,t); /* quiet dodeca edges only */
+  /* no beam/plasma/funnels/voxels/mint/lattice/trails/three/hexCore3D/wires — clutter */
   // FPS guard: drop WebGL if frames tank on mobile
   if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
   else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDrops();
+requestAnimationFrame(frame); seedField(W<=900?400:800); /* clientPolish: tiny field */ seedFog(); seedInkDrops();
 /* cyberNatureFormat — left data rail + spectrum bars */
 (function bootCyberNatureChrome(){ /* clientBgClean skip rail/spec */ return;
   /* magpieImpressSupersede L12 — dataRail scroll + hard-driving specBar energy */
