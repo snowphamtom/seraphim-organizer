@@ -377,6 +377,56 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 
+
+/* tripleBeamInCore|funnelAttach|cutBlackBg — beams on hex funnel axes; keyed WebP (black→alpha) */
+#bgField .hexCore{position:absolute;inset:0;z-index:3;overflow:visible}
+#bgField .hexCore .plane.coreMain{
+  position:absolute;
+  left:var(--seal-x); top:var(--seal-y);
+  width:min(72vmin,640px); height:min(72vmin,640px);
+  transform:translate(-50%,-50%);
+  opacity:1;
+}
+#bgField .hexCore .plane.coreMain picture,
+#bgField .hexCore .plane.coreMain img{
+  display:block;width:100%;height:100%;object-fit:contain;object-position:center;
+}
+#bgField .hexCore .beamTrio{
+  position:absolute;
+  left:var(--seal-x); top:var(--seal-y);
+  width:min(72vmin,640px); height:min(72vmin,640px);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:4;
+}
+#bgField .hexCore .beamTrio .b{
+  position:absolute;
+  width:34%; height:42%;
+  transform:translate(-50%,-50%);
+  opacity:0.95;
+}
+#bgField .hexCore .beamTrio .b picture,
+#bgField .hexCore .beamTrio .b img{
+  display:block;width:100%;height:100%;object-fit:contain;object-position:center;
+}
+/* attach to hex funnel shafts: top-left / top-right / bottom (120°) */
+#bgField .hexCore .beamTrio .b1{ left:28%; top:30%; transform:translate(-50%,-50%) rotate(-38deg); }
+#bgField .hexCore .beamTrio .b2{ left:72%; top:30%; transform:translate(-50%,-50%) rotate(38deg); }
+#bgField .hexCore .beamTrio .b3{ left:50%; top:76%; transform:translate(-50%,-50%) rotate(180deg); }
+#bgField .isoTunnel .plane picture,
+#bgField .isoTunnel .plane img{ display:block;width:100%;height:100%;object-fit:cover; }
+@media (max-width:900px){
+  #bgField .hexCore .plane.coreMain,
+  #bgField .hexCore .beamTrio{ width:min(64vmin,480px); height:min(64vmin,480px); }
+  #bgField .hexCore .beamTrio .b{ width:32%; height:40%; }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .hexCore .beamTrio .b .anim,
+  #bgField .hexCore .plane.coreMain .anim{display:none!important}
+  #bgField .hexCore .beamTrio .b .still,
+  #bgField .hexCore .plane.coreMain .still{display:block!important}
+}
+
 /* —— uploadSortedDesk: obvious upload + sorted figures trays —— */
 
 
@@ -595,21 +645,36 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
       <img class="still" src="media/tunnel-grid-still.jpg" alt="" width="500" height="500" decoding="async" fetchpriority="low">
     </div>
   </div>
-  <div class="assetLayer isoTunnel" aria-hidden="true">
+    <div class="assetLayer isoTunnel" aria-hidden="true">
     <div class="plane">
-      <img class="anim" src="media/iso-tunnel.gif" alt="" width="500" height="500" decoding="async" fetchpriority="low">
-      <img class="still" src="media/iso-tunnel-still.jpg" alt="" width="500" height="500" decoding="async" fetchpriority="low">
+      <picture>
+        <source srcset="media/iso-tunnel.webp" type="image/webp">
+        <img class="anim" src="media/iso-tunnel.gif" alt="" width="480" height="480" decoding="async" fetchpriority="low">
+      </picture>
+      <img class="still" src="media/iso-tunnel-still.png" alt="" width="480" height="480" decoding="async" style="display:none">
     </div>
   </div>
-  <div class="assetLayer hexCore" aria-hidden="true">
+<div class="assetLayer hexCore" aria-hidden="true">
     <div class="plane coreMain">
-      <img class="anim" src="media/hex-core.gif" alt="" width="560" height="560" decoding="async" fetchpriority="low">
-      <img class="still" src="media/hex-core-still.jpg" alt="" width="560" height="560" decoding="async" fetchpriority="low">
+      <picture>
+        <source srcset="media/hex-core.webp" type="image/webp">
+        <img class="anim" src="media/hex-core.gif" alt="" width="480" height="480" decoding="async" fetchpriority="low">
+      </picture>
+      <img class="still" src="media/hex-core-still.png" alt="" width="480" height="480" decoding="async" style="display:none">
     </div>
     <div class="beamTrio" aria-hidden="true">
-      <div class="b b1"><img class="anim" src="media/beam-rain.gif" alt=""><img class="still" src="media/beam-rain-still.jpg" alt=""></div>
-      <div class="b b2"><img class="anim" src="media/beam-rain.gif" alt=""><img class="still" src="media/beam-rain-still.jpg" alt=""></div>
-      <div class="b b3"><img class="anim" src="media/beam-rain.gif" alt=""><img class="still" src="media/beam-rain-still.jpg" alt=""></div>
+      <div class="b b1">
+        <picture><source srcset="media/beam-rain.webp" type="image/webp"><img class="anim" src="media/beam-rain.gif" alt=""></picture>
+        <img class="still" src="media/beam-rain-still.png" alt="" style="display:none">
+      </div>
+      <div class="b b2">
+        <picture><source srcset="media/beam-rain.webp" type="image/webp"><img class="anim" src="media/beam-rain.gif" alt=""></picture>
+        <img class="still" src="media/beam-rain-still.png" alt="" style="display:none">
+      </div>
+      <div class="b b3">
+        <picture><source srcset="media/beam-rain.webp" type="image/webp"><img class="anim" src="media/beam-rain.gif" alt=""></picture>
+        <img class="still" src="media/beam-rain-still.png" alt="" style="display:none">
+      </div>
     </div>
   </div>
 </div>
