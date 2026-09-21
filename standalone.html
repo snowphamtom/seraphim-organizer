@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2910,35 +2910,32 @@ function drawCyberNatureField(cx,cy,s,t){
       ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
     }
 
-    /* —— L5b INNER NODE CONNECTIONS (plexus) — iridescent web inside the dodeca —— */
-    if(!window._magpieInnerNet){
-      const N=thin?48:(mobile?90:140);
+    /* —— L5b INNER NODE CONNECTIONS — seal-bright plexus wired TO the dodeca —— */
+    if(!window._magpieInnerNetV2){
+      const N=thin?56:(mobile?100:160);
       const pts=[];
-      /* fibonacci sphere packed inside seal radius ~0.78 */
       const golden=Math.PI*(3-Math.sqrt(5));
       for(let i=0;i<N;i++){
         const y=1-(i/(N-1))*2;
         const r=Math.sqrt(Math.max(0,1-y*y));
         const th=golden*i;
-        const rad=0.28+0.50*((i*PHI)%1); /* fill volume, denser mid */
+        const rad=0.22+0.58*((i*PHI)%1);
         pts.push({
           x:Math.cos(th)*r*rad,
           y:y*rad*0.92,
           z:Math.sin(th)*r*rad,
           phase:i*0.37,
-          hub:((i*17)%7===0)?1:0
+          hub:((i*17)%5===0)?1:0
         });
       }
-      /* k-NN edges (k=3..5) — dense local plexus */
       const edges=[];
-      const kN=thin?3:(mobile?4:5);
+      const kN=thin?4:(mobile?5:6);
       for(let i=0;i<N;i++){
         const dlist=[];
         for(let j=0;j<N;j++){
           if(i===j) continue;
           const a=pts[i], b=pts[j];
-          const d=(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2;
-          dlist.push({j,d});
+          dlist.push({j,d:(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2});
         }
         dlist.sort((u,v)=>u.d-v.d);
         for(let q=0;q<kN;q++){
@@ -2946,69 +2943,100 @@ function drawCyberNatureField(cx,cy,s,t){
           if(i<j) edges.push([i,j]);
         }
       }
-      /* a few long hub bridges for cluster look */
       const hubs=pts.map((p,i)=>({i,h:p.hub})).filter(o=>o.h);
       for(let h=0;h<hubs.length;h++){
         for(let g=h+1;g<hubs.length;g++){
-          if(((h+g)*13)%3===0) edges.push([hubs[h].i, hubs[g].i]);
+          if(((h+g)*13)%2===0) edges.push([hubs[h].i, hubs[g].i]);
         }
       }
-      window._magpieInnerNet={pts,edges};
+      window._magpieInnerNetV2={pts,edges};
     }
     {
-      const net=window._magpieInnerNet;
+      const net=window._magpieInnerNetV2;
       const spin=t*TEMPO.base*0.55;
       const cosS=Math.cos(spin), sinS=Math.sin(spin);
       const projected=[];
+      const local3=[];
       for(let i=0;i<net.pts.length;i++){
         const p=net.pts[i];
-        /* slow tumble inside seal — shares cam via project after local yaw */
         let x=p.x*cosS-p.z*sinS, z=p.x*sinS+p.z*cosS, y=p.y;
-        const breathe=1+0.04*Math.sin(t*TEMPO.base*2.2+p.phase);
-        const pr=project(x*breathe, y*breathe, z*breathe, cx, cy, s);
-        /* iridescent map like ref: cyan (bottom-left) → yellow (center) → magenta (top-right) */
+        const breathe=1+0.045*Math.sin(t*TEMPO.base*2.2+p.phase);
+        x*=breathe; y*=breathe; z*=breathe;
+        local3.push({x,y,z});
+        const pr=project(x,y,z,cx,cy,s);
         const nx=(x+1)*0.5, ny=(y+1)*0.5;
-        let hue=186 + nx*90 + (1-ny)*80; /* ~186 cyan → ~356 magenta/red */
-        if(Math.hypot(x,y,z)<0.35) hue=48+20*Math.sin(t*TEMPO.base+p.phase); /* hot yellow core */
-        projected.push({x:pr[0],y:pr[1],d:pr[2],hue,hub:p.hub,phase:p.phase});
+        let hue=186 + nx*90 + (1-ny)*80;
+        if(Math.hypot(x,y,z)<0.35) hue=48+20*Math.sin(t*TEMPO.base+p.phase);
+        projected.push({x:pr[0],y:pr[1],d:pr[2],hue,hub:p.hub,phase:p.phase,lx:x,ly:y,lz:z});
       }
-      /* edges first (hairline), depth-ish by avg d */
+      /* WIRE TO DODECA — each node → 1–2 nearest seal verts (pv at sc=1.06) */
+      if(pv && DODECA.verts){
+        const sealLoc=DODECA.verts; /* object-space verts; scale matches L5 sc */
+        const sc=1.06;
+        for(let i=0;i<projected.length;i++){
+          const P=projected[i];
+          const dlist=[];
+          for(let vi=0;vi<sealLoc.length;vi++){
+            const v=sealLoc[vi];
+            const dx=P.lx-v.x*sc, dy=P.ly-v.y*sc, dz=P.lz-v.z*sc;
+            dlist.push({vi,d:dx*dx+dy*dy+dz*dz});
+          }
+          dlist.sort((a,b)=>a.d-b.d);
+          const nWire=P.hub?2:1;
+          for(let w=0;w<nWire;w++){
+            const V=pv[dlist[w].vi];
+            if(!V) continue;
+            const near=Math.max(0.2,Math.min(1,(P.d+V.d)*0.5+0.5));
+            const pulse=0.7+0.3*Math.sin(t*TEMPO.base*3.8+i*0.3+w);
+            const a=(0.42+0.38*near)*pulse*pulseBoost;
+            const g=ctx.createLinearGradient(P.x,P.y,V.x,V.y);
+            g.addColorStop(0,hsl(P.hue,100,68,a));
+            g.addColorStop(1,hsl(hues[dlist[w].vi%hues.length],96,64,a*0.85));
+            ctx.strokeStyle=g;
+            ctx.lineWidth=(thin?1.0:(mobile?1.35:1.7))*(0.55+near*0.65); /* match seal stroke */
+            ctx.setLineDash([3+(i%2), 2]);
+            ctx.lineDashOffset=-(t*TEMPO.base*48+i*5);
+            ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(V.x,V.y); ctx.stroke();
+          }
+        }
+        ctx.setLineDash([]);
+      }
+      /* plexus edges — seal-bright hair→wire */
       const edged=net.edges.map(([i,j],ei)=>{
         const A=projected[i], B=projected[j];
         return {A,B,ei,md:(A.d+B.d)*0.5};
       }).sort((u,v)=>u.md-v.md);
-      const maxE=thin?edged.length:(mobile?Math.min(edged.length,420):edged.length);
-      for(let e=0;e<maxE;e++){
+      for(let e=0;e<edged.length;e++){
         const {A,B,md}=edged[e];
-        const near=Math.max(0.12,Math.min(1,md+0.55));
+        const near=Math.max(0.15,Math.min(1,md+0.55));
         const hue=(A.hue+B.hue)*0.5;
-        const a=(0.10+0.28*near)*(0.75+0.25*Math.sin(t*TEMPO.base*3.5+e*0.2))*pulseBoost;
-        ctx.strokeStyle=hsl(hue,95,62,Math.min(0.55,a));
-        ctx.lineWidth=thin?0.35:(mobile?0.5:0.65);
+        const a=(0.28+0.42*near)*(0.8+0.2*Math.sin(t*TEMPO.base*3.5+e*0.2))*pulseBoost;
+        ctx.strokeStyle=hsl(hue,96,66,Math.min(0.78,a));
+        ctx.lineWidth=thin?0.75:(mobile?1.05:1.35);
         ctx.setLineDash([]);
         ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
       }
-      /* nodes on top */
+      /* nodes — as visible as dodeca verts/edges */
       for(let i=0;i<projected.length;i++){
         const P=projected[i];
-        const near=Math.max(0.15,Math.min(1,P.d+0.55));
-        const tw=0.7+0.3*Math.sin(t*TEMPO.base*4.5+P.phase);
-        const rad=(P.hub?2.2:1.15)*(thin?0.7:(mobile?0.85:1))*(0.7+0.3*near)*tw;
-        const a=(0.35+0.45*near)*tw*pulseBoost;
-        if(P.hub){
-          const g=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,rad*4);
-          g.addColorStop(0,hsl(P.hue,100,78,0.55*a));
-          g.addColorStop(0.5,hsl(P.hue,95,60,0.18*a));
-          g.addColorStop(1,"rgba(0,0,0,0)");
-          ctx.fillStyle=g; ctx.beginPath(); ctx.arc(P.x,P.y,rad*4,0,Math.PI*2); ctx.fill();
-        }
-        ctx.fillStyle=hsl(P.hue,100,72,Math.min(0.95,a));
+        const near=Math.max(0.2,Math.min(1,P.d+0.55));
+        const tw=0.75+0.25*Math.sin(t*TEMPO.base*4.5+P.phase);
+        const rad=(P.hub?4.2:2.6)*(thin?0.75:(mobile?0.9:1.05))*(0.75+0.35*near)*tw;
+        const a=Math.min(0.98,(0.72+0.28*near)*tw*pulseBoost);
+        const g=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,rad*3.2);
+        g.addColorStop(0,hsl(P.hue,100,82,0.85*a));
+        g.addColorStop(0.4,hsl(P.hue,98,65,0.45*a));
+        g.addColorStop(1,"rgba(0,0,0,0)");
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(P.x,P.y,rad*3.2,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=hsl(P.hue,100,78,a);
         ctx.beginPath(); ctx.arc(P.x,P.y,rad,0,Math.PI*2); ctx.fill();
+        /* crisp core like seal jewels */
+        ctx.fillStyle=`rgba(255,255,255,${0.55*a})`;
+        ctx.beginPath(); ctx.arc(P.x-rad*0.2,P.y-rad*0.25,rad*0.28,0,Math.PI*2); ctx.fill();
       }
     }
 
-
-    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */
+    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */
     if(!thin || !reduceMotion){
       const nsc=0.62+0.015*Math.sin(t*TEMPO.base*2.4);
       nested=[];
