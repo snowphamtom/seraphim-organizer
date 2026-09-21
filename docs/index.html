@@ -2412,6 +2412,34 @@ html,body{ background:#000!important; color:var(--ink)!important; }
 
 
 /* clientNodesMath — PI-SLICES lattice over quad Fibonacci + legacy math */
+
+/* clientScreenFit — bleed past corners so spin never shows empty void */
+#bgField{
+  position:fixed!important; inset:0!important; width:100vw!important; height:100dvh!important;
+  overflow:hidden!important; z-index:0!important;
+  display:grid!important; place-items:center!important;
+  pointer-events:none!important;
+}
+#bgField > .mathField,
+#bgField > .nodeField{
+  position:absolute!important; inset:0!important;
+  display:grid!important; place-items:center!important;
+  width:100%!important; height:100%!important;
+  overflow:visible!important; margin:0!important; padding:0!important;
+}
+#bgField > .mathField img,
+#bgField > .nodeField img{
+  /* cover + √2 spin bleed: never leave unused screen */
+  width:max(145vw,145vh)!important;
+  height:max(145vw,145vh)!important;
+  max-width:none!important;
+  max-height:none!important;
+  min-width:max(100vw,100vh)!important;
+  min-height:max(100vw,100vh)!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+
 #bgField > .blueStack,
 #bgField > .duoField,
 #bgField > .uniStack,
@@ -2435,8 +2463,8 @@ html,body{ background:#000!important; color:var(--ink)!important; }
 #bgField > .nodeField{ z-index:3!important; }
 #bgField > .mathField img,
 #bgField > .nodeField img{
-  width:min(120vmax,2100px)!important;
-  height:min(120vmax,2100px)!important;
+  width:max(145vw,145vh)!important;
+  height:max(145vw,145vh)!important;
   max-width:none!important; max-height:none!important;
   object-fit:cover!important;
   object-position:center!important;
