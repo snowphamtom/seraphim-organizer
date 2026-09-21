@@ -1,7 +1,7 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=PLACEHOLDER
-- **Commit:** `PLACEHOLDER` (`tunnelAsSent` after `gatherThenSort`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=f9ef480
+- **Commit:** `f9ef480` (`tunnelAsSent` after `gatherThenSort`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
