@@ -1163,6 +1163,197 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   100%{ transform:scale(1.04); filter:saturate(1.18) contrast(1.08) brightness(1.02); }
 }
 
+
+/* clientFlawless — aesthetic final pass: opacity ladder, glass, type, composition */
+html,body{
+  background:#000!important;
+  color:rgba(230,242,255,.92)!important;
+}
+/* opacity ladder: spiral whisper < tunnel mid < hex hero */
+#bgField .spiralField{ opacity:0.62!important; }
+#bgField .tunnelWindowsKeyed{
+  opacity:0.58!important;
+  mix-blend-mode:screen!important;
+  filter:saturate(1.05) contrast(1.02) brightness(1.02)!important;
+}
+#bgField .hexCoreKeyed{
+  opacity:1!important;
+  mix-blend-mode:screen!important;
+  filter:saturate(1.08) contrast(1.04) brightness(1.06)
+    drop-shadow(0 0 28px rgba(80,200,255,.12))
+    drop-shadow(0 0 48px rgba(232,120,255,.08))!important;
+}
+#fx{ opacity:0.55!important; }
+
+/* premium glass windows */
+#uploadBox,
+#sortedFigures .tray,
+#trayAdmit,
+#trayRelease{
+  background:linear-gradient(165deg, rgba(12,20,36,.42) 0%, rgba(4,8,18,.28) 100%)!important;
+  backdrop-filter:blur(14px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.15)!important;
+  border:1px solid rgba(160,220,240,.14)!important;
+  border-radius:14px!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 1px 0 rgba(255,255,255,.06) inset,
+    0 16px 40px rgba(0,0,0,.45),
+    0 0 24px rgba(34,211,238,.04)!important;
+  overflow:hidden!important;
+}
+#trayAdmit{
+  border-color:rgba(94,234,212,.22)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 16px 40px rgba(0,0,0,.45),
+    0 0 28px rgba(94,234,212,.08)!important;
+}
+#trayRelease{
+  border-color:rgba(232,121,249,.20)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04) inset,
+    0 16px 40px rgba(0,0,0,.45),
+    0 0 28px rgba(232,121,249,.07)!important;
+}
+#uploadBox .winBar,
+#sortedFigures .tray .winBar,
+#uploadBox::before,
+#trayAdmit::before,
+#trayRelease::before{
+  background:linear-gradient(180deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 100%)!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+  height:22px!important;
+}
+#uploadBox .uh b::before,
+#sortedFigures .tray h3::before,
+#trayAdmit h3::before,
+#trayRelease h3::before{ content:""!important; }
+#uploadBox .uh b{
+  font-size:.72rem!important;
+  letter-spacing:.18em!important;
+  text-transform:uppercase!important;
+  color:rgba(200,240,255,.88)!important;
+  text-shadow:0 0 18px rgba(86,212,224,.25)!important;
+}
+#trayAdmit h3{
+  font-size:.68rem!important;
+  letter-spacing:.16em!important;
+  text-transform:uppercase!important;
+  color:rgba(125,240,230,.92)!important;
+  text-shadow:0 0 14px rgba(94,234,212,.28)!important;
+}
+#trayRelease h3{
+  font-size:.68rem!important;
+  letter-spacing:.16em!important;
+  text-transform:uppercase!important;
+  color:rgba(240,180,245,.92)!important;
+  text-shadow:0 0 14px rgba(232,121,249,.25)!important;
+}
+#sortedFigures .tray .count,
+#figAdmitN,#figReleaseN{
+  font-weight:500!important;
+  opacity:.55!important;
+  letter-spacing:.04em!important;
+}
+#uploadBox .dropHint{
+  border:1px dashed rgba(100,200,220,.22)!important;
+  border-radius:10px!important;
+  background:rgba(0,20,36,.18)!important;
+  color:rgba(170,210,230,.55)!important;
+  padding:.42rem .4rem!important;
+  margin:.15rem 0 .35rem!important;
+}
+#uploadBox .dropHint em{ color:rgba(140,235,255,.9)!important; }
+#uploadBox textarea{
+  background:rgba(0,8,18,.32)!important;
+  border:1px solid rgba(100,180,200,.12)!important;
+  border-radius:10px!important;
+  color:rgba(220,240,255,.88)!important;
+  font-size:.72rem!important;
+  line-height:1.45!important;
+  padding:.5rem .55rem!important;
+}
+#uploadBox textarea:focus{
+  outline:none!important;
+  border-color:rgba(86,212,224,.35)!important;
+  box-shadow:0 0 0 1px rgba(86,212,224,.15)!important;
+}
+#uploadBox .actions{
+  gap:.35rem!important;
+  margin-top:.2rem!important;
+}
+#uploadBox .actions .filebtn,
+#uploadBox .actions button{
+  border-radius:8px!important;
+  padding:.28rem .55rem!important;
+  font-size:.58rem!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  border:1px solid rgba(120,200,220,.18)!important;
+  background:rgba(8,24,40,.35)!important;
+  color:rgba(190,230,245,.75)!important;
+  transition:border-color .2s ease, color .2s ease, box-shadow .2s ease!important;
+}
+#uploadBox .actions #runSort{
+  border-color:rgba(94,234,212,.35)!important;
+  color:rgba(180,255,245,.95)!important;
+  box-shadow:0 0 16px rgba(94,234,212,.12)!important;
+}
+#uploadBox .actions #runSort::before{ content:""!important; }
+#uploadBox .actions .filebtn:hover,
+#uploadBox .actions button:hover{
+  border-color:rgba(160,230,255,.4)!important;
+  color:rgba(230,255,255,.95)!important;
+}
+#uploadBox.drag,#uploadBox:focus-within,#uploadBox.receiving{
+  border-color:rgba(86,212,224,.4)!important;
+  box-shadow:
+    0 0 0 1px rgba(86,212,224,.2),
+    0 16px 40px rgba(0,0,0,.5),
+    0 0 32px rgba(86,212,224,.12)!important;
+}
+#sortedFigures .chipFig{
+  font-size:.58rem!important;
+  padding:.18rem 0!important;
+  opacity:.78!important;
+  border:none!important;
+  background:transparent!important;
+}
+#sortedFigures .chipFig::before{ content:""!important; }
+#sortedFigures .empty{
+  font-size:.5rem!important;
+  letter-spacing:.14em!important;
+  text-transform:uppercase!important;
+  opacity:.35!important;
+}
+.folderExport button{
+  font-size:.48rem!important;
+  letter-spacing:.1em!important;
+  text-transform:uppercase!important;
+  opacity:.55!important;
+  border:1px solid rgba(140,200,220,.15)!important;
+  border-radius:6px!important;
+  background:rgba(0,12,24,.3)!important;
+  color:rgba(180,220,240,.7)!important;
+  padding:.18rem .4rem!important;
+}
+.folderExport button:hover{ opacity:.9!important; color:rgba(220,250,255,.95)!important; }
+
+/* soft focus ring on OS windows while dragging */
+#uploadBox.isDragging,
+#sortedFigures .tray.isDragging{
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.12),
+    0 28px 64px rgba(0,0,0,.65)!important;
+}
+
+@media (max-width:700px){
+  #uploadBox, #trayAdmit, #trayRelease{
+    border-radius:12px!important;
+  }
+}
+
 /* clientBgFirst — translucent windows parked low so seal/background reads */
 #uploadBox,
 #sortedFigures .tray,
@@ -3646,28 +3837,29 @@ function drawCyberNatureField(cx,cy,s,t){
 }
 
 function drawDodecaFrame(cx,cy,s,t){
-  /* clientPolish: thin dodeca edges only — no cyberNature densify */
+  /* clientFlawless: hairline seal — depth-sorted, soft nodes */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
-  const thin=W<=480, mobile=W<=900;
-  const pulse=0.55+0.45*Math.sin(t*TEMPO.base*1.6);
-  ctx.save(); ctx.globalCompositeOperation="lighter";
-  for(let ei=0;ei<DODECA.edges.length;ei++){
-    const [i,j]=DODECA.edges[ei];
+  const thin=W<=480;
+  const breath=0.55+0.45*Math.sin(t*TEMPO.base*1.2);
+  const edged=DODECA.edges.map(([i,j],ei)=>{
     const a=pv[i], b=pv[j];
-    if(!a||!b) continue;
-    const depth=((a.d||0)+(b.d||0))*0.5;
-    const near=Math.max(0.2, Math.min(1, 0.5+depth*0.4));
-    const a0=(0.10+0.08*pulse)*near*(mobile?0.65:1);
-    ctx.strokeStyle=hsl(195+ei*3,90,58,a0);
-    ctx.lineWidth=(thin?0.55:0.8)*near;
+    return {a,b,ei,md:((a&&a.d)||0)+((b&&b.d)||0)};
+  }).filter(e=>e.a&&e.b).sort((u,v)=>u.md-v.md);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  for(const ed of edged){
+    const {a,b,ei,md}=ed;
+    const near=Math.max(0.18, Math.min(1, 0.48+md*0.22));
+    const a0=0.07*near*(0.7+0.3*breath);
+    ctx.strokeStyle=hsl(198+ei*2,85,60,a0);
+    ctx.lineWidth=(thin?0.45:0.65)*near;
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
   }
   for(let i=0;i<pv.length;i++){
     const v=pv[i];
-    const near=Math.max(0.25, Math.min(1, 0.55+(v.d||0)*0.35));
-    ctx.fillStyle=hsl(200,95,65,(0.18+0.12*pulse)*near);
-    ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.9:1.2,0,Math.PI*2); ctx.fill();
+    const near=Math.max(0.2, Math.min(1, 0.5+(v.d||0)*0.35));
+    ctx.fillStyle=hsl(205,90,68,0.12*near*(0.75+0.25*breath));
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.7:0.95,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 }
@@ -4760,11 +4952,10 @@ function drawSealContrastVeil(cx,cy,s){ /* hexCoreGyroSeal */ return;
 
 /* clientGeoLock — one hub, one scale, shared hex angles; GIF billboards overlap canvas */
 const GEO={
-  /* isometric pose so projected dodeca ring sits under hex GIF */
-  yaw:0.48, pitch:0.38, roll:0,
-  /* square GIF content: outer hex ≈ full half-diagonal of contain box */
-  fit:1.00,
-  spiralFit:2.55,
+  /* clientFlawless: isometric pose calibrated to hex GIF */
+  yaw:0.50, pitch:0.40, roll:0,
+  fit:0.98,
+  spiralFit:2.35,
   /* pointy-top hex (matches GIF frame); funnels on every other vertex */
   hex0:Math.PI/6,
   funnelVerts:[1,3,5],
@@ -5870,7 +6061,7 @@ function frame(now){
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
   ctx.clearRect(0,0,W,H); /* GIF #bgField is the background — no black plate */
   // mobile: raise cy bias so seal owns mid (≥55% of viewport above dock)
-  const s=Math.min(W,H)*(W<=900?0.78:0.74)*cam.zoom; /* clientFillField: bigger seal fills mid */
+  const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom; /* clientFlawless: seal scale leaves margin */
   const cx0=W*0.50+cam.panX, cy0=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY; /* clientFillField: seal owns mid, fill empty top */
   // true parallax: per-layer offsets from mouse.tx/ty (+ DeviceOrientation)
   const pStar=parallaxOff("star"), pLab=parallaxOff("label");
@@ -6212,7 +6403,7 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
     function tryRestore(el){
       if(!el||!el.id) return false;
       try{
-        const all = JSON.parse(localStorage.getItem("seraphim.winPos.v2")||"{}");
+        const all = JSON.parse(localStorage.getItem("seraphim.winPos.v3")||"{}");
         const p = all[el.id];
         if(!p||!p.left||!p.top) return false;
         el.style.position = "fixed";
@@ -6240,14 +6431,14 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
       el.style.width = w + "px";
       el.style.transform = "none";
     }
-    const gap = 12;
-    const fw = Math.min(300, W * 0.40);
-    const side = Math.max(12, W*0.03);
-    /* mid-lower band — leave top ~40% for spiral/seal, not empty black */
-    const bandBottom = Math.max(H * 0.08, safe + 8);
+    const gap = 14;
+    const fw = Math.min(280, W * 0.36);
+    const side = Math.max(16, W*0.035);
+    /* clientFlawless: low golden band — seal owns upper 55%+ */
+    const bandBottom = Math.max(H * 0.06, safe + 10);
     if(!tryRestore(ub)){
-      ub.style.width = Math.min(300, W*0.46) + "px";
-      dock(ub, side, bandBottom + (H * 0.12));
+      ub.style.width = Math.min(280, W*0.40) + "px";
+      dock(ub, side, bandBottom + Math.min(H * 0.10, 72));
     }
     if(r){
       if(!tryRestore(r)){ r.style.width = fw + "px"; dock(r, W - fw - side, bandBottom); }
@@ -6255,7 +6446,7 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
     if(a){
       if(!tryRestore(a)){
         a.style.width = fw + "px";
-        const rh = (r && r.offsetHeight) || 130;
+        const rh = (r && r.offsetHeight) || 120;
         dock(a, W - fw - side, bandBottom + rh + gap);
       }
     }
@@ -6278,7 +6469,7 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
 
 /* clientTrioFeatures: sort-on-paste · per-folder export · persist window positions · idle quiet */
 (function clientTrioFeatures(){
-  const POS_KEY = "seraphim.winPos.v2";
+  const POS_KEY = "seraphim.winPos.v3";
   function savePos(el){
     if(!el||!el.id) return;
     try{
