@@ -6,3 +6,4 @@
 - **Center lock:** `--seal-x` / `--seal-y` from live dodeca
 - **Labels:** Disorganized → Organized / Aside
 - **dodeca3DSphere:** canvas TRUE 3D dodeca + center sphere (hex-core GIF hidden); `?v=<shortsha>`
+- **layerPerspectiveSync:** all layers share tunnel VP; emerge from depth corridor; one φ TEMPO clock; GIF ride seal (no ω fight)

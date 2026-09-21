@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -28,6 +28,14 @@
   --blur:18px;--safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
   --holo-wash:linear-gradient(135deg,rgba(86,180,194,0.07),rgba(56,38,184,0.05),rgba(174,61,191,0.07));
+  /* layerPerspectiveSync φ TEMPO family — T=2π/base(0.68); durations = φ^k · T or 1/(base·φ^k) */
+  --T:9.24s;
+  --Tphi:14.95s;
+  --Tphi2:24.19s;
+  --Tinvphi:5.71s;
+  --Tmicro:0.908s;
+  --Tchip:0.561s;
+
 }
 html,body{height:100%;height:100dvh;background:var(--void);color:var(--ink);
   font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden;
@@ -351,9 +359,12 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 /* 2 iso — screen on black so wireframe reads white/iridescent */
 #bgField .isoTunnel{z-index:1}
 #bgField .isoTunnel .plane{
-  width:min(92vmin,720px); height:min(92vmin,720px);
-  opacity:0.45;
+  /* layerPerspectiveSync: recessed into tunnel VP — smaller/fainter at hub */
+  width:min(78vmin,600px); height:min(78vmin,600px);
+  opacity:var(--iso-op,0.40);
   mix-blend-mode:screen;
+  transform:translate(-50%,-50%) scale(var(--iso-scale,0.88));
+  filter:blur(0.35px);
 }
 /* beam rain moved into hexCore trio */
 /* 4 hex core + tripleBeamInCore */
@@ -361,7 +372,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .hexCore .plane.coreMain{ position:absolute; inset:0; width:100%; height:100%; opacity:1; }
 
 @media (max-width:900px){
-  #bgField .isoTunnel .plane{opacity:0.35; width:min(88vmin,560px); height:min(88vmin,560px)}
+  #bgField .isoTunnel .plane{opacity:var(--iso-op,0.32); width:min(72vmin,480px); height:min(72vmin,480px)}
   #bgField .hexCore .plane{width:min(64vmin,480px); height:min(64vmin,480px)}
 }
 @media (prefers-reduced-motion:reduce){
@@ -439,7 +450,8 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 #bgField .hexCore .voxelSpin .spin{
   width:100%; height:100%;
-  animation:voxelYaw 14s linear infinite;
+  /* layerPerspectiveSync: no fight with canvas ω — very slow φ drift only */
+  animation:voxelPhiDrift var(--Tphi2,24.19s) linear infinite;
   transform-style:preserve-3d;
 }
 #bgField .hexCore .voxelSpin picture,
@@ -448,9 +460,9 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   filter:drop-shadow(0 0 12px rgba(120,220,255,.25));
 }
 #bgField .hexCore .voxelSpin img.still{display:none}
-@keyframes voxelYaw{
-  from{transform:rotateY(0deg) rotateX(12deg)}
-  to{transform:rotateY(360deg) rotateX(12deg)}
+@keyframes voxelPhiDrift{
+  from{transform:rotateY(0deg) rotateX(8deg)}
+  to{transform:rotateY(360deg) rotateX(8deg)}
 }
 @media (max-width:900px){
   #bgField .hexCore .voxelSpin{ width:min(24vmin,180px); height:min(22vmin,160px); }
@@ -522,6 +534,34 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 /* dodeca3DSphere override — GIF off; no CSS gyro (canvas cam.gyro owns tumble) */
 #bgField .hexCore .plane.coreMain{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 #bgField .hexCore .gyroRig{animation:none!important}
+
+/* layerPerspectiveSync — one VP organism: GIF layers ride --seal-x/--seal-y depth corridor.
+   Smaller/fainter toward hub (tunnel VP); emerge toward viewer. Dodeca gyro owns ω. */
+#bgField{
+  --iso-scale:0.88; --iso-op:0.40; --beam-em:1; --voxel-em:0.78; --gif-drift:0deg;
+  perspective:1100px;
+  perspective-origin:var(--seal-x) var(--seal-y);
+}
+#bgField .hexCore .gyroRig{
+  /* ride seal center; optional micro φ drift only (no competing tumble) */
+  transform:translate(-50%,-50%) rotateZ(var(--gif-drift,0deg));
+}
+#bgField .hexCore .gyroRig .beamTrio{
+  transform:translate(-50%,-50%) scale(var(--beam-em,1));
+  opacity:0.78;
+  filter:blur(0.2px);
+}
+#bgField .hexCore .gyroRig .beamTrio .b{ opacity:0.70; }
+#bgField .hexCore .gyroRig .voxelSpin{
+  transform:translate(-50%,-50%) scale(var(--voxel-em,0.78));
+  opacity:0.68;
+  filter:blur(0.25px);
+  perspective:900px;
+}
+@media (max-width:900px){
+  #bgField .hexCore .gyroRig .beamTrio{ opacity:0.62; }
+  #bgField .hexCore .gyroRig .voxelSpin{ opacity:0.55; }
+}
 
 
 /* —— uploadSortedDesk: obvious upload + sorted figures trays —— */
@@ -605,7 +645,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #uploadBox.sorting textarea{border-left-color:rgba(198,120,200,.45)}
 #uploadBox .scanBar{display:none;height:1px;margin:.2rem 0 0;border-radius:0;
   background:linear-gradient(90deg,transparent,rgba(86,212,224,.7),rgba(198,100,192,.6),transparent);background-size:200% 100%}
-#uploadBox.sorting .scanBar{display:block;animation:scanSweep .90s linear infinite} /* φ: ~1/(base·φ) */
+#uploadBox.sorting .scanBar{display:block;animation:scanSweep var(--Tmicro,0.908s) linear infinite} /* φ: 1/(base·φ) */
 #sortedFigures{
   display:grid;grid-template-columns:1fr 1fr;gap:.55rem 1.4rem;min-height:0;
 }
@@ -635,7 +675,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   font-size:.56rem;line-height:1.32;cursor:pointer;
   border:none;background:transparent;color:rgba(205,222,238,.78);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  animation:mdLineIn .62s cubic-bezier(.2,.8,.2,1) both; /* φ⁻¹ */
+  animation:mdLineIn var(--Tchip,0.561s) cubic-bezier(.2,.8,.2,1) both; /* φ: 1/(base·φ²) */
 }
 #sortedFigures .chipFig:nth-child(1){animation-delay:.02s}
 #sortedFigures .chipFig:nth-child(2){animation-delay:.05s}
@@ -663,13 +703,13 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 #sortedFigures .chipFig.chipFlightAdmit{
   animation-name:chipFlightAdmit;
-  animation-duration:var(--flight-dur,.55s);
+  animation-duration:var(--flight-dur,var(--Tchip,0.561s));
   animation-timing-function:cubic-bezier(.22,.78,.18,1);
   animation-fill-mode:both;
 }
 #sortedFigures .chipFig.chipFlightRelease{
   animation-name:chipFlightRelease;
-  animation-duration:var(--flight-dur,.62s);
+  animation-duration:var(--flight-dur,var(--Tmicro,0.908s));
   animation-timing-function:cubic-bezier(.22,.78,.18,1);
   animation-fill-mode:both;
 }
@@ -1406,7 +1446,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere */
+/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1414,6 +1454,7 @@ const STORIES = {
      admit/crystallize = cool cyan-indigo; release = magenta/orchid; prism accents = pale yellow/peach/lime.
    SURVIVING layers (why they stay):
    - dodeca3DSphere: TRUE 3D dodeca + center sphere (canvas project/YPR gyro); hex-core GIF hidden; tunnel/beams/voxel kept
+   - layerPerspectiveSync: ALL layers share tunnel VP (--seal-x/--seal-y); iso/beam/voxel/lattice/funnels/mint/upload/shockwave recede into hub (smaller/fainter) and emerge toward viewer; CSS+JS φ TEMPO one clock; GIF layers ride seal (slow φ drift only — no ω fight)
    - fourAssetCanon: tunnel-grid + iso-tunnel + beam-rain (+ hex-core asset kept, visually off)
    - tunnelAsSent|tunnelGridBg: Taylor tunnel-dots GIF AS SENT (light bg, black dots, α≈0.95); NO invert/screen/vignette/warp; VP locked to seal via translate+cover
    - hybridEngineTrio: quieted under tunnelAsSent (beams/plasma no-op — muddy light GIF); seal+organize story remain
@@ -2156,9 +2197,11 @@ function drawUploadStream(cx,cy,s,t){
     const my=oy+(cy-oy)*0.4 - sp.bow*s*0.5;
     const x=(1-e)*(1-e)*ox + 2*(1-e)*e*mx + e*e*cx;
     const y=(1-e)*(1-e)*oy + 2*(1-e)*e*my + e*e*cy;
-    const a=(1-e)*0.55;
+    /* layerPerspectiveSync: emerge at desk, recede (smaller/fainter) into seal VP */
+    const depth=1-e;
+    const a=depth*depth*0.55;
     ctx.fillStyle=hsl(sp.hue,95,62,a);
-    ctx.beginPath(); ctx.arc(x,y,sp.sz*(1-e*0.4),0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x,y,sp.sz*(0.45+0.55*depth),0,Math.PI*2); ctx.fill();
     /* trail */
     ctx.strokeStyle=hsl(sp.hue,90,55,a*0.35);
     ctx.lineWidth=0.7;
@@ -2180,16 +2223,20 @@ function drawUploadStream(cx,cy,s,t){
 }
 
 function drawSortShockwave(cx,cy,s){
+  /* layerPerspectiveSync: rings from seal VP — foreshortened corridor ellipse; cyan=magenta weight */
   if(!shockwave) return;
   const age=(performance.now()-shockwave.t0)*0.001;
-  if(age>1.1){shockwave=null;return;}
-  const u=age/1.1, R=s*(0.2+u*1.35);
+  const Tsw=1/(TEMPO.base*PHI); /* φ period ≈0.91s */
+  if(age>Tsw*1.15){shockwave=null;return;}
+  const u=Math.min(1,age/(Tsw*1.15)), R=s*(0.18+u*1.28);
+  const aspect=0.58+0.14*u; /* tunnel-floor foreshorten */
+  const fade=(1-u)*(1-u);
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  ctx.strokeStyle=hsl(195+u*35,100,58,(1-u)*0.45); /* cyan→indigo */
-  ctx.lineWidth=2.2*(1-u*0.5);
-  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
-  ctx.strokeStyle=hsl(300,90,55,(1-u)*0.22);
-  ctx.lineWidth=1.2; ctx.beginPath();ctx.arc(cx,cy,R*0.86,0,Math.PI*2);ctx.stroke();
+  ctx.strokeStyle=hsl(192,100,58,fade*0.40);
+  ctx.lineWidth=2.0*(1-u*0.45);
+  ctx.beginPath();ctx.ellipse(cx,cy,R,R*aspect,0,0,Math.PI*2);ctx.stroke();
+  ctx.strokeStyle=hsl(305,92,56,fade*0.40);
+  ctx.lineWidth=1.35; ctx.beginPath();ctx.ellipse(cx,cy,R*0.86,R*0.86*aspect,0,0,Math.PI*2);ctx.stroke();
   ctx.restore();
 }
 function drawSoftCrossVeil(){
@@ -2904,8 +2951,8 @@ function drawBeamRain(cx,cy,s,t){
 }
 
 function syncGyroSharedCenter(cx,cy,s,t){
-  /* bgSealCenterLock|tunnelAsSent: live seal cx,cy → CSS --seal-x/--seal-y (px)
-     every frame; tunnel plane translate-center (no perspective warp / vignette). */
+  /* bgSealCenterLock|tunnelAsSent|layerPerspectiveSync: live seal → --seal-x/--seal-y
+     + depth-corridor scales so GIF layers emerge from same VP as tunnel. */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
   const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
@@ -2913,6 +2960,21 @@ function syncGyroSharedCenter(cx,cy,s,t){
     _bgFieldEl._sealX=sx; _bgFieldEl._sealY=sy;
     _bgFieldEl.style.setProperty("--seal-x", sx);
     _bgFieldEl.style.setProperty("--seal-y", sy);
+  }
+  /* φ nest breath — iso recessed, beams/voxel mid-depth; micro drift ≠ canvas ω */
+  const nest=Math.sin((t||0)*TEMPO.base*(TEMPO.nest||1/PHI));
+  const isoSc=(0.84+0.045*nest).toFixed(4);
+  const isoOp=(W<=900?(0.30+0.05*(0.5+0.5*nest)):(0.36+0.06*(0.5+0.5*nest))).toFixed(3);
+  const beamEm=(1.02+0.035*nest).toFixed(4);
+  const voxelEm=(0.72+0.045*nest).toFixed(4);
+  const drift=(nest*1.15).toFixed(3)+"deg";
+  if(_bgFieldEl._isoSc!==isoSc || _bgFieldEl._drift!==drift){
+    _bgFieldEl._isoSc=isoSc; _bgFieldEl._drift=drift;
+    _bgFieldEl.style.setProperty("--iso-scale", isoSc);
+    _bgFieldEl.style.setProperty("--iso-op", isoOp);
+    _bgFieldEl.style.setProperty("--beam-em", beamEm);
+    _bgFieldEl.style.setProperty("--voxel-em", voxelEm);
+    _bgFieldEl.style.setProperty("--gif-drift", drift);
   }
 }
 
@@ -3103,10 +3165,12 @@ function drawFunnelsAndBeams(cx,cy,s,t){
     for(let i=0;i<=rings;i++){
       const u=i/rings, along=u*0.62;
       const x=tx+dx*along, y=ty+dy*along;
-      const rad=2.2+u*u*48;
+      /* layerPerspectiveSync: large at mouth (viewer), small/faint at hub VP */
+      const emerge=1-u;
+      const rad=2.2+emerge*emerge*48;
       const w=rad, h=rad*0.36;
-      ctx.strokeStyle=hsl(baseHue+u*18,90,Math.min(58,44+u*12),0.04+u*0.08);
-      ctx.lineWidth=0.45+u*0.3;
+      ctx.strokeStyle=hsl(baseHue+u*12,90,Math.min(58,44+emerge*12),0.035+emerge*0.085);
+      ctx.lineWidth=0.4+emerge*0.35;
       ctx.beginPath();ctx.ellipse(x,y,w,h,beamAng,0,Math.PI*2);ctx.stroke();
     }
     for(let r=0;r<ribs;r++){
@@ -3117,7 +3181,7 @@ function drawFunnelsAndBeams(cx,cy,s,t){
       for(let i=0;i<=rings;i++){
         const u=i/rings, along=u*0.55;
         const x=tx+dx*along, y=ty+dy*along;
-        const rad=2.2+u*u*48, w=rad*0.9, h=rad*0.36*0.9;
+        const rad=2.2+(1-u)*(1-u)*48, w=rad*0.9, h=rad*0.36*0.9;
         const rx=x+ca*w, ry=y+sa*h;
         i?ctx.lineTo(rx,ry):ctx.moveTo(rx,ry);
       }
@@ -3342,7 +3406,9 @@ function drawMintRelease(cx,cy,s,t){
   const pts=mintMesh.verts.map(v=>{const wave=0.03*Math.sin(t*TEMPO.base*PHI*PHI+v.u*6+v.v*4); return project(v.x+wave,v.y+0.02*Math.sin(t*TEMPO.base*PHI*1.4+v.u*4),v.z+0.02*Math.cos(t*TEMPO.base*PHI*1.6+v.v*5),cx,cy,s);});
   ctx.globalCompositeOperation="lighter";
   for(const [a,b] of mintMesh.edges){const A=pts[a],B=pts[b]; if(!A||!B)continue; if(A[2]<-0.55&&B[2]<-0.55)continue;
-    ctx.strokeStyle=hsl(320+t*20,90,50,0.22*dim); ctx.lineWidth=0.75; ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();}
+    const hubR=Math.hypot((A[0]+B[0])*0.5-cx,(A[1]+B[1])*0.5-cy)/(s+1e-6);
+    const emerge=Math.min(1,0.25+hubR*0.95);
+    ctx.strokeStyle=hsl(305+t*12,90,52,0.20*dim*emerge); ctx.lineWidth=0.7*emerge; ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();}
   const coa=0.5+0.5*Math.sin(t*TEMPO.base+1.2);
   const centers=[];
   for(const p of mintMesh.parts){
@@ -3579,8 +3645,10 @@ function drawOrganizeLattice(cx,cy,s,t){
       const a=pv[i], b=pv[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
-      const scA=(0.028+0.045*depth)*pulse*(1+0.25*snap); /* ~half prior */
-      ctx.strokeStyle=hsl(155+45*Math.sin(t*0.7+hueDrift)+t*10,82,52,scA); /* hybrid spectrum */
+      const hubR=Math.hypot((a.x+b.x)*0.5-cx,(a.y+b.y)*0.5-cy)/(s+1e-6);
+      const emerge=Math.min(1,0.28+hubR*0.9); /* fainter toward seal hub VP */
+      const scA=(0.028+0.045*depth)*pulse*(1+0.25*snap)*emerge;
+      ctx.strokeStyle=hsl(155+45*Math.sin(t*0.7+hueDrift)+t*10,82,52,scA);
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
