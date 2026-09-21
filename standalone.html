@@ -2148,6 +2148,7 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 }
 
 
+
 /* clientTwoOnly — field is only hybrid-a (tunnel dots) + hybrid-b (hex-core family) */
 #bgField .spiralField,
 #bgField .beamRainWhisper,
@@ -2160,41 +2161,53 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 
 #bgField .duoField{
   position:fixed; inset:0; z-index:1; pointer-events:none;
-  display:grid; place-items:center;
-  --seal-x:50%; --seal-y:42%;
-  --seal-s:min(118vw,118vh);
+  /* one shared hub = true viewport center */
+  --hub-x:50%;
+  --hub-y:50%;
+  /* cover full screen even while rotating (√2 diagonal) */
+  --fill:max(145vw,145vh);
 }
 #bgField .duoField img{
-  grid-area:1/1;
+  position:absolute;
+  left:var(--hub-x); top:var(--hub-y);
+  width:var(--fill); height:var(--fill);
+  max-width:none; max-height:none;
+  margin:0; padding:0;
   display:block;
   object-fit:cover;
-  object-position:center;
+  object-position:center center;
   mix-blend-mode:screen;
   transform-origin:center center;
   will-change:transform;
-  -webkit-mask-image:radial-gradient(ellipse 94% 90% at 50% 46%,#000 48%,transparent 100%);
-          mask-image:radial-gradient(ellipse 94% 90% at 50% 46%,#000 48%,transparent 100%);
+  -webkit-mask-image:none;
+          mask-image:none;
 }
 #bgField .duoField img.still{ display:none; }
 #bgField .duoField .hybridA{
-  width:var(--seal-s); height:var(--seal-s);
-  max-width:none; max-height:none;
-  opacity:.9; z-index:1;
+  opacity:.92; z-index:1;
   filter:contrast(1.4) brightness(1.15) saturate(1.1);
   animation:duoSpinA 96s linear infinite;
 }
 #bgField .duoField .hybridB{
-  width:calc(var(--seal-s) * .94); height:calc(var(--seal-s) * .94);
-  max-width:none; max-height:none;
   opacity:.98; z-index:2;
   filter:contrast(1.45) brightness(1.2) saturate(1.25);
   animation:duoSpinB 72s linear infinite;
 }
-@keyframes duoSpinA{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-@keyframes duoSpinB{ from{transform:rotate(0deg)} to{transform:rotate(-360deg)} }
+/* keep translate(-50%,-50%) so both share the exact same center while spinning */
+@keyframes duoSpinA{
+  from{ transform:translate(-50%,-50%) rotate(0deg); }
+  to{ transform:translate(-50%,-50%) rotate(360deg); }
+}
+@keyframes duoSpinB{
+  from{ transform:translate(-50%,-50%) rotate(0deg); }
+  to{ transform:translate(-50%,-50%) rotate(-360deg); }
+}
 @media (prefers-reduced-motion:reduce){
   #bgField .duoField .hybridA,
-  #bgField .duoField .hybridB{ animation:none!important; }
+  #bgField .duoField .hybridB{
+    animation:none!important;
+    transform:translate(-50%,-50%)!important;
+  }
   #bgField .duoField img.anim{ display:none!important; }
   #bgField .duoField img.still{ display:block!important; }
 }
@@ -4866,10 +4879,10 @@ function drawBeamRain(cx,cy,s,t){
 }
 
 function syncGyroSharedCenter(cx,cy,s,t){
-  /* bgSealCenterLock|tunnelAsSent|layerPerspectiveSync|sameVectors: live seal → --seal-x/--seal-y
-     + depth-corridor scales; triad rays lock beams/funnels to one vector story. */
+  /* clientSameCenterFill: duo GIFs lock to viewport center; ignore cam pan for hub */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
+  cx=W*0.5; cy=H*0.5; /* same center point for both images */
   _sealHub.cx=cx; _sealHub.cy=cy; _sealHub.s=s;
   _sealHub.corridor=(typeof cam!=="undefined"?(cam.roll||0)*0.35:0);
   const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
@@ -6698,7 +6711,7 @@ function frame(now){
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
   ctx.clearRect(0,0,W,H); /* clientNoOtherAesthetics: canvas muted — GIFs only */
   const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom;
-  const cx=W*0.50+cam.panX, cy=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY;
+  const cx=W*0.5, cy=H*0.5; /* clientSameCenterFill */
   syncGyroSharedCenter(cx,cy,s,t); /* keep hub vars for duoField */
   syncSpinPhase(t);
   if(glCanvas) glCanvas.style.display="none";
