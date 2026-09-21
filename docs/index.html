@@ -1359,6 +1359,56 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .tunnelWindowsKeyed{ z-index:2!important; }
 #bgField .hexCoreKeyed{ z-index:3!important; }
 
+
+/* clientHybridRefine — polish ultimate hybrid: quieter Magpie whispers, hex hero, deep black */
+#bgField .magpieSealWorld.cyberNatureWorld,
+#bgField .magpieSealWorld{
+  opacity:0.18!important;
+  filter:saturate(1.25) contrast(1.4) brightness(0.78) hue-rotate(10deg)!important;
+  z-index:1!important;
+  animation-duration:377s!important; /* slower, less busy */
+}
+#bgField .beamRainWhisper{
+  opacity:0.14!important;
+  z-index:2!important;
+  filter:saturate(1.3) contrast(1.45) brightness(0.72) hue-rotate(-8deg)!important;
+  animation-duration:233s!important;
+}
+#bgField .spiralField{ z-index:0!important; opacity:0.68!important; }
+#bgField .tunnelWindowsKeyed{ z-index:3!important; opacity:0.82!important; }
+#bgField .hexCoreKeyed{
+  z-index:4!important;
+  opacity:1!important;
+  filter:
+    saturate(1.55)
+    contrast(1.52)
+    brightness(0.94)
+    hue-rotate(6deg)
+    drop-shadow(0 0 22px rgba(34,211,238,.2))
+    drop-shadow(0 0 40px rgba(232,121,249,.12))!important;
+}
+/* φ spin periods — clear harmonic stack */
+#bgField .spiralField{ animation-duration:233s!important; }
+#bgField .tunnelWindowsKeyed{ animation-duration:144s!important; }
+#bgField .hexCoreKeyed{ animation-duration:89s!important; }
+@keyframes spinGlow{
+  0%{ filter:saturate(1.45) hue-rotate(-6deg) brightness(0.88) contrast(1.48) blur(0.3px)!important; }
+  100%{ filter:saturate(1.6) hue-rotate(-6deg) brightness(0.98) contrast(1.58) blur(0px)!important; }
+}
+#bgField::after{
+  opacity:0.12!important;
+  mix-blend-mode:soft-light!important;
+}
+/* desk polish — sharper glass on void */
+#uploadBox,
+#trayAdmit,
+#trayRelease{
+  background:linear-gradient(165deg, rgba(0,0,0,.68) 0%, rgba(6,14,24,.42) 100%)!important;
+  backdrop-filter:blur(16px) saturate(1.12)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.12)!important;
+}
+#fx{ opacity:0.38!important; }
+
 /* clientContrastBlack — deep void + high contrast field (don't fear black) */
 html,body,#bgField{
   background:#000!important;
@@ -4248,7 +4298,7 @@ function drawDodecaFrame(cx,cy,s,t){
   for(const ed of edged){
     const {a,b,ei,md}=ed;
     const near=Math.max(0.18, Math.min(1, 0.48+md*0.22));
-    const a0=0.14*near*(0.75+0.25*breath); /* clientContrastBlack */
+    const a0=0.10*near*(0.75+0.25*breath); /* clientHybridRefine */
     ctx.strokeStyle=hsl((ei%2?305:195)+ei,90,62,a0); /* clientCenterDyn cyan/mag */
     ctx.lineWidth=(thin?0.45:0.65)*near;
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
@@ -5545,79 +5595,59 @@ function drawHexCoreWires(cx,cy,s,t){
 }
 
 
+
 function drawUltimateHybrid(cx,cy,s,t){
-  /* clientUltimateHybrid — Magpie engine-graph + residual rings + node plexus on Seraphim field */
+  /* clientHybridRefine — quieter Magpie rings/plexus; hex GIFs own the read */
   if(reduceMotion||skipHeavy) return;
   const thin=W<=480, mobile=W<=900;
   const pv=DODECA&&DODECA._projVerts;
-  const breath=0.55+0.45*Math.sin(t*TEMPO.base*1.4);
+  const breath=0.55+0.45*Math.sin(t*TEMPO.base*1.1);
   ctx.save(); ctx.globalCompositeOperation="lighter";
 
-  /* Magpie residual rings — φ-spaced hairlines around hub */
-  const rings=thin?3:(mobile?4:5);
+  /* residual rings — 3 max, hairline */
+  const rings=thin?2:3;
   for(let i=0;i<rings;i++){
-    const u=i/(rings-0.01);
-    const R=s*(0.22+u*0.55)*(1+0.012*Math.sin(t*TEMPO.base/PHI+i));
+    const u=i/Math.max(1,rings-1);
+    const R=s*(0.28+u*0.42)*(1+0.008*Math.sin(t*TEMPO.base/PHI+i));
     const hue=i%2?305:195;
-    ctx.strokeStyle=hsl(hue,90,60,(0.06+0.05*breath)*(1-u*0.35));
-    ctx.lineWidth=thin?0.5:0.7;
-    ctx.setLineDash(i%2?[3,5]:[]);
-    ctx.lineDashOffset=-(t*TEMPO.base*18*(i%2?-1:1));
+    ctx.strokeStyle=hsl(hue,88,58,(0.035+0.03*breath)*(1-u*0.4));
+    ctx.lineWidth=thin?0.4:0.55;
+    ctx.setLineDash(i%2?[2,6]:[]);
+    ctx.lineDashOffset=-(t*TEMPO.base*12*(i%2?-1:1));
     ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
   }
   ctx.setLineDash([]);
 
-  /* Magpie engine-graph: node-net lattice on dodeca verts + inner plexus */
+  /* node plexus — verts only + few inner; k=1 */
   if(pv&&pv.length){
-    const nodes=pv.map(v=>({x:v.x,y:v.y,d:v.d||0}));
-    /* seed inner nodes on φ spiral in seal disk */
-    const nInner=thin?8:(mobile?12:18);
+    const nodes=pv.map(v=>({x:v.x,y:v.y}));
+    const nInner=thin?4:(mobile?6:8);
     for(let i=0;i<nInner;i++){
-      const a=i*PHI*Math.PI*2/(nInner)+t*TEMPO.base*0.08;
-      const r=s*(0.12+0.28*((i*PHI)%1));
-      nodes.push({x:cx+Math.cos(a)*r, y:cy+Math.sin(a)*r*0.92, d:0.2});
+      const a=i*PHI*Math.PI*2/nInner+t*TEMPO.base*0.05;
+      const r=s*(0.16+0.2*((i*PHI)%1));
+      nodes.push({x:cx+Math.cos(a)*r, y:cy+Math.sin(a)*r*0.92});
     }
-    /* k-NN edges (k=2) — Magpie node-net whisper */
-    const k=thin?1:2;
     for(let i=0;i<nodes.length;i++){
       const A=nodes[i];
-      const near=[];
+      let best=-1, bestD=1e15;
       for(let j=0;j<nodes.length;j++){
         if(i===j) continue;
         const B=nodes[j];
         const d2=(A.x-B.x)*(A.x-B.x)+(A.y-B.y)*(A.y-B.y);
-        near.push({j,d2});
+        if(d2<bestD){bestD=d2;best=j;}
       }
-      near.sort((u,v)=>u.d2-v.d2);
-      for(let m=0;m<Math.min(k,near.length);m++){
-        if(near[m].j<i) continue; /* draw once */
-        const B=nodes[near[m].j];
-        const hue=((i+m)%2)?305:195;
-        ctx.strokeStyle=hsl(hue,90,62,0.05+0.04*breath);
-        ctx.lineWidth=0.55;
+      if(best>i){
+        const B=nodes[best];
+        ctx.strokeStyle=hsl(i%2?305:195,90,60,0.028+0.022*breath);
+        ctx.lineWidth=0.45;
         ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
       }
     }
-    for(let i=0;i<nodes.length;i++){
+    for(let i=0;i<Math.min(nodes.length, pv.length);i++){
       const N=nodes[i];
-      const hue=i%2?305:195;
-      ctx.fillStyle=hsl(hue,95,68,0.12+0.1*breath);
-      ctx.beginPath(); ctx.arc(N.x,N.y,thin?0.8:1.15,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=hsl(i%2?305:195,92,65,0.08+0.06*breath);
+      ctx.beginPath(); ctx.arc(N.x,N.y,thin?0.65:0.9,0,Math.PI*2); ctx.fill();
     }
-  }
-
-  /* dashed Magpie dodeca silhouette boost (on top of hairline) */
-  if(pv&&DODECA.edges){
-    for(let ei=0;ei<DODECA.edges.length;ei++){
-      const [i,j]=DODECA.edges[ei];
-      const a=pv[i], b=pv[j];
-      if(!a||!b) continue;
-      ctx.strokeStyle=hsl(ei%2?300:200,85,60,0.05+0.04*breath);
-      ctx.lineWidth=0.45;
-      ctx.setLineDash([2,4]);
-      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-    }
-    ctx.setLineDash([]);
   }
   ctx.restore();
 }
@@ -5633,8 +5663,8 @@ function drawWindowLightnings(cx,cy,s,t){
     {id:"trayAdmit", hue:192, boost:1.05},
     {id:"trayRelease", hue:305, boost:1.05}
   ];
-  const flash=0.55+0.45*Math.sin(t*TEMPO.base*7.2);
-  const pulseBoost=0.35*sealPulse+0.55*celebrate+0.4*sealLockFlash;
+  const flash=0.35+0.25*Math.sin(t*TEMPO.base*4.2); /* clientHybridRefine quieter */
+  const pulseBoost=0.2*sealPulse+0.35*celebrate+0.25*sealLockFlash;
   ctx.save();
   ctx.globalCompositeOperation="lighter";
   for(let wi=0;wi<ids.length;wi++){
@@ -5676,7 +5706,7 @@ function drawWindowLightnings(cx,cy,s,t){
         pts.push({x:bx+nx*wob*amp, y:by+ny*wob*amp});
       }
       pts.push({x:tv.x,y:tv.y});
-      const aBase=(0.22+0.18*flash+pulseBoost*0.25)*(ti?0.55:1)*(mobile?0.85:1);
+      const aBase=(0.12+0.1*flash+pulseBoost*0.18)*(ti?0.45:1)*(mobile?0.75:1); /* refine */
       const hue=meta.hue+8*Math.sin(t+wi);
       /* glow understroke */
       ctx.strokeStyle=hsl(hue,100,55,aBase*0.35);
