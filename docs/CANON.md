@@ -1,17 +1,19 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=bdbc443
-- **Commit:** `bdbc443` (`beyondAIMaster` · `omnidiscipline` · `simkinsAI`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=ea9fed6
+- **Commit:** `ea9fed6` (`excessPrune` after `simkinsAI` densify)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
-`fallingCodeDepth` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `bgSealCenterLock` · `refinePolish2` · `beyondAIMaster` · `omnidiscipline` · `simkinsAI` · `sortTheater` · `idleDemoLoop` · `motionIntricateFast` · `markdownMaster`
+`fallingCodeDepth` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `bgSealCenterLock` · `refinePolish2` · `beyondAIMaster` · `omnidiscipline` · `simkinsAI` · `excessPrune` · `sortTheater` · `idleDemoLoop` · `motionIntricateFast` · `markdownMaster`
 
-## Densify (beyondAIMaster / omnidiscipline)
+## excessPrune (post-densify subtract)
 
-### simkinsAI
-Craft DNA (inspiration only): illustrative fine linework, biomorphic wire/ink filigree, ink-wash underpaint, ornamental stipple in lattice gaps, high-contrast ink blacks + selective cyan/magenta phosphor. Original abstract forms — no copied characters/compositions.
-Art × math × physics as one φ organism: jewel nodes + keeper Fibonacci micro-orbits, kind-hue depth, rim/Fresnel/iri on dodeca, quasicrystal/Penrose whisper + geodesic pentagrams, Ylm sphere + Hopf torus hint, φ multi-axis plasma↔beam flow, chiaroscuro contact shadows, stronger bloom clamp. Seal absolute foreground; `--seal-x/--seal-y` center lock intact.
+Subtract until every remaining mark is necessary. Keep masterpiece craft that earns the frame; cut clutter.
+
+**KEEP:** dodeca seal authority, `bgSealCenterLock`, Organized/Aside story + desk markdown, φ TEMPO harmony, sort theater, idle demo, anti-blotch (`bloomClamp`), public labels, quieter ink-wash underpaint, geodesic accents, CRT hub flares (desktop, no scanlines).
+
+**CUT / quiet:** aurora; ornamental stipple; biomorphic filigree; chimera ink-echo chord web; quasicrystal/Penrose whisper; Ylm sphere + Hopf torus (`drawSphereWire`); CRT scanlines; duplicate depth-fog contact shadow; extra mobile beams (2/3/8); `#log`/whisper chrome α↓; `skipHeavy` at dt>20.
 
 ## Layers
 `#bgField`: codeRain → beamWhisper → coreWhisper → canvas `#fx` (dodeca seal authority)

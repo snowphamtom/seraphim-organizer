@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -248,8 +248,8 @@ select{appearance:none;background:rgba(8,6,22,0.5);border:1px solid rgba(120,220
 #top .metrics{opacity:.42}
 #navhint,#sub{opacity:0;pointer-events:none;transition:opacity .6s ease}
 body.reveal-chrome #navhint,body.reveal-chrome #sub{opacity:.7;pointer-events:auto}
-#log{opacity:.28;transition:opacity .5s ease}
-body.reveal-chrome #log, #log:hover{opacity:.85}
+#log{opacity:.16;transition:opacity .5s ease} /* excessPrune */
+body.reveal-chrome #log, #log:hover{opacity:.55}
 /* intake: collapsed to a single glyph — no Drop/Sort/Clear/Demo/textarea until revealed */
 #intake{
   background:transparent !important;border:none !important;box-shadow:none !important;
@@ -289,7 +289,7 @@ body.reveal-chrome #log, #log:hover{opacity:.85}
   #intake.revealed .row{display:flex !important;flex-wrap:wrap}
   #intake.revealed textarea{display:block !important}
   #intake.revealed .mob-hide-clear{display:none !important}
-  #log{opacity:.22;max-height:9vh !important}
+  #log{opacity:.12;max-height:8vh !important} /* excessPrune */
   #top .whisper{font-size:.34rem;letter-spacing:.16em}
   #top .metrics span:nth-child(n+2){display:none}
   .chip:not(.law){display:none}
@@ -328,7 +328,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   mix-blend-mode:screen;
 }
 
-/* fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI
+/* fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune
    φ-synced whisper under seal. Live origin via --seal-x/--seal-y (set every frame).
    TEMPO: T≈9.2s · φT≈15s · φ²T≈24s · φ³T≈39s
    Shared vanishing: perspective 900px · rotateX 55° · ±6° rotateY mirror
@@ -645,10 +645,10 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #sortedFigures .empty::before{content:"_ ";opacity:.45}
 #sortDesk .deskNote{display:none}
 /* quiet competing chrome while desk is the story | refinePolish2 */
-#top .whisper{opacity:.20!important}
-#top .chip.law{opacity:.48}
-#top .metrics{opacity:.32}
-#log{opacity:.12!important;max-height:6.5vh!important}
+#top .whisper{opacity:.10!important} /* excessPrune: chrome quieter */
+#top .chip.law{opacity:.40}
+#top .metrics{opacity:.24}
+#log{opacity:.05!important;max-height:5.5vh!important}
 #sub,#navhint{opacity:0!important;pointer-events:none!important}
 @media (max-width:900px){
   #sortDesk{width:min(100vw - 10px, 560px);bottom:max(8px,calc(var(--safe-b) + 8px));padding:.4rem .45rem}
@@ -678,7 +678,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI -->
+<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune -->
   <div class="codeRain" aria-hidden="true">
     <div class="plane">
       <div class="drift">
@@ -1276,7 +1276,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1313,6 +1313,7 @@ const STORIES = {
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
    - film grain: no-op (OLED blotch); bloomClamp: active anti-blotch under seal + desk
+   - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
 */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
@@ -1824,6 +1825,8 @@ function layerAlpha(which){
 }
 /* —— HYBRID VISUAL STACK —— */
 function drawAurora(cx,cy,s,t){
+  /* excessPrune: aurora muddy vs seal — no-op */
+  return;
   /* polishPass3: mood only — skip ≤900; desktop α cut ≥50% (does not teach organize) */
   if(reduceMotion||skipHeavy||W<=900) return;
   ctx.save(); ctx.globalCompositeOperation="lighter";
@@ -1845,7 +1848,7 @@ function drawDualHexGhost(cx,cy,s,t){
   /* polishPass3: counter-seal whisper — skip ≤900; α×0.5 (depth memory, not second authority) */
   if(reduceMotion||W<=900) return;
   const aHex=layerAlpha("hex");
-  ctx.save(); ctx.globalAlpha=aHex*0.10; ctx.globalCompositeOperation="lighter";
+  ctx.save(); ctx.globalAlpha=aHex*0.055; ctx.globalCompositeOperation="lighter"; /* excessPrune */
   const gyaw=-(cam.userYaw)*0.35+t*(TEMPO.base*0.12), gpitch=-(cam.userPitch)*0.25;
   const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
   const sc=1.18;
@@ -1907,25 +1910,19 @@ function drawDepthFogVignette(cx,cy,s){
   ]);
   ctx.globalCompositeOperation="source-over";
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  /* soft contact shadow ellipse under seal — grounds the dodeca */
-  const cg=ctx.createRadialGradient(cx, cy+s*0.42, 0, cx, cy+s*0.42, s*0.55);
-  cg.addColorStop(0,"rgba(0,0,0,0.18)");
-  cg.addColorStop(0.45,"rgba(0,0,0,0.07)");
-  cg.addColorStop(1,"rgba(0,0,0,0)");
-  ctx.fillStyle=cg; ctx.beginPath();
-  ctx.ellipse(cx, cy+s*0.40, s*0.48, s*0.14, 0, 0, Math.PI*2); ctx.fill();
+  /* excessPrune: contact shadow lives in bloomClamp only (no duplicate glow) */
   /* equal L/R side curtains — composition balance */
   const side=ctx.createLinearGradient(0,0,W,0);
-  side.addColorStop(0,"rgba(0,0,0,0.18)");
-  side.addColorStop(0.16,"rgba(0,0,0,0)");
-  side.addColorStop(0.84,"rgba(0,0,0,0)");
-  side.addColorStop(1,"rgba(0,0,0,0.18)");
+  side.addColorStop(0,"rgba(0,0,0,0.14)");
+  side.addColorStop(0.14,"rgba(0,0,0,0)");
+  side.addColorStop(0.86,"rgba(0,0,0,0)");
+  side.addColorStop(1,"rgba(0,0,0,0.14)");
   ctx.fillStyle=side; ctx.fillRect(0,0,W,H);
-  /* cool hub kiss — cyan/magenta balanced, no yellow */
+  /* cool hub kiss — quieter */
   const g2=ctx.createRadialGradient(cx,cy,0,cx,cy,s*0.50);
   addStops(g2,[
-    [0,"rgba(86,180,194,0.012)"],
-    [0.5,"rgba(180,90,190,0.006)"],
+    [0,"rgba(86,180,194,0.006)"],
+    [0.5,"rgba(180,90,190,0.003)"],
     [1,"rgba(0,0,0,0)"]
   ]);
   ctx.globalCompositeOperation="lighter";
@@ -2055,26 +2052,12 @@ function drawSoftCrossVeil(){
 }
 
 function drawCrtPolish(cx,cy,s,t){
-  /* polishPass3|crtPolish: hub flares = tether lock purpose; scanlines desktop instrument only.
+  /* excessPrune|crtPolish: scanlines cut (mud); hub flares only, quieter; skipHeavy.
      Skip all CRT paint on ≤900 (grain fought the seal story). */
-  if(reduceMotion) return;
+  if(reduceMotion||skipHeavy) return;
   const thin=W<=480, mobile=W<=900;
+  if(mobile) return; /* excessPrune: no CRT on mobile */
   ctx.save();
-  /* scanlines — desktop only, quieter */
-  if(!mobile){
-    const step=5;
-    const a=0.010;
-    ctx.globalCompositeOperation="source-over";
-    ctx.fillStyle=`rgba(4,0,14,${a})`;
-    for(let y=0;y<H;y+=step){
-      ctx.fillRect(0,y,W,1);
-    }
-    ctx.globalCompositeOperation="lighter";
-    ctx.fillStyle="rgba(140,220,255,0.003)";
-    for(let y=1;y<H;y+=step*2){
-      ctx.fillRect(0,y,W,0.5);
-    }
-  }
   /* hub flares — cube corners only (degree-3 tether lock-ins); no decorative poles */
   ctx.globalCompositeOperation="lighter";
   const flares=[];
@@ -2100,7 +2083,7 @@ function drawCrtPolish(cx,cy,s,t){
     const f=flares[i];
     const R=(thin?8:mobile?14:20)*f.pow*breath;
     const g=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,R);
-    const a0=(thin?0.038:0.062)*f.pow*breath;
+    const a0=(thin?0.022:0.038)*f.pow*breath; /* excessPrune quieter flares */
     /* beyondAIMaster: hub flare with cyan↔magenta iridescence */
     const iri=8*Math.sin(t*TEMPO.base*TEMPO.iri+i);
     addStops(g,[
@@ -2493,7 +2476,7 @@ function drawInkWashUnderpaint(cx,cy,s,t){
     const py=cy+Math.sin(ang)*rad*0.55 + s*0.08;
     const R=s*(0.22+0.12*Math.sin(t*rate+i));
     const g=ctx.createRadialGradient(px,py,0,px,py,R);
-    const a=mobile?0.04:0.065;
+    const a=mobile?0.022:0.038; /* excessPrune: quieter wash */
     g.addColorStop(0,`rgba(0,0,0,${a})`);
     g.addColorStop(0.45,`rgba(2,0,8,${a*0.45})`);
     g.addColorStop(1,"rgba(0,0,0,0)");
@@ -2506,13 +2489,15 @@ function drawInkWashUnderpaint(cx,cy,s,t){
     const py=cy+s*0.05*Math.sin(t*rate+side);
     const hue=side?302:192;
     const g=ctx.createRadialGradient(px,py,0,px,py,s*0.28);
-    g.addColorStop(0,hsl(hue,80,50,mobile?0.018:0.028));
+    g.addColorStop(0,hsl(hue,80,50,mobile?0.010:0.016));
     g.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(px,py,s*0.28,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 }
 function drawBiomorphicFiligree(cx,cy,s,t){
+  /* excessPrune: filigree competed with seal authority — no-op (ink-wash kept) */
+  return;
   /* simkinsAI: original biomorphic wire/ink — root/bone-adjacent ABSTRACT geometry; hand-inked feel × machine neon.
      NO characters/creatures — branching curves + joint nodules only. */
   if(reduceMotion||W<=480) return;
@@ -2569,6 +2554,8 @@ function drawBiomorphicFiligree(cx,cy,s,t){
   ctx.restore();
 }
 function drawOrnamentalStipple(cx,cy,s,t){
+  /* excessPrune: stipple reads as noise at desk distance — no-op */
+  return;
   /* simkinsAI: tattoo-like ornamental fill — stipple + micro-symbols in lattice gaps / around nested shells */
   if(reduceMotion||W<=900) return;
   if(frameN&1) return;
@@ -2602,6 +2589,8 @@ function drawOrnamentalStipple(cx,cy,s,t){
 }
 
 function drawChimeraInkEcho(cx,cy,s,t){
+  /* excessPrune: chord web duplicate glow vs nested seal — no-op */
+  return;
   /* simkinsAI|chimera: meticulous fine linework chord web — illustrative density that still reads */
   if(reduceMotion||W<=480||!DODECA._projVerts) return;
   const pv=DODECA._projVerts;
@@ -2689,7 +2678,7 @@ function drawBeamRain(cx,cy,s,t){
   /* beyondAIMaster|hybridEngineTrio: φ-synced beams — plasma→corridor→desk/trays as one flow */
   if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
-  const nBeams=thin?3:(mobile?6:12);
+  const nBeams=thin?2:(mobile?3:8); /* excessPrune: fewer mobile beams */
   const rate=TEMPO.base*TEMPO.beam;
   const rateP=TEMPO.base*TEMPO.plasma; /* lock phase to plasma */
   const surge=Math.min(1, celebrate*0.85+sealPulse*0.50+(uploadFX&&uploadFX.flash>0.05?uploadFX.flash*0.35:0));
@@ -2728,7 +2717,7 @@ function drawBeamRain(cx,cy,s,t){
       const bowY=sy + (deskY-sy)*ease;
       const x1=sx + (trayX-sx)*u1*u1*curve + Math.sin(u1*Math.PI)*s*0.022*(admit?-1:1);
       const y1=sy + (deskY-sy)*u1;
-      const a=(0.026+0.058*surge)*(1-ease)*(mobile?0.52:1)*(0.48+0.48*Math.sin(t*rate+i+k));
+      const a=(0.018+0.045*surge)*(1-ease)*(mobile?0.38:0.85)*(0.48+0.48*Math.sin(t*rate+i+k)); /* excessPrune */
       if(a<0.009) continue;
       ctx.strokeStyle=hsl(hue+k*3.5, 92, 56, a);
       ctx.lineWidth=(thin?0.85:1.5) * (1-ease*0.48) * (0.68+0.48*surge);
@@ -3004,6 +2993,8 @@ function drawFunnelsAndBeams(cx,cy,s,t){
 }
 
 function drawSphereWire(cx,cy,s,t){
+  /* excessPrune: Ylm/Hopf sphere fought dodeca — no-op */
+  return;
   /* omnidiscipline: spherical-harmonics shimmer + Hopf/torus whisper — skip ≤900; α quiet */
   if(reduceMotion||W<=900) return;
   const aHex=layerAlpha("hex"), R=0.62;
@@ -3697,6 +3688,8 @@ function drawTrailsAndGlow(cx,cy,s,t){
 }
 
 function drawQuasicrystalWhisper(cx,cy,s,t){
+  /* excessPrune: quasicrystal invisible/blotchy under seal — no-op */
+  return;
   /* omnidiscipline: Penrose-ish / φ-packing lattice whisper under seal — Bauhaus geometry, not clutter */
   if(reduceMotion||W<=900) return;
   if(frameN&1) return; /* mobile-desk perf: alternate */
@@ -3983,7 +3976,7 @@ function drawFogShards(cx,cy,s,t,orbitSpeed){
     f.ph+=0.008*f.spin*react;
     const [px,py,d,persp]=project(f.x+Math.sin(f.ph)*0.02*react,f.y+Math.cos(f.ph*0.8)*0.015,f.z+Math.sin(f.ph*1.1)*0.02,cx,cy,s);
     if(d<-0.7)continue; const fog=Math.max(0.06,Math.min(0.28,0.12+d*0.06)), sz=f.s*s*persp*react;
-    ctx.fillStyle=`rgba(120,160,220,${fog*0.07})`; ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz,py+sz*0.5);ctx.lineTo(px-sz,py+sz*0.5);ctx.fill();
+    ctx.fillStyle=`rgba(120,160,220,${fog*0.035})`; /* excessPrune */ ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz,py+sz*0.5);ctx.lineTo(px-sz,py+sz*0.5);ctx.fill();
   }
   ctx.restore();
 }
@@ -4074,7 +4067,7 @@ let lastYaw=cam.userYaw, lastPitch=cam.userPitch, lastRoll=cam.userRoll;
 let frameN=0;
 function frame(now){
   const dt=now-lastFrameTs; lastFrameTs=now;
-  skipHeavy=dt>24 || reduceMotion;
+  skipHeavy=dt>20 || reduceMotion; /* excessPrune: drop heavy sooner */
   const t=(now-t0)*0.001;
   frameN++;
   // cinematic auto-orbit first 3–4s
@@ -4118,25 +4111,23 @@ function frame(now){
   const cx=cx0+pSeal.ox, cy=cy0+pSeal.oy;
   /* polishPass3 draw order: bg whisper → intake → organize → seal authority → fate labels
      Story: field → dodeca lock → cube crystallize / mint release. Seal always paints last-but-labels. */
-  // 1) underlay (quiet / skipped on mobile by each fn)
+  // 1) underlay (excessPrune: cut muddy/invisible layers; seal + organize win)
   if(threeOk) drawThreeOrbit(cxS,cyS,s,t); else if(webglOk && !skipHeavy) drawWebGLStars(cxS,cyS,s,t);
-  if(!skipHeavy) drawAurora(cxS,cyS,s,t);
+  /* excessPrune: aurora cut */
   if(!skipHeavy) drawFogShards(cxS,cyS,s,t,orbitSpeed);
-  drawGhostOrbits(cxH,cyH,s,t);
-  drawDualHexGhost(cxH,cyH,s,t);
+  if(!skipHeavy) drawGhostOrbits(cxH,cyH,s,t);
+  if(!skipHeavy) drawDualHexGhost(cxH,cyH,s,t);
   const verts=projectDodecaSeal(cxH,cyH,s);
   projectInnerCube(cxH,cyH,s);
-  if(!reduceMotion) drawStarfieldInPanels(cxS,cyS,s,t,verts);
+  if(!reduceMotion && !skipHeavy) drawStarfieldInPanels(cxS,cyS,s,t,verts);
   /* customProcedural underlay — original field before intake/seal */
   syncGyroSharedCenter(cx,cy,s,t);
-  if(!reduceMotion) drawChimeraCustomField(cx,cy,s,t);
+  if(!reduceMotion && !skipHeavy) drawChimeraCustomField(cx,cy,s,t);
   if(!reduceMotion) drawCorePlasma(cx,cy,s,t); /* hybridEngineTrio under seal */
   if(!reduceMotion) drawBeamRain(cx,cy,s,t);   /* hybridEngineTrio → desk/trays */
-  if(!reduceMotion){ drawGyroOrbitRings(cx,cy,s,t); drawHybridBridgeRays(cx,cy,s,t); }
-  if(!reduceMotion) drawInkWashUnderpaint(cx,cy,s,t); /* simkinsAI wash behind seal */
-  if(!reduceMotion) drawBiomorphicFiligree(cxH,cyH,s,t);
-  if(!reduceMotion) drawChimeraInkEcho(cxH,cyH,s,t);
-  if(!reduceMotion && !skipHeavy) drawOrnamentalStipple(cxH,cyH,s,t);
+  if(!reduceMotion && !skipHeavy){ drawGyroOrbitRings(cx,cy,s,t); drawHybridBridgeRays(cx,cy,s,t); }
+  if(!reduceMotion && !skipHeavy) drawInkWashUnderpaint(cx,cy,s,t); /* excessPrune: wash kept, quieter */
+  /* excessPrune: biomorphic filigree / ink-echo / stipple cut */
   // 2) mid organize — intake mouths → voxels(admit/cool) + mint(release/warm) → lattice tethers
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
@@ -4145,22 +4136,22 @@ function frame(now){
   if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
   if(!reduceMotion) drawUploadStream(cx,cy,s,t);
   drawSortShockwave(cx,cy,s);
-  drawDepthFogVignette(cx0,cy0,s);
+  if(!skipHeavy) drawDepthFogVignette(cx0,cy0,s);
   drawBloomClamp(cx0,cy0,s);
-  drawFilmGrain();
+  /* excessPrune: filmGrain no-op skipped */
   drawSoftCrossVeil();
   // 3) SEAL FOREGROUND AUTHORITY — contrast veil then dodeca
   drawSealContrastVeil(cx,cy,s);
-  if(!reduceMotion && !skipHeavy) drawQuasicrystalWhisper(cxH,cyH,s,t);
+  /* excessPrune: quasicrystal cut */
   drawHexFrame(cxH,cyH,s,t);
   drawInnerCubeWire(cxH,cyH,s,t);
   drawNestedSeals(cxH,cyH,s,t);
   if(!skipHeavy) drawGeodesicAccents(cxH,cyH,s,t);
-  drawChromaticHexEdges(verts,t);
-  if(!skipHeavy) drawSphereWire(cxH,cyH,s*0.96,t);
+  if(!skipHeavy) drawChromaticHexEdges(verts,t);
+  /* excessPrune: sphereWire Ylm/Hopf cut */
   drawSealBreath(cx,cy,s,t);
   drawProveBreak(cx0,cy0,s,t);
-  if(!skipHeavy) drawCrtPolish(cx,cy,s,t);
+  if(!skipHeavy) drawCrtPolish(cx,cy,s,t); /* flares only */
   drawCanvasLabels(cxL,cyL,s,mouths,verts);
   // FPS guard: drop WebGL if frames tank on mobile
   if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
