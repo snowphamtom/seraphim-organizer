@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -318,171 +318,62 @@ body.reveal-chrome #log, #log:hover{opacity:.55}
 body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
-/* inverted light field — ink wire cluster + morphing drop nodes (canvas) */
+/* inverted light field — black void only; tunnelGridBg is sole plate */
 #bgField{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#000}
-#bgField .meta{
-  position:absolute;inset:0;
-  background-position:center center;
-  background-size:cover;
-  background-repeat:no-repeat;
-  mix-blend-mode:screen;
-}
 
-/* fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones
-   φ-synced whisper under seal. Live origin via --seal-x/--seal-y (set every frame).
-   TEMPO: T≈9.2s · φT≈15s · φ²T≈24s · φ³T≈39s
-   Shared vanishing: perspective 900px · rotateX 55° · ±6° rotateY mirror
-   Opacity ladder: codeRain < beamWhisper ≤ coreWhisper << canvas seal
-   refinePolish2: quieter whispers, tighter hub masks, gentler softCross, equal L/R
-   beyondAIMaster|omnidiscipline|simkinsAI: denser craft — illustrator×engine one φ organism, seal still boss */
+/* tunnelGridBg|bgSealCenterLock|stripToBones
+   Taylor tunnel-dots GIF — ONLY #bgField layer (whispers + retired .meta plates removed).
+   Light-bg source → invert + screen on void = cyan-HUD-friendly light dots.
+   Vanishing point = live seal via --seal-x/--seal-y (syncGyroSharedCenter).
+   Full-bleed cover; quiet α so desk + seal stay boss. */
 #bgField{
   --seal-x:50%;
   --seal-y:42%;
 }
-#bgField .codeRain{
+#bgField .tunnelGrid{
   position:absolute;inset:0;
-  perspective:900px;
+  perspective:1100px;
   perspective-origin:var(--seal-x) var(--seal-y);
   overflow:hidden;
   z-index:0;
 }
-#bgField .codeRain .plane{
+#bgField .tunnelGrid .plane{
   position:absolute;
   left:var(--seal-x); top:var(--seal-y);
-  width:150%; height:170%;
-  transform:translate(-50%,-50%) rotateX(55deg) rotateY(-6deg) scale(1.32);
+  width:155%; height:155%;
+  transform:translate(-50%,-50%) scale(1.08);
   transform-origin:50% 50%;
-  transform-style:preserve-3d;
-  opacity:0.06; /* stripToBones: codeRain whisper */
+  opacity:0.32;
   mix-blend-mode:screen;
-  filter:saturate(1.0) brightness(0.68) contrast(1.02);
-  -webkit-mask-image:radial-gradient(ellipse 66% 60% at 50% 50%,
-    rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.14) 28%, rgba(0,0,0,0.58) 52%, #000 78%);
-  mask-image:radial-gradient(ellipse 66% 60% at 50% 50%,
-    rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.14) 28%, rgba(0,0,0,0.58) 52%, #000 78%);
+  filter:invert(1) brightness(0.92) contrast(1.08);
+  -webkit-mask-image:radial-gradient(ellipse 72% 68% at 50% 50%,
+    #000 0%, #000 34%, rgba(0,0,0,0.72) 58%, rgba(0,0,0,0.28) 78%, transparent 100%);
+  mask-image:radial-gradient(ellipse 72% 68% at 50% 50%,
+    #000 0%, #000 34%, rgba(0,0,0,0.72) 58%, rgba(0,0,0,0.28) 78%, transparent 100%);
   will-change:transform;
 }
-#bgField .codeRain .drift{
-  width:100%; height:118%;
-  animation:codeRainFall 39s linear infinite; /* φ³T */
-}
-#bgField .codeRain picture,
-#bgField .codeRain img{
+#bgField .tunnelGrid img{
   display:block;width:100%;height:100%;
   object-fit:cover;
-  object-position:50% 50%; /* bgSealCenterLock: image center = seal */
+  object-position:50% 50%; /* bgSealCenterLock: tunnel VP = seal hub */
 }
-#bgField .codeRain::after{
+#bgField .tunnelGrid img.still{display:none}
+#bgField .tunnelGrid::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 54% 48% at var(--seal-x) var(--seal-y), rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.42) 38%, transparent 68%),
-    linear-gradient(180deg, rgba(0,0,0,0.54) 0%, transparent 26%, transparent 66%, rgba(0,0,0,0.64) 100%),
-    linear-gradient(90deg, rgba(0,0,0,0.36) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.36) 100%); /* even L/R */
-}
-@keyframes codeRainFall{
-  from{transform:translate3d(0,-5%,0)}
-  to{transform:translate3d(0,7%,0)}
-}
-
-/* core plasma whisper — plate centered on --seal-x/--seal-y (not viewport flex) */
-#bgField .coreWhisper{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  mix-blend-mode:screen;
-}
-#bgField .coreWhisper .plate{
-  position:absolute;
-  left:var(--seal-x); top:var(--seal-y);
-  width:min(46vmin, 360px); height:min(46vmin, 360px);
-  translate:-50% -50%; /* compose with scale pulse — never fight seal lock */
-  opacity:0.05; /* stripToBones: coreWhisper */
-  filter:saturate(1.02) brightness(0.72) contrast(1.02) blur(0.6px);
-  -webkit-mask-image:radial-gradient(circle at 50% 50%,
-    #000 0%, #000 18%, rgba(0,0,0,0.38) 40%, transparent 62%);
-  mask-image:radial-gradient(circle at 50% 50%,
-    #000 0%, #000 18%, rgba(0,0,0,0.38) 40%, transparent 62%);
-  animation:coreWhisperPulse 15s ease-in-out infinite; /* φT */
-  will-change:opacity,scale;
-}
-#bgField .coreWhisper picture,
-#bgField .coreWhisper img,
-#bgField .coreWhisper video{
-  display:block;width:100%;height:100%;
-  object-fit:cover;object-position:50% 50%;border-radius:50%;
-}
-@keyframes coreWhisperPulse{
-  0%,100%{opacity:0.08; scale:0.975}
-  50%{opacity:0.13; scale:1.015}
-}
-
-/* beam corridor — SAME rotateX family, mirrored rotateY; plane at seal */
-#bgField .beamWhisper{
-  position:absolute;inset:0;z-index:0;
-  perspective:900px;
-  perspective-origin:var(--seal-x) var(--seal-y);
-  overflow:hidden;pointer-events:none;
-}
-#bgField .beamWhisper .plane{
-  position:absolute;
-  left:var(--seal-x); top:var(--seal-y);
-  width:118%; height:148%;
-  transform:translate(-50%,-50%) rotateX(55deg) rotateY(6deg) scale(1.18);
-  transform-origin:50% 50%;
-  transform-style:preserve-3d;
-  opacity:0.05; /* refinePolish2: corridor under seal */
-  mix-blend-mode:screen;
-  filter:saturate(1.02) brightness(0.66) contrast(1.02);
-  -webkit-mask-image:radial-gradient(ellipse 60% 56% at 50% 50%,
-    rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.16) 30%, rgba(0,0,0,0.62) 56%, #000 80%);
-  mask-image:radial-gradient(ellipse 60% 56% at 50% 50%,
-    rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.16) 30%, rgba(0,0,0,0.62) 56%, #000 80%);
-  will-change:transform;
-}
-#bgField .beamWhisper .drift{
-  width:100%; height:120%;
-  animation:beamWhisperFall 24s linear infinite; /* φ²T */
-}
-#bgField .beamWhisper picture,
-#bgField .beamWhisper img,
-#bgField .beamWhisper video{
-  display:block;width:100%;height:100%;
-  object-fit:cover;
-  object-position:50% 50%;
-}
-#bgField .beamWhisper::after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 50% 44% at var(--seal-x) var(--seal-y), rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.36) 40%, transparent 66%),
-    linear-gradient(180deg, rgba(0,0,0,0.56) 0%, transparent 28%, transparent 64%, rgba(0,0,0,0.60) 100%),
-    linear-gradient(90deg, rgba(0,0,0,0.34) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.34) 100%); /* even L/R */
-}
-@keyframes beamWhisperFall{
-  from{transform:translate3d(0,-6%,0)}
-  to{transform:translate3d(0,8%,0)}
+    radial-gradient(ellipse 48% 42% at var(--seal-x) var(--seal-y), rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 42%, transparent 70%),
+    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 24%, transparent 70%, rgba(0,0,0,0.62) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.42) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.42) 100%);
 }
 
 @media (max-width:900px){
-  #bgField .codeRain .plane{opacity:0.06; width:165%; height:185%;
-    transform:translate(-50%,-50%) rotateX(50deg) rotateY(-4deg) scale(1.24)}
-  #bgField .coreWhisper .plate{opacity:0.06; width:min(38vmin,260px); height:min(38vmin,260px);
-    animation-duration:15s}
-  #bgField .beamWhisper .plane{opacity:0.07; width:125%; height:155%;
-    transform:translate(-50%,-50%) rotateX(50deg) rotateY(4deg) scale(1.12)}
+  #bgField .tunnelGrid .plane{opacity:0.22; width:170%; height:170%;
+    transform:translate(-50%,-50%) scale(1.04)}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .codeRain .drift,
-  #bgField .beamWhisper .drift,
-  #bgField .coreWhisper .plate{animation:none}
-  #bgField .codeRain .plane{opacity:0.07; transform:translate(-50%,-50%) rotateX(55deg) rotateY(-6deg) scale(1.28)}
-  #bgField .beamWhisper .plane{opacity:0.08; transform:translate(-50%,-50%) rotateX(55deg) rotateY(6deg) scale(1.14)}
-  #bgField .coreWhisper .plate{opacity:0.07; scale:1}
-}
-
-
-
-/* customProcedural: stock/reference GIF plates retired — field is canvas-painted */
-#bgField .meta.city,#bgField .meta.cluster,#bgField .meta.sculpture,#bgField .meta.neon,#bgField .meta.ink,
-#bgField .meta.plexus,#bgField .meta.grid,#bgField .meta.blobs{
-  display:none!important;background:none!important;opacity:0!important;pointer-events:none!important;
+  #bgField .tunnelGrid img.anim{display:none}
+  #bgField .tunnelGrid img.still{display:block}
+  #bgField .tunnelGrid .plane{opacity:0.26; filter:invert(1) brightness(0.88) contrast(1.05)}
 }
 
 
@@ -686,33 +577,11 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones -->
-  <div class="codeRain" aria-hidden="true">
+<div id="bgField" aria-hidden="true"><!-- tunnelGridBg|bgSealCenterLock|stripToBones — tunnel-only, no stacked whispers -->
+  <div class="tunnelGrid" aria-hidden="true">
     <div class="plane">
-      <div class="drift">
-        <picture>
-          <source srcset="media/falling-code.webp" type="image/webp">
-          <img src="media/falling-code.jpg" alt="" width="1028" height="1828" decoding="async" fetchpriority="low">
-        </picture>
-      </div>
-    </div>
-  </div>
-  <div class="beamWhisper" aria-hidden="true">
-    <div class="plane">
-      <div class="drift">
-        <picture>
-          <source srcset="media/beam-rain.webp" type="image/webp">
-          <img src="media/beam-rain.jpg" alt="" width="300" height="300" decoding="async" fetchpriority="low">
-        </picture>
-      </div>
-    </div>
-  </div>
-  <div class="coreWhisper" aria-hidden="true">
-    <div class="plate">
-      <picture>
-        <source srcset="media/core-engine.webp" type="image/webp">
-        <img src="media/core-engine.jpg" alt="" width="384" height="384" decoding="async" fetchpriority="low">
-      </picture>
+      <img class="anim" src="media/tunnel-grid.gif" alt="" width="360" height="360" decoding="async" fetchpriority="low">
+      <img class="still" src="media/tunnel-grid-still.jpg" alt="" width="360" height="360" decoding="async" fetchpriority="low">
     </div>
   </div>
 </div>
@@ -1284,18 +1153,17 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
    Palette (holoPalette): cyan↔indigo↔magenta↔orchid diagonal iridescence on void #000.
      admit/crystallize = cool cyan-indigo; release = magenta/orchid; prism accents = pale yellow/peach/lime.
    SURVIVING layers (why they stay):
-   - bgField GIFs: unsorted chaos under seal (whisper depth only)
-   - fallingCodeDepth: angled neon code corridor under #bgField (atmosphere only)
-   - hybridEngineTrio: core plasma + beam-rain + code floor (procedural primary, media whisper)
+   - tunnelGridBg: Taylor tunnel-dots GIF sole #bgField plate (invert+screen); VP locked to seal
+   - hybridEngineTrio: procedural seal spine (drawBeamRain + drawCorePlasma); media bg = tunnelGrid only
    - masterpieceFlow: one φ TEMPO organism — desk→seal→trays continuous path
-   - balancePolish: shared seal origin; codeRain/beamWhisper same rotateX family; cyan↔magenta L/R weight; opacity ladder; bloom clamp
+   - balancePolish: shared seal origin; cyan↔magenta L/R weight; bloom clamp
    - bgSealCenterLock: --seal-x/--seal-y track live canvas cx,cy (mobile raised seal + pan/parallax); DOM whispers locked to dodeca hub
    - refinePolish2: photographic seal supremacy — whisper α↓, hub masks tighter, bloomClamp+desk veil anti-blotch, softCross gentler, chrome quieter, mobile beams↓
    - beyondAIMaster: densify nodes (jewel tethers, keeper micro-orbits, kind-hue depth) + lattice specular + nested FIG micro-geo + rim/hub lights + contact shadows + φ multi-axis plasma/beam flow — hybrid chimera×trio synthesis; seal absolute foreground
@@ -1323,6 +1191,7 @@ const STORIES = {
    - film grain: no-op (OLED blotch); bloomClamp: active anti-blotch under seal + desk
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
+   - tunnelGridBg: replace whisper stack with single tunnel-dots GIF; black void base; seal VP center.
 */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
@@ -2764,7 +2633,7 @@ function drawBeamRain(cx,cy,s,t){
 
 function syncGyroSharedCenter(cx,cy,s,t){
   /* bgSealCenterLock|balancePolish|refinePolish2: live seal cx,cy → CSS --seal-x/--seal-y (px)
-     every frame; coreWhisper/codeRain/beamWhisper planes + perspective-origin + masks
+     every frame; tunnelGrid perspective-origin + plane + vignette
      lock to dodeca hub (mobile raised cy + pan/parallax). */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;

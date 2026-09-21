@@ -1,11 +1,11 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=4848bfd
-- **Commit:** `4848bfd` (`stripToBones` after `excessPrune`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=TIP
+- **Commit:** `TIP` (`tunnelGridBg` after `stripToBones`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
-`stripToBones` · `excessPrune` · `bgSealCenterLock` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `refinePolish2` · `sortTheater` · `idleDemoLoop` · `markdownMaster` · `motionIntricateFast` · `fallingCodeDepth` · `dodecaSeal`
+`tunnelGridBg` · `stripToBones` · `excessPrune` · `bgSealCenterLock` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `refinePolish2` · `sortTheater` · `idleDemoLoop` · `markdownMaster` · `motionIntricateFast` · `dodecaSeal`
 
 ## stripToBones (honest skeleton)
 
@@ -23,12 +23,13 @@ Aggressive subtract. Keep only what makes Seraphim hit.
 - Chimera custom field, ink-wash, nested seals, geodesic accents, chromatic edge fringe
 - Hybrid bridge spokes, gyro orbit rings, CRT polish, constellation, depth-fog vignette, prove-break HUD
 - Prior densify ornament: stipple, biomorphic filigree, ink-echo chords, quasicrystal, Ylm/Hopf sphereWire
+- Old `#bgField` whispers (codeRain / beamWhisper / coreWhisper) and retired `.meta` GIF plates
 
 **SELECTIVE spine**
 Sparse `drawBeamRain` + quiet `drawCorePlasma` = desk↔seal↔trays as one φ creature. Cyan admit / magenta aside. No maximalism.
 
 ## Layers
-`#bgField` whispers (codeRain / beamWhisper / coreWhisper, α≤0.06) → canvas `#fx` seal boss
+`#bgField` black void + sole `tunnelGrid` (Taylor tunnel-dots GIF, invert+screen, α quiet, VP = seal) → canvas `#fx` seal boss
 
 ## Labels
 Disorganized → Organized / Aside
