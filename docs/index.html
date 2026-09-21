@@ -461,6 +461,29 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   0%{opacity:0;transform:translateY(4px);filter:blur(2px)}
   100%{opacity:1;transform:none;filter:none}
 }
+/* sortTheater — ink-line flight from desk → tray (FLIP via --flight-dx/dy) */
+@keyframes chipFlightAdmit{
+  0%{opacity:0;transform:translate(var(--flight-dx,0px),var(--flight-dy,10px)) scale(.94);filter:blur(1.6px);color:rgba(110,230,235,.95)}
+  55%{opacity:.9;filter:blur(.2px)}
+  100%{opacity:1;transform:none;filter:none}
+}
+@keyframes chipFlightRelease{
+  0%{opacity:0;transform:translate(var(--flight-dx,0px),var(--flight-dy,10px)) scale(.94);filter:blur(1.6px);color:rgba(235,150,225,.92)}
+  55%{opacity:.88;filter:blur(.2px)}
+  100%{opacity:1;transform:none;filter:none}
+}
+#sortedFigures .chipFig.chipFlightAdmit{
+  animation-name:chipFlightAdmit;
+  animation-duration:var(--flight-dur,.55s);
+  animation-timing-function:cubic-bezier(.22,.78,.18,1);
+  animation-fill-mode:both;
+}
+#sortedFigures .chipFig.chipFlightRelease{
+  animation-name:chipFlightRelease;
+  animation-duration:var(--flight-dur,.62s);
+  animation-timing-function:cubic-bezier(.22,.78,.18,1);
+  animation-fill-mode:both;
+}
 #sortedFigures .chipFig::before{content:"- ";color:rgba(150,180,200,.4)}
 #sortedFigures .tray.admit .chipFig{color:rgba(190,235,240,.82)}
 #sortedFigures .tray.release .chipFig{color:rgba(230,200,230,.78)}
@@ -493,13 +516,13 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 @media (prefers-reduced-motion:reduce){
   #sortedFigures .chipFig{animation:none}
+  #sortedFigures .chipFig.chipFlightAdmit,
+  #sortedFigures .chipFig.chipFlightRelease{animation:mdLineIn .4s ease both}
 }
 
 /* uploadSortFX — canvas stream kept; DOM box pulse removed for markdownMaster|motionIntricateFast */
 @keyframes scanSweep{
   0%{background-position:100% 0}
-  100%{background-position:-100% 0}
-}
   100%{background-position:-100% 0}
 }
 
@@ -914,26 +937,130 @@ let softCross = 0; // 0..1 soft re-ingest veil (no black-flash)
 let softCrossQueued = null;
 let shockwave = null; // {t0,cx,cy} sort pulse ring
 let uploadFX = {flash:0, sparks:[], t0:0}; // desk→seal stream on upload/sort
+/* idleDemoLoop — compact public-safe pack (noise + keeper-ish gibberish). No Magpie/vault secrets. */
+const IDLE_PUBLIC_PACK = [
+`id,title,kind
+1,cat Wusu draft 898,image
+2,receipt Mevo packet 756,pdf
+3,Silq-Hepo whisper notes 48,text
+4,standup Fifi bin 214,pdf
+5,Flen-Gafi seal draft 24,image
+6,grocery Teme notes 748,doc
+7,spam Lupo scrap 218,text
+8,Plym-Jifi spool ledger 79,pdf
+9,wallpaper Vodo yard 233,doc
+10,newsletter Mezo dump 928,folder
+11,Mune-Vodo seal brief 29,text
+12,vacation Dowu scrap 179,pdf`,
+`id,title,kind
+1,meme Gahe scrap 764,code
+2,lunch Telu scrap 392,text
+3,Quor-Gako residue notes 47,pdf
+4,cat Dopo tray 650,text
+5,Zari-Suga orbit memo 43,text
+6,receipt Qiji scrap 282,text
+7,Calq-Niko ledger scrap 14,text
+8,wallpaper Poga list 355,pdf
+9,spam Teko heap 738,text
+10,Nixa-Teba shard formal 44,doc
+11,standup Cheya scrap 77,pdf
+12,Brin-Mehe ember notes 88,text`,
+`id,title,kind
+1,vacation Gasu memo 355,doc
+2,grocery Baba dump 656,pdf
+3,Wexi-Voji orbit scrap 79,text
+4,newsletter Raqi scrap 521,pdf
+5,Velm-Suche shard admit 84,pdf
+6,cat Razo bin 853,text
+7,Yora-Chepo orbit interior 66,text
+8,spam Dohe dump 198,pdf
+9,wallpaper Jixi scrap 179,text
+10,Plym-Tesu orbit ledger 52,pdf
+11,lunch Sufi notes 615,pdf
+12,Quor-Meqi cipher scrap 25,image`
+];
+let idlePackIdx = 0;
+let idleDemoTimer = null;
+let deskUserTouchAt = -1e12; /* allow first boot idle before any touch */
+const IDLE_INTERVAL_MS = 20000;
+const IDLE_TOUCH_COOLDOWN_MS = 3000;
+function markDeskUserTouch(){ deskUserTouchAt = performance.now(); }
+function deskIsIdleEmpty(){
+  const pd=$("pasteDesk"), p=$("paste");
+  if(pd && String(pd.value||"").trim()) return false;
+  if(p && String(p.value||"").trim()) return false;
+  return true;
+}
+function idleDemoAllowed(){
+  if(document.hidden) return false;
+  if(!deskIsIdleEmpty()) return false;
+  if((performance.now()-deskUserTouchAt)<IDLE_TOUCH_COOLDOWN_MS) return false;
+  return true;
+}
 function runNonsenseExample(forceIdx, soft){
+  /* legacy full-pack path — gated; prefer idle public pack for living desk */
   const i = (forceIdx!=null)?forceIdx:(nonsenseIdx%NONSENSE_VARIANTS.length);
   nonsenseIdx = i+1;
   const csv = NONSENSE_VARIANTS[i] || NONSENSE_PRIMARY;
-  const go=()=>{ $("paste").value = csv; organize(parseDump("nonsense-"+i+".csv", csv)); };
+  const go=()=>{
+    if($("paste")) $("paste").value = csv;
+    if($("pasteDesk")) $("pasteDesk").value = csv;
+    organize(parseDump("nonsense-"+i+".csv", csv));
+  };
   if(soft){
-    // fade celebrate + soft veil, then re-ingest — never hard black cut
     celebrate = Math.max(celebrate, 0.85);
     sealPulse = Math.max(sealPulse, 0.55);
     softCross = 1;
     softCrossQueued = go;
   } else go();
 }
-function startConstantExample(){
-  runNonsenseExample(0, false);
-  if(nonsenseTimer) clearInterval(nonsenseTimer);
-  nonsenseTimer = setInterval(()=>{
+function runIdlePublicExample(soft){
+  if(soft && !idleDemoAllowed()) return;
+  if(!soft && !deskIsIdleEmpty()) return; /* never clobber user text on first boot */
+  const pack = IDLE_PUBLIC_PACK[idlePackIdx % IDLE_PUBLIC_PACK.length];
+  idlePackIdx++;
+  const go=()=>{
+    if(!deskIsIdleEmpty()) return;
+    setDeskText(pack);
+    triggerUploadFX("receive");
+    organize(parseDump("idle-demo-"+((idlePackIdx-1)%IDLE_PUBLIC_PACK.length)+".csv", pack));
+    /* free desk so next idle cycle can run; trays keep Disorganized→Organized story */
+    requestAnimationFrame(()=>{
+      if(String(deskText()||"").trim()===String(pack).trim()) setDeskText("");
+    });
+  };
+  if(soft){
+    celebrate = Math.max(celebrate, 0.85);
+    sealPulse = Math.max(sealPulse, 0.55);
+    if(typeof reduceMotion!=="undefined" && reduceMotion){ go(); return; }
+    softCross = 1;
+    softCrossQueued = go;
+  } else go();
+}
+function startIdleDemoLoop(opts){
+  if(nonsenseTimer){ clearInterval(nonsenseTimer); nonsenseTimer=null; }
+  if(idleDemoTimer){ clearInterval(idleDemoTimer); idleDemoTimer=null; }
+  const immediate=!!(opts&&opts.immediate);
+  const bootMs = immediate ? 120
+    : ((typeof reduceMotion!=="undefined" && reduceMotion) ? 180
+      : Math.max(420, (typeof cinemaUntil==="number" ? Math.max(0, cinemaUntil-performance.now()) : 3800)+350));
+  setTimeout(()=>{
     if(document.hidden) return;
-    runNonsenseExample(undefined, true);
-  }, 48000); // ~48s soft crossfade rotate
+    if(!deskIsIdleEmpty()) return;
+    if(!immediate && (performance.now()-deskUserTouchAt)<IDLE_TOUCH_COOLDOWN_MS) return;
+    runIdlePublicExample(false);
+  }, bootMs);
+  idleDemoTimer = setInterval(()=>{
+    if(!idleDemoAllowed()) return;
+    runIdlePublicExample(true);
+  }, IDLE_INTERVAL_MS);
+}
+function startConstantExample(){
+  /* demoDesk "nonsense" — refined idle starter (no 80-row 48s clobber) */
+  deskUserTouchAt = -1e12;
+  if(typeof setDeskText==="function") setDeskText("");
+  else { const pd=document.getElementById("pasteDesk"), p=document.getElementById("paste"); if(pd)pd.value=""; if(p)p.value=""; }
+  startIdleDemoLoop({immediate:true});
 }
 
 const STORIES = {
@@ -974,7 +1101,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -3151,7 +3278,7 @@ function ingestVerdicts(verdicts){
   nodes.length=0; const show=verdicts.length>100?verdicts.slice(0,100):verdicts;
   show.forEach((v,i)=>{const admit=v.decision==="admit"; nodes.push({v,id:v.id,decision:v.decision,a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.12+Math.random()*0.32,spin:TEMPO.base*0.6+(Math.random()-0.5)*0.1,hue:hueForVerdict(v,i,v.decision),size:2.8+Math.random()*3,funnel:i%3,delay:Math.random()*0.65,_px:null,_py:null,kind:v.kind||null});});
   const admits=verdicts.filter(v=>v.decision==="admit"), refuses=verdicts.filter(v=>v.decision==="refuse");
-  buildVoxels(admits); buildMint(refuses); sealPulse=1; celebrate=1;
+  buildVoxels(admits); buildMint(refuses); sealPulse=1; celebrate=1; /* sortTheater: strong snap */
   pushGhostOrbit(verdicts, lastCI);
   afterglow.push({r:0.5,hue:195,life:1},{r:0.65,hue:250,life:0.9},{r:0.8,hue:305,life:0.8});
   shockwave={t0:performance.now()}; // G: sort pulse radial once
@@ -3278,6 +3405,33 @@ function pushLog(verdicts){
   log.innerHTML=""; log.appendChild(frag);
 }
 
+function flightChipsFromDesk(chips){
+  /* sortTheater: FLIP-ish flight from upload/paste desk → tray. Skip if reduceMotion. */
+  if(!chips||!chips.length) return;
+  if(typeof reduceMotion!=="undefined" && reduceMotion) return;
+  const src=$("uploadBox")||$("pasteDesk");
+  if(!src) return;
+  const ob=src.getBoundingClientRect();
+  const ox=ob.left+ob.width*0.5;
+  const oy=ob.top+Math.min(ob.height*0.5, 48);
+  const ww=(typeof W==="number"&&W)?W:innerWidth;
+  const thin=ww<=480, mobile=ww<=900;
+  const cap=thin?6:(mobile?12:28);
+  const stagger=thin?0.02:(mobile?0.028:0.038);
+  const dur=thin?0.45:(mobile?0.52:0.62);
+  chips.slice(0,cap).forEach((el,i)=>{
+    const r=el.getBoundingClientRect();
+    if(r.width<1&&r.height<1) return;
+    const dx=ox-(r.left+r.width*0.5);
+    const dy=oy-(r.top+r.height*0.5);
+    const admit=!!el.closest(".tray.admit");
+    el.style.setProperty("--flight-dx", dx.toFixed(1)+"px");
+    el.style.setProperty("--flight-dy", dy.toFixed(1)+"px");
+    el.style.setProperty("--flight-dur", dur+"s");
+    el.style.animationDelay=(i*stagger).toFixed(3)+"s";
+    el.classList.add(admit?"chipFlightAdmit":"chipFlightRelease");
+  });
+}
 function renderSortedFigures(verdicts){
   const a=$("figAdmit"), r=$("figRelease"), an=$("figAdmitN"), rn=$("figReleaseN");
   if(!a||!r) return;
@@ -3294,10 +3448,12 @@ function renderSortedFigures(verdicts){
     return el;
   };
   a.innerHTML=""; r.innerHTML="";
+  const flown=[];
   if(!admits.length) a.innerHTML="<div class=\"empty\">nothing organized yet</div>";
-  else admits.slice(-40).reverse().forEach(v=>a.appendChild(mk(v)));
+  else admits.slice(-40).reverse().forEach(v=>{ const el=mk(v); a.appendChild(el); flown.push(el); });
   if(!releases.length) r.innerHTML="<div class=\"empty\">nothing aside yet</div>";
-  else releases.slice(-40).reverse().forEach(v=>r.appendChild(mk(v)));
+  else releases.slice(-40).reverse().forEach(v=>{ const el=mk(v); r.appendChild(el); flown.push(el); });
+  if(flown.length) requestAnimationFrame(()=>flightChipsFromDesk(flown));
 }
 function deskText(){ return ($("pasteDesk")&&$("pasteDesk").value)||($("paste")&&$("paste").value)||""; }
 function setDeskText(t){
@@ -3321,18 +3477,20 @@ function wireSortDesk(){
   ["dragenter","dragover"].forEach(ev=>box.addEventListener(ev,over));
   ["dragleave","drop"].forEach(ev=>box.addEventListener(ev,leave));
   box.addEventListener("drop", async e=>{
-    e.preventDefault(); box.classList.remove("drag");
+    e.preventDefault(); box.classList.remove("drag"); markDeskUserTouch();
     const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
     if(f){ const t=await f.text(); setDeskText(t); triggerUploadFX("receive"); organize(parseDump(f.name,t)); return; }
     const text=e.dataTransfer&&e.dataTransfer.getData("text/plain");
     if(text){ setDeskText(text); triggerUploadFX("receive"); organize(parseDump("paste.txt",text)); }
   });
   if(file) file.addEventListener("change", async e=>{
+    markDeskUserTouch();
     const f=e.target.files&&e.target.files[0]; if(!f) return;
     const t=await f.text(); setDeskText(t); triggerUploadFX("receive"); organize(parseDump(f.name,t));
   });
-  if(run) run.addEventListener("click", runDeskSort);
+  if(run) run.addEventListener("click", ()=>{ markDeskUserTouch(); runDeskSort(); });
   if(clr) clr.addEventListener("click", ()=>{
+    markDeskUserTouch();
     setDeskText(""); if($("fileDesk")) $("fileDesk").value="";
     updateMetrics(null); $("log")&&($("log").innerHTML="");
     renderSortedFigures([]);
@@ -3341,12 +3499,18 @@ function wireSortDesk(){
   if(demo) demo.addEventListener("change", ()=>{
     const k=demo.value; if(!k) return;
     if(k==="nonsense"){ startConstantExample(); demo.value=""; return; }
+    markDeskUserTouch();
     const body=STORIES[k]; if(!body) return;
     setDeskText(body); triggerUploadFX("receive"); organize(parseDump(k+".csv", body)); demo.value="";
   });
-  if(ta) ta.addEventListener("keydown", e=>{
-    if((e.metaKey||e.ctrlKey)&&e.key==="Enter"){ e.preventDefault(); runDeskSort(); }
-  });
+  if(ta){
+    ["input","keydown","paste","focus"].forEach(ev=>ta.addEventListener(ev, markDeskUserTouch));
+    ta.addEventListener("keydown", e=>{
+      if((e.metaKey||e.ctrlKey)&&e.key==="Enter"){ e.preventDefault(); markDeskUserTouch(); runDeskSort(); }
+    });
+  }
+  const legacy=$("paste");
+  if(legacy)["input","keydown","paste","focus"].forEach(ev=>legacy.addEventListener(ev, markDeskUserTouch));
 }
 
 function render(res){lastResult=res; updateMetrics(res); pushLog(res.verdicts); renderSortedFigures(res.verdicts); if($("dlJson"))$("dlJson").disabled=false; if($("dlCsv"))$("dlCsv").disabled=false; ingestVerdicts(res.verdicts);}
@@ -3381,11 +3545,12 @@ function clearAll(){
   updateMetrics(null); $("log").innerHTML=""; $("dlJson").disabled=true;$("dlCsv").disabled=true;
   tip.style.display="none"; seedField(11000); resetView();
 }
-$("run").onclick=()=>{const t=$("paste").value.trim();if(!t)return;organize(parseDump("paste.txt",t));};
+$("run").onclick=()=>{markDeskUserTouch();const t=$("paste").value.trim();if(!t)return;organize(parseDump("paste.txt",t));};
 $("clear").onclick=clearAll;
 $("file").onchange=async()=>{const f=$("file").files[0];if(!f)return; $("paste").value=await f.text(); organize(parseDump(f.name,$("paste").value));};
 $("demoStory").onchange=()=>{const k=$("demoStory").value; if(!k)return;
   if(k==="nonsense"){ startConstantExample(); $("demoStory").value=""; return; }
+  markDeskUserTouch();
   if(!STORIES[k])return; $("paste").value=STORIES[k]; organize(parseDump(k+".csv",STORIES[k])); $("demoStory").value="";};
 const dz=$("dropzone");
 dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("drag");});
@@ -3447,8 +3612,8 @@ document.addEventListener("keydown",e=>{
 });
 $("btnCheat").onclick=()=>{$("cheat").classList.add("open");};
 if($("clearMobile")) $("clearMobile").onclick=()=>{ $("clear").click(); };
-/* living proof — auto nonsense, no Demo menu required */
-startConstantExample();
+/* living proof — soft idle demo loop (public pack @20s); pauses on desk touch */
+startIdleDemoLoop();
 wireSortDesk();
 </script>
 </body>
