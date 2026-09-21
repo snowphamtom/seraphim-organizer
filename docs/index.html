@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientGemFix|clientNeonSeedHub|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; cyberNatureFormat restored as centerpiece */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientGemFix|clientNeonSeedHub|clientDodecaSync|clientSeedInDodeca|clientOmniGyroSync|dodecaGyroAgreed|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; cyberNatureFormat restored as centerpiece */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -5217,134 +5217,114 @@ html,body{
 #sortedFigures .tray.release h3{ color:#f472b6 !important; text-shadow:0 0 16px rgba(232,121,249,0.6) !important; }
 
 /* ========== keyedDodecaWireOverlay — neon blue wireframe ON dodeca (keyed black→gone) ========== */
-#bgField > .keyedDodecaWire{
-  display:block !important; visibility:visible !important;
-  position:absolute !important; inset:0 !important;
-  z-index:6 !important; /* ON canvas seal/dodeca (#fx z=5); under desk */
-  opacity:1 !important;
-  pointer-events:none !important; overflow:visible !important;
-  mix-blend-mode:normal !important;
-  -webkit-mask-image:none !important; mask-image:none !important;
+/* ========== clientOmniGyroSync|dodecaGyroAgreed — wire+seed+canvas share ONE cam φ-gyro tumble ========== */
+#bgField{
+  --seal-x:50% !important;
+  --seal-y:42% !important; /* JS syncGyroSharedCenter overrides to px hub */
+  --gyro-yaw:0deg;
+  --gyro-pitch:0deg;
+  --gyro-roll:0deg;
+  perspective:min(140vmin,960px) !important;
+  perspective-origin:var(--seal-x,50%) var(--seal-y,42%) !important;
 }
-#bgField > .keyedDodecaWire .plane{
+/* ONE rigid stack hub — keyed wire + seed ride same YPR as canvas cam */
+#bgField > .omniGyroRig{
+  display:block !important; visibility:visible !important;
   position:absolute !important;
   left:var(--seal-x,50%) !important;
   top:var(--seal-y,42%) !important;
   width:min(64vmin,480px) !important;
   height:min(64vmin,480px) !important;
-  transform:translate(-50%,-50%) !important;
+  z-index:6 !important;
+  pointer-events:none !important;
+  overflow:visible !important;
+  transform-style:preserve-3d !important;
   transform-origin:50% 50% !important;
+  transform:translate(-50%,-50%)
+    rotateY(var(--gyro-yaw,0deg))
+    rotateX(var(--gyro-pitch,0deg))
+    rotateZ(var(--gyro-roll,0deg))
+    scale(var(--gif-breath,1)) !important;
   animation:none !important;
+  mix-blend-mode:normal !important;
+  -webkit-mask-image:none !important; mask-image:none !important;
 }
-#bgField > .keyedDodecaWire picture,
-#bgField > .keyedDodecaWire img{
+#bgField > .omniGyroRig .keyedDodecaWire,
+#bgField > .omniGyroRig .seedInDodeca{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  pointer-events:none !important; overflow:visible !important;
+  transform-style:preserve-3d !important;
+  mix-blend-mode:normal !important;
+  -webkit-mask-image:none !important; mask-image:none !important;
+}
+#bgField > .omniGyroRig .keyedDodecaWire{ z-index:1 !important; opacity:1 !important; }
+#bgField > .omniGyroRig .seedInDodeca{ z-index:2 !important; opacity:1 !important; }
+#bgField > .omniGyroRig .keyedDodecaWire .plane,
+#bgField > .omniGyroRig .seedInDodeca .plane{
+  position:absolute !important;
+  left:50% !important; top:50% !important;
+  transform-origin:50% 50% !important;
+  animation:none !important; /* no independent spin — omniGyroRig owns tumble */
+}
+#bgField > .omniGyroRig .keyedDodecaWire .plane{
+  width:100% !important; height:100% !important;
+  transform:translate(-50%,-50%) !important;
+}
+#bgField > .omniGyroRig .seedInDodeca .plane{
+  /* core inside wire: ~0.48 of wire plane */
+  width:47% !important; height:47% !important;
+  transform:translate(-50%,-50%) scale(var(--seed-pulse,1)) !important;
+  /* ONE φ TEMPO only — scale breathe; rotation from shared rig */
+  animation:seedInDodecaPulse var(--field-T2,var(--Tphi2,4.77s)) ease-in-out infinite !important;
+}
+@keyframes seedInDodecaPulse{
+  0%,100%{ transform:translate(-50%,-50%) scale(0.97); }
+  50%{ transform:translate(-50%,-50%) scale(1.04); }
+}
+#bgField > .omniGyroRig .keyedDodecaWire picture,
+#bgField > .omniGyroRig .keyedDodecaWire img{
   display:block !important; visibility:visible !important; opacity:1 !important;
   width:100% !important; height:100% !important;
   object-fit:cover !important; object-position:50% 50% !important;
   pointer-events:none !important;
-  mix-blend-mode:screen !important; /* black keyed out on dark void */
+  mix-blend-mode:screen !important;
   filter:
     drop-shadow(0 0 10px rgba(56,189,248,.40))
     drop-shadow(0 0 28px rgba(34,211,238,.22))
     saturate(1.12) contrast(1.06) brightness(1.08) !important;
 }
-#bgField > .keyedDodecaWire img.still{ display:none !important; }
-@media (max-width:900px){
-  #bgField > .keyedDodecaWire .plane{
-    width:min(72vmin,380px) !important;
-    height:min(72vmin,380px) !important;
-  }
-}
-@media (prefers-reduced-motion:reduce){
-  /* asset is already a still — static overlay is fine */
-  #bgField > .keyedDodecaWire .plane{ animation:none !important; transform:translate(-50%,-50%) !important; }
-  #bgField > .keyedDodecaWire img.anim,
-  #bgField > .keyedDodecaWire picture{ display:none !important; }
-  #bgField > .keyedDodecaWire img.still{
-    display:block !important; visibility:visible !important; opacity:1 !important;
-    mix-blend-mode:screen !important;
-  }
-}
-/* end keyedDodecaWireOverlay */
-
-/* ========== clientSeedInDodeca|clientDodecaSync — keyed seed CORE inside wire, one shared hub+φ ========== */
-/* Depth (back→front): hex-iridescent → procedural/CSS dodeca (#fx) → keyedDodecaWire → seedInDodeca */
-#bgField > .seedInDodeca{
-  display:block !important; visibility:visible !important;
-  position:absolute !important; inset:0 !important;
-  z-index:7 !important; /* INSIDE/ON wire (wire z=6); under desk */
-  opacity:1 !important;
-  pointer-events:none !important; overflow:visible !important;
-  mix-blend-mode:normal !important;
-  -webkit-mask-image:none !important; mask-image:none !important;
-}
-#bgField > .seedInDodeca .plane{
-  position:absolute !important;
-  left:var(--seal-x,50%) !important;
-  top:var(--seal-y,42%) !important;
-  /* core inside wire: ~0.48 of wire plane (wire=64vmin/480) */
-  width:min(30vmin,230px) !important;
-  height:min(30vmin,230px) !important;
-  transform:translate(-50%,-50%) scale(var(--gif-breath,1)) !important;
-  transform-origin:50% 50% !important;
-  /* ONE φ TEMPO only — breathe with field clock; no competing spin */
-  animation:seedInDodecaPulse var(--field-T2,var(--Tphi2,4.77s)) ease-in-out infinite !important;
-}
-@keyframes seedInDodecaPulse{
-  0%,100%{ transform:translate(-50%,-50%) scale(calc(var(--gif-breath,1)*0.97)); }
-  50%{ transform:translate(-50%,-50%) scale(calc(var(--gif-breath,1)*1.04)); }
-}
-#bgField > .seedInDodeca picture,
-#bgField > .seedInDodeca img{
+#bgField > .omniGyroRig .keyedDodecaWire img.still{ display:none !important; }
+#bgField > .omniGyroRig .seedInDodeca picture,
+#bgField > .omniGyroRig .seedInDodeca img{
   display:block !important; visibility:visible !important; opacity:1 !important;
   width:100% !important; height:100% !important;
   object-fit:contain !important; object-position:50% 50% !important;
   pointer-events:none !important;
-  mix-blend-mode:screen !important; /* black keyed out; lighter neon core */
+  mix-blend-mode:screen !important;
   filter:
     drop-shadow(0 0 8px rgba(250,204,21,.45))
     drop-shadow(0 0 18px rgba(232,121,249,.35))
     saturate(1.15) contrast(1.05) brightness(1.06) !important;
 }
-#bgField > .seedInDodeca img.still{ display:none !important; }
+#bgField > .omniGyroRig .seedInDodeca img.still{ display:none !important; }
 @media (max-width:900px){
-  #bgField > .seedInDodeca .plane{
-    width:min(34vmin,180px) !important;
-    height:min(34vmin,180px) !important;
+  #bgField > .omniGyroRig{
+    width:min(72vmin,380px) !important;
+    height:min(72vmin,380px) !important;
   }
 }
-@media (prefers-reduced-motion:reduce),(pointer:coarse){
-  #bgField > .seedInDodeca .plane{
-    animation:none !important;
-    transform:translate(-50%,-50%) !important;
-  }
-  #bgField > .seedInDodeca img.anim,
-  #bgField > .seedInDodeca picture{ display:none !important; }
-  #bgField > .seedInDodeca img.still{
-    display:block !important; visibility:visible !important; opacity:1 !important;
-    mix-blend-mode:screen !important;
-  }
-}
-
-/* clientDodecaSync — ONE hub, ONE φ clock; no second dodeca off-hub; no overlay drift */
-#bgField{
-  --seal-x:50% !important;
-  --seal-y:42% !important; /* matches hexIridescentBg tip; JS syncGyroSharedCenter overrides to px hub */
-}
-#bgField > .keyedDodecaWire .plane,
-#bgField > .seedInDodeca .plane,
+/* hexCore gyroRig (if present) shares same CSS rotation vars — one rigid organism */
 #bgField > .hexCore .gyroRig,
 #bgField .hexCore .gyroRig{
   left:var(--seal-x,50%) !important;
   top:var(--seal-y,42%) !important;
   transform-origin:50% 50% !important;
-}
-/* wire: static keyed still — no CSS spin (canvas/φ owns tumble); shared hub only */
-#bgField > .keyedDodecaWire .plane{
+  transform:translate(-50%,-50%)
+    rotateY(var(--gyro-yaw,0deg))
+    rotateX(var(--gyro-pitch,0deg))
+    rotateZ(var(--gyro-roll,0deg)) !important;
   animation:none !important;
-  transform:translate(-50%,-50%) !important;
-  width:min(64vmin,480px) !important;
-  height:min(64vmin,480px) !important;
 }
 /* kill competing clocks on demoted neon lattice / old seed hubs (no dual spin) */
 #bgField > .neonLattice .plane,
@@ -5352,15 +5332,33 @@ html,body{
 #bgField > .engineGem .plane{
   animation:none !important;
 }
-@media (prefers-reduced-motion:reduce){
-  #bgField > .keyedDodecaWire .plane,
-  #bgField > .seedInDodeca .plane,
+@media (prefers-reduced-motion:reduce),(pointer:coarse){
+  #bgField{
+    --gyro-yaw:0deg !important;
+    --gyro-pitch:0deg !important;
+    --gyro-roll:0deg !important;
+  }
+  #bgField > .omniGyroRig{
+    animation:none !important;
+    transform:translate(-50%,-50%) !important; /* stills — no tumble */
+  }
+  #bgField > .omniGyroRig .keyedDodecaWire .plane,
+  #bgField > .omniGyroRig .seedInDodeca .plane,
   #bgField > .hexCore .gyroRig{
     animation:none !important;
     transform:translate(-50%,-50%) !important;
   }
+  #bgField > .omniGyroRig .keyedDodecaWire img.anim,
+  #bgField > .omniGyroRig .keyedDodecaWire picture,
+  #bgField > .omniGyroRig .seedInDodeca img.anim,
+  #bgField > .omniGyroRig .seedInDodeca picture{ display:none !important; }
+  #bgField > .omniGyroRig .keyedDodecaWire img.still,
+  #bgField > .omniGyroRig .seedInDodeca img.still{
+    display:block !important; visibility:visible !important; opacity:1 !important;
+    mix-blend-mode:screen !important;
+  }
 }
-/* end clientSeedInDodeca|clientDodecaSync */
+/* end keyedDodecaWireOverlay|clientSeedInDodeca|clientDodecaSync|clientOmniGyroSync|dodecaGyroAgreed */
 
 /* end hexIridescentBg */
 
@@ -5380,23 +5378,25 @@ html,body{
       <img class="still" src="media/hex-iridescent-bg-still.webp" alt="" decoding="async" width="500" height="500"/>
     </div>
   </div>
-  <div class="keyedDodecaWire" aria-hidden="true"><!-- keyedDodecaWireOverlay: neon blue wireframe keyed still ON dodeca -->
-    <div class="plane">
-      <picture>
-        <source srcset="media/dodeca-wire-keyed.webp" type="image/webp"/>
-        <img class="anim" src="media/dodeca-wire-keyed.png" alt="" decoding="async" fetchpriority="high" width="768" height="1344"/>
-      </picture>
-      <img class="still" src="media/dodeca-wire-keyed.webp" alt="" decoding="async" width="768" height="1344"/>
+  <div class="omniGyroRig" aria-hidden="true"><!-- clientOmniGyroSync|dodecaGyroAgreed: wire+seed rigid stack = canvas cam YPR -->
+    <div class="keyedDodecaWire" aria-hidden="true"><!-- keyedDodecaWireOverlay: neon blue wireframe keyed still ON dodeca -->
+      <div class="plane">
+        <picture>
+          <source srcset="media/dodeca-wire-keyed.webp" type="image/webp"/>
+          <img class="anim" src="media/dodeca-wire-keyed.png" alt="" decoding="async" fetchpriority="high" width="768" height="1344"/>
+        </picture>
+        <img class="still" src="media/dodeca-wire-keyed.webp" alt="" decoding="async" width="768" height="1344"/>
+      </div>
     </div>
-  <div class="seedInDodeca" aria-hidden="true"><!-- clientSeedInDodeca|clientDodecaSync: keyed seed CORE inside wire at shared hub -->
-    <div class="plane">
-      <picture>
-        <source srcset="media/seed-in-dodeca-keyed.webp" type="image/webp"/>
-        <img class="anim" src="media/seed-in-dodeca-keyed.png" alt="" decoding="async" fetchpriority="high" width="736" height="736"/>
-      </picture>
-      <img class="still" src="media/seed-in-dodeca-keyed.webp" alt="" decoding="async" width="736" height="736"/>
+    <div class="seedInDodeca" aria-hidden="true"><!-- clientSeedInDodeca|clientDodecaSync: keyed seed CORE inside wire at shared hub -->
+      <div class="plane">
+        <picture>
+          <source srcset="media/seed-in-dodeca-keyed.webp" type="image/webp"/>
+          <img class="anim" src="media/seed-in-dodeca-keyed.png" alt="" decoding="async" fetchpriority="high" width="736" height="736"/>
+        </picture>
+        <img class="still" src="media/seed-in-dodeca-keyed.webp" alt="" decoding="async" width="736" height="736"/>
+      </div>
     </div>
-  </div>
   </div>
   <div class="cyberNatureWorld" aria-hidden="true">
     <picture>
@@ -6182,7 +6182,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -6271,7 +6271,7 @@ const cam={
   // targets — pointer/wheel/auto write here; render uses lerped values
   tYaw:0.48,tPitch:0.38,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
   // living gyro — TEMPO φ family restored
-  gyro:{wx:TEMPO.base*(1/PHI)*0.18, wy:TEMPO.base*(1/(PHI*PHI))*0.18, wz:TEMPO.base*(1/(PHI*PHI*PHI))*0.18, omni:0.2} /* clientEngineGem: light drift — GIF spins */
+  gyro:{wx:TEMPO.base*(1/PHI), wy:TEMPO.base*(1/(PHI*PHI)), wz:TEMPO.base*(1/(PHI*PHI*PHI)), omni:1} /* clientOmniGyroSync|dodecaGyroAgreed: full φ omni rates */
 };
 
 function syncTempoClock(){
@@ -6299,9 +6299,12 @@ function syncTempoClock(){
   root.style.setProperty('--field-cover', '170vmin'); /* hex void + lattice cover */
   root.style.setProperty('--field-tile', '28vmin'); /* honeycomb tile cell */
   root.style.setProperty('--field-tile-rgb', '42vmin');
-  if(typeof STILL_ENGINE!=="undefined" && STILL_ENGINE){
+  if((typeof STILL_ENGINE!=="undefined" && STILL_ENGINE) || reduceMotion){
+    /* prefers-reduced-motion / still engine → stills, no tumble */
     cam.gyro.wx=0; cam.gyro.wy=0; cam.gyro.wz=0; cam.gyro.omni=0;
+    cam.auto=false;
   } else {
+    /* clientOmniGyroSync: restore full φ omni rates — one TEMPO family */
     cam.gyro.wx=b*(1/PHI);
     cam.gyro.wy=b*(1/(PHI*PHI));
     cam.gyro.wz=b*(1/(PHI*PHI*PHI));
@@ -8206,7 +8209,8 @@ function drawBeamRain(cx,cy,s,t){
 }
 
 function syncGyroSharedCenter(cx,cy,s,t){
-  /* clientSameCenterFill: duo GIFs lock to viewport center; ignore cam pan for hub */
+  /* clientOmniGyroSync|dodecaGyroAgreed|clientSameCenterFill:
+     ONE hub (--seal-x/--seal-y) + ONE rigid YPR stack (omniGyroRig ← cam) */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
   cx=W*0.5; cy=H*0.5; /* clientOmniMid: gifts + engine share true center */
@@ -8217,6 +8221,22 @@ function syncGyroSharedCenter(cx,cy,s,t){
     _bgFieldEl._sealX=sx; _bgFieldEl._sealY=sy;
     _bgFieldEl.style.setProperty("--seal-x", sx);
     _bgFieldEl.style.setProperty("--seal-y", sy);
+  }
+  /* rigid stack: CSS wire+seed (+hexCore gyroRig) share cam yaw/pitch/roll with canvas dodeca */
+  const still=((typeof STILL_ENGINE!=="undefined" && STILL_ENGINE) || reduceMotion);
+  const R2D=180/Math.PI;
+  let gy=0, gp=0, gr=0;
+  if(!still && typeof cam!=="undefined"){
+    gy=(cam.yaw+cam.userYaw)*R2D;
+    gp=(cam.pitch+cam.userPitch)*R2D;
+    gr=(cam.roll+cam.userRoll)*R2D;
+  }
+  const gys=gy.toFixed(2)+"deg", gps=gp.toFixed(2)+"deg", grs=gr.toFixed(2)+"deg";
+  if(_bgFieldEl._gyroY!==gys || _bgFieldEl._gyroP!==gps || _bgFieldEl._gyroR!==grs){
+    _bgFieldEl._gyroY=gys; _bgFieldEl._gyroP=gps; _bgFieldEl._gyroR=grs;
+    _bgFieldEl.style.setProperty("--gyro-yaw", gys);
+    _bgFieldEl.style.setProperty("--gyro-pitch", gps);
+    _bgFieldEl.style.setProperty("--gyro-roll", grs);
   }
   lockSealTriad(cx,cy);
   syncBeamTrioRays();
@@ -10251,8 +10271,8 @@ function frame(now){
   skipHeavy=dt>32 || reduceMotion; /* speedDetail: keep densify draws */
   const t=(now-t0)*0.001;
   frameN++;
-  // clientStillEngine: no cinema / omni tumble — seal pose stays locked
-  if(typeof STILL_ENGINE!=="undefined" && STILL_ENGINE){
+  // clientStillEngine|clientOmniGyroSync: reduceMotion → stills; else φ omni tumble
+  if((typeof STILL_ENGINE!=="undefined" && STILL_ENGINE) || reduceMotion){
     cam.auto=false;
     cinemaUntil=0;
     cam.gyro.wx=0; cam.gyro.wy=0; cam.gyro.wz=0; cam.gyro.omni=0;
