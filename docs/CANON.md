@@ -1,7 +1,7 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=PENDING
-- **Commit:** `PENDING` (`gatherThenSort` after `tunnelGridBg`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=71eecc9
+- **Commit:** `71eecc9` (`gatherThenSort` after `tunnelGridBg`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
