@@ -1,0 +1,11 @@
+
+# Magpie Meta AI site-edit grant (local only)
+.magpie-site-edit.key
+*.pem
+id_ed25519_meta*
+id_ed25519_gemini_seraphim
+id_ed25519_gemini_seraphim.pub
+.magpie-site-edit-gemini.key
+
+__pycache__/
+*.pyc
