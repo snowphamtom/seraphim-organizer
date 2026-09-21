@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -3798,24 +3798,79 @@ body::after{ display:none !important; content:none !important; }
 
 
 
-/* clientNoWhite — void is dark; mesh field only; no paper white */
+/* clientNoWhite — void is dark; no paper white */
 html,body,#bgField{
   background:#030a12 !important;
   background-color:#030a12 !important;
   background-image:none !important;
 }
-#bgField > .latticeField,
-#bgField > .latticeField .plane,
-#bgField > .latticeField picture,
-#bgField > .latticeField img.anim{
-  display:block !important; visibility:visible !important; opacity:1 !important;
+#bgField > .fieldLayer{
+  display:block !important; visibility:visible !important;
 }
+
+
+
+/* clientDualCenter — dots + data-mesh share one hub; both translucent */
+#bgField{
+  --seal-x:50%;
+  --seal-y:40%;
+  background:#030a12 !important;
+}
+#bgField > .fieldLayer{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  pointer-events:none !important; overflow:hidden !important;
+}
+#bgField > .fieldLayer.dotsField{ z-index:0 !important; opacity:0.48 !important; }
+#bgField > .fieldLayer.meshField{ z-index:1 !important; opacity:0.52 !important; mix-blend-mode:screen !important; }
+#bgField > .fieldLayer .plane{
+  position:absolute !important;
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:max(145vw,145vh) !important;
+  height:max(145vw,145vh) !important;
+  transform:translate(-50%,-50%) scale(var(--field-scale,1)) !important;
+  transform-origin:50% 50% !important;
+  animation:meshSpin var(--mesh-spin,7.7s) linear infinite !important;
+}
+#bgField > .fieldLayer.dotsField .plane{
+  animation-duration:var(--Tphi3,7.7s) !important;
+  animation-direction:normal !important;
+}
+#bgField > .fieldLayer.meshField .plane{
+  animation-duration:var(--Tphi2,4.8s) !important;
+  animation-direction:reverse !important; /* counter-spin, same clock family */
+}
+#bgField > .fieldLayer picture,
+#bgField > .fieldLayer img{
+  display:block !important; width:100% !important; height:100% !important;
+  object-fit:cover !important; object-position:50% 50% !important;
+  opacity:1 !important; filter:none !important;
+}
+#bgField > .fieldLayer img.still{ display:none !important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .fieldLayer .plane{ animation:none !important; }
+  #bgField > .fieldLayer img.anim,
+  #bgField > .fieldLayer picture{ display:none !important; }
+  #bgField > .fieldLayer img.still{ display:block !important; }
+}
+/* hide legacy single lattice wrapper if present */
+#bgField > .latticeField{ display:none !important; }
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientDataMeshSync: cyan data-mesh field -->
-  <div class="latticeField" aria-hidden="true">
+<div id="bgField" aria-hidden="true"><!-- clientDualCenter: dots + mesh, shared hub, see-through -->
+  <div class="fieldLayer dotsField" aria-hidden="true">
+    <div class="plane">
+      <picture>
+        <source srcset="media/lattice-dots.webp" type="image/webp"/>
+        <img class="anim" src="media/lattice-dots.gif" alt="" decoding="async" fetchpriority="low" width="400" height="400"/>
+      </picture>
+      <img class="still" src="media/lattice-dots-still.webp" alt="" decoding="async" width="400" height="400"/>
+    </div>
+  </div>
+  <div class="fieldLayer meshField" aria-hidden="true">
     <div class="plane">
       <picture>
         <source srcset="media/data-mesh.webp" type="image/webp"/>
@@ -4564,6 +4619,7 @@ function syncTempoClock(){
   root.style.setProperty('--Tchip', (T1/(PHI*PHI)).toFixed(3)+'s');
   root.style.setProperty('--mesh-spin', Tphi3.toFixed(3)+'s');
   root.style.setProperty('--mesh-breathe', Tphi2.toFixed(3)+'s');
+  root.style.setProperty('--field-scale', '1');
   cam.gyro.wx=b*(1/PHI);
   cam.gyro.wy=b*(1/(PHI*PHI));
   cam.gyro.wz=b*(1/(PHI*PHI*PHI));
