@@ -805,6 +805,39 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #uploadBox .uh b::before{ color:rgba(255,60,60,.9)!important; }
 #top .title{ color:#ff4444!important; }
 
+
+/* redParticles — black/red particle fields feeding box centerpiece */
+#bgField .particleLayer{
+  position:absolute; inset:0; overflow:hidden; pointer-events:none;
+}
+#bgField .particleLayer .plane{
+  position:absolute;
+  left:var(--seal-x); top:var(--seal-y);
+  transform:translate(-50%,-50%);
+}
+#bgField .particleLayer picture,
+#bgField .particleLayer img{
+  display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%;
+}
+#bgField .particleLayer img.still{display:none}
+#bgField .particlesField{ z-index:0; }
+#bgField .particlesField .plane{
+  width:max(180vw,180vh); height:max(180vw,180vh);
+  opacity:0.85;
+}
+#bgField .particlesMeta{ z-index:1; }
+#bgField .particlesMeta .plane{
+  width:min(95vmin,760px); height:min(95vmin,760px);
+  opacity:0.55;
+  mix-blend-mode:screen;
+}
+#bgField .tunnelGrid{ z-index:0; opacity:0.25; }
+#bgField .tunnelGrid .plane{ opacity:0.35 !important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField .particleLayer img.anim{display:none}
+  #bgField .particleLayer img.still{display:block}
+}
+
 </style>
 </head>
 <body>
@@ -1794,7 +1827,7 @@ function bootThreeOrbit(){
     for(let i=0;i<N;i++){
       const a=Math.random()*Math.PI*2, b=(Math.random()-0.5)*Math.PI, r=0.9+Math.random()*1.4;
       pos[i*3]=Math.cos(a)*Math.cos(b)*r; pos[i*3+1]=Math.sin(b)*r*0.72; pos[i*3+2]=Math.sin(a)*Math.cos(b)*r;
-      const k=0.55+Math.random()*0.45; col[i*3]=0.45*k+0.25*(i%3===0?k:0); col[i*3+1]=0.55*k; col[i*3+2]=0.95*k;
+      const k=0.55+Math.random()*0.45; col[i*3]=0.95*k; col[i*3+1]=0.12*k; col[i*3+2]=0.12*k;
     }
     const geo=new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(pos,3));
