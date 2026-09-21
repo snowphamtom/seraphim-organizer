@@ -2785,10 +2785,178 @@ html,body{
   #bgField > .trioField{ --hub-x:50%!important; --hub-y:50%!important; }
 }
 
+
+/* clientLegible — every on-screen label readable over the trio field */
+#top{
+  background:rgba(2,6,14,.82)!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.1)!important;
+  backdrop-filter:blur(20px) saturate(1.2)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(1.2)!important;
+}
+#top .title{
+  font-size:.72rem!important;
+  letter-spacing:.22em!important;
+  color:#f4fbff!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.95), 0 0 12px rgba(0,0,0,.8)!important;
+  opacity:1!important;
+}
+#top .metrics{
+  opacity:1!important;
+  font-size:.58rem!important;
+  color:rgba(220,236,248,.92)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.9)!important;
+}
+#top .metrics b{
+  color:#fff!important;
+  font-weight:700!important;
+}
+#top .metrics .a b{ color:#7eeef5!important; }
+#top .metrics .r b{ color:#f0a8ff!important; }
+#top #mSHWrap{ opacity:.85!important; color:rgba(230,240,255,.88)!important; }
+
+#uploadBox,
+#sortedFigures .tray{
+  background:linear-gradient(165deg, rgba(4,10,20,.88) 0%, rgba(2,6,12,.92) 100%)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.5),
+    0 18px 48px rgba(0,0,0,.72),
+    inset 0 1px 0 rgba(255,255,255,.1)!important;
+  backdrop-filter:blur(22px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.15)!important;
+}
+#uploadBox{ border-color:rgba(94,234,212,.55)!important; }
+#sortedFigures .tray.admit{ border-color:rgba(94,234,212,.5)!important; }
+#sortedFigures .tray.release{ border-color:rgba(232,121,249,.5)!important; }
+
+#uploadBox::before,
+#sortedFigures .tray::before{
+  background:linear-gradient(180deg, rgba(18,28,44,.98) 0%, rgba(6,10,18,.98) 100%)!important;
+  border-bottom:1px solid rgba(255,255,255,.12)!important;
+}
+
+#uploadBox .uh b,
+#sortedFigures .tray h3{
+  font-size:.68rem!important;
+  letter-spacing:.14em!important;
+  color:#f5fbff!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
+  opacity:1!important;
+}
+#uploadBox .uh span{
+  font-size:.55rem!important;
+  color:rgba(200,224,240,.78)!important;
+  opacity:1!important;
+}
+#sortedFigures .tray.admit h3{ color:#9af3fa!important; }
+#sortedFigures .tray.release h3{ color:#f3b8ff!important; }
+#sortedFigures .tray .count{
+  opacity:.9!important;
+  color:rgba(230,242,255,.88)!important;
+  font-size:.62rem!important;
+}
+
+#uploadBox .dropHint{
+  font-size:.62rem!important;
+  color:rgba(220,238,252,.88)!important;
+  background:rgba(0,12,24,.72)!important;
+  border:1px dashed rgba(94,234,212,.45)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.85)!important;
+}
+#uploadBox .dropHint em{ color:#9af8ff!important; font-weight:700!important; }
+
+#uploadBox textarea,
+#pasteDesk{
+  font-size:.62rem!important;
+  line-height:1.45!important;
+  color:#eef6ff!important;
+  background:rgba(0,4,12,.82)!important;
+  border:1px solid rgba(94,234,212,.35)!important;
+  caret-color:#9af8ff!important;
+  text-shadow:none!important;
+}
+#uploadBox textarea::placeholder,
+#pasteDesk::placeholder{
+  color:rgba(160,190,210,.55)!important;
+  opacity:1!important;
+}
+
+#uploadBox .actions .filebtn,
+#uploadBox .actions button,
+#uploadBox .actions select,
+.folderExport button{
+  font-size:.58rem!important;
+  color:rgba(210,240,250,.92)!important;
+  opacity:1!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.85)!important;
+}
+#uploadBox .actions #runSort{
+  color:#9af8ff!important;
+  font-weight:700!important;
+  font-size:.62rem!important;
+}
+#uploadBox .actions #clearDesk,
+#uploadBox .actions .ghost-chip{
+  color:rgba(190,210,230,.75)!important;
+}
+
+#sortedFigures .chipFig{
+  font-size:.6rem!important;
+  line-height:1.4!important;
+  color:rgba(230,242,255,.92)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.9)!important;
+  opacity:1!important;
+}
+#sortedFigures .tray.admit .chipFig{ color:rgba(200,248,252,.95)!important; }
+#sortedFigures .tray.release .chipFig{ color:rgba(246,220,255,.95)!important; }
+#sortedFigures .chipFig .k{
+  opacity:.75!important;
+  color:rgba(180,210,230,.85)!important;
+}
+#sortedFigures .empty{
+  font-size:.58rem!important;
+  color:rgba(170,200,220,.65)!important;
+  opacity:1!important;
+  font-style:normal!important;
+}
+
+.folderExport button{
+  padding:.2rem .45rem!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  border-radius:6px!important;
+  background:rgba(0,8,16,.55)!important;
+  margin:0 .25rem .35rem 0!important;
+}
+.folderExport button:hover{
+  color:#fff!important;
+  border-color:rgba(94,234,212,.5)!important;
+}
+
+#tip{
+  display:none;
+  font-size:.64rem!important;
+  line-height:1.4!important;
+  color:#f2f7ff!important;
+  background:rgba(2,8,16,.92)!important;
+  border:1px solid rgba(94,234,212,.4)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.9)!important;
+  padding:.55rem .7rem!important;
+}
+#tip b{ font-size:.7rem!important; color:#fff!important; }
+#tip .whisper{ opacity:.92!important; color:rgba(210,230,245,.9)!important; font-size:.58rem!important; }
+
+/* slightly quieter field under desk band so type wins */
+@media (min-width:901px){
+  #bgField .trioField{ opacity:.82!important; }
+  #bgField .trioGrid{ opacity:.78!important; }
+  #bgField .trioCore{ opacity:.92!important; }
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
+<div id="bgField" aria-hidden="true"><!-- clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
   <div class="trioField" aria-hidden="true">
     <img class="trioField anim" src="media/trio-field-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
     <img class="trioField still" src="media/trio-field-keyed.png" alt="" width="500" height="500" decoding="async">
