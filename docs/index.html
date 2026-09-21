@@ -1284,6 +1284,104 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 
+
+/* clientContrastBlack — deep void + high contrast field (don't fear black) */
+html,body,#bgField{
+  background:#000!important;
+}
+#bgField{
+  background:#000!important;
+}
+/* crush mid grays; let neon sit on true black */
+#bgField .spiralField,
+#bgField .tunnelWindowsKeyed,
+#bgField .hexCoreKeyed{
+  filter:
+    saturate(1.45)
+    contrast(1.38)
+    brightness(0.92)
+    hue-rotate(8deg)
+    drop-shadow(0 0 16px rgba(34,211,238,.14))!important;
+}
+#bgField .spiralField{
+  opacity:0.72!important;
+}
+#bgField .spiralField img{
+  filter:
+    saturate(1.55)
+    hue-rotate(95deg)
+    contrast(1.42)
+    brightness(0.88)!important;
+}
+#bgField .tunnelWindowsKeyed{
+  opacity:0.88!important;
+}
+#bgField .tunnelWindowsKeyed img{
+  filter:
+    saturate(1.5)
+    hue-rotate(-10deg)
+    contrast(1.45)
+    brightness(0.9)!important;
+}
+#bgField .hexCoreKeyed{
+  opacity:1!important;
+}
+#bgField .hexCoreKeyed img{
+  filter:
+    saturate(1.55)
+    hue-rotate(-6deg)
+    contrast(1.5)
+    brightness(0.94)!important;
+}
+/* grade wash quieter so black breathes */
+#bgField::after{
+  opacity:0.18!important;
+  mix-blend-mode:color-dodge!important;
+  background:
+    radial-gradient(circle at 50% 38%,
+      rgba(34,211,238,.22) 0%,
+      transparent 42%,
+      rgba(232,121,249,.16) 62%,
+      transparent 82%)!important;
+}
+@keyframes gradePulse{
+  0%{ opacity:0.12; }
+  100%{ opacity:0.22; }
+}
+/* spin glow — contrast-forward, still on black */
+@keyframes spinGlow{
+  0%{ filter:saturate(1.45) hue-rotate(-8deg) brightness(0.9) contrast(1.42) blur(0.35px)!important; }
+  100%{ filter:saturate(1.6) hue-rotate(-8deg) brightness(1.02) contrast(1.55) blur(0px)!important; }
+}
+/* softer edge masks — keep black rim visible at frame */
+#bgField .spiralField{
+  -webkit-mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,
+    #000 0%, #000 58%, rgba(0,0,0,.85) 82%, transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,
+    #000 0%, #000 58%, rgba(0,0,0,.85) 82%, transparent 100%)!important;
+}
+#bgField .tunnelWindowsKeyed{
+  -webkit-mask-image:radial-gradient(ellipse 88% 88% at 50% 50%,
+    #000 0%, #000 55%, rgba(0,0,0,.9) 84%, transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 88% 88% at 50% 50%,
+    #000 0%, #000 55%, rgba(0,0,0,.9) 84%, transparent 100%)!important;
+}
+#bgField .hexCoreKeyed{
+  -webkit-mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,
+    #000 0%, #000 52%, rgba(0,0,0,.92) 86%, transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,
+    #000 0%, #000 52%, rgba(0,0,0,.92) 86%, transparent 100%)!important;
+}
+#fx{ opacity:0.42!important; }
+/* glass windows: darker plates so they sit in the void */
+#uploadBox,
+#sortedFigures .tray,
+#trayAdmit,
+#trayRelease{
+  background:linear-gradient(165deg, rgba(0,0,0,.62) 0%, rgba(4,10,18,.48) 100%)!important;
+  border-color:rgba(180,230,255,.16)!important;
+}
+
 /* clientSpinHarmonic — rotational spin instead of forward/back scale */
 #bgField .spiralField{
   animation:spiralSpin 144s linear infinite!important; /* φ-ish slow */
@@ -4071,7 +4169,7 @@ function drawDodecaFrame(cx,cy,s,t){
   for(const ed of edged){
     const {a,b,ei,md}=ed;
     const near=Math.max(0.18, Math.min(1, 0.48+md*0.22));
-    const a0=0.07*near*(0.7+0.3*breath);
+    const a0=0.14*near*(0.75+0.25*breath); /* clientContrastBlack */
     ctx.strokeStyle=hsl((ei%2?305:195)+ei,90,62,a0); /* clientCenterDyn cyan/mag */
     ctx.lineWidth=(thin?0.45:0.65)*near;
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
