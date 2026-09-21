@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -327,106 +327,25 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   background-repeat:no-repeat;
   mix-blend-mode:screen;
 }
-#bgField .meta.plexus{
-  background-image:url(bg-plexus.gif);
-  opacity:0; /* polishPass3: unsorted field whisper — seal owns contrast */
-  filter:grayscale(1) brightness(0.78);
-}
-#bgField .meta.grid{
-  background-image:url(bg-grid.gif);
-  opacity:0;
-  filter:grayscale(1) brightness(0.74);
-  transform:scale(1.06);
-  transform-origin:center center;
-}
-#bgField .meta.blobs{
-  background-image:url(bg-metaballs.gif);
-  opacity:0; /* soft depth only — no mud */
-  filter:invert(1) grayscale(1) brightness(0.65);
-}
-@media (max-width:900px){
-  #bgField .meta.plexus{opacity:0.10}
-  #bgField .meta.grid{opacity:0.06}
-  #bgField .meta.blobs{opacity:0.03}
-}
-@media (prefers-reduced-motion:reduce){
-  #bgField .meta.plexus{opacity:0.10}
-  #bgField .meta.grid{opacity:0.06}
-  #bgField .meta.blobs{opacity:0.04}
+
+
+
+
+
+
+/* customProcedural: stock/reference GIF plates retired — field is canvas-painted */
+#bgField .meta.city,#bgField .meta.cluster,#bgField .meta.sculpture,#bgField .meta.neon,#bgField .meta.ink,
+#bgField .meta.plexus,#bgField .meta.grid,#bgField .meta.blobs{
+  display:none!important;background:none!important;opacity:0!important;pointer-events:none!important;
 }
 
-#bgField .meta.city{
-  /* chimera: city-glint HUD geometry underlayer — quiet structure */
-  inset:0;width:auto;height:auto;top:0;left:0;right:0;bottom:0;
-  background-image:url(bg-city-glint.gif);
-  background-size:cover;background-position:center;background-repeat:no-repeat;
-  opacity:0.22;mix-blend-mode:soft-light;
-  filter:contrast(1.05) saturate(0.55) brightness(0.65);
-  pointer-events:none;transform-origin:center center;will-change:transform,opacity;
-}
-#bgField .meta.cluster{
-  /* chimera: terrainWarp motion field — diagonal scroll + undulation (JS) */
-  inset:0;width:auto;height:auto;top:0;left:0;right:0;bottom:0;transform:none;
-  background-image:url(bg-terrain-warp.gif);
-  background-size:150% 150%;
-  background-position:50% 50%;
-  background-repeat:repeat;
-  opacity:0.34;mix-blend-mode:screen;
-  filter:contrast(1.08) saturate(0.75) brightness(0.62) hue-rotate(12deg);
-  pointer-events:none;transform-origin:center center;
-  will-change:transform,opacity,background-position;
-}
-#bgField .meta.sculpture{
-  /* chimera: data-sculpture spectrum bridge — mid whisper */
-  inset:auto;width:min(115vmin,1050px);height:min(115vmin,1050px);
-  top:50%;left:50%;transform:translate(-50%,-50%);transform-origin:center center;
-  background-image:url(bg-data-sculpture.png);
-  background-size:contain;background-position:center;background-repeat:no-repeat;
-  opacity:0.24;mix-blend-mode:screen;
-  filter:saturate(0.85) contrast(1.08) brightness(0.78);
-  pointer-events:none;will-change:transform,left,top,opacity;
-}
-#bgField .meta.neon{
-  /* chimera: neon dodeca ghost — companion, never louder than live seal */
-  inset:auto;width:min(68vmin,600px);height:min(68vmin,600px);
-  top:50%;left:50%;transform:translate(-50%,-50%);transform-origin:center center;
-  background-image:url(bg-dodeca-neon.gif);
-  background-size:contain;background-position:center;background-repeat:no-repeat;
-  opacity:0.22;mix-blend-mode:screen;
-  filter:saturate(0.9) brightness(0.92) hue-rotate(8deg);
-  pointer-events:none;will-change:transform,left,top,opacity;
-}
-#bgField .meta.ink{
-  /* chimera: ink wire memory — ultra-soft lines-only echo (not authority) */
-  inset:auto;width:min(90vmin,820px);height:min(90vmin,820px);
-  top:50%;left:50%;transform:translate(-50%,-50%);transform-origin:center center;
-  background-image:url(bg-holo-cluster-ink.gif);
-  background-size:contain;background-position:center;background-repeat:no-repeat;
-  opacity:0.10;mix-blend-mode:screen;
-  filter:invert(1) brightness(1.2) contrast(1.1) opacity(0.85);
-  pointer-events:none;will-change:transform,left,top,opacity;
-}
-@media (max-width:900px){
-  #bgField .meta.city{opacity:0.14}
-  #bgField .meta.cluster{opacity:0.26;background-size:165% 165%;filter:contrast(1.04) saturate(0.65) brightness(0.55) hue-rotate(12deg)}
-  #bgField .meta.sculpture{width:125vmin;height:125vmin;opacity:0.16}
-  #bgField .meta.neon{width:54vmin;height:54vmin;opacity:0.16}
-  #bgField .meta.ink{width:70vmin;height:70vmin;opacity:0.07}
-}
-@media (prefers-reduced-motion:reduce){
-  #bgField .meta.city{opacity:0.12}
-  #bgField .meta.cluster{opacity:0.18;background-size:cover;background-position:center}
-  #bgField .meta.sculpture{opacity:0.12}
-  #bgField .meta.neon{opacity:0.10}
-  #bgField .meta.ink{opacity:0.05}
-}
 
 
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div><div class="meta city"></div><div class="meta cluster"></div><div class="meta sculpture"></div><div class="meta neon"></div><div class="meta ink"></div></div>
+<div id="bgField" aria-hidden="true"></div>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.14"></canvas><!-- fgContrast: WebGL underlay quieter so seal+HUD win -->
 <header id="top">
@@ -858,7 +777,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -881,7 +800,7 @@ const STORIES = {
    - fogShards: skip ≤900; α×0.5
    - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
    - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
-   - chimeraUltimate: city-glint + terrainWarp + sculpture + neon + ink-echo; shared-center φ-gyro; seal/HUD contrast retained
+   - customProcedural: GIF plates retired; terrain/glint/sculpture/neon-ghost/ink-echo are ORIGINAL canvas (refs = inspiration only)
    - chromatic edges: skip ≤900; α×0.5 (magenta/cyan/indigo fringe)
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
@@ -1745,64 +1664,182 @@ let _clusterEl=null;
 
 let _neonEl=null,_sculptEl=null;
 let _cityEl=null,_glintEl=null,_inkEl=null;
-function syncGyroSharedCenter(cx,cy,s,t){
-  /* chimeraUltimate: EVERY figure shares seal center — φ-family gyro + balanced opacity so seal/HUD win */
-  if(!_neonEl) _neonEl=document.querySelector("#bgField .meta.neon");
-  if(!_sculptEl) _sculptEl=document.querySelector("#bgField .meta.sculpture");
-  if(!_cityEl) _cityEl=document.querySelector("#bgField .meta.cluster");
-  if(!_glintEl) _glintEl=document.querySelector("#bgField .meta.city");
-  if(!_inkEl) _inkEl=document.querySelector("#bgField .meta.ink");
-  const yaw=cam.yaw+cam.userYaw, pitch=cam.pitch+cam.userPitch, roll=cam.roll+cam.userRoll;
-  const breath=0.5+0.5*Math.sin(t*TEMPO.base*PHI);
-  const breath2=0.5+0.5*Math.sin(t*TEMPO.base/PHI+1.2);
-  const origin=(cx/Math.max(W,1)*100)+"% "+(cy/Math.max(H,1)*100)+"%";
-  /* city-glint underlayer — slow counter-precession */
-  if(_glintEl){
-    _glintEl.style.transformOrigin=origin;
-    const grot=-t*TEMPO.base*TEMPO.city*8 - yaw*5;
-    _glintEl.style.transform="rotate("+grot+"deg) scale(1.05)";
-    _glintEl.style.opacity=String((W<=900?0.12:0.20)+(0.03*breath2));
-  }
-  /* terrain motion field */
-  if(_cityEl){
-    const ox=(t*TEMPO.base*TEMPO.terrain*42)%100;
-    const oy=(t*TEMPO.base*TEMPO.terrain*28)%100;
-    _cityEl.style.backgroundPosition=(50+ox)+"% "+(50-oy)+"%";
-    const und=Math.sin(t*TEMPO.base*TEMPO.undulate*PHI)*2.2;
-    const und2=Math.cos(t*TEMPO.base*TEMPO.undulate)*1.4;
-    const crot=yaw*3 + Math.sin(t*TEMPO.base*TEMPO.city)*2;
-    _cityEl.style.transformOrigin=origin;
-    _cityEl.style.transform="translate("+und+"px,"+(-und*0.65+und2)+"px) rotate("+crot+"deg) scale("+(1.1+0.035*breath2)+") skewX("+(und*0.18)+"deg) skewY("+(und2*0.1)+"deg)";
-    _cityEl.style.opacity=String((W<=900?0.24:0.32)+(0.05*breath)+(0.03*breath2));
-  }
-  /* data sculpture */
-  if(_sculptEl){
-    const ssz=Math.max(260, Math.min(Math.min(W,H)*1.5, s*3.4));
-    _sculptEl.style.left=cx+"px"; _sculptEl.style.top=cy+"px";
-    _sculptEl.style.width=ssz+"px"; _sculptEl.style.height=ssz+"px";
-    const srot=(-yaw*TEMPO.sculpt*57.3 - t*TEMPO.base*TEMPO.sculpt*22 + pitch*12);
-    _sculptEl.style.transform="translate(-50%,-50%) rotate("+srot+"deg) scale("+(1.02+0.05*breath2)+")";
-    _sculptEl.style.opacity=String((W<=900?0.14:0.22)+(0.05*breath));
-  }
-  /* neon ghost */
-  if(_neonEl){
-    const sz=Math.max(150, Math.min(Math.min(W,H)*1.0, s*2.2));
-    _neonEl.style.left=cx+"px"; _neonEl.style.top=cy+"px";
-    _neonEl.style.width=sz+"px"; _neonEl.style.height=sz+"px";
-    const rotDeg=(-yaw*TEMPO.neon*57.3 + roll*40 + t*TEMPO.base*TEMPO.neon*18);
-    _neonEl.style.transform="translate(-50%,-50%) rotate("+rotDeg+"deg) skewX("+(pitch*7)+"deg) scale("+(0.94+0.06*breath)+")";
-    _neonEl.style.opacity=String((W<=900?0.14:0.20)+(0.05*breath2));
-  }
-  /* ink wire echo */
-  if(_inkEl){
-    const isz=Math.max(200, Math.min(Math.min(W,H)*1.15, s*2.8));
-    _inkEl.style.left=cx+"px"; _inkEl.style.top=cy+"px";
-    _inkEl.style.width=isz+"px"; _inkEl.style.height=isz+"px";
-    const irot=yaw*TEMPO.sculpt*40 + t*TEMPO.base*8;
-    _inkEl.style.transform="translate(-50%,-50%) rotate("+irot+"deg) scale("+(0.98+0.04*breath)+")";
-    _inkEl.style.opacity=String((W<=900?0.06:0.10)+(0.03*breath2));
-  }
+
+/* —— chimera custom procedural field (inspiration-only; no stock GIF plates) —— */
+function n2(x,y){ /* value noise */
+  const s=Math.sin(x*127.1+y*311.7)*43758.5453; return s-Math.floor(s);
 }
+function fbm2(x,y){
+  let v=0,a=0.5;
+  for(let i=0;i<4;i++){ v+=a*n2(x,y); x=x*2.07+19.2; y=y*2.07-7.3; a*=0.5; }
+  return v;
+}
+function drawChimeraTerrain(cx,cy,s,t){
+  /* inspired by crystalline scroll/warp — original grid+pits, not a plate */
+  if(reduceMotion) return;
+  const thin=W<=480, mobile=W<=900;
+  const cols=thin?10:(mobile?14:20), rows=thin?8:(mobile?11:15);
+  const scroll=t*TEMPO.base*TEMPO.terrain;
+  const cellW=W/(cols-1), cellH=H/(rows-1);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  /* warped height field */
+  const und=Math.sin(t*TEMPO.base*TEMPO.undulate*PHI)*0.35;
+  for(let j=0;j<rows;j++){
+    for(let i=0;i<cols;i++){
+      const u=(i/cols)+scroll*0.15, v=(j/rows)-scroll*0.11;
+      const warp=fbm2(u*3.2+und, v*3.2-und*0.7);
+      const pit=Math.pow(Math.max(0, warp-0.42), 1.35);
+      const x=i*cellW + Math.sin(v*6+t*0.4)*cellW*0.08*und;
+      const y=j*cellH + Math.cos(u*5+t*0.35)*cellH*0.07*und;
+      /* surface grid tick */
+      if(i<cols-1){
+        ctx.strokeStyle=hsl(185+warp*40,70,55,0.035+pit*0.04);
+        ctx.lineWidth=0.55;
+        ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo((i+1)*cellW, y+Math.sin((u+0.05)*5)*2); ctx.stroke();
+      }
+      if(j<rows-1){
+        ctx.strokeStyle=hsl(200+warp*30,65,50,0.03+pit*0.035);
+        ctx.lineWidth=0.5;
+        ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+Math.cos(v*4)*2,(j+1)*cellH); ctx.stroke();
+      }
+      /* crystalline pit facets toward seal bias */
+      if(pit>0.08){
+        const dx=cx-x, dy=cy-y, d=Math.hypot(dx,dy)||1;
+        const pull=Math.min(1, (s*1.8)/d);
+        const hue=160+pit*80+i*3;
+        const depth=4+pit*18*pull;
+        ctx.strokeStyle=hsl(hue,85,58,0.045+pit*0.08*(0.4+0.6*pull));
+        ctx.lineWidth=0.7+pit;
+        ctx.beginPath();
+        ctx.moveTo(x-cellW*0.2,y);
+        ctx.lineTo(x, y+depth);
+        ctx.lineTo(x+cellW*0.25,y);
+        ctx.stroke();
+        ctx.strokeStyle=hsl(300-pit*40,80,55,0.03+pit*0.06*pull);
+        ctx.beginPath();
+        ctx.moveTo(x,y); ctx.lineTo(x+dx/d*depth*0.6, y+dy/d*depth*0.6); ctx.stroke();
+      }
+    }
+  }
+  ctx.restore();
+}
+function drawChimeraGlintHUD(cx,cy,s,t){
+  /* inspired by chip/city glints — sparse luminous rect edges around shared center */
+  if(reduceMotion||W<=480) return;
+  const n=W<=900?18:32;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  const spin=t*TEMPO.base*TEMPO.city;
+  for(let i=0;i<n;i++){
+    const seed=n2(i*1.7, i*3.1);
+    const a=spin*0.4 + seed*Math.PI*2;
+    const r=s*(0.7+seed*1.6+0.2*Math.sin(t*TEMPO.base+i));
+    const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r*0.9;
+    const w=6+seed*28, h=3+seed*14;
+    const hue=190+seed*50;
+    ctx.strokeStyle=hsl(hue,75,60,0.04+0.05*Math.sin(t+i));
+    ctx.lineWidth=0.6;
+    ctx.strokeRect(x-w*0.5, y-h*0.5, w, h);
+    if(seed>0.65){
+      ctx.fillStyle=hsl(hue+20,90,70,0.05);
+      ctx.fillRect(x-1,y-1,2,2);
+    }
+  }
+  ctx.restore();
+}
+function drawChimeraSculpture(cx,cy,s,t){
+  /* inspired by spectrum data-mass — original radial fibers from seal center */
+  if(reduceMotion) return;
+  const thin=W<=480, mobile=W<=900;
+  const spikes=thin?36:(mobile?64:110);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  const precess=t*TEMPO.base*TEMPO.sculpt;
+  for(let i=0;i<spikes;i++){
+    const u=i/spikes;
+    const a=u*Math.PI*2 + precess + 0.15*Math.sin(t*TEMPO.base*PHI+i*0.2);
+    const n=fbm2(Math.cos(a)*2+t*0.05, Math.sin(a)*2-t*0.04);
+    const len=s*(0.55+1.35*n + 0.25*Math.sin(t*TEMPO.base+i*0.31));
+    const x2=cx+Math.cos(a)*len, y2=cy+Math.sin(a)*len*0.92;
+    const hue=130+u*220 + 30*Math.sin(t*0.4+i*0.05);
+    const alpha=(thin?0.035:0.055)*(0.45+0.55*n);
+    const g=ctx.createLinearGradient(cx,cy,x2,y2);
+    g.addColorStop(0,hsl(hue,90,62,alpha*1.2));
+    g.addColorStop(0.55,hsl(hue+25,85,55,alpha*0.45));
+    g.addColorStop(1,hsl(hue+40,80,50,0));
+    ctx.strokeStyle=g;
+    ctx.lineWidth=0.45+n*0.7;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x2,y2); ctx.stroke();
+    if(!thin && n>0.55 && i%3===0){
+      ctx.fillStyle=hsl(hue,95,65,alpha*0.8);
+      ctx.beginPath(); ctx.arc(x2,y2,0.9+n,0,Math.PI*2); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+function drawChimeraNeonGhost(cx,cy,s,t){
+  /* inspired by neon companion dodeca — original counter-gyro green-cyan ghost of OUR seal */
+  if(reduceMotion||!DODECA||!DODECA.edges) return;
+  const mobile=W<=900;
+  ctx.save(); ctx.globalAlpha=mobile?0.14:0.20; ctx.globalCompositeOperation="lighter";
+  const gyaw=-(cam.yaw+cam.userYaw)*TEMPO.neon + t*TEMPO.base*TEMPO.neon*0.9;
+  const gpitch=-(cam.pitch+cam.userPitch)*0.35 + t*TEMPO.base*TEMPO.sculpt*0.4;
+  const groll=-(cam.roll+cam.userRoll)*0.5;
+  const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
+  const cosr=Math.cos(groll),sinr=Math.sin(groll);
+  const sc=1.12+0.04*Math.sin(t*TEMPO.base*PHI);
+  const xf=(x,y,z)=>{
+    let x1=x*cosy-z*siny, z1=x*siny+z*cosy, y1=y;
+    let y2=y1*cosp-z1*sinp; z1=y1*sinp+z1*cosp;
+    let x2=x1*cosr-y2*sinr; y2=x1*sinr+y2*cosr;
+    const persp=1/(1.55+z1*0.35);
+    return [cx+x2*persp*s*sc, cy+(-y2*persp)*s*0.92*sc, z1];
+  };
+  for(const [i,j] of DODECA.edges){
+    const A=DODECA.verts[i], B=DODECA.verts[j];
+    const a=xf(A.x,A.y,A.z), b=xf(B.x,B.y,B.z);
+    const near=Math.max(0.2, Math.min(1, ((a[2]+b[2])*0.5+0.4)/0.9));
+    ctx.strokeStyle=hsl(135+near*40+t*12,95,58,0.22*near);
+    ctx.lineWidth=0.85+near*0.5;
+    ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+  }
+  /* vertex nodes */
+  for(const v of DODECA.verts){
+    const p=xf(v.x,v.y,v.z);
+    const near=Math.max(0.15, Math.min(1,(p[2]+0.4)/0.85));
+    ctx.fillStyle=hsl(145,100,70,0.25*near);
+    ctx.beginPath(); ctx.arc(p[0],p[1],1.1+near*0.8,0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
+function drawChimeraInkEcho(cx,cy,s,t){
+  /* inspired by wire mass — soft chord web on projected verts, custom */
+  if(reduceMotion||W<=480||!DODECA._projVerts) return;
+  const pv=DODECA._projVerts;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  const maxD=s*0.55;
+  for(let i=0;i<pv.length;i++){
+    for(let j=i+1;j<pv.length;j++){
+      const a=pv[i], b=pv[j];
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d>maxD||d<8) continue;
+      const alpha=0.025*(1-d/maxD)*(0.5+0.5*Math.sin(t*TEMPO.base+i+j));
+      if(alpha<0.008) continue;
+      ctx.strokeStyle=hsl(200+i*8,70,70,alpha);
+      ctx.lineWidth=0.45;
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+function drawChimeraCustomField(cx,cy,s,t){
+  /* master stack — original paint, ideas only from prior refs */
+  drawChimeraTerrain(cx,cy,s,t);
+  if(!(W<=900 && (frameN&1))) drawChimeraGlintHUD(cx,cy,s,t);
+  drawChimeraSculpture(cx,cy,s,t);
+  drawChimeraNeonGhost(cx,cy,s,t);
+}
+
+function syncGyroSharedCenter(cx,cy,s,t){ /* DOM GIF plates retired — motion lives in drawChimera* */ }
+
 
 function syncClusterBehindSeal(cx,cy){
   if(!_clusterEl) _clusterEl=document.querySelector("#bgField .meta.cluster");
@@ -2893,12 +2930,15 @@ function frame(now){
   const verts=projectDodecaSeal(cxH,cyH,s);
   projectInnerCube(cxH,cyH,s);
   if(!reduceMotion) drawStarfieldInPanels(cxS,cyS,s,t,verts);
+  /* customProcedural underlay — original field before intake/seal */
+  syncGyroSharedCenter(cx,cy,s,t);
+  if(!reduceMotion) drawChimeraCustomField(cx,cy,s,t);
+  if(!reduceMotion){ drawGyroOrbitRings(cx,cy,s,t); drawHybridBridgeRays(cx,cy,s,t); }
+  if(!reduceMotion) drawChimeraInkEcho(cxH,cyH,s,t);
   // 2) mid organize — intake mouths → voxels(admit/cool) + mint(release/warm) → lattice tethers
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
   drawTrailsAndGlow(cxH,cyH,s,t);
-  syncGyroSharedCenter(cx,cy,s,t);
-  if(!reduceMotion){ drawGyroOrbitRings(cx,cy,s,t); drawHybridBridgeRays(cx,cy,s,t); }
   if(!(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t);
   if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
   drawSortShockwave(cx,cy,s);
