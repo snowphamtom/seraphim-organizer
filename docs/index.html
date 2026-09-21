@@ -4292,11 +4292,74 @@ html,body{
   #bgField > .hexVoid .plane{ animation:none !important; transform:translate(-50%,-50%) scale(1.02) !important; }
 }
 
-/* kill paper-white plates — honey was multiply-on-white; retire as back authority */
-#bgField > .honeyBack{
-  display:none !important; visibility:hidden !important; opacity:0 !important;
-  pointer-events:none !important;
+/* ========== clientGoldHoneyFill — gold isometric cubes tiled INSIDE honeycomb cells / under-plate ========== */
+:root{
+  --gold-tile-w:min(16vmin,128px);
+  --gold-tile-h:calc(var(--gold-tile-w) * 1.828125); /* 512×936 tile aspect */
 }
+#bgField > .hexVoid .goldFill,
+#bgField > .honeyBack .goldFill{
+  position:absolute !important;
+  left:var(--seal-x,50%) !important;
+  top:var(--seal-y,50%) !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:50% 50% !important;
+  background-image:url("media/gold-cubes.webp") !important;
+  background-size:var(--gold-tile-w) var(--gold-tile-h) !important;
+  background-repeat:repeat !important;
+  background-position:50% 50% !important;
+  pointer-events:none !important;
+  filter:saturate(1.08) contrast(1.04) brightness(1.02) !important;
+}
+/* hexVoid under-plate: gold in cell wells; neon ribs stay via plane lighten */
+#bgField > .hexVoid .goldFill{
+  width:max(130vw,130vh) !important;
+  height:max(130vw,130vh) !important;
+  z-index:0 !important;
+  opacity:0.62 !important;
+  mix-blend-mode:normal !important;
+  animation:hexVoidPivot var(--field-T3,var(--Tphi3,7.718s)) linear infinite alternate !important;
+}
+#bgField > .hexVoid .plane{
+  z-index:1 !important;
+  mix-blend-mode:lighten !important; /* dark cell insets reveal gold; cyan→purple ribs remain */
+  opacity:1 !important;
+}
+/* honeyBack revived as gold cell fill + inverted neon lattice (not paper-white authority) */
+#bgField > .honeyBack{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  z-index:-2 !important;
+  pointer-events:none !important; overflow:hidden !important;
+  opacity:1 !important;
+}
+#bgField > .honeyBack .goldFill{
+  width:var(--field-cover,170vmin) !important;
+  height:var(--field-cover,170vmin) !important;
+  z-index:0 !important;
+  opacity:0.48 !important;
+  mix-blend-mode:normal !important;
+  animation:fieldHoneyDrift var(--field-T3,var(--Tphi3,7.718s)) linear infinite !important; /* clientMotionHarmonic φ */
+}
+#bgField > .honeyBack .rgbTile{
+  z-index:1 !important;
+  opacity:0.14 !important;
+  mix-blend-mode:screen !important; /* dark void — keyed RGB whisper */
+}
+#bgField > .honeyBack .plane{
+  z-index:2 !important;
+  mix-blend-mode:multiply !important; /* white cell faces → gold shows through; thin neon lines stay */
+  opacity:0.85 !important;
+  filter:contrast(1.12) saturate(1.25) brightness(1.05) !important;
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField > .hexVoid .goldFill,
+  #bgField > .honeyBack .goldFill{
+    animation:none !important;
+  }
+}
+/* end clientGoldHoneyFill */
+
 
 /* opacity ladder on DARK: hexVoid(-3) < crystal(-1) < lattice(0) < gifts(1) < fx/engine(3) */
 #bgField > .crystalWash{
@@ -4392,12 +4455,14 @@ html,body{
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientHexVoid|clientHoneyBack|clientCrystalWash|clientFaceFillOmni -->
-  <div class="hexVoid" aria-hidden="true"><!-- clientHexVoid: cyan→purple 3D hex on black — furthest back -->
+<div id="bgField" aria-hidden="true"><!-- clientHexVoid|clientHoneyBack|clientGoldHoneyFill|clientCrystalWash|clientFaceFillOmni -->
+  <div class="hexVoid" aria-hidden="true"><!-- clientHexVoid|clientGoldHoneyFill: cyan→purple 3D hex + gold cell under-plate -->
+    <div class="goldFill" role="presentation"></div><!-- clientGoldHoneyFill -->
     <div class="plane" role="presentation"></div>
   </div>
 
-  <div class="honeyBack" aria-hidden="true"><!-- clientHoneyBack: inverted honeycomb authority -->
+  <div class="honeyBack" aria-hidden="true"><!-- clientHoneyBack|clientGoldHoneyFill: gold cell fill + inverted honeycomb -->
+    <div class="goldFill" role="presentation"></div><!-- clientGoldHoneyFill -->
     <div class="rgbTile" role="presentation"></div>
     <div class="plane" role="presentation"></div>
   </div>
