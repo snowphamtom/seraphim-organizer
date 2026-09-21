@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -8257,126 +8257,7 @@ function drawFieldWhisper(cx,cy,s,t){
 
 
 
-function drawAxisRoomGrid(cx,cy,s,t){
-  /* clientAxisRoomDepth: angled corner room — floor X, wall Y, wall Z.
-     Strong perspective depth; grid bright everywhere seal ISN'T (radial veil). */
-  ctx.save();
-  const thin=W<=480, mobile=W<=900;
-  const n = reduceMotion ? 6 : (thin ? 8 : (mobile ? 11 : 14));
-  const step = 0.16;
-  const extent = step * n;
-  const breath = reduceMotion ? 0 : 0.01*Math.sin(t*TEMPO.base/(PHI*PHI));
-  const damp = 0; /* clientOmniGyroTree: room is background — no user orbit bleed */
-  const oYaw=cam.yaw,oPitch=cam.pitch,oRoll=cam.roll;
-  const oUY=cam.userYaw,oUP=cam.userPitch,oUR=cam.userRoll;
-  /* angled room — look into the corner for clear depth (floor foreshortened) */
-  cam.yaw = 0.78 + damp*(oYaw-0.48) + breath;
-  cam.pitch = 0.58 + damp*(oPitch-0.38);
-  cam.roll = 0.08 + damp*oRoll*0.4;
-  cam.userYaw = 0; cam.userPitch = 0; cam.userRoll = 0; /* room locked */
-
-  const Fx= -extent*0.35, Fy= -1.35, Fz= 0.15;
-  const wallBack = Fz + extent;
-  const wallSide = Fx;
-
-  /* seal occupancy radius in screen space — grid fades inside, bright outside */
-  const sealR = s * (thin ? 0.72 : 0.78);
-  function edgeBoost(px,py){
-    const dx=px-cx, dy=py-cy;
-    const d=Math.sqrt(dx*dx+dy*dy);
-    /* 0 near hub, 1 outside seal */
-    const t0 = Math.max(0, Math.min(1, (d - sealR*0.55) / (sealR*0.85)));
-    return t0*t0*(3-2*t0); /* smoothstep */
-  }
-
-  function strokeSeg(a,b,hue,baseA,lw){
-    const pa=project(a[0],a[1],a[2],cx,cy,s);
-    const pb=project(b[0],b[1],b[2],cx,cy,s);
-    const midX=(pa[0]+pb[0])*0.5, midY=(pa[1]+pb[1])*0.5;
-    const out = edgeBoost(midX, midY);
-    if(out < 0.04) return;
-    const depth=Math.min(pa[2],pb[2]);
-    const depthFade=Math.max(0.35, Math.min(1.15, 1.1-(depth+0.15)*0.35));
-    const alpha = baseA * (0.22 + 0.78*out) * depthFade * (thin?0.85:1);
-    if(alpha < 0.02) return;
-    ctx.strokeStyle=`rgba(18,20,28,${Math.min(0.78, alpha*1.55)})`;
-    ctx.lineWidth=lw * (0.75 + 0.55*out);
-    ctx.beginPath(); ctx.moveTo(pa[0],pa[1]); ctx.lineTo(pb[0],pb[1]); ctx.stroke();
-  }
-
-  ctx.globalCompositeOperation="source-over";
-  const lw=thin?0.85:(mobile?1.05:1.25);
-  const aFloor=reduceMotion?0.28:0.42;
-  const aWall=reduceMotion?0.24:0.36;
-
-  /* FLOOR y=Fy — X along floor, Z into depth */
-  for(let i=0;i<=n;i++){
-    const u=i/n;
-    const x=Fx+u*extent;
-    strokeSeg([x,Fy,Fz],[x,Fy,Fz+extent], 195, aFloor, lw);
-  }
-  for(let i=0;i<=n;i++){
-    const u=i/n;
-    const z=Fz+u*extent;
-    strokeSeg([Fx,Fy,z],[Fx+extent,Fy,z], 198, aFloor*0.95, lw);
-  }
-
-  /* WALL Y — back wall z=wallBack (vertical Y) */
-  for(let i=0;i<=n;i++){
-    const u=i/n;
-    const x=Fx+u*extent;
-    strokeSeg([x,Fy,wallBack],[x,Fy+extent*1.05,wallBack], 305, aWall, lw);
-  }
-  for(let i=0;i<=n;i++){
-    const u=i/n;
-    const y=Fy+u*extent*1.05;
-    strokeSeg([Fx,y,wallBack],[Fx+extent,y,wallBack], 300, aWall*0.92, lw);
-  }
-
-  /* WALL Z — side wall x=wallSide (vertical, Z depth) */
-  for(let i=0;i<=n;i++){
-    const u=i/n;
-    const z=Fz+u*extent;
-    strokeSeg([wallSide,Fy,z],[wallSide,Fy+extent*1.05,z], 210, aWall, lw);
-  }
-  for(let i=0;i<=n;i++){
-    const u=i/n;
-    const y=Fy+u*extent*1.05;
-    strokeSeg([wallSide,y,Fz],[wallSide,y,Fz+extent], 292, aWall*0.9, lw);
-  }
-
-  /* bright corner axes */
-  strokeSeg([Fx,Fy,Fz],[Fx+extent*0.7,Fy,Fz], 195, 0.55, lw*1.8);
-  strokeSeg([Fx,Fy,Fz],[Fx,Fy+extent*0.7,Fz], 305, 0.50, lw*1.8);
-  strokeSeg([Fx,Fy,Fz],[Fx,Fy,Fz+extent*0.7], 210, 0.50, lw*1.8);
-
-  /* floor–wall seams */
-  strokeSeg([Fx,Fy,wallBack],[Fx+extent,Fy,wallBack], 200, 0.40, lw*1.4);
-  strokeSeg([wallSide,Fy,Fz],[wallSide,Fy,Fz+extent], 215, 0.40, lw*1.4);
-  strokeSeg([wallSide,Fy,wallBack],[wallSide,Fy+extent*1.05,wallBack], 295, 0.38, lw*1.35);
-
-  if(!reduceMotion && !thin){
-    ctx.globalCompositeOperation="source-over";
-    ctx.font=(mobile?"9px":"11px")+" ui-monospace,SFMono-Regular,Menlo,monospace";
-    ctx.textAlign="center"; ctx.textBaseline="middle";
-    const glyphs=[
-      ["X", Fx+extent*0.72, Fy, Fz, 195],
-      ["Y", Fx, Fy+extent*0.72, Fz, 305],
-      ["Z", Fx, Fy, Fz+extent*0.72, 210]
-    ];
-    for(const [lab,x,y,z,hue] of glyphs){
-      const p=project(x,y,z,cx,cy,s);
-      const out=edgeBoost(p[0],p[1]);
-      if(out<0.15) continue;
-      ctx.fillStyle=`rgba(18,20,28,${0.40+0.45*out})`;
-      ctx.fillText(lab, p[0], p[1]);
-    }
-  }
-
-  cam.yaw=oYaw; cam.pitch=oPitch; cam.roll=oRoll;
-  cam.userYaw=oUY; cam.userPitch=oUP; cam.userRoll=oUR;
-  ctx.restore();
-}
+function drawAxisRoomGrid(cx,cy,s,t){ /* clientAxisGone: graph deleted */ return; }
 
 function frame(now){
   const dt=now-lastFrameTs; lastFrameTs=now;
@@ -8421,7 +8302,6 @@ function frame(now){
   const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom;
   const cx=W*0.5, cy=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY;
   drawFieldWhisper(cx,cy,s,t);
-  drawAxisRoomGrid(cx,cy,s,t);
   projectDodecaSeal(cx,cy,s);
   projectInnerCube(cx,cy,s);
   syncGyroSharedCenter(cx,cy,s,t);
