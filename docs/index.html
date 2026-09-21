@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientUniPurple|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2150,78 +2150,7 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 
 
 
-
-/* ========== clientUniPurple — three keyed uni layers; ONE shared θ; uniform purple ========== */
-#bgField{
-  --uni-spin:0deg;
-  --uni-tilt:6deg;
-  --uni-z-a:-28px;
-  --uni-z-b:0px;
-  --uni-z-c:24px;
-  background:#000!important;
-}
-#bgField > .uniStack{
-  --hub-x:50%;
-  --hub-y:50%;
-  --fill-w:max(100vw,100vh);
-  --fill-h:max(100vw,100vh);
-  position:fixed; inset:0; z-index:1;
-  pointer-events:none; overflow:hidden;
-  perspective:min(120vw,120vh);
-  perspective-origin:50% 50%;
-  transform-style:preserve-3d;
-}
-#bgField > .uniStack > img{
-  position:absolute;
-  left:var(--hub-x); top:var(--hub-y);
-  width:var(--fill-w); height:var(--fill-h);
-  max-width:none; max-height:none;
-  min-width:100vw; min-height:100vh;
-  margin:0; padding:0;
-  display:block;
-  object-fit:cover;
-  object-position:center center;
-  mix-blend-mode:screen;
-  transform-origin:center center;
-  transform-style:preserve-3d;
-  will-change:transform;
-  -webkit-mask-image:none; mask-image:none;
-  /* COLOR LAW — same purple/violet grade on every layer (match uni-b magenta-violet vibe) */
-  filter:contrast(1.48) brightness(1.12) saturate(1.65) hue-rotate(275deg)!important;
-}
-#bgField > .uniStack > img.still{ display:none; }
-#bgField > .uniStack > img.uniA{
-  opacity:.84; z-index:1;
-  transform:translate3d(-50%,-50%,var(--uni-z-a,-28px))
-            rotateX(var(--uni-tilt,6deg))
-            rotateZ(var(--uni-spin,0deg));
-}
-#bgField > .uniStack > img.uniB{
-  opacity:.92; z-index:2;
-  transform:translate3d(-50%,-50%,var(--uni-z-b,0px))
-            rotateX(var(--uni-tilt,6deg))
-            rotateZ(var(--uni-spin,0deg));
-}
-#bgField > .uniStack > img.uniC{
-  opacity:1; z-index:3;
-  transform:translate3d(-50%,-50%,var(--uni-z-c,24px))
-            rotateX(var(--uni-tilt,6deg))
-            rotateZ(var(--uni-spin,0deg));
-}
-#bgField > .uniStack::after{
-  content:"";
-  position:absolute; inset:0; z-index:5; pointer-events:none;
-  background:
-    radial-gradient(ellipse 85% 80% at 50% 48%, transparent 50%, rgba(40,0,60,.35) 100%),
-    linear-gradient(180deg, rgba(232,121,249,.08) 0%, transparent 30%, transparent 70%, rgba(192,38,211,.1) 100%);
-  opacity:.65;
-  mix-blend-mode:normal;
-}
-/* mute prior duo / hybrid / trio leftovers */
-#bgField .duoField,
-#bgField .trioField,
-#bgField .hybridA,
-#bgField .hybridB,
+/* clientTwoOnly + clientForcePerspective — viewport-sized, no enlarge; forced 3D VP */
 #bgField .spiralField,
 #bgField .beamRainWhisper,
 #bgField .tunnelWindowsKeyed,
@@ -2231,54 +2160,112 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 #bgField .hexCore,
 #bgField .tunnelGrid{ display:none!important; }
 
+#bgField .duoField{
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  overflow:hidden;
+  --hub-x:50%;
+  --hub-y:50%;
+  /* exact viewport — do NOT enlarge past screen */
+  --fill-w:100vw;
+  --fill-h:100vh;
+  perspective:min(100vw,100vh);
+  perspective-origin:50% 50%;
+  transform-style:preserve-3d;
+}
+#bgField .duoField img{
+  position:absolute;
+  left:var(--hub-x); top:var(--hub-y);
+  width:var(--fill-w); height:var(--fill-h);
+  max-width:100vw; max-height:100vh;
+  margin:0; padding:0;
+  display:block;
+  object-fit:cover;
+  object-position:center center;
+  mix-blend-mode:screen;
+  transform-origin:center center;
+  transform-style:preserve-3d;
+  will-change:transform;
+  -webkit-mask-image:none;
+          mask-image:none;
+}
+#bgField .duoField img.still{ display:none; }
+#bgField .duoField .hybridA{
+  opacity:.92; z-index:1;
+  filter:contrast(1.4) brightness(1.15) saturate(1.1);
+  /* translate -50/-50, force perspective tilt, spin; NO scale enlarge */
+  transform:translate3d(-50%,-50%,var(--duo-z-a,-120px))
+            rotateX(var(--duo-tilt,18deg))
+            rotateZ(var(--duo-a,0deg));
+}
+#bgField .duoField .hybridB{
+  opacity:.98; z-index:2;
+  filter:contrast(1.45) brightness(1.2) saturate(1.25);
+  transform:translate3d(-50%,-50%,var(--duo-z-b,40px))
+            rotateX(var(--duo-tilt,18deg))
+            rotateZ(var(--duo-b,0deg));
+}
 @media (prefers-reduced-motion:reduce){
-  #bgField > .uniStack{ perspective:none; }
-  #bgField > .uniStack > img.uniA,
-  #bgField > .uniStack > img.uniB,
-  #bgField > .uniStack > img.uniC{
+  #bgField .duoField{
+    perspective:none;
+  }
+  #bgField .duoField .hybridA,
+  #bgField .duoField .hybridB{
     transform:translate(-50%,-50%)!important;
   }
-  #bgField > .uniStack > img.anim{ display:none!important; }
-  #bgField > .uniStack > img.still{ display:block!important; }
-  #bgField > .uniStack::after{ opacity:.9; }
+  #bgField .duoField img.anim{ display:none!important; }
+  #bgField .duoField img.still{ display:block!important; }
 }
 
-/* clientNoOtherAesthetics — mute canvas / chrome noise; glass desk stays */
+
+/* clientNoOtherAesthetics — only hybrid-a + hybrid-b; mute everything else visual */
 #fx, #fxgl{ display:none!important; opacity:0!important; visibility:hidden!important; }
 #dataRail, #specBar, #introChip, #phaseWhisper, #navhint, #cheat{ display:none!important; }
 #top .whisper, #top .chip.law{ display:none!important; }
-#intake, #log, #sub, #moreWrap, #morePanel{ display:none!important; }
+.phaseWhisper, .magpieSealWorld, .nebulaWhisper, .beamRainWhisper,
+.spiralField, .tunnelWindowsKeyed, .hexCoreKeyed, .hexCore, .tunnelGrid{ display:none!important; }
 body{ background:#000!important; }
 
-/* clientUniPurple desk — purple tokens on current glass Upload/Organized/Aside UX */
+
+/* clientMasterpieceDuo — cinematic polish on the two-GIF field + glass desk */
 :root{
-  --void:#000!important;
-  --ink:#f5e9ff!important;
-  --mute:#a78bfa!important;
-  --admit:#e879f9!important;
-  --release:#c026d3!important;
-  --mint:#f0abfc!important;
-  --cyan:#d946ef!important;
-  --mag:#a855f7!important;
-  --warn:#fae8ff!important;
-  --glass:rgba(36,0,56,0.55)!important;
-  --line:rgba(232,121,249,0.55)!important;
-  --mp-cyan:#e879f9!important;
-  --mp-mag:#c026d3!important;
-  --mp-ink:rgba(245,233,255,.96)!important;
-  --mp-glass:rgba(36,0,56,.48)!important;
-  --mp-line:rgba(232,121,249,.28)!important;
+  --mp-cyan: #5eead4;
+  --mp-mag: #e879f9;
+  --mp-ink: rgba(236,244,255,.96);
+  --mp-glass: rgba(6,10,20,.48);
+  --mp-line: rgba(255,255,255,.08);
 }
-html,body{ background:#000!important; color:var(--ink)!important; }
+body{
+  background:#000!important;
+  color:var(--mp-ink)!important;
+}
+#bgField .duoField::after{
+  content:"";
+  position:absolute; inset:0; z-index:5; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 62% at 50% 48%, transparent 35%, rgba(0,0,0,.55) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.35) 0%, transparent 18%, transparent 72%, rgba(0,0,0,.55) 100%);
+}
+#bgField .duoField{
+  perspective:min(110vw,110vh)!important;
+  perspective-origin:50% 48%!important;
+}
+#bgField .duoField .hybridA{
+  opacity:.78!important;
+  filter:contrast(1.5) brightness(1.08) saturate(1.05) hue-rotate(8deg)!important;
+}
+#bgField .duoField .hybridB{
+  opacity:1!important;
+  filter:contrast(1.55) brightness(1.22) saturate(1.35)!important;
+}
 #top{
   top:max(14px, calc(var(--safe-t) + 6px))!important;
   width:auto!important;
   max-width:min(420px, calc(100vw - 28px))!important;
   padding:.28rem .85rem!important;
   gap:.55rem!important;
-  background:linear-gradient(180deg,rgba(40,0,56,.88),rgba(18,0,28,.9))!important;
-  border:1px solid rgba(232,121,249,.4)!important;
-  box-shadow:0 8px 28px rgba(0,0,0,.65), 0 0 24px rgba(168,85,247,.18), inset 0 1px 0 rgba(255,255,255,.06)!important;
+  background:rgba(4,8,16,.42)!important;
+  border:1px solid var(--mp-line)!important;
+  box-shadow:0 8px 32px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06)!important;
   backdrop-filter:blur(16px) saturate(1.2)!important;
   -webkit-backdrop-filter:blur(16px) saturate(1.2)!important;
 }
@@ -2286,140 +2273,117 @@ html,body{ background:#000!important; color:var(--ink)!important; }
   font-size:.62rem!important;
   letter-spacing:.28em!important;
   font-weight:650!important;
-  color:#f0abfc!important;
-  text-shadow:0 0 18px rgba(232,121,249,.55),0 0 36px rgba(168,85,247,.25)!important;
+  color:rgba(240,250,255,.92)!important;
+  text-shadow:0 0 18px rgba(94,234,212,.25)!important;
 }
-#top .metrics{ opacity:.7!important; font-size:.52rem!important; color:rgba(220,190,245,.9)!important; }
-#top .metrics b{ color:#fff!important; }
-#top .metrics .a b{ color:#f0abfc!important; text-shadow:0 0 10px rgba(232,121,249,.45)!important; }
-#top .metrics .r b{ color:#e879f9!important; text-shadow:0 0 10px rgba(192,38,211,.4)!important; }
-
+#top .metrics{
+  opacity:.55!important;
+  font-size:.52rem!important;
+  letter-spacing:.04em!important;
+}
+#top .metrics .a b{ color:var(--mp-cyan)!important; }
+#top .metrics .r b{ color:var(--mp-mag)!important; }
 #uploadBox,
 #sortedFigures .tray{
-  background:linear-gradient(165deg, rgba(48,0,72,.9) 0%, rgba(16,0,28,.94) 100%)!important;
-  border:1px solid rgba(232,121,249,.42)!important;
+  background:linear-gradient(165deg, rgba(12,18,32,.55) 0%, rgba(4,8,16,.62) 100%)!important;
+  border:1px solid var(--mp-line)!important;
   border-radius:16px!important;
   backdrop-filter:blur(18px) saturate(1.25)!important;
   -webkit-backdrop-filter:blur(18px) saturate(1.25)!important;
   box-shadow:
-    0 0 0 1px rgba(168,85,247,.15),
-    0 0 40px rgba(192,38,211,.12),
-    0 18px 48px rgba(0,0,0,.7),
+    0 0 0 1px rgba(255,255,255,.04),
+    0 20px 56px rgba(0,0,0,.55),
     inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
-#uploadBox{ border-color:rgba(232,121,249,.55)!important; }
-#sortedFigures .tray.admit{ border-color:rgba(240,171,252,.5)!important; }
-#sortedFigures .tray.release{ border-color:rgba(192,38,211,.5)!important; }
+#uploadBox{
+  border-color:rgba(94,234,212,.38)!important;
+  box-shadow:
+    0 0 0 1px rgba(94,234,212,.12),
+    0 0 40px rgba(34,211,238,.08),
+    0 20px 56px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+#sortedFigures .tray.admit{ border-color:rgba(94,234,212,.42)!important; }
+#sortedFigures .tray.release{ border-color:rgba(232,121,249,.4)!important; }
 #uploadBox::before,
 #sortedFigures .tray::before{
   height:26px!important;
   margin:-.55rem -.55rem .6rem!important;
   border-radius:16px 16px 0 0!important;
-  background:linear-gradient(180deg, rgba(72,20,96,.98) 0%, rgba(28,0,44,.98) 100%)!important;
-  border-bottom:1px solid rgba(232,121,249,.25)!important;
+  background:linear-gradient(180deg, rgba(32,40,58,.88) 0%, rgba(10,14,24,.9) 100%)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
 }
-#uploadBox::after{ color:rgba(240,171,252,.65)!important; text-shadow:0 0 8px rgba(232,121,249,.4)!important; }
-#sortedFigures .tray.admit::after{ color:rgba(240,171,252,.65)!important; }
-#sortedFigures .tray.release::after{ color:rgba(232,121,249,.7)!important; }
+#uploadBox::after{ color:rgba(94,234,212,.45)!important; }
+#sortedFigures .tray.admit::after{ color:rgba(94,234,212,.45)!important; }
+#sortedFigures .tray.release::after{ color:rgba(232,121,249,.5)!important; }
 #uploadBox .uh b,
 #sortedFigures .tray h3{
   letter-spacing:.18em!important;
   font-weight:600!important;
   font-size:.58rem!important;
-  color:#fae8ff!important;
-  text-shadow:0 1px 3px rgba(0,0,0,.95), 0 0 14px rgba(232,121,249,.35)!important;
 }
 #sortedFigures .tray.admit h3{
-  color:#f0abfc!important;
-  text-shadow:0 0 16px rgba(232,121,249,.7)!important;
+  color:rgba(165,243,252,.95)!important;
+  text-shadow:0 0 14px rgba(34,211,238,.35)!important;
 }
 #sortedFigures .tray.release h3{
-  color:#e9d5ff!important;
-  text-shadow:0 0 14px rgba(192,38,211,.55)!important;
+  color:rgba(240,171,252,.95)!important;
+  text-shadow:0 0 14px rgba(232,121,249,.3)!important;
 }
-#uploadBox .uh span{ color:rgba(220,190,245,.75)!important; }
 #uploadBox .dropHint{
   border-radius:10px!important;
-  border:1px dashed rgba(232,121,249,.45)!important;
-  background:rgba(40,0,60,.75)!important;
-  color:rgba(245,230,255,.9)!important;
+  border:1px dashed rgba(94,234,212,.32)!important;
+  background:rgba(0,20,32,.4)!important;
 }
-#uploadBox .dropHint em{ color:#f0abfc!important; }
 #uploadBox textarea{
   border-radius:10px!important;
-  background:rgba(20,0,32,.88)!important;
-  border:1px solid rgba(232,121,249,.4)!important;
-  color:#fae8ff!important;
-  caret-color:#f0abfc!important;
+  background:rgba(0,6,14,.55)!important;
+  border:1px solid rgba(94,234,212,.22)!important;
+  color:rgba(230,242,255,.92)!important;
 }
-#uploadBox .actions #runSort{ color:#f0abfc!important; letter-spacing:.08em!important; }
-#uploadBox .actions .filebtn,
-#uploadBox .actions button,
-#uploadBox .actions select,
-.folderExport button{
-  color:rgba(245,230,255,.92)!important;
-  border-color:rgba(192,132,252,.35)!important;
-}
-.folderExport button{
-  background:rgba(40,0,60,.65)!important;
-  border:1px solid rgba(232,121,249,.35)!important;
+#uploadBox .actions #runSort{
+  color:rgba(165,243,252,.95)!important;
+  letter-spacing:.08em!important;
 }
 #sortedFigures .chipFig{
   font-size:.54rem!important;
   letter-spacing:.02em!important;
-  color:rgba(250,240,255,.94)!important;
   transition:color .18s ease, transform .18s ease!important;
 }
 #sortedFigures .chipFig:hover{ transform:translateX(2px); }
-#sortedFigures .tray.admit .chipFig{ color:rgba(250,220,255,.96)!important; }
-#sortedFigures .tray.release .chipFig{ color:rgba(240,200,255,.96)!important; }
-#sortedFigures .tray.admit .chipFig:hover{ color:#f0abfc!important; }
-#sortedFigures .tray.release .chipFig:hover{ color:#e879f9!important; }
-#sortedFigures .empty{ color:rgba(200,170,230,.65)!important; }
+#sortedFigures .tray.admit .chipFig:hover{ color:var(--mp-cyan)!important; }
+#sortedFigures .tray.release .chipFig:hover{ color:var(--mp-mag)!important; }
+#intake, #log, #sub, #moreWrap, #morePanel, #cheat, #navhint, #phaseWhisper{
+  display:none!important;
+}
 #tip{
-  background:rgba(28,0,44,.94)!important;
-  border:1px solid rgba(232,121,249,.45)!important;
+  background:rgba(4,10,18,.72)!important;
+  border:1px solid rgba(94,234,212,.25)!important;
   border-radius:10px!important;
   backdrop-filter:blur(12px)!important;
   box-shadow:0 12px 40px rgba(0,0,0,.5)!important;
   font-size:.58rem!important;
-  color:#fae8ff!important;
+  letter-spacing:.03em!important;
 }
-#tip b{ color:#f0abfc!important; }
 @media (max-width:900px){
   #top{ padding:.22rem .65rem!important; }
   #top .title{ letter-spacing:.2em!important; font-size:.52rem!important; }
 }
+@media (prefers-reduced-motion:reduce){
+  #bgField .duoField::after{ opacity:.85; }
+}
 
-
-/* clientOnlyThree — aesthetics = uni-a/b/c only */
-#fx,#fxgl,#dataRail,#specBar,#introChip,#phaseWhisper,#navhint,#cheat,#intake,#log,#sub,
-#bgField .duoField,#bgField .hybridA,#bgField .hybridB,
-#bgField .trioStack,#bgField .trioField,#bgField .spiralField,#bgField .beamRainWhisper,
-#bgField .tunnelWindowsKeyed,#bgField .hexCoreKeyed,#bgField .nebulaWhisper,#bgField .magpieSealWorld,
-#bgField .hexCore,#bgField .tunnelGrid,#bgField .isoTunnel,#bgField .particleLayer,
-#bgField .particlesField,#bgField .particlesMeta{display:none!important;opacity:0!important;visibility:hidden!important}
-#bgField > .uniStack{display:block!important;visibility:visible!important;opacity:1!important}
-
-
-/* clientUniPurpleKillSwitch — last word: no canvas / no other layers */
-#fx,#fxgl{display:none!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;width:0!important;height:0!important;}
-#bgField > :not(.uniStack){display:none!important;visibility:hidden!important;opacity:0!important;}
-#dataRail,#specBar,#introChip,#phaseWhisper,#navhint,#cheat,#intake,#log,#sub,#moreWrap,#morePanel{display:none!important;}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientOnlyThree|clientUniPurple: uni-a + uni-b + uni-c keyed; one θ -->
-  <div class="uniStack" aria-hidden="true">
-    <img class="uniA anim" src="media/uni-a-keyed.webp" alt="" width="400" height="281" decoding="async" fetchpriority="high">
-    <img class="uniA still" src="media/uni-a-keyed.png" alt="" width="400" height="281" decoding="async">
-    <img class="uniB anim" src="media/uni-b-keyed.webp" alt="" width="420" height="420" decoding="async" fetchpriority="high">
-    <img class="uniB still" src="media/uni-b-keyed.png" alt="" width="420" height="420" decoding="async">
-    <img class="uniC anim" src="media/uni-c-keyed.webp" alt="" width="420" height="420" decoding="async" fetchpriority="high">
-    <img class="uniC still" src="media/uni-c-keyed.png" alt="" width="420" height="420" decoding="async">
+<div id="bgField" aria-hidden="true"><!-- clientTwoOnly: hybrid-a + hybrid-b only -->
+  <div class="duoField" aria-hidden="true">
+    <img class="hybridA anim" src="media/hybrid-a-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
+    <img class="hybridA still" src="media/hybrid-a-keyed.png" alt="" width="500" height="500" decoding="async">
+    <img class="hybridB anim" src="media/hybrid-b-keyed.webp" alt="" width="768" height="768" decoding="async" fetchpriority="high">
+    <img class="hybridB still" src="media/hybrid-b-keyed.png" alt="" width="768" height="768" decoding="async">
   </div>
 </div>
-
 <div id="dataRail" aria-hidden="true"></div>
 <canvas id="fx" role="img" aria-label="Seraphim Magpie work instrument — seal, residual rings, sort streams"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas><!-- dodeca3DSphere: Three underlay optional; canvas seal carries alone -->
@@ -3052,7 +3016,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientUniPurple|clientUniPurpleKillSwitch|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
+/* SERAPHIM_MARKERS:cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -5915,31 +5879,31 @@ function drawDeskSealWiring(cx,cy,s,t){ return;
 }
 
 function syncSpinPhase(t){
-  /* clientUniPurple — ONE shared θ for all layers; identical rotateZ(θ) + rotateX(tilt); freeze on reduce */
+  /* clientMasterpieceDuo — slower cinematic φ nest + soft perspective tilt */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
   if(typeof reduceMotion!=="undefined" && reduceMotion){
-    _bgFieldEl.style.setProperty("--uni-spin","0deg");
-    _bgFieldEl.style.setProperty("--uni-tilt","6deg");
-    _bgFieldEl.style.setProperty("--uni-z-a","-28px");
-    _bgFieldEl.style.setProperty("--uni-z-b","0px");
-    _bgFieldEl.style.setProperty("--uni-z-c","24px");
+    _bgFieldEl.style.setProperty("--duo-a","0deg");
+    _bgFieldEl.style.setProperty("--duo-b","0deg");
+    _bgFieldEl.style.setProperty("--duo-tilt","12deg");
     return;
   }
   const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
   const phi=(typeof PHI==="number")?PHI:1.6180339887;
-  /* shallow shared clock — ~110s per full Z turn; tilt breathes 5–8deg */
-  const omega=base*(1/(phi*phi*phi))*0.058;
+  const omega=base*(1/(phi*phi*phi))*0.055;
   const theta=t*omega;
-  const spin=(theta*180/Math.PI).toFixed(3)+"deg";
-  const tilt=(6.5+1.2*Math.sin(t*base*(1/phi)*0.28)).toFixed(2)+"deg";
-  if(_bgFieldEl._uniSpin!==spin || _bgFieldEl._uniTilt!==tilt){
-    _bgFieldEl._uniSpin=spin; _bgFieldEl._uniTilt=tilt;
-    _bgFieldEl.style.setProperty("--uni-spin", spin);
-    _bgFieldEl.style.setProperty("--uni-tilt", tilt);
-    _bgFieldEl.style.setProperty("--uni-z-a", "-28px");
-    _bgFieldEl.style.setProperty("--uni-z-b", "0px");
-    _bgFieldEl.style.setProperty("--uni-z-c", "24px");
+  const degA=(theta*180/Math.PI);
+  const degB=(theta/phi*180/Math.PI);
+  const tilt=(14+1.6*Math.sin(t*base*(1/phi)*0.35)).toFixed(2)+"deg";
+  const a=degA.toFixed(3)+"deg";
+  const b=degB.toFixed(3)+"deg";
+  if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoTilt!==tilt){
+    _bgFieldEl._duoA=a; _bgFieldEl._duoB=b; _bgFieldEl._duoTilt=tilt;
+    _bgFieldEl.style.setProperty("--duo-a", a);
+    _bgFieldEl.style.setProperty("--duo-b", b);
+    _bgFieldEl.style.setProperty("--duo-tilt", tilt);
+    _bgFieldEl.style.setProperty("--duo-z-a", "-90px");
+    _bgFieldEl.style.setProperty("--duo-z-b", "28px");
   }
 }
 
