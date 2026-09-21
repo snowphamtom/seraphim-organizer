@@ -783,7 +783,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -1388,6 +1388,82 @@ function drawSoftCrossVeil(){
   ctx.restore();
 }
 
+function drawCrtPolish(cx,cy,s,t){
+  /* crtPolish: very light horizontal scanlines + soft hub lens flares at bright nodes.
+     Must not crush contrast or blotch; skip/reduce on ≤480; respects reduceMotion. */
+  if(reduceMotion) return;
+  const thin=W<=480, mobile=W<=900;
+  ctx.save();
+  /* scanlines — extremely light; tighter skip on phone */
+  if(!thin){
+    const step=mobile?4:3;
+    const a=mobile?0.018:0.028;
+    ctx.globalCompositeOperation="source-over";
+    ctx.fillStyle=`rgba(0,8,16,${a})`;
+    for(let y=0;y<H;y+=step){
+      ctx.fillRect(0,y,W,1);
+    }
+    /* faint phosphor lift on alternate — keeps contrast alive */
+    ctx.globalCompositeOperation="lighter";
+    ctx.fillStyle=`rgba(140,220,255,${mobile?0.006:0.009})`;
+    for(let y=1;y<H;y+=step*2){
+      ctx.fillRect(0,y,W,0.5);
+    }
+  }else{
+    /* ≤480: every 6th line, barely there */
+    ctx.globalCompositeOperation="source-over";
+    ctx.fillStyle="rgba(0,6,12,0.012)";
+    for(let y=0;y<H;y+=6) ctx.fillRect(0,y,W,1);
+  }
+  /* soft hub lens flares — top/bottom of seal + bright cube/dodeca nodes */
+  ctx.globalCompositeOperation="lighter";
+  const flares=[];
+  /* seal poles */
+  const [tx,ty]=project(0,0.92,0,cx,cy,s);
+  const [bx,by]=project(0,-0.92,0,cx,cy,s);
+  flares.push({x:tx,y:ty,hue:175,pow:1.0});
+  flares.push({x:bx,y:by,hue:195,pow:0.85});
+  /* a few bright dodeca verts */
+  const pv=DODECA._projVerts;
+  if(pv&&pv.length){
+    for(let i=0;i<pv.length;i+=thin?5:3){
+      const v=pv[i]; if(!v||v.d<-0.2) continue;
+      flares.push({x:v.x,y:v.y,hue:160+i*7,pow:0.35+0.25*Math.max(0,v.d)});
+    }
+  }
+  const cubeProj=INNER_CUBE._proj;
+  if(cubeProj&&cubeProj.corners){
+    for(const c of cubeProj.corners){
+      if(!c||c.d<-0.15) continue;
+      flares.push({x:c.x,y:c.y,hue:150,pow:0.45+0.3*Math.max(0,c.d)});
+    }
+  }
+  const breath=0.85+0.15*Math.sin(t*1.7);
+  const maxF=thin?4:(mobile?8:14);
+  for(let i=0;i<flares.length&&i<maxF;i++){
+    const f=flares[i];
+    const R=(thin?10:mobile?16:22)*f.pow*breath;
+    const g=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,R);
+    const a0=(thin?0.04:0.07)*f.pow*breath;
+    addStops(g,[
+      [0,hsl(f.hue,90,70,a0)],
+      [0.35,hsl(f.hue+20,80,55,a0*0.45)],
+      [1,"rgba(0,0,0,0)"]
+    ]);
+    ctx.fillStyle=g;
+    ctx.beginPath(); ctx.arc(f.x,f.y,R,0,Math.PI*2); ctx.fill();
+    /* tiny cross sparkle at hub */
+    if(!thin&&f.pow>0.6){
+      ctx.strokeStyle=hsl(f.hue,100,75,a0*0.7);
+      ctx.lineWidth=0.7;
+      const sp=3.2*f.pow;
+      ctx.beginPath(); ctx.moveTo(f.x-sp,f.y); ctx.lineTo(f.x+sp,f.y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(f.x,f.y-sp); ctx.lineTo(f.x,f.y+sp); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
 function drawDodecaFrame(cx,cy,s,t){
   /* regular dodecahedron seal organism — 20v/30e/12 pent faces through project() YPR gyro.
      Returns 12 projected face-center points [[x,y,d],…] for funnels / labels / silhouette. */
@@ -1847,57 +1923,93 @@ function hashFigId(id){
   return h>>>0;
 }
 function drawOrganizeLattice(cx,cy,s,t){
-  /* organizing lattice — visible dynamic tethers (tetherVisible|cubeTether|organizeLattice).
-     Figure→inner-cube links read at a glance; color/contrast track kind, admit/release, depth, seal. */
+  /* organizing lattice — bgToDodeca|fateSplit|sortSnap|tetherVisible|cubeTether|organizeLattice.
+     Field/mint → dodeca verts+face centers; admit voxels → inner cube; optional short chain→cube.
+     Dashed/pulsed crawl toward seal; denser field; stronger mid dodeca scaffold. */
   const pv=DODECA._projVerts, fcs=DODECA._faceCenters2d;
   const cubeProj=INNER_CUBE._proj;
   if(!pv||pv.length<3) return;
   const mobile=W<=900, thin=W<=480;
-  const step=thin?4:(mobile?3:1);
-  /* full tether toward cube when within ~0.45·s — capped but long enough to see lock-in */
-  const maxSeg=s*(thin?0.38:mobile?0.42:0.45);
+  const step=thin?3:(mobile?2:1); /* denser subsample */
+  /* sortSnap: contract maxSeg toward seal for ~1.0s ease-out after organize */
+  const snapAge=(sortAnimT>0)?(performance.now()-sortAnimT)*0.001:99;
+  const snapDur=1.05;
+  let snap=0;
+  if(snapAge>=0&&snapAge<snapDur){
+    const u=snapAge/snapDur; snap=1-((u*u*(3-2*u))); /* ease-out smoothstep invert */
+  }
+  snap=Math.max(snap, Math.min(1,sealPulse*0.55+sealLockFlash*0.7));
+  const maxSegBase=s*(thin?0.38:mobile?0.42:0.45);
+  const maxSeg=maxSegBase*(1-0.42*snap); /* contracts toward cube/dodeca during snap */
   const shOn=sealLockFlash>0.04||sealPulse>0.08||(typeof lastCI==="number"&&lastCI>0&&prevSH);
   const breathe=0.5+0.5*Math.sin(t*1.55);
   const pulse=shOn?(0.78+0.22*Math.sin(t*4.5)):(0.55+0.22*breathe);
-  const sealPop=Math.min(1, sealPulse*0.55+sealLockFlash*0.85+(shOn?0.12:0));
-  const hueDrift=10*Math.sin(t*0.55); /* gentle ±~10° alive drift */
+  const sealPop=Math.min(1, sealPulse*0.55+sealLockFlash*0.85+(shOn?0.12:0)+0.35*snap);
+  const hueDrift=10*Math.sin(t*0.55);
   const brightBreathe=0.92+0.08*Math.sin(t*1.9);
-  /* primary tether targets: cube corners + face centers (14); hash % count for stable assign */
+  /* cube anchors (admit voxels) */
   const cubeAnchors=(cubeProj&&cubeProj.anchors&&cubeProj.anchors.length)?cubeProj.anchors.slice():[];
   if(!cubeAnchors.length && cubeProj&&cubeProj.corners){
     for(const v of cubeProj.corners) cubeAnchors.push(v);
     if(cubeProj.faceCenters) for(const fc of cubeProj.faceCenters) cubeAnchors.push(fc);
   }
-  /* faint optional: live node hubs as last-resort fallback only */
+  /* bgToDodeca: primary anchors = dodeca verts + face centers */
+  const dodecaAnchors=[];
+  for(const v of pv) dodecaAnchors.push({x:v.x,y:v.y,d:v.d});
+  if(fcs&&fcs.length){
+    for(const fc of fcs){
+      if(Array.isArray(fc)) dodecaAnchors.push({x:fc[0],y:fc[1],d:fc[2]});
+      else if(fc&&fc.x!=null) dodecaAnchors.push(fc);
+    }
+  }
   const fallback=[];
   for(const p of nodes){ if(p._px!=null) fallback.push({x:p._px,y:p._py,d:0}); }
-  if(!cubeAnchors.length && !fallback.length) return;
-  const lwBase=thin?0.85:(mobile?1.05:1.35); /* ~0.8–1.2 mobile / ~1.0–1.6 desk */
+  if(!cubeAnchors.length && !dodecaAnchors.length && !fallback.length) return;
+  const lwBase=thin?0.85:(mobile?1.05:1.35);
+  const crawl=(performance.now()*0.001)*1.8; /* dashed crawl phase */
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  /* A) faint dodeca-edge scaffold (mid) — structural whisper; tethers hit cube not dodeca */
+  /* A) stronger mid dodeca-edge scaffold */
   if(pv&&pv.length>=3){
-    ctx.lineWidth=thin?0.4:0.55;
+    ctx.lineWidth=thin?0.55:0.75;
     for(const [i,j] of DODECA.edges){
       const a=pv[i], b=pv[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
-      ctx.strokeStyle=hsl(168+t*16+hueDrift*0.4,82,54,(0.035+0.06*depth)*pulse);
+      const scA=(0.07+0.11*depth)*pulse*(1+0.45*snap);
+      ctx.strokeStyle=hsl(168+t*16+hueDrift*0.4,85,56,scA);
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
-  /* A2) cube-edge scaffold toward crystal — densifies toward inner mass */
+  /* A2) cube-edge scaffold */
   if(cubeProj&&cubeProj.corners&&cubeProj.corners.length>=8){
     const cc=cubeProj.corners;
-    ctx.lineWidth=thin?0.65:0.85;
+    ctx.lineWidth=thin?0.7:0.95;
     for(const [i,j] of INNER_CUBE.edges){
       const a=cc[i], b=cc[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.15, Math.min(1,(md+0.45)/0.95));
-      ctx.strokeStyle=hsl(155+t*22+hueDrift*0.5,90,58,(0.08+0.14*depth)*pulse*(1+0.25*sealPop));
+      ctx.strokeStyle=hsl(155+t*22+hueDrift*0.5,92,58,(0.10+0.16*depth)*pulse*(1+0.35*sealPop));
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
-  /* B) cube face-center k-NN whisper (desktop) */
+  /* A3) optional short dodeca→cube chain whispers (desktop) */
+  if(!thin && dodecaAnchors.length && cubeAnchors.length){
+    ctx.lineWidth=0.55;
+    const nChain=mobile?6:10;
+    for(let i=0;i<nChain;i++){
+      const dA=dodecaAnchors[(i*3)%dodecaAnchors.length];
+      const cA=cubeAnchors[(i*5+1)%cubeAnchors.length];
+      if(!dA||!cA) continue;
+      const md=((dA.d||0)+(cA.d||0))*0.5;
+      const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
+      ctx.strokeStyle=hsl(162+t*10,80,54,(0.04+0.08*depth)*pulse*(0.6+0.4*snap));
+      ctx.setLineDash([3.5,4.5]);
+      ctx.lineDashOffset=-crawl*12-i*2;
+      ctx.beginPath(); ctx.moveTo(dA.x,dA.y); ctx.lineTo(cA.x,cA.y); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+  /* B) cube face-center k-NN whisper */
   const cfc=cubeProj&&cubeProj.faceCenters;
   if(cfc&&cfc.length>=3&&!thin){
     ctx.lineWidth=0.65;
@@ -1917,21 +2029,20 @@ function drawOrganizeLattice(cx,cy,s,t){
       }
     }
   }
-  /* C) each visible background figure → cube node — readable dynamic tethers */
+  /* fateSplit hues: admit cooler cyan/mint; release warmer rose/magenta fray */
   function tetherHue(baseHue, decision){
     let h=(baseHue==null?165:baseHue)+hueDrift;
-    if(decision==="admit") h=h*0.55+172*0.45; /* cyan/mint side */
-    else if(decision==="refuse"||decision==="release") h=h*0.55+318*0.45; /* magenta/rose */
+    if(decision==="admit") h=h*0.40+178*0.60; /* cooler denser */
+    else if(decision==="refuse"||decision==="release") h=h*0.35+328*0.65; /* warmer fray */
     return h;
   }
-  function linkFigure(px,py,id,hue,decision,boost){
-    if(px==null||py==null||!Number.isFinite(px)) return;
-    const pool=cubeAnchors.length?cubeAnchors:fallback;
+  function pickAnchor(pool, px, py, id, maxR){
+    if(!pool||!pool.length) return {best:null,bestD:1e9};
     const prefer=pool[hashFigId(id)%pool.length];
     let best=null, bestD=1e9;
     if(prefer){
       const d=Math.hypot(px-prefer.x,py-prefer.y);
-      if(d<maxSeg*1.35){best=prefer;bestD=d;}
+      if(d<maxR*1.35){best=prefer;bestD=d;}
     }
     if(!best){
       for(let ai=0;ai<pool.length;ai++){
@@ -1940,68 +2051,123 @@ function drawOrganizeLattice(cx,cy,s,t){
         if(d<bestD){bestD=d;best=a;}
       }
     }
+    return {best,bestD};
+  }
+  function strokeDashedCrawl(x0,y0,x1,y1,style,lw,dashOn){
+    ctx.strokeStyle=style; ctx.lineWidth=lw;
+    if(dashOn){
+      ctx.setLineDash([4.2,5.2]);
+      ctx.lineDashOffset=-crawl*14;
+    }else{
+      ctx.setLineDash([]);
+    }
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  function linkFigure(px,py,id,hue,decision,boost){
+    if(px==null||py==null||!Number.isFinite(px)) return;
+    const isAdmit=decision==="admit";
+    const isRelease=decision==="refuse"||decision==="release";
+    /* bgToDodeca: field/mint → dodeca; admit voxels → cube */
+    let pool;
+    if(isAdmit) pool=cubeAnchors.length?cubeAnchors:(dodecaAnchors.length?dodecaAnchors:fallback);
+    else pool=dodecaAnchors.length?dodecaAnchors:(cubeAnchors.length?cubeAnchors:fallback);
+    /* fateSplit reach: admit denser/shorter; release longer/sparser fade */
+    let segMul=isAdmit?0.92:(isRelease?1.28:1.0);
+    if(snap>0.05) segMul*=(1-0.38*snap); /* pull in on snap */
+    const localMax=maxSeg*segMul;
+    const {best,bestD}=pickAnchor(pool,px,py,id,localMax);
     const th=tetherHue(hue, decision);
     const focusBoost=(focusId!=null&&id!=null&&String(id)===String(focusId))?1.35:1;
+    /* sortSnap: pull figure endpoint slightly toward seal center */
+    let sx0=px, sy0=py;
+    if(snap>0.02){
+      const pullAmt=0.18*snap*(isAdmit?1.15:0.75);
+      sx0=px+(cx-px)*pullAmt; sy0=py+(cy-py)*pullAmt;
+    }
     let x1,y1,linked=false;
     if(!best||bestD<0.8){
-      const dx=cx-px, dy=cy-py, len=Math.hypot(dx,dy)||1;
-      const stub=Math.min(maxSeg*0.55, len*0.35);
-      x1=px+dx/len*stub; y1=py+dy/len*stub;
-      const a=Math.min(0.38,(0.18+0.08*pulse)*brightBreathe*focusBoost);
-      ctx.strokeStyle=hsl(th,82,52,a);
-      ctx.lineWidth=lwBase*0.75;
+      const dx=cx-sx0, dy=cy-sy0, len=Math.hypot(dx,dy)||1;
+      const stub=Math.min(localMax*0.55, len*0.35);
+      x1=sx0+dx/len*stub; y1=sy0+dy/len*stub;
+      const aBase=isAdmit?0.22:(isRelease?0.14:0.18);
+      const a=Math.min(0.40,(aBase+0.08*pulse)*brightBreathe*focusBoost*(1+0.2*snap));
+      const sat=isAdmit?96:(isRelease?90:88);
+      strokeDashedCrawl(sx0,sy0,x1,y1,hsl(th,sat,isRelease?48:52,a),lwBase*(isAdmit?0.85:0.7),isRelease||!isAdmit);
     }else{
-      /* full length toward cube when within maxSeg (~0.45·s); else cap */
-      const u=bestD>maxSeg?(maxSeg/bestD):1;
-      x1=px+(best.x-px)*u; y1=py+(best.y-py)*u;
-      linked=u>0.92; /* near-complete lock-in */
+      const u=bestD>localMax?(localMax/bestD):1;
+      x1=sx0+(best.x-sx0)*u; y1=sy0+(best.y-sy0)*u;
+      linked=u>0.92;
       const depth=best.d!=null?Math.max(0.2,Math.min(1,(best.d+0.5)/1.0)):0.7;
-      /* alpha floor ~0.22–0.45; nearer = higher contrast */
-      const aFloor=0.22, aCeil=0.45;
+      /* fateSplit alpha: admit denser higher floor; release sparser longer fade */
+      const aFloor=isAdmit?0.26:(isRelease?0.14:0.20);
+      const aCeil=isAdmit?0.52:(isRelease?0.36:0.42);
       let a=(aFloor+(aCeil-aFloor)*depth)*pulse*(boost?1.2:1)*brightBreathe*focusBoost;
-      a=Math.min(0.58, a*(1+0.35*sealPop));
-      const sat=decision==="admit"?96:(decision==="refuse"||decision==="release"?94:88);
-      const lit=48+10*depth+6*sealPop+(decision==="admit"?4:0);
-      ctx.strokeStyle=hsl(th,sat,lit,a);
-      /* nearer = slightly thicker */
-      ctx.lineWidth=lwBase*(0.85+0.45*depth)*(1+0.15*sealPop)*(boost?1.08:1);
+      a=Math.min(isAdmit?0.62:0.48, a*(1+0.35*sealPop));
+      if(isRelease) a*=(0.75+0.25*(1-u)); /* fade-out along longer fray */
+      const sat=isAdmit?98:(isRelease?94:88);
+      const lit=(isAdmit?50:44)+10*depth+6*sealPop+(isAdmit?5:0);
+      const lw=lwBase*(isAdmit?(0.95+0.5*depth):(0.7+0.35*depth))*(1+0.15*sealPop)*(boost?1.08:1);
+      strokeDashedCrawl(sx0,sy0,x1,y1,hsl(th,sat,lit,a),lw,true);
+      /* optional short chain figure→dodeca→cube for admit near-links */
+      if(isAdmit && linked && cubeAnchors.length && dodecaAnchors.length && !thin && (hashFigId(id)&3)===0){
+        const mid=dodecaAnchors[hashFigId(id+"ch")%dodecaAnchors.length];
+        if(mid){
+          const ca=cubeAnchors[hashFigId(id+"cu")%cubeAnchors.length];
+          if(ca){
+            ctx.strokeStyle=hsl(th+6,90,60,0.12*pulse*(1+0.4*snap));
+            ctx.lineWidth=lwBase*0.55;
+            ctx.setLineDash([2.5,4]);
+            ctx.lineDashOffset=-crawl*10;
+            ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(mid.x,mid.y); ctx.lineTo(ca.x,ca.y); ctx.stroke();
+            ctx.setLineDash([]);
+          }
+        }
+      }
     }
-    ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(x1,y1); ctx.stroke();
-    /* endpoints — luminous dots make tether undeniable when linked */
-    if(linked||bestD<=maxSeg){
-      const endA=Math.min(0.7,(0.32+0.22*pulse+0.25*sealPop)*brightBreathe*focusBoost);
-      const rFig=thin?1.15:(mobile?1.35:1.65);
-      const rCube=thin?1.05:(mobile?1.25:1.55);
-      ctx.fillStyle=hsl(th,100,62,endA);
-      ctx.beginPath(); ctx.arc(px,py,rFig,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle=hsl(th+8,100,70,endA*0.85);
+    if(linked||bestD<=localMax){
+      const endA=Math.min(0.75,(0.32+0.22*pulse+0.25*sealPop)*brightBreathe*focusBoost*(isAdmit?1.15:0.85));
+      const rFig=thin?1.15:(mobile?1.35:1.65)*(isAdmit?1.08:0.92);
+      const rCube=thin?1.05:(mobile?1.25:1.55)*(isAdmit?1.12:0.88);
+      ctx.fillStyle=hsl(th,100,isAdmit?64:58,endA);
+      ctx.beginPath(); ctx.arc(sx0,sy0,rFig,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=hsl(th+8,100,isAdmit?72:62,endA*0.85);
       ctx.beginPath(); ctx.arc(x1,y1,rCube,0,Math.PI*2); ctx.fill();
       if(!thin){
-        ctx.fillStyle=`rgba(255,255,255,${0.22*pulse*focusBoost})`;
-        ctx.beginPath(); ctx.arc(px,py,0.55,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=`rgba(255,255,255,${0.22*pulse*focusBoost*(isAdmit?1.1:0.8)})`;
+        ctx.beginPath(); ctx.arc(sx0,sy0,0.55,0,Math.PI*2); ctx.fill();
         ctx.beginPath(); ctx.arc(x1,y1,0.5,0,Math.PI*2); ctx.fill();
       }
     }
   }
-  for(let i=0;i<voxels.length;i+=step){
+  /* admit voxels → cube (denser step when fateSplit) */
+  const vStep=thin?2:(mobile?1:1);
+  for(let i=0;i<voxels.length;i+=vStep){
     const v=voxels[i]; if(v._px==null) continue;
     linkFigure(v._px,v._py,v.id,v.hue,v.decision||"admit",true);
   }
+  /* release/mint → dodeca (sparser) */
   const parts=mintMesh.parts;
-  for(let i=0;i<parts.length;i+=step){
+  const mStep=thin?4:(mobile?3:2);
+  for(let i=0;i<parts.length;i+=mStep){
     const p=parts[i]; if(p._px==null) continue;
     linkFigure(p._px,p._py,p.id,p._hue!=null?p._hue:(p.hue||320),p.decision||"refuse",false);
   }
-  /* field dump-dust subsample → nearest cube node */
-  const fStep=thin?56:(mobile?40:26);
-  const nField=Math.min(field.length, thin?280:mobile?420:800);
+  /* field dump-dust — denser subsample → dodeca (bgToDodeca) */
+  const fStep=thin?40:(mobile?28:16);
+  const nField=Math.min(field.length, thin?320:mobile?520:1100);
   for(let k=0;k<nField;k+=fStep){
     const p=field[k]; if(!p) continue;
     const ang=p.a+t*0.02*(0.3+p.layer*0.4);
     const rr=s*(0.42+0.55*((p.r-0.5)/0.7+0.5)*0.9);
-    const fpx=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
-    const fpy=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
-    if(Math.hypot(fpx-cx,fpy-cy)<s*0.30) continue; /* leave clear core for foreground seal */
+    let fpx=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
+    let fpy=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
+    if(Math.hypot(fpx-cx,fpy-cy)<s*0.28) continue;
+    /* mild outward drift bias for ambient field (release-like) */
+    if(snap<0.2){
+      const dx=fpx-cx, dy=fpy-cy, len=Math.hypot(dx,dy)||1;
+      fpx+=dx/len*s*0.012; fpy+=dy/len*s*0.012;
+    }
     linkFigure(fpx,fpy,"fld"+k,170+p.layer*36,null,false);
   }
   ctx.restore();
@@ -2049,22 +2215,27 @@ function drawTrailsAndGlow(cx,cy,s,t){
   ctx.restore();
 }
 function drawNestedSeals(cx,cy,s,t){
-  /* nested seals: concentric dodeca wireframes at 0.72 / 0.88 (circles on mobile ≤480) */
+  /* recursiveNest: nested dodeca wire shells that breathe — infinite crystal, not one shell.
+     Scales ~0.55/0.72/0.88/1.0 with slow oscillation + slight inward zoom feel. Mobile: fewer. */
   const aHex=layerAlpha("hex");
-  const rings=W<=900?2:3;
-  const scales=rings===2?[0.88,0.72]:[1.0,0.88,0.72];
+  const thin=W<=480, mobile=W<=900;
+  const rings=thin?2:(mobile?3:4);
+  const baseScales=rings===2?[0.88,0.72]:(rings===3?[1.0,0.85,0.68]:[1.0,0.88,0.72,0.55]);
   const pulse=0.08*sealPulse+0.05*celebrate;
+  /* slow scale oscillation — inward zoom breathe (~0.35 Hz feel) */
+  const breathe=reduceMotion?0:(0.018*Math.sin(t*0.55)+0.012*Math.sin(t*0.31+1.1));
+  const zoomIn=reduceMotion?0:(0.012*(0.5+0.5*Math.sin(t*0.42))); /* slight inward zoom */
   const po=parallaxOff("seal");
   ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex;
   for(let r=0;r<rings;r++){
-    const sc=scales[r]*(1+pulse*(r===rings-1?1.2:0.6));
-    const hue=r===0?200:r===1?160:130;
-    const alpha=(0.10+0.06*Math.sin(t*1.1+r))*(0.7+0.3*sealPulse)+(celebrate>0?0.04*celebrate:0);
-    if(W<=480){
-      /* mobile: circles — dodeca-in-dodeca too heavy */
+    const depthFrac=r/(rings-1||1);
+    const sc=baseScales[r]*(1+pulse*(r===0?1.15:0.55))*(1+breathe*(1-depthFrac*0.6))*(1-zoomIn*depthFrac);
+    const hue=r===0?200:r===1?168:r===2?145:122;
+    const alpha=(0.09+0.055*Math.sin(t*1.05+r*0.9))*(0.65+0.35*sealPulse)+(celebrate>0?0.035*celebrate:0);
+    if(thin){
       const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
-      ctx.strokeStyle=hsl(hue+t*12,90,52,alpha);
-      ctx.lineWidth=r===0?1.0:0.85;
+      ctx.strokeStyle=hsl(hue+t*12,88,52,alpha);
+      ctx.lineWidth=r===0?1.0:0.8;
       ctx.beginPath(); ctx.arc(ex,ey,s*sc*0.55,0,Math.PI*2); ctx.stroke();
       continue;
     }
@@ -2074,16 +2245,18 @@ function drawNestedSeals(cx,cy,s,t){
       const pb=project(b.x*sc,b.y*sc,b.z*sc,cx+po.ox,cy+po.oy,s);
       return {pa,pb,md:(pa[2]+pb[2])*0.5};
     }).sort((u,v)=>u.md-v.md);
-    ctx.strokeStyle=hsl(hue+t*12,90,52,alpha);
-    ctx.lineWidth=r===0?1.0:(r===1?0.85:1.15);
+    ctx.strokeStyle=hsl(hue+t*12,90,52,alpha*(0.85+0.15*(1-depthFrac)));
+    ctx.lineWidth=r===0?1.05:(r===1?0.9:(r===2?0.75:0.65));
     for(const ed of edged){
       ctx.beginPath(); ctx.moveTo(ed.pa[0],ed.pa[1]); ctx.lineTo(ed.pb[0],ed.pb[1]); ctx.stroke();
     }
+    /* whisper ring between shells — depth cue for infinite nest */
     if(r<rings-1){
-      const midR=s*((scales[r]+scales[r+1])*0.5)*0.55*(1+0.015*Math.sin(t*1.6+r));
+      const midSc=(baseScales[r]+baseScales[r+1])*0.5*(1+breathe*0.5)*(1-zoomIn*(depthFrac+0.5)/rings);
+      const midR=s*midSc*0.55*(1+0.012*Math.sin(t*1.5+r));
       const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
-      ctx.strokeStyle=hsl(hue+30,80,50,alpha*0.35);
-      ctx.lineWidth=0.6;
+      ctx.strokeStyle=hsl(hue+28,78,50,alpha*0.32);
+      ctx.lineWidth=0.55;
       ctx.beginPath(); ctx.arc(ex,ey,midR,0,Math.PI*2); ctx.stroke();
     }
   }
@@ -2368,6 +2541,7 @@ function frame(now){
   if(!skipHeavy) drawSphereWire(cxH,cyH,s*0.96,t);
   drawSealBreath(cx,cy,s,t);
   drawProveBreak(cx0,cy0,s,t);
+  if(!skipHeavy) drawCrtPolish(cx,cy,s,t); /* crtPolish — scanlines + hub flares */
   // 6) seal labels only (UI chrome; tip is HTML)
   drawCanvasLabels(cxL,cyL,s,mouths,verts);
   // FPS guard: drop WebGL if frames tank on mobile
