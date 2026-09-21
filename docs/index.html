@@ -783,7 +783,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -1504,44 +1504,46 @@ function drawDodecaFrame(cx,cy,s,t){
 const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
 
 function drawInnerCubeWire(cx,cy,s,t){
-  /* crisp luminous cube wireframe — inner crystal receiving tethers; paints with dodeca FG */
+  /* crisp luminous cube wireframe — tether hubs; contrast bumped so nodes read as lock-ins */
   const proj=INNER_CUBE._proj;
   if(!proj||!proj.corners||proj.corners.length<8) return;
   const aHex=layerAlpha("hex");
   const thin=W<=480, mobile=W<=900;
   const cc=proj.corners;
+  const sealBoost=0.12*sealPulse+0.22*sealLockFlash;
   const edged=INNER_CUBE.edges.map(([i,j],ei)=>{
     const a=cc[i], b=cc[j];
     return {a,b,ei,md:(a.d+b.d)*0.5};
   }).sort((u,v)=>u.md-v.md);
   ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
-  const lw=thin?1.0:(mobile?1.35:1.85);
+  const lw=thin?1.15:(mobile?1.5:2.05);
   for(const ed of edged){
     const {a,b,ei,md}=ed;
     const near=Math.max(0, Math.min(1, (md+0.45)/0.95));
     const hue=148+ei*7+t*28;
     const g=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
     addStops(g,[
-      [0,hsl(hue,100,54,0.42+near*0.38)],
-      [0.5,hsl(hue+35,100,66,0.55+near*0.35)],
-      [1,hsl(hue+10,100,54,0.42+near*0.38)]
+      [0,hsl(hue,100,56,0.50+near*0.38+sealBoost)],
+      [0.5,hsl(hue+35,100,68,0.62+near*0.32+sealBoost)],
+      [1,hsl(hue+10,100,56,0.50+near*0.38+sealBoost)]
     ]);
-    ctx.strokeStyle=g; ctx.lineWidth=lw*(0.65+near*0.7);
+    ctx.strokeStyle=g; ctx.lineWidth=lw*(0.7+near*0.75);
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     if(!thin){
-      ctx.lineWidth=lw*2.8; ctx.strokeStyle=hsl(hue,100,48,0.08+near*0.08);
+      ctx.lineWidth=lw*3.0; ctx.strokeStyle=hsl(hue,100,50,0.10+near*0.10+sealBoost*0.4);
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
-  /* corner nodes — tether lock points */
+  /* corner nodes — tether lock points (pulse with seal) */
   for(let i=0;i<cc.length;i++){
     const v=cc[i];
-    const pulse=0.55+0.45*Math.sin(t*3.2+i*0.9);
+    const pulse=0.55+0.45*Math.sin(t*3.2+i*0.9)+sealBoost;
     const near=Math.max(0.3, Math.min(1,(v.d+0.45)/0.9));
-    ctx.fillStyle=hsl(150+i*12+t*30,100,64,0.62*pulse*near);
-    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.4:2.2,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*0.38*pulse*near;
-    ctx.beginPath(); ctx.arc(v.x,v.y,0.75,0,Math.PI*2); ctx.fill();
+    const rad=(thin?1.55:2.45)*(0.92+0.18*pulse);
+    ctx.fillStyle=hsl(150+i*12+t*30,100,66,Math.min(0.95,0.72*pulse*near));
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*Math.min(0.7,0.45*pulse*near);
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.85:1.0,0,Math.PI*2); ctx.fill();
     ctx.globalAlpha=aHex;
   }
   /* face-center micro-nodes */
@@ -1549,8 +1551,9 @@ function drawInnerCubeWire(cx,cy,s,t){
     for(let i=0;i<proj.faceCenters.length;i++){
       const v=proj.faceCenters[i];
       const near=Math.max(0.25, Math.min(1,(v.d+0.4)/0.85));
-      ctx.fillStyle=hsl(170+i*18+t*20,90,58,0.35*near);
-      ctx.beginPath(); ctx.arc(v.x,v.y,mobile?1.0:1.35,0,Math.PI*2); ctx.fill();
+      const facePulse=0.85+0.15*Math.sin(t*2.6+i*1.1)+sealBoost*0.5;
+      ctx.fillStyle=hsl(170+i*18+t*20,92,60,Math.min(0.7,0.42*near*facePulse));
+      ctx.beginPath(); ctx.arc(v.x,v.y,(mobile?1.15:1.55)*facePulse,0,Math.PI*2); ctx.fill();
     }
   }
   ctx.restore();
@@ -1844,16 +1847,21 @@ function hashFigId(id){
   return h>>>0;
 }
 function drawOrganizeLattice(cx,cy,s,t){
-  /* organizing lattice mesh — figures → INNER CUBE nodes; faint dodeca scaffold mid.
-     Short structural segments only (not curly threads / trails). */
+  /* organizing lattice — visible dynamic tethers (tetherVisible|cubeTether|organizeLattice).
+     Figure→inner-cube links read at a glance; color/contrast track kind, admit/release, depth, seal. */
   const pv=DODECA._projVerts, fcs=DODECA._faceCenters2d;
   const cubeProj=INNER_CUBE._proj;
   if(!pv||pv.length<3) return;
   const mobile=W<=900, thin=W<=480;
   const step=thin?4:(mobile?3:1);
-  const maxSeg=s*(thin?0.18:mobile?0.22:0.28);
+  /* full tether toward cube when within ~0.45·s — capped but long enough to see lock-in */
+  const maxSeg=s*(thin?0.38:mobile?0.42:0.45);
   const shOn=sealLockFlash>0.04||sealPulse>0.08||(typeof lastCI==="number"&&lastCI>0&&prevSH);
-  const pulse=shOn?(0.62+0.38*Math.sin(t*4.5)):(0.38+0.18*Math.sin(t*1.35));
+  const breathe=0.5+0.5*Math.sin(t*1.55);
+  const pulse=shOn?(0.78+0.22*Math.sin(t*4.5)):(0.55+0.22*breathe);
+  const sealPop=Math.min(1, sealPulse*0.55+sealLockFlash*0.85+(shOn?0.12:0));
+  const hueDrift=10*Math.sin(t*0.55); /* gentle ±~10° alive drift */
+  const brightBreathe=0.92+0.08*Math.sin(t*1.9);
   /* primary tether targets: cube corners + face centers (14); hash % count for stable assign */
   const cubeAnchors=(cubeProj&&cubeProj.anchors&&cubeProj.anchors.length)?cubeProj.anchors.slice():[];
   if(!cubeAnchors.length && cubeProj&&cubeProj.corners){
@@ -1864,34 +1872,35 @@ function drawOrganizeLattice(cx,cy,s,t){
   const fallback=[];
   for(const p of nodes){ if(p._px!=null) fallback.push({x:p._px,y:p._py,d:0}); }
   if(!cubeAnchors.length && !fallback.length) return;
+  const lwBase=thin?0.85:(mobile?1.05:1.35); /* ~0.8–1.2 mobile / ~1.0–1.6 desk */
   ctx.save(); ctx.globalCompositeOperation="lighter";
   /* A) faint dodeca-edge scaffold (mid) — structural whisper; tethers hit cube not dodeca */
   if(pv&&pv.length>=3){
-    ctx.lineWidth=thin?0.35:0.45;
+    ctx.lineWidth=thin?0.4:0.55;
     for(const [i,j] of DODECA.edges){
       const a=pv[i], b=pv[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
-      ctx.strokeStyle=hsl(168+t*16,82,54,(0.02+0.045*depth)*pulse);
+      ctx.strokeStyle=hsl(168+t*16+hueDrift*0.4,82,54,(0.035+0.06*depth)*pulse);
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
-  /* A2) faint cube-edge scaffold toward crystal — densifies toward inner mass */
+  /* A2) cube-edge scaffold toward crystal — densifies toward inner mass */
   if(cubeProj&&cubeProj.corners&&cubeProj.corners.length>=8){
     const cc=cubeProj.corners;
-    ctx.lineWidth=thin?0.5:0.65;
+    ctx.lineWidth=thin?0.65:0.85;
     for(const [i,j] of INNER_CUBE.edges){
       const a=cc[i], b=cc[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.15, Math.min(1,(md+0.45)/0.95));
-      ctx.strokeStyle=hsl(155+t*22,88,56,(0.05+0.10*depth)*pulse);
+      ctx.strokeStyle=hsl(155+t*22+hueDrift*0.5,90,58,(0.08+0.14*depth)*pulse*(1+0.25*sealPop));
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
   /* B) cube face-center k-NN whisper (desktop) */
   const cfc=cubeProj&&cubeProj.faceCenters;
   if(cfc&&cfc.length>=3&&!thin){
-    ctx.lineWidth=0.5;
+    ctx.lineWidth=0.65;
     for(let i=0;i<cfc.length;i++){
       const dists=[];
       for(let j=0;j<cfc.length;j++){
@@ -1903,55 +1912,87 @@ function drawOrganizeLattice(cx,cy,s,t){
         const nb=dists[k]; if(!nb||nb.d>s*0.4||i>nb.j) continue;
         const md=(cfc[i].d+cfc[nb.j].d)*0.5;
         const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
-        ctx.strokeStyle=hsl(175+t*12,80,54,(0.04+0.07*depth)*pulse);
+        ctx.strokeStyle=hsl(175+t*12+hueDrift*0.3,82,56,(0.06+0.10*depth)*pulse);
         ctx.beginPath(); ctx.moveTo(cfc[i].x,cfc[i].y); ctx.lineTo(cfc[nb.j].x,cfc[nb.j].y); ctx.stroke();
       }
     }
   }
-  /* C) each visible background figure → cube node (hash % anchors / nearest cube) */
-  function linkFigure(px,py,id,hue,boost){
+  /* C) each visible background figure → cube node — readable dynamic tethers */
+  function tetherHue(baseHue, decision){
+    let h=(baseHue==null?165:baseHue)+hueDrift;
+    if(decision==="admit") h=h*0.55+172*0.45; /* cyan/mint side */
+    else if(decision==="refuse"||decision==="release") h=h*0.55+318*0.45; /* magenta/rose */
+    return h;
+  }
+  function linkFigure(px,py,id,hue,decision,boost){
     if(px==null||py==null||!Number.isFinite(px)) return;
     const pool=cubeAnchors.length?cubeAnchors:fallback;
     const prefer=pool[hashFigId(id)%pool.length];
     let best=null, bestD=1e9;
     if(prefer){
       const d=Math.hypot(px-prefer.x,py-prefer.y);
-      if(d<maxSeg*1.4){best=prefer;bestD=d;}
+      if(d<maxSeg*1.35){best=prefer;bestD=d;}
     }
     if(!best){
-      /* nearest cube node (full scan — pool is tiny: 14) */
       for(let ai=0;ai<pool.length;ai++){
         const a=pool[ai];
         const d=Math.hypot(px-a.x,py-a.y);
         if(d<bestD){bestD=d;best=a;}
       }
     }
-    let x1,y1;
+    const th=tetherHue(hue, decision);
+    const focusBoost=(focusId!=null&&id!=null&&String(id)===String(focusId))?1.35:1;
+    let x1,y1,linked=false;
     if(!best||bestD<0.8){
       const dx=cx-px, dy=cy-py, len=Math.hypot(dx,dy)||1;
-      const stub=Math.min(maxSeg*0.5, len*0.3);
+      const stub=Math.min(maxSeg*0.55, len*0.35);
       x1=px+dx/len*stub; y1=py+dy/len*stub;
-      ctx.strokeStyle=hsl(hue||162,78,50,0.07*pulse);
+      const a=Math.min(0.38,(0.18+0.08*pulse)*brightBreathe*focusBoost);
+      ctx.strokeStyle=hsl(th,82,52,a);
+      ctx.lineWidth=lwBase*0.75;
     }else{
+      /* full length toward cube when within maxSeg (~0.45·s); else cap */
       const u=bestD>maxSeg?(maxSeg/bestD):1;
       x1=px+(best.x-px)*u; y1=py+(best.y-py)*u;
-      const depth=best.d!=null?Math.max(0.18,Math.min(1,(best.d+0.5)/1.0)):0.65;
-      const a=(0.10+0.12*depth)*pulse*(boost?1.35:1);
-      ctx.strokeStyle=hsl(hue||165,90,54,a);
+      linked=u>0.92; /* near-complete lock-in */
+      const depth=best.d!=null?Math.max(0.2,Math.min(1,(best.d+0.5)/1.0)):0.7;
+      /* alpha floor ~0.22–0.45; nearer = higher contrast */
+      const aFloor=0.22, aCeil=0.45;
+      let a=(aFloor+(aCeil-aFloor)*depth)*pulse*(boost?1.2:1)*brightBreathe*focusBoost;
+      a=Math.min(0.58, a*(1+0.35*sealPop));
+      const sat=decision==="admit"?96:(decision==="refuse"||decision==="release"?94:88);
+      const lit=48+10*depth+6*sealPop+(decision==="admit"?4:0);
+      ctx.strokeStyle=hsl(th,sat,lit,a);
+      /* nearer = slightly thicker */
+      ctx.lineWidth=lwBase*(0.85+0.45*depth)*(1+0.15*sealPop)*(boost?1.08:1);
     }
-    ctx.lineWidth=0.6;
     ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(x1,y1); ctx.stroke();
+    /* endpoints — luminous dots make tether undeniable when linked */
+    if(linked||bestD<=maxSeg){
+      const endA=Math.min(0.7,(0.32+0.22*pulse+0.25*sealPop)*brightBreathe*focusBoost);
+      const rFig=thin?1.15:(mobile?1.35:1.65);
+      const rCube=thin?1.05:(mobile?1.25:1.55);
+      ctx.fillStyle=hsl(th,100,62,endA);
+      ctx.beginPath(); ctx.arc(px,py,rFig,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=hsl(th+8,100,70,endA*0.85);
+      ctx.beginPath(); ctx.arc(x1,y1,rCube,0,Math.PI*2); ctx.fill();
+      if(!thin){
+        ctx.fillStyle=`rgba(255,255,255,${0.22*pulse*focusBoost})`;
+        ctx.beginPath(); ctx.arc(px,py,0.55,0,Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x1,y1,0.5,0,Math.PI*2); ctx.fill();
+      }
+    }
   }
   for(let i=0;i<voxels.length;i+=step){
     const v=voxels[i]; if(v._px==null) continue;
-    linkFigure(v._px,v._py,v.id,v.hue,true);
+    linkFigure(v._px,v._py,v.id,v.hue,v.decision||"admit",true);
   }
   const parts=mintMesh.parts;
   for(let i=0;i<parts.length;i+=step){
     const p=parts[i]; if(p._px==null) continue;
-    linkFigure(p._px,p._py,p.id,p._hue!=null?p._hue:(p.hue||320),false);
+    linkFigure(p._px,p._py,p.id,p._hue!=null?p._hue:(p.hue||320),p.decision||"refuse",false);
   }
-  /* field dump-dust subsample → nearest seal node */
+  /* field dump-dust subsample → nearest cube node */
   const fStep=thin?56:(mobile?40:26);
   const nField=Math.min(field.length, thin?280:mobile?420:800);
   for(let k=0;k<nField;k+=fStep){
@@ -1961,7 +2002,7 @@ function drawOrganizeLattice(cx,cy,s,t){
     const fpx=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
     const fpy=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
     if(Math.hypot(fpx-cx,fpy-cy)<s*0.30) continue; /* leave clear core for foreground seal */
-    linkFigure(fpx,fpy,"fld"+k,170+p.layer*36,false);
+    linkFigure(fpx,fpy,"fld"+k,170+p.layer*36,null,false);
   }
   ctx.restore();
 }
