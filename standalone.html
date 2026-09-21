@@ -4143,6 +4143,16 @@ html,body{
   0%{ transform:translate(-50%,-50%) scale(1.00) rotate(0deg); }
   100%{ transform:translate(-50%,-50%) scale(1.06) rotate(0deg); }
 }
+/* clientBackgroundPivot — each DOM field is centered on --seal-x/--seal-y, so these
+   rotations pivot around the shared seal hub rather than behaving as wallpaper. */
+@keyframes fieldLatticePivot{
+  0%{ transform:translate(-50%,-50%) rotate(-2deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(6deg) scale(1.04); }
+}
+@keyframes fieldCrystalPivot{
+  0%{ transform:translate(-50%,-50%) rotate(3deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(-5deg) scale(1.05); }
+}
 @keyframes fieldWeaveCW{
   0%{ transform:translate(-50%,-50%) rotate(0deg) scale(1.00); }
   100%{ transform:translate(-50%,-50%) rotate(360deg) scale(1.00); }
@@ -4168,7 +4178,7 @@ html,body{
   height:var(--field-cover) !important;
   max-width:none !important; max-height:none !important;
   transform-origin:50% 50% !important;
-  animation:fieldBreathe var(--field-T3) linear infinite alternate !important;
+  animation:fieldLatticePivot var(--field-T3) linear infinite alternate !important; /* clientBackgroundPivot */
 }
 #bgField > .honeyBack .plane{
   left:var(--seal-x) !important;
@@ -4198,7 +4208,7 @@ html,body{
   top:var(--seal-y) !important;
   width:min(var(--field-hub),720px) !important;
   height:min(var(--field-hub),720px) !important;
-  animation:fieldBreathe var(--field-T2) linear infinite alternate !important;
+  animation:fieldCrystalPivot var(--field-T2) linear infinite alternate !important; /* clientBackgroundPivot */
 }
 /* gifts: restore weave on φ clock (was frozen); matched hub scale; alternate dirs */
 #bgField > .giftStack .gift .plane{
@@ -7565,7 +7575,7 @@ function projectDodecaSeal(cx,cy,s){
   return faceCenters;
 }
 
-/* clientFaceFillOmni — textured pentagon faces on omni-rotating dodeca */
+/* clientFaceFillOmni|clientFaceUniform — one mosaic skin on every omni-rotating dodeca face */
 const FACE_FILL={
   skin:null, ready:false
 };
