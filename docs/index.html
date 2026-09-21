@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -345,7 +345,8 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .tunnelGrid{z-index:0}
 #bgField .tunnelGrid .plane{
   width:max(200vw,200vh); height:max(200vw,200vh);
-  opacity:0.35;
+  opacity:0.85;
+  filter:invert(1);
 }
 /* 2 iso wireframe depth — dark gif, screen so black drops out on light tunnel OR normal with opacity */
 #bgField .isoTunnel{z-index:1}
@@ -370,7 +371,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   z-index:3;
 }
 @media (max-width:900px){
-  #bgField .tunnelGrid .plane{opacity:0.92}
+  #bgField .tunnelGrid .plane{opacity:0.8; filter:invert(1)}
   #bgField .isoTunnel .plane{opacity:0.4; width:min(88vmin,560px); height:min(88vmin,560px)}
   #bgField .beamRain .plane{opacity:0.55; width:min(62vmin,420px); height:min(62vmin,420px)}
   #bgField .hexCore .plane{opacity:1; width:min(64vmin,480px); height:min(64vmin,480px)}
@@ -380,7 +381,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   #bgField .assetLayer img.still{display:block}
 }
 
-  #bgField .tunnelGrid .plane{opacity:0.95}
+  #bgField .tunnelGrid .plane{opacity:0.85; filter:invert(1)}
 }
 
 
