@@ -2199,6 +2199,15 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
   #bgField .duoField img.still{ display:block!important; }
 }
 
+
+/* clientNoOtherAesthetics — only hybrid-a + hybrid-b; mute everything else visual */
+#fx, #fxgl{ display:none!important; opacity:0!important; visibility:hidden!important; }
+#dataRail, #specBar, #introChip, #phaseWhisper, #navhint, #cheat{ display:none!important; }
+#top .whisper, #top .chip.law{ display:none!important; }
+.phaseWhisper, .magpieSealWorld, .nebulaWhisper, .beamRainWhisper,
+.spiralField, .tunnelWindowsKeyed, .hexCoreKeyed, .hexCore, .tunnelGrid{ display:none!important; }
+body{ background:#000!important; }
+
 </style>
 </head>
 <body>
@@ -3412,7 +3421,7 @@ document.getElementById("resetView").onclick=e=>{e.stopPropagation();resetView()
 addEventListener("keydown",e=>{keys[e.code]=true; if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code))e.preventDefault();});
 addEventListener("keyup",e=>{keys[e.code]=false;});
 
-function seedField(n){
+function seedField(n){ /* clientNoOtherAesthetics */ return; 
   field.length=0; const N=Math.min(Math.max(n|0,2000),14000);
   for(let i=0;i<N;i++){
     const outerBias=Math.pow(Math.random(),0.55);
@@ -3430,7 +3439,7 @@ function seedField(n){
     });
   }
 }
-function seedFog(){
+function seedFog(){ /* clientNoOtherAesthetics */ return; 
   fogShards.length=0;
   for(let i=0;i<16;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:TEMPO.base*(TEMPO.dust||1.2)*0.85+(Math.random()-0.5)*TEMPO.base*(TEMPO.dust||1.2)*0.45,ph:Math.random()*Math.PI*2});
 }
@@ -3618,7 +3627,7 @@ function drawFilmGrain(){
   return;
 }
 
-function triggerUploadFX(phase, verdicts){
+function triggerUploadFX(phase, verdicts){ /* clientNoOtherAesthetics */ return; 
   /* phase: "receive" | "sort" — visual feedback for dump intake */
   const box=$("uploadBox");
   if(box){
@@ -3656,7 +3665,7 @@ function triggerUploadFX(phase, verdicts){
     sealPulse=Math.max(sealPulse,0.45);
   }
 }
-function drawUploadStream(cx,cy,s,t){
+function drawUploadStream(cx,cy,s,t){ return; 
   if(!uploadFX||uploadFX.flash<0.02 && !uploadFX.sparks.length) return;
   const age=(performance.now()-uploadFX.t0)*0.001;
   uploadFX.flash*=0.94;
@@ -3717,7 +3726,7 @@ function drawUploadStream(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawSortShockwave(cx,cy,s){
+function drawSortShockwave(cx,cy,s){ return; 
   /* layerPerspectiveSync|sameVectors: rings from seal VP — ellipse major/minor = depth corridor */
   if(!shockwave) return;
   const age=(performance.now()-shockwave.t0)*0.001;
@@ -4321,7 +4330,7 @@ function drawCyberNatureField(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){
+function drawDodecaFrame(cx,cy,s,t){ return; 
   /* clientFlawless: hairline seal — depth-sorted, soft nodes */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
@@ -4899,7 +4908,7 @@ function syncClusterBehindSeal(cx,cy){
   _clusterEl.style.top=cy+"px";
 }
 
-function seedInkDrops(){
+function seedInkDrops(){ /* clientNoOtherAesthetics */ return; 
   inkDrops.length=0;
   const n=W<=480?48:W<=900?80:120;
   for(let i=0;i<n;i++){
@@ -5592,7 +5601,7 @@ function drawHexCore3D(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawHexCoreWires(cx,cy,s,t){
+function drawHexCoreWires(cx,cy,s,t){ return; 
   /* clientGeoLock — tether every dodeca edge to hex rim on the SAME angle ray */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
@@ -5635,7 +5644,7 @@ function drawHexCoreWires(cx,cy,s,t){
 
 
 
-function drawDeskSealWiring(cx,cy,s,t){
+function drawDeskSealWiring(cx,cy,s,t){ return; 
   /* clientAllWired — continuous spines: Upload / Organized / Aside ↔ seal rim ↔ hub */
   if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
@@ -5716,7 +5725,7 @@ function syncSpinPhase(t){
   }
 }
 
-function drawUltimateHybrid(cx,cy,s,t){
+function drawUltimateHybrid(cx,cy,s,t){ return; 
   /* clientHybridRefine — quieter Magpie rings/plexus; hex GIFs own the read */
   if(reduceMotion||skipHeavy) return;
   const thin=W<=480, mobile=W<=900;
@@ -5772,7 +5781,7 @@ function drawUltimateHybrid(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawWindowLightnings(cx,cy,s,t){
+function drawWindowLightnings(cx,cy,s,t){ return; 
   /* clientUltimateHybrid: soft cyan/mag bolts windows↔seal */
   /* clientWinLightning — jagged bolts: floating windows ↔ nearest dodeca verts */
   const pv=DODECA._projVerts;
@@ -6687,39 +6696,15 @@ function frame(now){
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
-  ctx.clearRect(0,0,W,H); /* GIF #bgField is the background — no black plate */
-  // mobile: raise cy bias so seal owns mid (≥55% of viewport above dock)
-  const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom; /* clientFlawless: seal scale leaves margin */
-  const cx0=W*0.50+cam.panX, cy0=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY; /* clientFillField: seal owns mid, fill empty top */
-  // true parallax: per-layer offsets from mouse.tx/ty (+ DeviceOrientation)
-  const pStar=parallaxOff("star"), pLab=parallaxOff("label");
-  /* sameVectors: one hub — seal/hex/voxel/mint/lattice/funnels share cx,cy (VP fixed) */
-  const cx=cx0, cy=cy0;
-  const cxH=cx, cyH=cy, cxV=cx, cyV=cy, cxM=cx, cyM=cy;
-  const cxL=cx0+pLab.ox, cyL=cy0+pLab.oy;
-  const cxS=cx0+pStar.ox, cyS=cy0+pStar.oy;
-  /* polishPass3 draw order: bg whisper → intake → organize → seal authority → fate labels
-     Story: field → dodeca lock → cube crystallize / mint release. Seal always paints last-but-labels. */
-  /* clientPolish — GIF trio owns the field; canvas only quiet seal + sort FX */
-  const verts=projectDodecaSeal(cxH,cyH,s);
-  projectInnerCube(cxH,cyH,s);
-  syncGyroSharedCenter(cx,cy,s,t); /* bgSealCenterLock|clientGeoLock */
-  const mouths=[];
-  if(!reduceMotion) drawUploadStream(cx,cy,s,t);
-  drawSortShockwave(cx,cy,s);
-  drawSoftCrossVeil();
-  syncSpinPhase(t); /* clientAllWired shared spin clock */
-  if(!reduceMotion && !skipHeavy) drawUltimateHybrid(cxH,cyH,s,t); /* rings+plexus */
-  drawHexFrame(cxH,cyH,s,t); /* dodeca edges */
-  if(!reduceMotion && !skipHeavy) drawHexCoreWires(cxH,cyH,s,t); /* hex rim ↔ dodeca sides */
-  if(!reduceMotion && !skipHeavy) drawDeskSealWiring(cxH,cyH,s,t); /* windows ↔ seal spines */
-  if(!reduceMotion && !skipHeavy) drawWindowLightnings(cxH,cyH,s,t); /* jagged bolts on spines */
-  // FPS guard: drop WebGL if frames tank on mobile
-  if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
-  else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
+  ctx.clearRect(0,0,W,H); /* clientNoOtherAesthetics: canvas muted — GIFs only */
+  const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom;
+  const cx=W*0.50+cam.panX, cy=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY;
+  syncGyroSharedCenter(cx,cy,s,t); /* keep hub vars for duoField */
+  syncSpinPhase(t);
+  if(glCanvas) glCanvas.style.display="none";
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame); seedField(W<=900?400:800); /* clientPolish: tiny field */ seedFog(); seedInkDrops();
+requestAnimationFrame(frame); /* clientNoOtherAesthetics: no particle seeds */
 /* cyberNatureFormat — left data rail + spectrum bars */
 (function bootCyberNatureChrome(){ /* clientBgClean skip rail/spec */ return;
   /* magpieImpressSupersede L12 — dataRail scroll + hard-driving specBar energy */
