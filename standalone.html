@@ -817,20 +817,24 @@ const WEBGL_MARK="webglCore";
 /* —— three.js WebGL orbit (import when holds; silent fallback) —— */
 let threeOk=false, threeRenderer=null, threeScene=null, threeCam=null, threePoints=null, threeHex=null, threeClock=0;
 function bootThreeOrbit(){
-  if(threeOk||reduceMotion||(isTouch&&W<=900)) return false;
+  if(threeOk||threeTried||reduceMotion||(isTouch&&W<=900)) return false;
+  threeTried=true;
   try{
     if(typeof THREE==="undefined") return false;
     const c=document.getElementById("fxgl"); if(!c) return false;
-    // free raw WebGL if it grabbed the canvas first
     try{ if(gl){ const lose=gl.getExtension&&gl.getExtension("WEBGL_lose_context"); if(lose)lose.loseContext(); gl=null; webglOk=false; } }catch(_){}
-    threeRenderer=new THREE.WebGLRenderer({canvas:c, alpha:true, antialias:false, powerPreference:"low-power"});
+    // probe context first — avoid THREE spam if GPU unavailable
+    const probe=c.getContext("webgl",{alpha:true,antialias:false})||c.getContext("experimental-webgl",{alpha:true});
+    if(!probe){ return false; }
+    try{ const lose=probe.getExtension&&probe.getExtension("WEBGL_lose_context"); if(lose)lose.loseContext(); }catch(_){}
+    threeRenderer=new THREE.WebGLRenderer({canvas:c, alpha:true, antialias:false, powerPreference:"low-power", failIfMajorPerformanceCaveat:false});
+    if(!threeRenderer || !threeRenderer.getContext()){ threeRenderer=null; return false; }
     threeRenderer.setPixelRatio(Math.min(1.5, devicePixelRatio||1));
     threeRenderer.setSize(W,H,false);
     threeRenderer.setClearColor(0x000000,0);
     threeScene=new THREE.Scene();
     threeCam=new THREE.PerspectiveCamera(42, W/Math.max(1,H), 0.1, 20);
     threeCam.position.set(0,0.15,3.2);
-    // star points
     const N=W<=900?800:2400;
     const pos=new Float32Array(N*3), col=new Float32Array(N*3);
     for(let i=0;i<N;i++){
@@ -843,7 +847,6 @@ function bootThreeOrbit(){
     geo.setAttribute("color", new THREE.BufferAttribute(col,3));
     threePoints=new THREE.Points(geo, new THREE.PointsMaterial({size:0.018, vertexColors:true, transparent:true, opacity:0.55, depthWrite:false, blending:THREE.AdditiveBlending}));
     threeScene.add(threePoints);
-    // nested hex line rings
     const hexGrp=new THREE.Group();
     [1.15,0.92,0.62].forEach((sc,ri)=>{
       const pts=[];
@@ -875,7 +878,8 @@ function drawThreeOrbit(cx,cy,s,t){
 }
 function loadThreeAndBoot(){
   if(reduceMotion||(isTouch&&W<=900)){ initWebGL(); resizeWebGL(); return; }
-  const finishRaw=()=>{ if(!threeOk){ initWebGL(); resizeWebGL(); } };
+  let finished=false;
+  const finishRaw=()=>{ if(finished||threeOk) return; finished=true; initWebGL(); resizeWebGL(); };
   if(typeof THREE!=="undefined"){ if(!bootThreeOrbit()) finishRaw(); return; }
   const sc=document.createElement("script");
   sc.src="https://unpkg.com/three@0.160.0/build/three.min.js";
@@ -883,7 +887,6 @@ function loadThreeAndBoot(){
   sc.onload=()=>{ try{ if(!bootThreeOrbit()) finishRaw(); }catch(_){ finishRaw(); } };
   sc.onerror=()=>finishRaw();
   document.head.appendChild(sc);
-  // timeout fallback if CDN hangs
   setTimeout(finishRaw, 2800);
 }
 
