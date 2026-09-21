@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -3654,14 +3654,71 @@ body::after{
   touch-action:none!important; cursor:grab;
 }
 
+
+
+
+/* clientLatticeNuke — force lattice; single paint path; no fixed-attachment */
+html,body{
+  background-color:#f2f0ea !important;
+  background-image:none !important;
+}
+#bgField{
+  background-color:#f2f0ea !important;
+  background-image:none !important;
+  display:block !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  z-index:0 !important;
+  pointer-events:none !important;
+}
+#bgField > .latticeField{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  position:absolute !important; inset:0 !important; z-index:0 !important;
+  pointer-events:none !important; overflow:hidden !important;
+  contain:strict;
+}
+#bgField > .latticeField .plane{
+  position:absolute !important;
+  left:50% !important; top:40% !important;
+  width:max(140vw,140vh) !important; height:max(140vw,140vh) !important;
+  transform:translate(-50%,-50%) !important;
+  will-change:auto;
+}
+#bgField > .latticeField picture,
+#bgField > .latticeField img{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  width:100% !important; height:100% !important;
+  object-fit:cover !important; object-position:50% 50% !important;
+  filter:none !important; mix-blend-mode:normal !important;
+  pointer-events:none !important;
+}
+#bgField > .latticeField img.still{ display:none !important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .latticeField img.anim,
+  #bgField > .latticeField picture{ display:none !important; }
+  #bgField > .latticeField img.still{
+    display:block !important; width:100% !important; height:100% !important;
+    object-fit:cover !important;
+  }
+}
+body::after{ display:none !important; content:none !important; }
+#fx{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  z-index:2 !important; pointer-events:auto !important;
+  background:transparent !important;
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientLatticeField: light lattice tunnel replaces black -->
+<div id="bgField" aria-hidden="true"><!-- clientLatticeNuke: light lattice, webp-first -->
   <div class="latticeField" aria-hidden="true">
     <div class="plane">
-      <img class="anim" src="media/lattice-tunnel.gif" alt="" decoding="async" fetchpriority="low"/>
-      <img class="still" src="media/lattice-tunnel-still.jpg" alt="" decoding="async"/>
+      <picture>
+        <source srcset="media/lattice-tunnel.webp" type="image/webp"/>
+        <img class="anim" src="media/lattice-tunnel.gif" alt="" decoding="async" fetchpriority="low" width="480" height="480"/>
+      </picture>
+      <img class="still" src="media/lattice-tunnel-still.webp" alt="" decoding="async" width="480" height="480"/>
     </div>
   </div>
 </div>
