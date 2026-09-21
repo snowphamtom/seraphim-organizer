@@ -17,7 +17,6 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Cpolygon points='32,6 58,20 58,44 32,58 6,44 6,20' fill='none' stroke='%2356b4c2' stroke-width='2.2'/%3E%3Ccircle cx='32' cy='32' r='7' fill='none' stroke='%23ae3dbf' stroke-width='2'/%3E%3C/svg%3E"/>
 <title>SERAPHIM ORGANIZER · Offline</title>
-<!-- clientPixelAbsorbed48h -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -2218,7 +2217,7 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 }
 
 
-/* clientNoOtherAesthetics — trio field only; mute everything else visual */
+/* clientNoOtherAesthetics — only hybrid-a + hybrid-b; mute everything else visual */
 #fx, #fxgl{ display:none!important; opacity:0!important; visibility:hidden!important; }
 #dataRail, #specBar, #introChip, #phaseWhisper, #navhint, #cheat{ display:none!important; }
 #top .whisper, #top .chip.law{ display:none!important; }
@@ -2227,1109 +2226,162 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 body{ background:#000!important; }
 
 
-
-/* clientPixelAbsorbed48h — ONE hub: φ-locked trio + glass OS desk (absorbs 48h craft) */
+/* clientMasterpieceDuo — cinematic polish on the two-GIF field + glass desk */
 :root{
-  --px-cyan:#5eead4;
-  --px-mag:#e879f9;
-  --px-ink:rgba(236,244,255,.96);
-  --px-mute:rgba(160,190,220,.55);
-  --px-glass:rgba(5,9,18,.56);
-  --px-line:rgba(255,255,255,.08);
-  --px-hair:rgba(255,255,255,.08);
-  --px-font:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
-  --px-r:16px;
-  --px-pad-x:16px;
-  --px-pad-y:12px;
-  --px-bar:28px;
+  --mp-cyan: #5eead4;
+  --mp-mag: #e879f9;
+  --mp-ink: rgba(236,244,255,.96);
+  --mp-glass: rgba(6,10,20,.48);
+  --mp-line: rgba(255,255,255,.08);
 }
-html,body{
+body{
   background:#000!important;
-  color:var(--px-ink)!important;
-  font-family:var(--px-font)!important;
-  -webkit-font-smoothing:antialiased!important;
-  letter-spacing:.01em;
+  color:var(--mp-ink)!important;
 }
-/* kill scan-rain / rails / seal chrome — field presence only via duo + vignette */
-#bgField::before,
-#bgField::after{display:none!important;opacity:0!important;content:none!important;animation:none!important}
-#fx,#fxgl,#dataRail,#specBar,#introChip,#phaseWhisper,
-#navhint,#cheat,#intake,#log,#sub,#moreWrap,#morePanel,
-#top .whisper,#top .chip.law{display:none!important;opacity:0!important;visibility:hidden!important}
-#bgField .spiralField,#bgField .beamRainWhisper,#bgField .tunnelWindowsKeyed,
-#bgField .hexCoreKeyed,#bgField .nebulaWhisper,#bgField .magpieSealWorld,
-#bgField .hexCore,#bgField .tunnelGrid,#bgField .isoTunnel{display:none!important}
-
-#bgField{
-  --duo-a:0deg;
-  --duo-b:0deg;
-  --duo-tilt:14deg;
-  --duo-z-a:-88px;
-  --duo-z-b:32px;
+#bgField .duoField::after{
+  content:"";
+  position:absolute; inset:0; z-index:5; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 62% at 50% 48%, transparent 35%, rgba(0,0,0,.55) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.35) 0%, transparent 18%, transparent 72%, rgba(0,0,0,.55) 100%);
 }
-/* —— duo field: exact 50/50 hub, 100vw×100vh cover ONLY, forced perspective —— */
 #bgField .duoField{
-  --hub-x:50%!important;
-  --hub-y:50%!important;
-  --fill-w:100vw!important;
-  --fill-h:100vh!important;
-  position:fixed!important;inset:0!important;z-index:1!important;
-  pointer-events:none!important;overflow:hidden!important;
-  perspective:min(100vw,100vh)!important;
-  perspective-origin:50% 50%!important;
-  transform-style:preserve-3d!important;
+  perspective:min(110vw,110vh)!important;
+  perspective-origin:50% 48%!important;
 }
-#bgField .duoField img{
-  position:absolute!important;
-  left:var(--hub-x)!important;
-  top:var(--hub-y)!important;
-  width:var(--fill-w)!important;
-  height:var(--fill-h)!important;
-  max-width:100vw!important;
-  max-height:100vh!important;
-  margin:0!important;padding:0!important;
-  object-fit:cover!important;
-  object-position:center center!important;
-  mix-blend-mode:screen!important;
-  transform-origin:center center!important;
-  transform-style:preserve-3d!important;
-  image-rendering:auto!important;
-  will-change:transform;
-}
-#bgField .duoField img.still{display:none}
-/* A quieter underlay; B (hex) owns visual center */
 #bgField .duoField .hybridA{
-  opacity:.68!important;
-  z-index:1!important;
-  filter:contrast(1.58) brightness(.96) saturate(1.1) hue-rotate(12deg)
-         drop-shadow(0 0 24px rgba(34,211,238,.1))!important;
-  transform:translate3d(-50%,-50%,var(--duo-z-a,-88px))
-            rotateX(var(--duo-tilt,14deg))
-            rotateZ(var(--duo-a,0deg))!important;
+  opacity:.78!important;
+  filter:contrast(1.5) brightness(1.08) saturate(1.05) hue-rotate(8deg)!important;
 }
 #bgField .duoField .hybridB{
   opacity:1!important;
-  z-index:2!important;
-  filter:contrast(1.64) brightness(1.2) saturate(1.4) hue-rotate(-6deg)
-         drop-shadow(0 0 32px rgba(232,121,249,.14))!important;
-  transform:translate3d(-50%,-50%,var(--duo-z-b,32px))
-            rotateX(var(--duo-tilt,14deg))
-            rotateZ(var(--duo-b,0deg))!important;
+  filter:contrast(1.55) brightness(1.22) saturate(1.35)!important;
 }
-/* soft edge fade / vignette bloom — field presence, not clutter */
-#bgField .duoField::after{
-  content:""!important;
-  position:absolute!important;inset:0!important;z-index:5!important;
-  pointer-events:none!important;
-  background:
-    radial-gradient(ellipse 58% 52% at 50% 50%, transparent 26%, rgba(0,0,0,.44) 72%, rgba(0,0,0,.82) 100%),
-    radial-gradient(ellipse 88% 68% at 50% 50%, rgba(34,211,238,.04) 0%, transparent 55%),
-    radial-gradient(ellipse 68% 88% at 50% 50%, rgba(232,121,249,.03) 0%, transparent 50%),
-    linear-gradient(180deg, rgba(0,0,0,.44) 0%, transparent 16%, transparent 78%, rgba(0,0,0,.64) 100%)!important;
-  mix-blend-mode:normal!important;
-}
-
-/* —— header: perfect center pill —— */
 #top{
-  top:max(12px,calc(var(--safe-t) + 4px))!important;
-  left:50%!important;
-  transform:translateX(-50%)!important;
+  top:max(14px, calc(var(--safe-t) + 6px))!important;
   width:auto!important;
-  max-width:min(440px,calc(100vw - 24px))!important;
-  padding:8px 16px!important;
-  gap:12px!important;
-  background:linear-gradient(180deg,rgba(8,14,26,.56),rgba(4,8,16,.5))!important;
-  border:1px solid var(--px-hair)!important;
-  border-radius:999px!important;
-  box-shadow:
-    0 10px 36px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.07)!important;
-  backdrop-filter:blur(18px) saturate(1.25)!important;
-  -webkit-backdrop-filter:blur(18px) saturate(1.25)!important;
+  max-width:min(420px, calc(100vw - 28px))!important;
+  padding:.28rem .85rem!important;
+  gap:.55rem!important;
+  background:rgba(4,8,16,.42)!important;
+  border:1px solid var(--mp-line)!important;
+  box-shadow:0 8px 32px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06)!important;
+  backdrop-filter:blur(16px) saturate(1.2)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.2)!important;
 }
 #top .title{
-  font-size:10px!important;
-  letter-spacing:.34em!important;
+  font-size:.62rem!important;
+  letter-spacing:.28em!important;
   font-weight:650!important;
-  color:rgba(244,252,255,.94)!important;
-  text-shadow:0 0 20px rgba(94,234,212,.3)!important;
+  color:rgba(240,250,255,.92)!important;
+  text-shadow:0 0 18px rgba(94,234,212,.25)!important;
 }
 #top .metrics{
-  opacity:.62!important;
-  font-size:8px!important;
-  letter-spacing:.06em!important;
-  font-family:var(--px-font)!important;
+  opacity:.55!important;
+  font-size:.52rem!important;
+  letter-spacing:.04em!important;
 }
-#top .metrics .a b{color:var(--px-cyan)!important;text-shadow:0 0 10px rgba(94,234,212,.35)!important}
-#top .metrics .r b{color:var(--px-mag)!important;text-shadow:0 0 10px rgba(232,121,249,.3)!important}
-#top #mSHWrap{opacity:.4!important}
-
-/* —— glass OS windows: 8px grid, clean titlebar (no negative-margin hacks) —— */
+#top .metrics .a b{ color:var(--mp-cyan)!important; }
+#top .metrics .r b{ color:var(--mp-mag)!important; }
 #uploadBox,
 #sortedFigures .tray{
-  position:relative!important;
-  isolation:isolate;
-  background:linear-gradient(165deg,rgba(10,16,30,.58) 0%,rgba(3,6,14,.66) 100%)!important;
-  border:1px solid var(--px-hair)!important;
-  border-radius:var(--px-r)!important;
-  backdrop-filter:blur(20px) saturate(1.3)!important;
-  -webkit-backdrop-filter:blur(20px) saturate(1.3)!important;
+  background:linear-gradient(165deg, rgba(12,18,32,.55) 0%, rgba(4,8,16,.62) 100%)!important;
+  border:1px solid var(--mp-line)!important;
+  border-radius:16px!important;
+  backdrop-filter:blur(18px) saturate(1.25)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.25)!important;
   box-shadow:
-    0 20px 56px rgba(0,0,0,.56),
+    0 0 0 1px rgba(255,255,255,.04),
+    0 20px 56px rgba(0,0,0,.55),
     inset 0 1px 0 rgba(255,255,255,.07)!important;
-  font-family:var(--px-font)!important;
-  padding:var(--px-bar) var(--px-pad-x) var(--px-pad-y)!important; /* content below 28px bar */
-  margin:0!important;
-  overflow:hidden;
 }
 #uploadBox{
-  border-color:rgba(94,234,212,.42)!important;
+  border-color:rgba(94,234,212,.38)!important;
   box-shadow:
     0 0 0 1px rgba(94,234,212,.12),
     0 0 40px rgba(34,211,238,.08),
-    0 20px 56px rgba(0,0,0,.56),
+    0 20px 56px rgba(0,0,0,.55),
     inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
-#sortedFigures .tray.admit{
-  border-color:rgba(94,234,212,.44)!important;
-  box-shadow:
-    0 0 0 1px rgba(94,234,212,.1),
-    0 0 32px rgba(34,211,238,.06),
-    0 20px 56px rgba(0,0,0,.54),
-    inset 0 1px 0 rgba(255,255,255,.07)!important;
-}
-#sortedFigures .tray.release{
-  border-color:rgba(232,121,249,.42)!important;
-  box-shadow:
-    0 0 0 1px rgba(232,121,249,.1),
-    0 0 32px rgba(232,121,249,.07),
-    0 20px 56px rgba(0,0,0,.54),
-    inset 0 1px 0 rgba(255,255,255,.07)!important;
-}
-/* titlebar plate — absolute, no negative margins */
+#sortedFigures .tray.admit{ border-color:rgba(94,234,212,.42)!important; }
+#sortedFigures .tray.release{ border-color:rgba(232,121,249,.4)!important; }
 #uploadBox::before,
 #sortedFigures .tray::before{
-  content:""!important;
-  position:absolute!important;
-  top:0!important;left:0!important;right:0!important;
-  height:var(--px-bar)!important;
-  margin:0!important;padding:0!important;
-  border-radius:var(--px-r) var(--px-r) 0 0!important;
-  background:linear-gradient(180deg,rgba(28,36,54,.92) 0%,rgba(8,12,22,.94) 100%)!important;
+  height:26px!important;
+  margin:-.55rem -.55rem .6rem!important;
+  border-radius:16px 16px 0 0!important;
+  background:linear-gradient(180deg, rgba(32,40,58,.88) 0%, rgba(10,14,24,.9) 100%)!important;
   border-bottom:1px solid rgba(255,255,255,.07)!important;
-  box-shadow:none!important;
-  z-index:2!important;
-  pointer-events:none!important;
 }
-/* traffic-light dots — left:12 top:10 aligned */
-#uploadBox::after,
-#sortedFigures .tray.admit::after,
-#sortedFigures .tray.release::after{
-  content:"● ● ●"!important;
-  position:absolute!important;
-  top:10px!important;
-  left:12px!important;
-  font-size:7px!important;
-  letter-spacing:.28em!important;
-  line-height:1!important;
-  pointer-events:none!important;
-  z-index:4!important;
-  margin:0!important;
-}
-#uploadBox::after,
-#sortedFigures .tray.admit::after{
-  color:rgba(94,234,212,.55)!important;
-  text-shadow:0 0 8px rgba(94,234,212,.3)!important;
-}
-#sortedFigures .tray.release::after{
-  color:rgba(232,121,249,.58)!important;
-  text-shadow:0 0 8px rgba(232,121,249,.3)!important;
-}
-/* titles sit in the 28px bar via padding-top on window — kill margin-top:-1.55rem */
-#uploadBox .uh,
-#sortedFigures .tray h3{
-  position:absolute!important;
-  top:0!important;left:0!important;right:0!important;
-  height:var(--px-bar)!important;
-  margin:0!important;
-  padding:0 12px 0 52px!important;
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  z-index:3!important;
-  box-sizing:border-box!important;
-  border:none!important;
-  min-height:0!important;
-  pointer-events:none!important;
-}
+#uploadBox::after{ color:rgba(94,234,212,.45)!important; }
+#sortedFigures .tray.admit::after{ color:rgba(94,234,212,.45)!important; }
+#sortedFigures .tray.release::after{ color:rgba(232,121,249,.5)!important; }
 #uploadBox .uh b,
 #sortedFigures .tray h3{
   letter-spacing:.18em!important;
   font-weight:600!important;
-  font-size:9px!important;
-  text-transform:uppercase!important;
-  font-family:var(--px-font)!important;
-  border:none!important;
+  font-size:.58rem!important;
 }
-#uploadBox .uh b{
-  position:static!important;
-  height:auto!important;
-  margin:0!important;
-  padding:0!important;
-  display:inline!important;
-  pointer-events:none!important;
+#sortedFigures .tray.admit h3{
+  color:rgba(165,243,252,.95)!important;
+  text-shadow:0 0 14px rgba(34,211,238,.35)!important;
 }
-#uploadBox .uh b::before,
-#sortedFigures .tray.admit h3::before,
-#sortedFigures .tray.release h3::before{content:""!important}
-#uploadBox .uh b{color:rgba(186,242,248,.95)!important;text-shadow:0 0 12px rgba(34,211,238,.25)!important}
-#sortedFigures .tray.admit h3{color:rgba(165,243,252,.96)!important;text-shadow:0 0 12px rgba(34,211,238,.35)!important}
-#sortedFigures .tray.release h3{color:rgba(240,171,252,.96)!important;text-shadow:0 0 12px rgba(232,121,249,.32)!important}
-#uploadBox .uh span{
-  font-size:8px!important;
-  color:rgba(140,180,200,.5)!important;
-  letter-spacing:.04em!important;
-  text-transform:none!important;
+#sortedFigures .tray.release h3{
+  color:rgba(240,171,252,.95)!important;
+  text-shadow:0 0 14px rgba(232,121,249,.3)!important;
 }
-#sortedFigures .tray .count{
-  margin-left:4px!important;
-  opacity:.7!important;
-}
-/* draggable hit area aligned to 28px bar */
-#uploadBox .winBar,
-#sortedFigures .tray .winBar{
-  position:absolute!important;
-  top:0!important;left:0!important;right:0!important;
-  height:var(--px-bar)!important;
-  border-radius:var(--px-r) var(--px-r) 0 0!important;
-  cursor:grab!important;
-  z-index:5!important;
-  touch-action:none!important;
-  background:transparent!important;
-}
-#uploadBox .winBar:active,
-#sortedFigures .tray .winBar:active{cursor:grabbing!important}
-#uploadBox.isDragging,
-#sortedFigures .tray.isDragging{
-  opacity:.97!important;
-  box-shadow:0 0 0 1px rgba(255,255,255,.1), 0 24px 56px rgba(0,0,0,.72)!important;
-  z-index:20!important;
-}
-
 #uploadBox .dropHint{
-  border-radius:8px!important;
-  border:1px dashed rgba(94,234,212,.34)!important;
-  background:rgba(0,18,28,.42)!important;
-  letter-spacing:.04em!important;
-  padding:12px 8px!important;
-  margin:0 0 8px!important;
-  text-align:center!important;
-  font-size:10px!important;
-  color:rgba(200,230,250,.78)!important;
-}
-#uploadBox .dropHint em{color:rgba(125,240,255,.95)!important;font-style:normal!important;font-weight:700}
-#uploadBox .actions{
-  display:flex!important;flex-wrap:wrap!important;gap:8px!important;
-  align-items:center!important;margin:0 0 8px!important;
-}
-#uploadBox textarea,
-#uploadBox .actions .filebtn,
-#uploadBox .actions button,
-#uploadBox .actions select{
-  font-family:var(--px-font)!important;
-  letter-spacing:.03em!important;
+  border-radius:10px!important;
+  border:1px dashed rgba(94,234,212,.32)!important;
+  background:rgba(0,20,32,.4)!important;
 }
 #uploadBox textarea{
-  border-radius:8px!important;
-  background:rgba(0,5,12,.58)!important;
+  border-radius:10px!important;
+  background:rgba(0,6,14,.55)!important;
   border:1px solid rgba(94,234,212,.22)!important;
   color:rgba(230,242,255,.92)!important;
-  padding:8px 12px!important;
-  min-height:64px!important;
 }
 #uploadBox .actions #runSort{
   color:rgba(165,243,252,.95)!important;
-  letter-spacing:.1em!important;
+  letter-spacing:.08em!important;
 }
 #sortedFigures .chipFig{
-  font-size:8px!important;
+  font-size:.54rem!important;
+  letter-spacing:.02em!important;
+  transition:color .18s ease, transform .18s ease!important;
+}
+#sortedFigures .chipFig:hover{ transform:translateX(2px); }
+#sortedFigures .tray.admit .chipFig:hover{ color:var(--mp-cyan)!important; }
+#sortedFigures .tray.release .chipFig:hover{ color:var(--mp-mag)!important; }
+#intake, #log, #sub, #moreWrap, #morePanel, #cheat, #navhint, #phaseWhisper{
+  display:none!important;
+}
+#tip{
+  background:rgba(4,10,18,.72)!important;
+  border:1px solid rgba(94,234,212,.25)!important;
+  border-radius:10px!important;
+  backdrop-filter:blur(12px)!important;
+  box-shadow:0 12px 40px rgba(0,0,0,.5)!important;
+  font-size:.58rem!important;
   letter-spacing:.03em!important;
-  font-family:var(--px-font)!important;
-  transition:color .16s ease, transform .16s ease, text-shadow .16s ease!important;
-}
-#sortedFigures .chipFig:hover{transform:translateX(2px)!important}
-#sortedFigures .tray.admit .chipFig:hover{
-  color:var(--px-cyan)!important;
-  text-shadow:0 0 8px rgba(94,234,212,.35)!important;
-}
-#sortedFigures .tray.release .chipFig:hover{
-  color:var(--px-mag)!important;
-  text-shadow:0 0 8px rgba(232,121,249,.3)!important;
-}
-#sortedFigures .tray .folderTag{display:none!important}
-#tip{
-  background:rgba(4,10,18,.76)!important;
-  border:1px solid rgba(94,234,212,.22)!important;
-  border-radius:8px!important;
-  backdrop-filter:blur(14px)!important;
-  font-family:var(--px-font)!important;
-  font-size:9px!important;
-  letter-spacing:.04em!important;
-  box-shadow:0 12px 36px rgba(0,0,0,.5)!important;
-}
-
-/* mobile: stack without overlap; keep φ center */
-@media (max-width:700px){
-  #top{padding:8px 12px!important;border-radius:14px!important}
-  #top .title{letter-spacing:.22em!important;font-size:9px!important}
-  #uploadBox{
-    width:min(96vw,420px)!important;
-    left:50%!important;right:auto!important;
-    transform:translateX(-50%)!important;
-    bottom:max(42vh, calc(var(--safe-b) + 12px))!important;
-    top:auto!important;
-  }
-  #sortedFigures{
-    left:50%!important;right:auto!important;
-    transform:translateX(-50%)!important;
-    width:min(96vw,420px)!important;
-    bottom:max(12px, calc(var(--safe-b) + 10px))!important;
-    top:auto!important;
-    gap:8px!important;
-  }
-  #uploadBox[style*="left"],
-  #sortedFigures .tray[style*="left"]{transform:none!important}
-  #bgField .duoField{
-    --hub-x:50%!important;
-    --hub-y:50%!important;
-  }
 }
 @media (max-width:900px){
-  #top{padding:8px 12px!important}
-  #top .title{letter-spacing:.26em!important}
+  #top{ padding:.22rem .65rem!important; }
+  #top .title{ letter-spacing:.2em!important; font-size:.52rem!important; }
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .duoField{perspective:none!important}
-  #bgField .duoField .hybridA,
-  #bgField .duoField .hybridB{
-    transform:translate(-50%,-50%)!important;
-    filter:contrast(1.48) brightness(1.05) saturate(1.15)!important;
-  }
-  #bgField .duoField img.anim{display:none!important}
-  #bgField .duoField img.still{display:block!important}
-  #bgField .duoField::after{opacity:.9!important}
-  #sortedFigures .chipFig:hover{transform:none!important}
+  #bgField .duoField::after{ opacity:.85; }
 }
-
-
-
-/* clientNoUnusedSpace — every viewport pixel owns field; overflow-clipped cover */
-#bgField .duoField{
-  inset:0!important;
-  overflow:hidden!important;
-  /* cover after rotateX/Z without letterbox void */
-  --fill-w:max(100vw,100vh)!important;
-  --fill-h:max(100vw,100vh)!important;
-  perspective:140vw!important;
-  perspective-origin:50% 50%!important;
-}
-#bgField .duoField img{
-  /* square cover ≥ viewport so tilt/spin never reveals black */
-  width:var(--fill-w)!important;
-  height:var(--fill-h)!important;
-  max-width:none!important;
-  max-height:none!important;
-  min-width:100vw!important;
-  min-height:100vh!important;
-  object-fit:cover!important;
-  object-position:center center!important;
-}
-/* kill empty void vignette — field goes edge to edge */
-#bgField .duoField::after{
-  background:
-    radial-gradient(ellipse 85% 80% at 50% 50%, transparent 55%, rgba(0,0,0,.18) 100%)!important;
-  opacity:.55!important;
-}
-#bgField{
-  --duo-tilt:5deg!important;
-  --duo-z-a:-24px!important;
-  --duo-z-b:12px!important;
-}
-#bgField .duoField .hybridA{
-  opacity:.88!important;
-  filter:contrast(1.55) brightness(1.05) saturate(1.15) hue-rotate(10deg)!important;
-}
-#bgField .duoField .hybridB{
-  opacity:1!important;
-  filter:contrast(1.58) brightness(1.2) saturate(1.4)!important;
-}
-/* desk rides mid-band so vertical space is used, not parked in a bottom gutter */
-#uploadBox{
-  left:max(12px,3vw)!important;
-  top:max(72px, calc(var(--safe-t) + 56px))!important;
-  bottom:auto!important;
-  width:min(360px,42vw)!important;
-}
-#sortedFigures{
-  right:max(12px,3vw)!important;
-  top:max(72px, calc(var(--safe-t) + 56px))!important;
-  bottom:auto!important;
-  width:min(400px,44vw)!important;
-}
-@media (max-width:900px){
-  #uploadBox{
-    left:8px!important; right:8px!important; width:auto!important;
-    top:auto!important;
-    bottom:max(12px, calc(var(--safe-b) + 8px))!important;
-  }
-  #sortedFigures{
-    left:8px!important; right:8px!important; width:auto!important;
-    top:auto!important;
-    bottom:max(200px, calc(var(--safe-b) + 190px))!important;
-  }
-}
-
-
-/* ========== clientTrioOnly — three keyed layers; φ-nested spin; full-bleed ========== */
-#bgField{
-  --trio-a:0deg;
-  --trio-b:0deg;
-  --trio-c:0deg;
-  --trio-tilt:5deg;
-  --trio-z-a:-36px;
-  --trio-z-b:0px;
-  --trio-z-c:28px;
-}
-#bgField > .trioStack,#bgField > .trioField{
-  --hub-x:50%!important;
-  --hub-y:50%!important;
-  --fill-w:max(100vw,100vh)!important;
-  --fill-h:max(100vw,100vh)!important;
-  position:fixed!important; inset:0!important; z-index:1!important;
-  pointer-events:none!important; overflow:hidden!important;
-  perspective:140vw!important;
-  perspective-origin:50% 50%!important;
-  transform-style:preserve-3d!important;
-}
-#bgField > .trioStack > img,#bgField > .trioField > img{
-  position:absolute!important;
-  left:var(--hub-x)!important;
-  top:var(--hub-y)!important;
-  width:var(--fill-w)!important;
-  height:var(--fill-h)!important;
-  max-width:none!important;
-  max-height:none!important;
-  min-width:100vw!important;
-  min-height:100vh!important;
-  margin:0!important; padding:0!important;
-  display:block!important;
-  object-fit:cover!important;
-  object-position:center center!important;
-  mix-blend-mode:screen!important;
-  transform-origin:center center!important;
-  transform-style:preserve-3d!important;
-  will-change:transform;
-  -webkit-mask-image:none!important;
-          mask-image:none!important;
-}
-#bgField > .trioStack > img.still,#bgField > .trioField > img.still{ display:none!important; }
-/* A field — slowest underlay */
-#bgField > .trioStack > img.trioField,#bgField > .trioField > img.trioField{
-  opacity:.86!important; z-index:1!important;
-  filter:contrast(1.5) brightness(1.05) saturate(1.15) hue-rotate(8deg)!important;
-  transform:translate3d(-50%,-50%,var(--trio-z-a,-36px))
-            rotateX(var(--trio-tilt,5deg))
-            rotateZ(var(--trio-a,0deg))!important;
-}
-/* B grid — mid nest */
-#bgField > .trioStack > img.trioGrid,#bgField > .trioField > img.trioGrid{
-  opacity:.92!important; z-index:2!important;
-  filter:contrast(1.45) brightness(1.15) saturate(1.2)!important;
-  transform:translate3d(-50%,-50%,var(--trio-z-b,0px))
-            rotateX(var(--trio-tilt,5deg))
-            rotateZ(var(--trio-b,0deg))!important;
-}
-/* C core — fastest nest */
-#bgField > .trioStack > img.trioCore,#bgField > .trioField > img.trioCore{
-  opacity:1!important; z-index:3!important;
-  filter:contrast(1.55) brightness(1.18) saturate(1.35)!important;
-  transform:translate3d(-50%,-50%,var(--trio-z-c,28px))
-            rotateX(var(--trio-tilt,5deg))
-            rotateZ(var(--trio-c,0deg))!important;
-}
-#bgField > .trioStack::after,#bgField > .trioField::after{
-  content:""!important;
-  position:absolute!important; inset:0!important; z-index:5!important;
-  pointer-events:none!important;
-  background:radial-gradient(ellipse 85% 80% at 50% 50%, transparent 55%, rgba(0,0,0,.18) 100%)!important;
-  opacity:.55!important;
-  mix-blend-mode:normal!important;
-}
-/* mute prior duo / hybrid leftovers if any linger in cascade */
-#bgField .duoField,
-#bgField .hybridA,
-#bgField .hybridB{ display:none!important; }
-@media (prefers-reduced-motion:reduce){
-  #bgField > .trioStack,#bgField > .trioStack,#bgField > .trioField{ perspective:none!important; }
-  #bgField > .trioField > img.trioField,
-  #bgField > .trioField > img.trioGrid,
-  #bgField > .trioStack > img.trioCore,#bgField > .trioField > img.trioCore{
-    transform:translate(-50%,-50%)!important;
-    filter:contrast(1.45) brightness(1.05) saturate(1.15)!important;
-  }
-  #bgField > .trioStack > img.anim,#bgField > .trioField > img.anim{ display:none!important; }
-  #bgField > .trioStack > img.still,#bgField > .trioField > img.still{ display:block!important; }
-  #bgField > .trioStack::after,#bgField > .trioField::after{ opacity:.9!important; }
-}
-@media (max-width:700px){
-  #bgField > .trioStack,#bgField > .trioField{ --hub-x:50%!important; --hub-y:50%!important; }
-}
-
-
-/* clientLegible — every on-screen label readable over the trio field */
-#top{
-  background:rgba(2,6,14,.82)!important;
-  border:1px solid rgba(255,255,255,.14)!important;
-  box-shadow:0 8px 28px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.1)!important;
-  backdrop-filter:blur(20px) saturate(1.2)!important;
-  -webkit-backdrop-filter:blur(20px) saturate(1.2)!important;
-}
-#top .title{
-  font-size:.72rem!important;
-  letter-spacing:.22em!important;
-  color:#f4fbff!important;
-  text-shadow:0 1px 2px rgba(0,0,0,.95), 0 0 12px rgba(0,0,0,.8)!important;
-  opacity:1!important;
-}
-#top .metrics{
-  opacity:1!important;
-  font-size:.58rem!important;
-  color:rgba(220,236,248,.92)!important;
-  text-shadow:0 1px 2px rgba(0,0,0,.9)!important;
-}
-#top .metrics b{
-  color:#fff!important;
-  font-weight:700!important;
-}
-#top .metrics .a b{ color:#7eeef5!important; }
-#top .metrics .r b{ color:#f0a8ff!important; }
-#top #mSHWrap{ opacity:.85!important; color:rgba(230,240,255,.88)!important; }
-
-#uploadBox,
-#sortedFigures .tray{
-  background:linear-gradient(165deg, rgba(4,10,20,.88) 0%, rgba(2,6,12,.92) 100%)!important;
-  border:1px solid rgba(255,255,255,.16)!important;
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,.5),
-    0 18px 48px rgba(0,0,0,.72),
-    inset 0 1px 0 rgba(255,255,255,.1)!important;
-  backdrop-filter:blur(22px) saturate(1.15)!important;
-  -webkit-backdrop-filter:blur(22px) saturate(1.15)!important;
-}
-#uploadBox{ border-color:rgba(94,234,212,.55)!important; }
-#sortedFigures .tray.admit{ border-color:rgba(94,234,212,.5)!important; }
-#sortedFigures .tray.release{ border-color:rgba(232,121,249,.5)!important; }
-
-#uploadBox::before,
-#sortedFigures .tray::before{
-  background:linear-gradient(180deg, rgba(18,28,44,.98) 0%, rgba(6,10,18,.98) 100%)!important;
-  border-bottom:1px solid rgba(255,255,255,.12)!important;
-}
-
-#uploadBox .uh b,
-#sortedFigures .tray h3{
-  font-size:.68rem!important;
-  letter-spacing:.14em!important;
-  color:#f5fbff!important;
-  text-shadow:0 1px 3px rgba(0,0,0,.95)!important;
-  opacity:1!important;
-}
-#uploadBox .uh span{
-  font-size:.55rem!important;
-  color:rgba(200,224,240,.78)!important;
-  opacity:1!important;
-}
-#sortedFigures .tray.admit h3{ color:#9af3fa!important; }
-#sortedFigures .tray.release h3{ color:#f3b8ff!important; }
-#sortedFigures .tray .count{
-  opacity:.9!important;
-  color:rgba(230,242,255,.88)!important;
-  font-size:.62rem!important;
-}
-
-#uploadBox .dropHint{
-  font-size:.62rem!important;
-  color:rgba(220,238,252,.88)!important;
-  background:rgba(0,12,24,.72)!important;
-  border:1px dashed rgba(94,234,212,.45)!important;
-  text-shadow:0 1px 2px rgba(0,0,0,.85)!important;
-}
-#uploadBox .dropHint em{ color:#9af8ff!important; font-weight:700!important; }
-
-#uploadBox textarea,
-#pasteDesk{
-  font-size:.62rem!important;
-  line-height:1.45!important;
-  color:#eef6ff!important;
-  background:rgba(0,4,12,.82)!important;
-  border:1px solid rgba(94,234,212,.35)!important;
-  caret-color:#9af8ff!important;
-  text-shadow:none!important;
-}
-#uploadBox textarea::placeholder,
-#pasteDesk::placeholder{
-  color:rgba(160,190,210,.55)!important;
-  opacity:1!important;
-}
-
-#uploadBox .actions .filebtn,
-#uploadBox .actions button,
-#uploadBox .actions select,
-.folderExport button{
-  font-size:.58rem!important;
-  color:rgba(210,240,250,.92)!important;
-  opacity:1!important;
-  text-shadow:0 1px 2px rgba(0,0,0,.85)!important;
-}
-#uploadBox .actions #runSort{
-  color:#9af8ff!important;
-  font-weight:700!important;
-  font-size:.62rem!important;
-}
-#uploadBox .actions #clearDesk,
-#uploadBox .actions .ghost-chip{
-  color:rgba(190,210,230,.75)!important;
-}
-
-#sortedFigures .chipFig{
-  font-size:.6rem!important;
-  line-height:1.4!important;
-  color:rgba(230,242,255,.92)!important;
-  text-shadow:0 1px 2px rgba(0,0,0,.9)!important;
-  opacity:1!important;
-}
-#sortedFigures .tray.admit .chipFig{ color:rgba(200,248,252,.95)!important; }
-#sortedFigures .tray.release .chipFig{ color:rgba(246,220,255,.95)!important; }
-#sortedFigures .chipFig .k{
-  opacity:.75!important;
-  color:rgba(180,210,230,.85)!important;
-}
-#sortedFigures .empty{
-  font-size:.58rem!important;
-  color:rgba(170,200,220,.65)!important;
-  opacity:1!important;
-  font-style:normal!important;
-}
-
-.folderExport button{
-  padding:.2rem .45rem!important;
-  border:1px solid rgba(255,255,255,.18)!important;
-  border-radius:6px!important;
-  background:rgba(0,8,16,.55)!important;
-  margin:0 .25rem .35rem 0!important;
-}
-.folderExport button:hover{
-  color:#fff!important;
-  border-color:rgba(94,234,212,.5)!important;
-}
-
-#tip{
-  display:none;
-  font-size:.64rem!important;
-  line-height:1.4!important;
-  color:#f2f7ff!important;
-  background:rgba(2,8,16,.92)!important;
-  border:1px solid rgba(94,234,212,.4)!important;
-  text-shadow:0 1px 2px rgba(0,0,0,.9)!important;
-  padding:.55rem .7rem!important;
-}
-#tip b{ font-size:.7rem!important; color:#fff!important; }
-#tip .whisper{ opacity:.92!important; color:rgba(210,230,245,.9)!important; font-size:.58rem!important; }
-
-/* slightly quieter field under desk band so type wins */
-@media (min-width:901px){
-  #bgField .trioField{ opacity:.82!important; }
-  #bgField .trioGrid{ opacity:.78!important; }
-  #bgField .trioCore{ opacity:.92!important; }
-}
-
-
-/* clientWindowsFit — every OS window fits inside the viewport */
-:root{
-  --win-gap:12px;
-  --win-top:max(64px, calc(var(--safe-t) + 52px));
-  --win-bot:max(12px, calc(var(--safe-b) + 10px));
-  --win-side:max(12px, 2.5vw);
-  --win-w:min(340px, calc((100vw - 36px) / 2));
-  --win-h-half:calc((100dvh - var(--win-top) - var(--win-bot) - var(--win-gap)) / 2);
-  --win-h-full:calc(100dvh - var(--win-top) - var(--win-bot));
-}
-#sortDesk{
-  position:fixed!important; inset:0!important;
-  pointer-events:none!important;
-  background:transparent!important;
-  overflow:hidden!important;
-}
-#sortDesk > *{ pointer-events:auto; }
-
-/* dissolve sortedFigures chrome — trays become independent fitted windows */
-#sortedFigures{
-  position:static!important;
-  inset:auto!important;
-  width:0!important; height:0!important;
-  margin:0!important; padding:0!important;
-  border:none!important; background:transparent!important;
-  box-shadow:none!important; backdrop-filter:none!important;
-  overflow:visible!important;
-  display:block!important;
-  pointer-events:none!important;
-  transform:none!important;
-}
-#sortedFigures::before,
-#sortedFigures::after{ display:none!important; content:none!important; }
-
-#uploadBox,
-#trayAdmit,
-#trayRelease{
-  position:fixed!important;
-  box-sizing:border-box!important;
-  width:var(--win-w)!important;
-  max-width:calc(100vw - 24px)!important;
-  overflow:hidden!important;
-  display:flex!important;
-  flex-direction:column!important;
-  z-index:14!important;
-  transform:none!important;
-  pointer-events:auto!important;
-}
-#uploadBox{
-  left:var(--win-side)!important;
-  top:var(--win-top)!important;
-  bottom:auto!important;
-  right:auto!important;
-  max-height:var(--win-h-full)!important;
-  height:auto!important;
-}
-#trayAdmit{
-  right:var(--win-side)!important;
-  top:var(--win-top)!important;
-  left:auto!important;
-  bottom:auto!important;
-  max-height:var(--win-h-half)!important;
-}
-#trayRelease{
-  right:var(--win-side)!important;
-  bottom:var(--win-bot)!important;
-  top:auto!important;
-  left:auto!important;
-  max-height:var(--win-h-half)!important;
-}
-#uploadBox .chips,
-#trayAdmit .chips,
-#trayRelease .chips,
-#figAdmit, #figRelease{
-  flex:1 1 auto!important;
-  min-height:0!important;
-  max-height:none!important;
-  overflow:auto!important;
-  scrollbar-width:thin!important;
-}
-#uploadBox textarea,
-#pasteDesk{
-  max-height:min(22vh, 160px)!important;
-  min-height:64px!important;
-  overflow:auto!important;
-  resize:vertical!important;
-}
-#sortedFigures .tray{
-  width:var(--win-w)!important;
-  max-height:var(--win-h-half)!important;
-  margin:0!important;
-}
-
-/* phone: stack three fitted bands */
-@media (max-width:900px){
-  :root{
-    --win-w:calc(100vw - 16px);
-    --win-h-third:calc((100dvh - var(--win-top) - var(--win-bot) - 24px) / 3);
-  }
-  #uploadBox,
-  #trayAdmit,
-  #trayRelease{
-    left:8px!important;
-    right:8px!important;
-    width:auto!important;
-    max-width:none!important;
-  }
-  #uploadBox{
-    top:var(--win-top)!important;
-    max-height:var(--win-h-third)!important;
-  }
-  #trayAdmit{
-    top:calc(var(--win-top) + var(--win-h-third) + 8px)!important;
-    bottom:auto!important;
-    right:8px!important;
-    max-height:var(--win-h-third)!important;
-  }
-  #trayRelease{
-    top:auto!important;
-    bottom:var(--win-bot)!important;
-    max-height:var(--win-h-third)!important;
-  }
-  #uploadBox textarea,
-  #pasteDesk{ max-height:min(12vh, 96px)!important; min-height:48px!important; }
-}
-
-
-/* clientPerfect — refined final: compact windows, clear type, quiet field */
-:root{
-  --win-gap:8px!important;
-  --win-top:max(56px, calc(var(--safe-t) + 44px))!important;
-  --win-bot:max(8px, calc(var(--safe-b) + 8px))!important;
-  --win-side:max(10px, 2vw)!important;
-  --win-w:min(300px, calc((100vw - 28px) / 2))!important;
-}
-#bgField > .trioStack,
-#bgField > .trioField{
-  overflow:hidden!important;
-}
-#bgField > .trioStack > img.trioField,
-#bgField > .trioField > img.trioField{ opacity:.78!important; }
-#bgField > .trioStack > img.trioGrid,
-#bgField > .trioField > img.trioGrid{ opacity:.84!important; }
-#bgField > .trioStack > img.trioCore,
-#bgField > .trioField > img.trioCore{ opacity:.96!important; }
-#bgField > .trioStack::after,
-#bgField > .trioField::after{
-  background:radial-gradient(ellipse 88% 82% at 50% 48%, transparent 58%, rgba(0,0,0,.22) 100%)!important;
-  opacity:.5!important;
-}
-
-#top{
-  padding:.22rem .7rem!important;
-  max-width:min(380px, calc(100vw - 20px))!important;
-  background:rgba(2,6,14,.88)!important;
-}
-#top .title{
-  font-size:.64rem!important;
-  letter-spacing:.2em!important;
-}
-#top .metrics{ font-size:.52rem!important; }
-
-#uploadBox,
-#trayAdmit,
-#trayRelease{
-  border-radius:14px!important;
-  padding:0!important;
-}
-#uploadBox{
-  max-height:var(--win-h-full)!important;
-}
-#uploadBox .uh,
-#trayAdmit h3,
-#trayRelease h3{
-  font-size:.58rem!important;
-  letter-spacing:.12em!important;
-  padding-left:2.6rem!important;
-}
-#uploadBox .dropHint{
-  font-size:.54rem!important;
-  padding:.35rem .4rem!important;
-  margin:.35rem var(--px-pad-x,12px) .3rem!important;
-}
-#uploadBox .actions{
-  gap:.4rem!important;
-  margin:0 var(--px-pad-x,12px) .25rem!important;
-}
-#uploadBox .actions .filebtn,
-#uploadBox .actions button,
-#uploadBox .actions select,
-.folderExport button{
-  font-size:.52rem!important;
-}
-#uploadBox textarea,
-#pasteDesk{
-  font-size:.56rem!important;
-  min-height:52px!important;
-  max-height:min(16vh,120px)!important;
-  margin:0 var(--px-pad-x,12px) .45rem!important;
-  width:calc(100% - 24px)!important;
-}
-#sortedFigures .chipFig{
-  font-size:.54rem!important;
-  line-height:1.35!important;
-}
-.folderExport{
-  margin:0 10px .2rem!important;
-}
-.folderExport button{
-  padding:.12rem .35rem!important;
-  font-size:.48rem!important;
-}
-#figAdmit, #figRelease, #uploadBox .chips{
-  padding:0 10px 8px!important;
-}
-
-@media (max-width:900px){
-  :root{
-    --win-w:calc(100vw - 14px)!important;
-  }
-  #uploadBox .dropHint{ display:none!important; }
-  #uploadBox textarea, #pasteDesk{ max-height:min(10vh,72px)!important; min-height:40px!important; }
-}
-
-
-/* clientPurpleAll — revert UI + field grade to all-purple hologram */
-:root{
-  --void:#000!important;
-  --ink:#f5e9ff!important;
-  --mute:#a78bfa!important;
-  --admit:#e879f9!important;
-  --release:#c026d3!important;
-  --mint:#f0abfc!important;
-  --cyan:#d946ef!important;
-  --mag:#a855f7!important;
-  --warn:#fae8ff!important;
-  --glass:rgba(36,0,56,0.55)!important;
-  --line:rgba(232,121,249,0.55)!important;
-  --holo-wash:linear-gradient(135deg,rgba(232,121,249,0.18),rgba(168,85,247,0.10),rgba(192,38,211,0.16))!important;
-  --px-cyan:#e879f9!important;
-  --px-mag:#c026d3!important;
-  --opt-cyan:#e879f9!important;
-  --opt-mag:#c026d3!important;
-  --mp-cyan:#e879f9!important;
-  --mp-mag:#c026d3!important;
-}
-html,body{ background:#000!important; color:var(--ink)!important; }
-#bgField{ background:#000!important; }
-
-/* trio → purple hologram grade */
-#bgField > .trioStack > img.trioField,
-#bgField > .trioField > img.trioField{
-  filter:contrast(1.45) brightness(1.08) saturate(1.55) hue-rotate(265deg)!important;
-  opacity:.82!important;
-}
-#bgField > .trioStack > img.trioGrid,
-#bgField > .trioField > img.trioGrid{
-  filter:contrast(1.4) brightness(1.12) saturate(1.45) hue-rotate(280deg)!important;
-  opacity:.88!important;
-}
-#bgField > .trioStack > img.trioCore,
-#bgField > .trioField > img.trioCore{
-  filter:contrast(1.5) brightness(1.15) saturate(1.6) hue-rotate(270deg)!important;
-  opacity:1!important;
-}
-#bgField > .trioStack::after,
-#bgField > .trioField::after{
-  background:
-    radial-gradient(ellipse 85% 80% at 50% 48%, transparent 50%, rgba(40,0,60,.35) 100%),
-    linear-gradient(180deg, rgba(232,121,249,.08) 0%, transparent 30%, transparent 70%, rgba(192,38,211,.1) 100%)!important;
-  opacity:.7!important;
-}
-
-#top{
-  background:linear-gradient(180deg,rgba(40,0,56,.88),rgba(18,0,28,.9))!important;
-  border:1px solid rgba(232,121,249,.4)!important;
-  box-shadow:0 8px 28px rgba(0,0,0,.65), 0 0 24px rgba(168,85,247,.18)!important;
-}
-#top .title{
-  color:#f0abfc!important;
-  text-shadow:0 0 18px rgba(232,121,249,.55),0 0 36px rgba(168,85,247,.25)!important;
-}
-#top .metrics{ color:rgba(220,190,245,.9)!important; }
-#top .metrics b{ color:#fff!important; }
-#top .metrics .a b{ color:#f0abfc!important; text-shadow:0 0 10px rgba(232,121,249,.45)!important; }
-#top .metrics .r b{ color:#e879f9!important; text-shadow:0 0 10px rgba(192,38,211,.4)!important; }
-
-#uploadBox,
-#trayAdmit,
-#trayRelease{
-  background:linear-gradient(165deg, rgba(48,0,72,.9) 0%, rgba(16,0,28,.94) 100%)!important;
-  border:1px solid rgba(232,121,249,.42)!important;
-  box-shadow:
-    0 0 0 1px rgba(168,85,247,.15),
-    0 0 40px rgba(192,38,211,.12),
-    0 18px 48px rgba(0,0,0,.7)!important;
-}
-#uploadBox{ border-color:rgba(232,121,249,.55)!important; }
-#trayAdmit{ border-color:rgba(240,171,252,.5)!important; }
-#trayRelease{ border-color:rgba(192,38,211,.5)!important; }
-#uploadBox::before,
-#trayAdmit::before,
-#trayRelease::before,
-#sortedFigures .tray::before{
-  background:linear-gradient(180deg, rgba(72,20,96,.98) 0%, rgba(28,0,44,.98) 100%)!important;
-  border-bottom:1px solid rgba(232,121,249,.25)!important;
-}
-#uploadBox::after,
-#trayAdmit::after{ color:rgba(240,171,252,.65)!important; text-shadow:0 0 8px rgba(232,121,249,.4)!important; }
-#trayRelease::after{ color:rgba(232,121,249,.7)!important; }
-
-#uploadBox .uh b,
-#trayAdmit h3,
-#trayRelease h3,
-#sortedFigures .tray h3{
-  color:#fae8ff!important;
-  text-shadow:0 1px 3px rgba(0,0,0,.95), 0 0 14px rgba(232,121,249,.35)!important;
-}
-#trayAdmit h3,
-#sortedFigures .tray.admit h3{
-  color:#f0abfc!important;
-  text-shadow:0 0 16px rgba(232,121,249,.7)!important;
-}
-#trayRelease h3,
-#sortedFigures .tray.release h3{
-  color:#e9d5ff!important;
-  text-shadow:0 0 14px rgba(192,38,211,.55)!important;
-}
-#uploadBox .uh span{ color:rgba(220,190,245,.75)!important; }
-#uploadBox .dropHint{
-  color:rgba(245,230,255,.9)!important;
-  background:rgba(40,0,60,.75)!important;
-  border:1px dashed rgba(232,121,249,.45)!important;
-}
-#uploadBox .dropHint em{ color:#f0abfc!important; }
-#uploadBox textarea,
-#pasteDesk{
-  color:#fae8ff!important;
-  background:rgba(20,0,32,.88)!important;
-  border:1px solid rgba(232,121,249,.4)!important;
-  caret-color:#f0abfc!important;
-}
-#uploadBox .actions #runSort{ color:#f0abfc!important; }
-#uploadBox .actions .filebtn,
-#uploadBox .actions button,
-#uploadBox .actions select,
-.folderExport button{
-  color:rgba(245,230,255,.92)!important;
-  border-color:rgba(192,132,252,.35)!important;
-}
-.folderExport button{
-  background:rgba(40,0,60,.65)!important;
-  border:1px solid rgba(232,121,249,.35)!important;
-}
-#sortedFigures .chipFig{ color:rgba(250,240,255,.94)!important; }
-#sortedFigures .tray.admit .chipFig{ color:rgba(250,220,255,.96)!important; }
-#sortedFigures .tray.release .chipFig{ color:rgba(240,200,255,.96)!important; }
-#sortedFigures .empty{ color:rgba(200,170,230,.65)!important; }
-#tip{
-  background:rgba(28,0,44,.94)!important;
-  border:1px solid rgba(232,121,249,.45)!important;
-  color:#fae8ff!important;
-}
-#tip b{ color:#f0abfc!important; }
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientPurpleAll|clientPurpleAll|clientPerfect|clientWindowsFit|clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
-  <div class="trioStack" aria-hidden="true">
-    <img class="trioField anim" src="media/trio-field-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
-    <img class="trioField still" src="media/trio-field-keyed.png" alt="" width="500" height="500" decoding="async">
-    <img class="trioGrid anim" src="media/trio-grid-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
-    <img class="trioGrid still" src="media/trio-grid-keyed.png" alt="" width="500" height="500" decoding="async">
-    <img class="trioCore anim" src="media/trio-core-keyed.webp" alt="" width="530" height="530" decoding="async" fetchpriority="high">
-    <img class="trioCore still" src="media/trio-core-keyed.png" alt="" width="530" height="530" decoding="async">
+<div id="bgField" aria-hidden="true"><!-- clientTwoOnly: hybrid-a + hybrid-b only -->
+  <div class="duoField" aria-hidden="true">
+    <img class="hybridA anim" src="media/hybrid-a-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
+    <img class="hybridA still" src="media/hybrid-a-keyed.png" alt="" width="500" height="500" decoding="async">
+    <img class="hybridB anim" src="media/hybrid-b-keyed.webp" alt="" width="768" height="768" decoding="async" fetchpriority="high">
+    <img class="hybridB still" src="media/hybrid-b-keyed.png" alt="" width="768" height="768" decoding="async">
   </div>
 </div>
 <div id="dataRail" aria-hidden="true"></div>
@@ -3352,10 +2404,10 @@ html,body{ background:#000!important; color:var(--ink)!important; }
 <section id="sortDesk" aria-label="Upload window in, Organized and Aside folders out">
   <div id="phaseWhisper" class="phaseWhisper" role="status" aria-live="polite" aria-hidden="true"></div>
   <div id="uploadBox" tabindex="0" role="region" aria-label="Upload window — drop or choose files here">
-    <div class="uh"><b>Upload</b><span>whatever you're sorting</span></div>
-    <div class="dropHint">Drop any file · paste · or <em>choose</em> — runs through Seraphim</div>
+    <div class="uh"><b>Upload here</b><span>csv · tsv · json · txt · md</span></div>
+    <div class="dropHint">Drop files here · or <em>choose</em></div>
     <div class="actions">
-      <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson,.log,.xml,.html,.htm,.yaml,.yml,.py,.js,.ts,.csv.gz,text/*,*/*" hidden/></label>
+      <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
       <button type="button" id="runSort" class="primary">sort</button>
       <button type="button" id="clearDesk" class="ghost">clear</button>
       <select id="demoDesk" class="ghost-chip" aria-label="Demo content" title="Demo content">
@@ -3366,7 +2418,7 @@ html,body{ background:#000!important; color:var(--ink)!important; }
         <option value="nonsense">Constant nonsense</option>
       </select>
     </div>
-    <textarea id="pasteDesk" placeholder="- paste anything to sort through Seraphim…" rows="3"></textarea>
+    <textarea id="pasteDesk" placeholder="- paste content to sort…" rows="3"></textarea>
   </div>
     <div id="sortedFigures" aria-live="polite" aria-label="Sorted folders">
     <div class="tray admit" id="trayAdmit" role="region" aria-label="Organized folder">
@@ -3964,7 +3016,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientTrioOnly|clientPixelAbsorbed48h|clientOptimalFinal|clientMasterpieceDuo|clientForcePerspective|clientDuoHarmony|clientTwoOnly|clientNoOtherAesthetics|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
+/* SERAPHIM_MARKERS:cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -6827,40 +5879,31 @@ function drawDeskSealWiring(cx,cy,s,t){ return;
 }
 
 function syncSpinPhase(t){
-  /* clientTrioOnly — A slowest field, B mid grid, C fastest core; nested 1/φ rates; same direction */
+  /* clientMasterpieceDuo — slower cinematic φ nest + soft perspective tilt */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
   if(typeof reduceMotion!=="undefined" && reduceMotion){
-    _bgFieldEl.style.setProperty("--trio-a","0deg");
-    _bgFieldEl.style.setProperty("--trio-b","0deg");
-    _bgFieldEl.style.setProperty("--trio-c","0deg");
-    _bgFieldEl.style.setProperty("--trio-tilt","5deg");
-    _bgFieldEl.style.setProperty("--trio-z-a","-36px");
-    _bgFieldEl.style.setProperty("--trio-z-b","0px");
-    _bgFieldEl.style.setProperty("--trio-z-c","28px");
+    _bgFieldEl.style.setProperty("--duo-a","0deg");
+    _bgFieldEl.style.setProperty("--duo-b","0deg");
+    _bgFieldEl.style.setProperty("--duo-tilt","12deg");
     return;
   }
   const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
   const phi=(typeof PHI==="number")?PHI:1.6180339887;
-  /* ~120s full rotation for outer field (A); B = A·φ; C = A·φ² — same direction */
-  const omega=base*(1/(phi*phi*phi))*0.06429;
+  const omega=base*(1/(phi*phi*phi))*0.055;
   const theta=t*omega;
   const degA=(theta*180/Math.PI);
-  const degB=(theta*phi*180/Math.PI);
-  const degC=(theta*phi*phi*180/Math.PI);
-  const tilt=(5+0.8*Math.sin(t*base*(1/phi)*0.28)).toFixed(2)+"deg";
+  const degB=(theta/phi*180/Math.PI);
+  const tilt=(14+1.6*Math.sin(t*base*(1/phi)*0.35)).toFixed(2)+"deg";
   const a=degA.toFixed(3)+"deg";
   const b=degB.toFixed(3)+"deg";
-  const c=degC.toFixed(3)+"deg";
-  if(_bgFieldEl._trioA!==a || _bgFieldEl._trioB!==b || _bgFieldEl._trioC!==c || _bgFieldEl._trioTilt!==tilt){
-    _bgFieldEl._trioA=a; _bgFieldEl._trioB=b; _bgFieldEl._trioC=c; _bgFieldEl._trioTilt=tilt;
-    _bgFieldEl.style.setProperty("--trio-a", a);
-    _bgFieldEl.style.setProperty("--trio-b", b);
-    _bgFieldEl.style.setProperty("--trio-c", c);
-    _bgFieldEl.style.setProperty("--trio-tilt", tilt);
-    _bgFieldEl.style.setProperty("--trio-z-a", "-36px");
-    _bgFieldEl.style.setProperty("--trio-z-b", "0px");
-    _bgFieldEl.style.setProperty("--trio-z-c", "28px");
+  if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoTilt!==tilt){
+    _bgFieldEl._duoA=a; _bgFieldEl._duoB=b; _bgFieldEl._duoTilt=tilt;
+    _bgFieldEl.style.setProperty("--duo-a", a);
+    _bgFieldEl.style.setProperty("--duo-b", b);
+    _bgFieldEl.style.setProperty("--duo-tilt", tilt);
+    _bgFieldEl.style.setProperty("--duo-z-a", "-90px");
+    _bgFieldEl.style.setProperty("--duo-z-b", "28px");
   }
 }
 
@@ -8021,7 +7064,7 @@ function wireSortDesk(){
   if(legacy)["input","keydown","paste","focus"].forEach(ev=>legacy.addEventListener(ev, markDeskUserTouch));
 }
 
-function render(res){lastResult=res; updateMetrics(res); pushLog(res.verdicts); renderSortedFigures(res.verdicts); if($("dlJson"))$("dlJson").disabled=false; if($("dlCsv"))$("dlCsv").disabled=false; ingestVerdicts(res.verdicts); if(typeof window.seraphimAutoExport==="function") try{window.seraphimAutoExport(res);}catch(e){}}
+function render(res){lastResult=res; updateMetrics(res); pushLog(res.verdicts); renderSortedFigures(res.verdicts); if($("dlJson"))$("dlJson").disabled=false; if($("dlCsv"))$("dlCsv").disabled=false; ingestVerdicts(res.verdicts);}
 function focusNode(id){
   focusId=id;
   document.querySelectorAll("#log .ev").forEach(el=>{el.classList.toggle("focus",String(el.dataset.id)===String(id));});
@@ -8335,116 +7378,6 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
   function boot(){
     wirePersist();
     wireExports();
-
-/* clientAutoExport — after Seraphim engine, auto-download full result */
-(function wireAutoExportAfterEngine(){
-  function cells(v){
-    return [v.id, v.decision, v.decision==="admit"?"organized":"aside", v.S_H, v.S_solv, v.R_H, v.cause||"", v.kind||"", v.audit||"", JSON.stringify(v.t||"")];
-  }
-  function stamp(){
-    const d=new Date();
-    const p=n=>String(n).padStart(2,"0");
-    return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+"-"+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds());
-  }
-  function triggerDownload(blob, name){
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download=name;
-    a.rel="noopener";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
-  }
-  
-/* clientWindowsFit — clamp dragged windows inside the viewport */
-(function fitWindowsInViewport(){
-  function bounds(){
-    const vv = window.visualViewport;
-    const w = (vv && vv.width) || window.innerWidth;
-    const h = (vv && vv.height) || window.innerHeight;
-    const ox = (vv && vv.offsetLeft) || 0;
-    const oy = (vv && vv.offsetTop) || 0;
-    return {w,h,ox,oy};
-  }
-  function clampWin(win){
-    if(!win) return;
-    const b = bounds();
-    const r = win.getBoundingClientRect();
-    let left = r.left, top = r.top;
-    const maxL = Math.max(b.ox + 4, b.ox + b.w - r.width - 4);
-    const maxT = Math.max(b.oy + 4, b.oy + b.h - r.height - 4);
-    left = Math.min(Math.max(left, b.ox + 4), maxL);
-    top = Math.min(Math.max(top, b.oy + 4), maxT);
-    win.style.position = "fixed";
-    win.style.left = left + "px";
-    win.style.top = top + "px";
-    win.style.right = "auto";
-    win.style.bottom = "auto";
-    win.style.transform = "none";
-    /* never taller than viewport */
-    const maxH = Math.max(120, b.h - 16);
-    if(r.height > maxH){
-      win.style.maxHeight = maxH + "px";
-      win.style.overflow = "auto";
-    }
-  }
-  function clampAll(){
-    ["uploadBox","trayAdmit","trayRelease"].forEach(id=>clampWin(document.getElementById(id)));
-  }
-  window.seraphimClampWindows = clampAll;
-  window.addEventListener("resize", clampAll, {passive:true});
-  if(window.visualViewport){
-    window.visualViewport.addEventListener("resize", clampAll, {passive:true});
-    window.visualViewport.addEventListener("scroll", clampAll, {passive:true});
-  }
-  document.addEventListener("mouseup", ()=>setTimeout(clampAll, 0));
-  document.addEventListener("touchend", ()=>setTimeout(clampAll, 0), {passive:true});
-  setTimeout(clampAll, 50);
-  setTimeout(clampAll, 400);
-})();
-
-  window.seraphimAutoExport = function(res){
-    if(!res || !res.verdicts || !res.verdicts.length) return;
-    if(window.__seraphimAutoExportBusy) return;
-    window.__seraphimAutoExportBusy = true;
-    const ts=stamp();
-    const payload={
-      exported_at: res.stamp || new Date().toISOString(),
-      n: res.n,
-      counts: res.counts,
-      organized: res.verdicts.filter(v=>v.decision==="admit"),
-      aside: res.verdicts.filter(v=>v.decision!=="admit"),
-      verdicts: res.verdicts
-    };
-    const head=["id","decision","display","S_H","S_solv","R_H","cause","kind","audit","text"];
-    const csv=[head.join(",")].concat(res.verdicts.map(v=>cells(v).map(x=>`"${String(x).replace(/"/g,'""')}"`).join(","))).join("\n");
-    /* stagger — browsers often block multi-download bursts */
-    triggerDownload(new Blob([csv],{type:"text/csv;charset=utf-8"}), "seraphim-sorted-"+ts+".csv");
-    setTimeout(()=>{
-      triggerDownload(new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}), "seraphim-sorted-"+ts+".json");
-      window.__seraphimAutoExportBusy = false;
-      const tipEl=document.getElementById("tip");
-      if(tipEl){
-        tipEl.style.display="block";
-        tipEl.className="a";
-        tipEl.innerHTML="<b>EXPORTED</b><span class=\"whisper\">csv + json · "+res.n+" through Seraphim</span>";
-        setTimeout(()=>{ if(tipEl && tipEl.textContent.indexOf("EXPORTED")>=0) tipEl.style.display="none"; }, 3200);
-      }
-    }, 450);
-  };
-  /* patch render once */
-  if(typeof render==="function" && !render.__seraphimAutoExport){
-    const _render=render;
-    function renderHook(res){
-      _render(res);
-      try{ window.seraphimAutoExport(res); }catch(e){}
-    }
-    renderHook.__seraphimAutoExport=true;
-    render=renderHook;
-  }
-})();
-
     wirePasteAutoSort();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", ()=>setTimeout(boot, 140));
