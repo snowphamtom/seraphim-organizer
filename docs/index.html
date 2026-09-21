@@ -4623,6 +4623,99 @@ function drawSealContrastVeil(cx,cy,s){ /* hexCoreGyroSeal */ return;
   ctx.restore();
 }
 
+
+function drawWindowLightnings(cx,cy,s,t){
+  /* clientWinLightning — jagged bolts: floating windows ↔ nearest dodeca verts */
+  const pv=DODECA._projVerts;
+  if(!pv||pv.length<4) return;
+  const thin=W<=480, mobile=W<=900;
+  const ids=[
+    {id:"uploadBox", hue:142, boost:1.05},
+    {id:"trayAdmit", hue:192, boost:1.0},
+    {id:"trayRelease", hue:305, boost:1.0}
+  ];
+  const flash=0.55+0.45*Math.sin(t*TEMPO.base*7.2);
+  const pulseBoost=0.35*sealPulse+0.55*celebrate+0.4*sealLockFlash;
+  ctx.save();
+  ctx.globalCompositeOperation="lighter";
+  for(let wi=0;wi<ids.length;wi++){
+    const meta=ids[wi];
+    const el=document.getElementById(meta.id);
+    if(!el||el.offsetParent===null) continue;
+    const r=el.getBoundingClientRect();
+    if(r.width<8||r.height<8) continue;
+    /* origin on the window edge facing the seal */
+    const wx=r.left+r.width*0.5, wy=r.top+r.height*0.5;
+    const dx=cx-wx, dy=cy-wy, dist=Math.hypot(dx,dy)||1;
+    const ux=dx/dist, uy=dy/dist;
+    /* start just inside the facing edge */
+    const half=Math.min(r.width,r.height)*0.5;
+    const ox=wx+ux*Math.min(r.width*0.42, half*0.85);
+    const oy=wy+uy*Math.min(r.height*0.42, half*0.85);
+    /* nearest / next-nearest dodeca verts */
+    let best=null, second=null;
+    for(const v of pv){
+      const d2=(v.x-ox)*(v.x-ox)+(v.y-oy)*(v.y-oy);
+      if(!best||d2<best.d2){ second=best; best={v,d2}; }
+      else if(!second||d2<second.d2) second={v,d2};
+    }
+    if(!best) continue;
+    const targets=[best.v];
+    if(second && !thin) targets.push(second.v);
+    for(let ti=0;ti<targets.length;ti++){
+      const tv=targets[ti];
+      const segs=thin?7:(mobile?9:12);
+      /* rebuild jagged path each frame with seeded flicker */
+      const pts=[{x:ox,y:oy}];
+      for(let i=1;i<segs;i++){
+        const u=i/segs;
+        const bx=ox+(tv.x-ox)*u, by=oy+(tv.y-oy)*u;
+        const nx=-uy, ny=ux;
+        const wob=(Math.sin(t*TEMPO.base*11.3+wi*2.7+ti*4.1+i*1.7)
+                  +Math.sin(t*TEMPO.base*19.1+i*2.9+wi))*0.5;
+        const amp=(thin?7:11)*(1-u*0.55)*(0.55+0.45*flash)*(0.7+0.3*Math.sin(t*8+i+wi));
+        pts.push({x:bx+nx*wob*amp, y:by+ny*wob*amp});
+      }
+      pts.push({x:tv.x,y:tv.y});
+      const aBase=(0.22+0.18*flash+pulseBoost*0.25)*(ti?0.55:1)*(mobile?0.85:1);
+      const hue=meta.hue+8*Math.sin(t+wi);
+      /* glow understroke */
+      ctx.strokeStyle=hsl(hue,100,55,aBase*0.35);
+      ctx.lineWidth=(thin?2.2:3.4)*(ti?0.7:1);
+      ctx.lineJoin="round"; ctx.lineCap="round";
+      ctx.beginPath();
+      pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+      ctx.stroke();
+      /* hot core */
+      ctx.strokeStyle=hsl(hue+20,100,Math.min(68,62+6*flash),aBase*0.95);
+      ctx.lineWidth=(thin?0.9:1.35)*(ti?0.75:1);
+      ctx.beginPath();
+      pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+      ctx.stroke();
+      /* white tip kiss on vert */
+      if(flash>0.7||pulseBoost>0.2){
+        ctx.fillStyle=hsl(hue+40,100,68,aBase*0.7);
+        ctx.beginPath(); ctx.arc(tv.x,tv.y,thin?1.4:2.1,0,Math.PI*2); ctx.fill();
+      }
+      /* branch fork mid-bolt (desktop only) */
+      if(!mobile && ti===0 && (Math.floor(t*TEMPO.base*3+wi)%5)===0){
+        const mid=pts[Math.floor(pts.length*0.55)]||pts[3];
+        const bx=mid.x+nx*(14+8*Math.sin(t*9+wi));
+        const by=mid.y+ny*(14+8*Math.cos(t*9+wi));
+        ctx.strokeStyle=hsl(hue-15,95,60,aBase*0.45);
+        ctx.lineWidth=0.85;
+        ctx.beginPath(); ctx.moveTo(mid.x,mid.y); ctx.lineTo(bx,by); ctx.stroke();
+      }
+    }
+    /* soft contact glow on window edge */
+    const eg=ctx.createRadialGradient(ox,oy,0,ox,oy,thin?18:28);
+    eg.addColorStop(0,hsl(meta.hue,100,60,0.18+0.12*flash+pulseBoost*0.1));
+    eg.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=eg; ctx.beginPath(); ctx.arc(ox,oy,28,0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
+
 function drawHybridBridgeRays(cx,cy,s,t){
   /* stripToBones: cut — fights seal/desk clarity */
   return;
@@ -5490,6 +5583,7 @@ function frame(now){
   drawSealContrastVeil(cx,cy,s); /* stays no-op — no black plate behind seal */
   drawSphereWire(cxH,cyH,s,t); /* soft sphere core at origin */
   drawHexFrame(cxH,cyH,s,t); /* projected dodeca edges + face whisper */
+  if(!reduceMotion && !skipHeavy) drawWindowLightnings(cxH,cyH,s,t); /* clientWinLightning */
   drawInnerCubeWire(cxH,cyH,s,t);
   drawSealBreath(cx,cy,s,t);
   drawCanvasLabels(cxL,cyL,s,mouths,verts);
