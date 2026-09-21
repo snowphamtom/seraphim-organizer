@@ -99,7 +99,7 @@ addEventListener("resize",resize);resize();
 
 function seedField(n){
   field.length=0;
-  for(let i=0;i<Math.min(n,900);i++){
+  for(let i=0;i<Math.min(n,1400);i++){
     field.push({
       a:Math.random()*Math.PI*2,
       b:(Math.random()-0.5)*Math.PI*0.9,
@@ -181,14 +181,14 @@ function drawFunnels(ctx,t){
     for(let i=0;i<=8;i++){
       const u=i/8;
       const x=tx+(bx-tx)*u, y=ty+(by-ty)*u;
-      const w=(1-u)*28+2;
+      const w=(1-u)*42+3;
       ctx.strokeStyle=`hsla(${(fi*120+t*60+i*10)%360},100%,70%,${0.15+u*0.25})`;
       ctx.beginPath();ctx.ellipse(x,y,w,w*0.35,0,0,Math.PI*2);ctx.stroke();
     }
     const grd=ctx.createLinearGradient(tx,ty,bx,by);
     grd.addColorStop(0,`hsla(${fi*120+t*40},100%,70%,0.8)`);
     grd.addColorStop(1,"rgba(255,255,255,0.15)");
-    ctx.strokeStyle=grd;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
+    ctx.strokeStyle=grd;ctx.lineWidth=4.5;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
     ctx.restore();
   });
 }
@@ -199,7 +199,8 @@ function kindHue(v){
 }
 
 function ingestVerdicts(verdicts){
-  seedField(Math.max(verdicts.length,200));
+  t0=performance.now();
+  seedField(Math.max(verdicts.length,400));
   verdicts.forEach((v,i)=>{
     if(i>=field.length)return;
     field[i].v=v;
@@ -231,8 +232,8 @@ function frame(now){
       const x=Math.cos(p.a)*p.r, z=Math.sin(p.a)*p.r, y=Math.sin(p.b)*0.6;
       const px=cx+x*s*1.6, py=cy+y*s*1.4+z*s*0.2;
       const tw=0.4+0.6*Math.abs(Math.sin(t*3+p.tw));
-      ctx.fillStyle=`rgba(255,255,255,${0.35*tw})`;
-      ctx.fillRect(px,py,1.4,1.4);
+      ctx.fillStyle=`rgba(255,255,255,${0.55*tw})`;
+      ctx.fillRect(px,py,1.8,1.8);
     } else if(age<2.2){
       const u=Math.min(1,(age-0.8)/1.4);
       const [fx,fy]=tipPx[p.funnel];
@@ -244,9 +245,9 @@ function frame(now){
         p.core={
           a:Math.random()*Math.PI*2,
           b:(Math.random()-0.5)*1.2,
-          r:0.15+Math.random()*0.55,
+          r:0.12+Math.random()*0.65,
           spin:0.2+Math.random()*0.5,
-          size:3+Math.random()*5+(p.targetAdmit?2:0)
+          size:5+Math.random()*9+(p.targetAdmit?4:0)
         };
       }
       const c=p.core;
@@ -302,7 +303,7 @@ panel.addEventListener("dragover",e=>{e.preventDefault();});
 panel.addEventListener("drop",async e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(!f)return;$("paste").value=await f.text();organize(parseDump(f.name,$("paste").value));});
 $("dlJson").onclick=()=>{if(!last)return;const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(last,null,2)],{type:"application/json"}));a.download="seraphim-organize.json";a.click();};
 $("dlCsv").onclick=()=>{if(!last)return;const rows=[["id","decision","S_H","cause","audit","text"],...last.verdicts.map(v=>[v.id,v.decision,v.S_H,v.cause||"",v.audit,JSON.stringify(v.t)])];const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="seraphim-organize.csv";a.click();};
-seedField(400);
+seedField(700);
 </script>
 </body>
 </html>
