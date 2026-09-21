@@ -47,3 +47,5 @@ Sparse `drawBeamRain` + quiet `drawCorePlasma` = desk↔seal↔trays as one φ c
 
 ## Labels
 Disorganized → Organized / Aside
+
+- Gather pack rearrange (Creatively data → Wizard ship): live-gather.csv noise→keeper arc for Organized/Aside gravity.
