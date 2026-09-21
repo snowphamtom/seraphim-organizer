@@ -318,9 +318,9 @@ body.reveal-chrome #log, #log:hover{opacity:.55}
 body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
-/* fourAssetCanon|tunnelAsSent|bgSealCenterLock|stripToBones
-   Taylor: these 4 GIFs are all you need — as-sent, no invert/screen warp.
-   Layer order (back→front): tunnel-grid → iso-tunnel → beam-rain → hex-core → canvas seal/desk */
+/* fourAssetCanon|tunnelInvertWB|bgSealCenterLock|stripToBones
+   Background: BLACK void + WHITE spheres (tunnel GIF inverted).
+   Layer order: tunnel → iso → beam → hex-core → canvas */
 #bgField{
   position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
   background:#000;
@@ -341,48 +341,44 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   object-fit:cover;object-position:50% 50%;
 }
 #bgField .assetLayer img.still{display:none}
-/* 1 tunnel — full field as sent */
+/* 1 tunnel — invert light→black, black dots→white spheres */
 #bgField .tunnelGrid{z-index:0}
 #bgField .tunnelGrid .plane{
-  width:max(200vw,200vh); height:max(200vw,200vh);
-  opacity:0.85;
+  width:max(220vw,220vh); height:max(220vw,220vh);
+  opacity:1;
   filter:invert(1);
 }
-/* 2 iso wireframe depth — dark gif, screen so black drops out on light tunnel OR normal with opacity */
+/* 2 iso — screen on black so wireframe reads white/iridescent */
 #bgField .isoTunnel{z-index:1}
 #bgField .isoTunnel .plane{
   width:min(92vmin,720px); height:min(92vmin,720px);
-  opacity:0.28;
-  mix-blend-mode:multiply;
+  opacity:0.45;
+  mix-blend-mode:screen;
 }
-/* 3 beam rain — flow under core */
+/* 3 beam rain */
 #bgField .beamRain{z-index:2}
 #bgField .beamRain .plane{
   width:min(70vmin,560px); height:min(70vmin,560px);
-  opacity:0.35;
-  mix-blend-mode:normal;
+  opacity:0.4;
+  mix-blend-mode:screen;
 }
-/* 4 hex core — engine at seal hub */
+/* 4 hex core — dominant */
 #bgField .hexCore{z-index:3}
 #bgField .hexCore .plane{
   width:min(72vmin,640px); height:min(72vmin,640px);
   opacity:1;
-  border-radius:0;
-  z-index:3;
 }
 @media (max-width:900px){
-  #bgField .tunnelGrid .plane{opacity:0.8; filter:invert(1)}
-  #bgField .isoTunnel .plane{opacity:0.4; width:min(88vmin,560px); height:min(88vmin,560px)}
-  #bgField .beamRain .plane{opacity:0.55; width:min(62vmin,420px); height:min(62vmin,420px)}
-  #bgField .hexCore .plane{opacity:1; width:min(64vmin,480px); height:min(64vmin,480px)}
+  #bgField .isoTunnel .plane{opacity:0.35; width:min(88vmin,560px); height:min(88vmin,560px)}
+  #bgField .beamRain .plane{opacity:0.32; width:min(62vmin,420px); height:min(62vmin,420px)}
+  #bgField .hexCore .plane{width:min(64vmin,480px); height:min(64vmin,480px)}
 }
 @media (prefers-reduced-motion:reduce){
   #bgField .assetLayer img.anim{display:none}
   #bgField .assetLayer img.still{display:block}
 }
 
-  #bgField .tunnelGrid .plane{opacity:0.85; filter:invert(1)}
-}
+
 
 
 
