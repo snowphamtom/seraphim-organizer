@@ -1,11 +1,25 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=de11d06
-- **Commit:** `de11d06` (`tunnelGridBg` after `stripToBones`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=PENDING
+- **Commit:** `PENDING` (`gatherThenSort` after `tunnelGridBg`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
-`tunnelGridBg` · `stripToBones` · `excessPrune` · `bgSealCenterLock` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `refinePolish2` · `sortTheater` · `idleDemoLoop` · `markdownMaster` · `motionIntricateFast` · `dodecaSeal`
+`gatherThenSort` · `tunnelGridBg` · `stripToBones` · `excessPrune` · `bgSealCenterLock` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `refinePolish2` · `sortTheater` · `idleDemoLoop` · `markdownMaster` · `motionIntricateFast` · `dodecaSeal`
+
+## gatherThenSort (visible gather + sort)
+
+Idle loop is gather→sort ≈ every 21s when desk idle.
+
+**KEEP**
+- Real gather: `fetch("media/live-gather.csv?t="+Date.now())` same-origin (site public corpus file — not live X API from the browser)
+- Soft path into `organize()` like idle; on fail → `IDLE_PUBLIC_PACK`
+- Visible `#phaseWhisper`: `gathering…` → `sorting…` → quiet
+- Pause on user type (`idleDemoAllowed` / desk touch cooldown)
+- `tunnelGridBg` sole `#bgField`; `stripToBones` seal/desk skeleton
+
+**Corpus**
+- `docs/media/live-gather.csv` (+ root `media/` mirror) — public-safe Drive-shaped + scrubbed post-style titles; no Magpie secrets/patents
 
 ## stripToBones (honest skeleton)
 

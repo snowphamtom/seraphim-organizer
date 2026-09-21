@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|gatherThenSort: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -571,6 +571,20 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   100%{background-position:-100% 0}
 }
 
+
+/* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
+#phaseWhisper{
+  align-self:center;
+  min-height:.9rem;
+  font-size:.46rem;letter-spacing:.32em;text-transform:lowercase;
+  color:rgba(160,210,230,.48);
+  opacity:0;transition:opacity .55s ease;
+  pointer-events:none;white-space:nowrap;
+  text-shadow:0 0 10px rgba(86,180,194,.18);
+}
+#phaseWhisper.on{opacity:1}
+#phaseWhisper.sorting{color:rgba(198,160,220,.55);letter-spacing:.28em}
+
 /* hide old collapsed intake glyph — desk replaces it */
 #intake{display:none!important}
 
@@ -601,6 +615,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
 
 <section id="sortDesk" aria-label="Disorganized content in, organized and aside out">
+  <div id="phaseWhisper" class="phaseWhisper" role="status" aria-live="polite" aria-hidden="true"></div>
   <div id="uploadBox" tabindex="0">
     <div class="uh"><b>Disorganized</b><span>csv · tsv · json · txt · md</span></div>
     <div class="dropHint">drop or paste disorganized content · <em>choose</em> a file</div>
@@ -989,7 +1004,7 @@ let softCross = 0; // 0..1 soft re-ingest veil (no black-flash)
 let softCrossQueued = null;
 let shockwave = null; // {t0,cx,cy} sort pulse ring
 let uploadFX = {flash:0, sparks:[], t0:0}; // desk→seal stream on upload/sort
-/* idleDemoLoop — compact public-safe pack (noise + keeper-ish gibberish). No Magpie/vault secrets. */
+/* idleDemoLoop|gatherThenSort — baked fallback pack (noise + keeper-ish gibberish). No Magpie/vault secrets. Live gather = media/live-gather.csv. */
 const IDLE_PUBLIC_PACK = [
 `id,title,kind
 1,cat Wusu draft 898,image
@@ -1066,28 +1081,78 @@ function runNonsenseExample(forceIdx, soft){
     softCrossQueued = go;
   } else go();
 }
-function runIdlePublicExample(soft){
-  if(soft && !idleDemoAllowed()) return;
-  if(!soft && !deskIsIdleEmpty()) return; /* never clobber user text on first boot */
-  const pack = IDLE_PUBLIC_PACK[idlePackIdx % IDLE_PUBLIC_PACK.length];
-  idlePackIdx++;
+function setPhaseWhisper(msg, kind){
+  const el=$("phaseWhisper");
+  if(!el) return;
+  if(!msg){
+    el.textContent="";
+    el.classList.remove("on","sorting","gathering");
+    el.setAttribute("aria-hidden","true");
+    return;
+  }
+  el.textContent=msg;
+  el.classList.add("on");
+  el.classList.toggle("gathering", kind==="gather");
+  el.classList.toggle("sorting", kind==="sort");
+  el.setAttribute("aria-hidden","false");
+}
+/* gatherThenSort — residual-honest: fetch site public gather file (not live X API from browser) */
+async function gatherLivePack(){
+  try{
+    const url="media/live-gather.csv?t="+Date.now();
+    const res=await fetch(url,{cache:"no-store"});
+    if(!res.ok) throw new Error("gather "+res.status);
+    const text=await res.text();
+    const body=String(text||"").replace(/^\uFEFF/,"").trim();
+    if(!body) throw new Error("gather empty");
+    const head=(body.split(/\r?\n/)[0]||"").toLowerCase();
+    if(head.indexOf("title")<0 && head.indexOf("id")<0) throw new Error("gather shape");
+    return body;
+  }catch(_){ return null; }
+}
+function feedPackIntoOrganize(pack, label, soft){
   const go=()=>{
-    if(!deskIsIdleEmpty()) return;
+    if(!deskIsIdleEmpty()){ setPhaseWhisper(""); return; }
+    setPhaseWhisper("sorting…","sort");
     setDeskText(pack);
     triggerUploadFX("receive");
-    organize(parseDump("idle-demo-"+((idlePackIdx-1)%IDLE_PUBLIC_PACK.length)+".csv", pack));
-    /* free desk so next idle cycle can run; trays keep Disorganized→Organized story */
+    organize(parseDump(label||"live-gather.csv", pack));
     requestAnimationFrame(()=>{
       if(String(deskText()||"").trim()===String(pack).trim()) setDeskText("");
+      setTimeout(()=>setPhaseWhisper(""), 720);
     });
   };
   if(soft){
     celebrate = Math.max(celebrate, 0.85);
     sealPulse = Math.max(sealPulse, 0.55);
     if(typeof reduceMotion!=="undefined" && reduceMotion){ go(); return; }
-    softCross = 0.72; /* refinePolish2: gentle idle cross */
+    softCross = 0.72;
     softCrossQueued = go;
   } else go();
+}
+function runIdlePublicExample(soft){
+  if(soft && !idleDemoAllowed()) return;
+  if(!soft && !deskIsIdleEmpty()) return; /* never clobber user text on first boot */
+  const pack = IDLE_PUBLIC_PACK[idlePackIdx % IDLE_PUBLIC_PACK.length];
+  idlePackIdx++;
+  const label="idle-demo-"+((idlePackIdx-1)%IDLE_PUBLIC_PACK.length)+".csv";
+  feedPackIntoOrganize(pack, label, soft);
+}
+async function runGatherThenSort(soft){
+  if(soft && !idleDemoAllowed()) return;
+  if(!soft && !deskIsIdleEmpty()) return;
+  setPhaseWhisper("gathering…","gather");
+  let pack=null;
+  try{ pack=await gatherLivePack(); }catch(_){ pack=null; }
+  if(soft && !idleDemoAllowed()){ setPhaseWhisper(""); return; }
+  if(!deskIsIdleEmpty()){ setPhaseWhisper(""); return; }
+  let label="live-gather.csv";
+  if(!pack){
+    pack = IDLE_PUBLIC_PACK[idlePackIdx % IDLE_PUBLIC_PACK.length];
+    idlePackIdx++;
+    label="idle-demo-"+((idlePackIdx-1)%IDLE_PUBLIC_PACK.length)+".csv";
+  }
+  feedPackIntoOrganize(pack, label, soft);
 }
 function startIdleDemoLoop(opts){
   if(nonsenseTimer){ clearInterval(nonsenseTimer); nonsenseTimer=null; }
@@ -1100,11 +1165,11 @@ function startIdleDemoLoop(opts){
     if(document.hidden) return;
     if(!deskIsIdleEmpty()) return;
     if(!immediate && (performance.now()-deskUserTouchAt)<IDLE_TOUCH_COOLDOWN_MS) return;
-    runIdlePublicExample(false);
+    runGatherThenSort(false);
   }, bootMs);
   idleDemoTimer = setInterval(()=>{
     if(!idleDemoAllowed()) return;
-    runIdlePublicExample(true);
+    runGatherThenSort(true);
   }, IDLE_INTERVAL_MS);
 }
 function startConstantExample(){
@@ -1153,7 +1218,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|gatherThenSort */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1192,6 +1257,7 @@ const STORIES = {
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
    - tunnelGridBg: replace whisper stack with single tunnel-dots GIF; black void base; seal VP center.
+   - gatherThenSort: idle ≈21s cycles gather→sort — fetch media/live-gather.csv (cache-bust ?t=), soft-path organize; fallback IDLE_PUBLIC_PACK; #phaseWhisper gathering…→sorting…→quiet; pause on user type
 */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
