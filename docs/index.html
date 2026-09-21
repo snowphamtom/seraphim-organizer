@@ -222,6 +222,7 @@ select{appearance:none;background:rgba(6,12,22,0.5);border:1px solid rgba(120,22
     <option value="">Demo…</option>
     <option value="quiet">Quiet Noise</option>
     <option value="keepers">Seal Keepers</option>
+    <option value="nonsense">Constant nonsense</option>
     <option value="mixed">Mixed Drift</option>
   </select>
   <textarea id="paste" placeholder="Paste dump…" rows="3"></textarea>
@@ -431,6 +432,152 @@ function parseDump(name,text){
   text.split(/\r?\n/).forEach((line,i)=>{const s=line.trim();if(!s||s.startsWith("#"))return;push(i+1,s);});
   capped();return items;
 }
+
+/* ========== CONSTANT NONSENSE EXAMPLE (Drive-shaped, zero real titles) ==========
+   Kind mix mirrors corpus ratios; titles are gibberish. No Magpie/GR-21/patent/DIU strings.
+   Rotates forever as a living demo. */
+const NONSENSE_VARIANTS = ["id,title,kind\n1,vacation Gasu memo 355,doc\n2,Mune-Poba_orbit_47 seal,doc\n3,lunch Fido scrap 258,doc\n4,Jeln-Qite_plume_71 interior,doc\n5,Zari-Tepo_shard_39 formal,doc\n6,grocery Gapo scrap 578,doc\n7,cat Dome draft 185,doc\n8,Ornu-Jiko_whisper_38 ledger,doc\n9,Nixa-Teba_shard_44 formal,doc\n10,Nixa-Xisu_lattice_59 ledger,doc\n11,cat Jite tray 831,doc\n12,Quor-Hete_orbit_73 ledger,doc\n13,Ornu-Teche_cipher_45 claimed,doc\n14,vacation Dofi memo 375,doc\n15,Nixa-Vodo_plume_37 ledger,doc\n16,Wexi-Pohe_plume_11 formal,doc\n17,standup Tezo notes 499,doc\n18,Plym-Chedo_mirror_57 solvency,doc\n19,Flen-Doya_seal_38 admission,doc\n20,Vora-Doji_hinge_42 solvency,doc\n21,receipt Yaba dump 538,doc\n22,grocery Vome bin 314,pdf\n23,cat Jite scrap 702,pdf\n24,Yora-Doni_seal_77 solvency,pdf\n25,spam Meya heap 940,pdf\n26,receipt Zopo list 635,pdf\n27,Wexi-Cheme_cipher_36 seal,pdf\n28,wallpaper Vodo yard 233,pdf\n29,Wexi-Hera_seal_54 admission,pdf\n30,receipt Suhe list 681,pdf\n31,standup Voxi draft 304,pdf\n32,Zari-Qiji_shard_80 ledger,pdf\n33,Velm-Suche_shard_84 admission,pdf\n34,receipt Gaqi tray 187,pdf\n35,Plym-Jifi_spool_79 ledger,pdf\n36,cat Qipo yard 122,pdf\n37,Keth-Wulu_vault_70 claimed,pdf\n38,lunch Sufi notes 615,pdf\n39,Jeln-Fite_orbit_18 residual,pdf\n40,standup Cheya scrap 77,pdf\n41,Mune-Fifi_orbit_25 solvency,pdf\n42,spam Dohe dump 198,pdf\n43,newsletter Wuni scrap 341,text\n44,newsletter Zoni tray 190,text\n45,receipt Mevo packet 756,text\n46,vacation Dowu scrap 179,text\n47,grocery Jizo heap 899,text\n48,newsletter Raqi scrap 521,text\n49,vacation Poji heap 487,text\n50,Flen-Gako_seal_42 formal,text\n51,cat Fiche dump 514,text\n52,receipt Poxi scrap 366,text\n53,grocery Baba dump 656,text\n54,Yora-Suche_pulse_46 residual,text\n55,Mune-Vopo_residue_97 seal,text\n56,newsletter Qiba bin 854,text\n57,standup Fifi bin 214,text\n58,wallpaper Zoqi notes 277,text\n59,Quor-Gako_residue_47 interior,text\n60,wallpaper Poga list 355,text\n61,Wexi-Voji_orbit_79 residual,image\n62,wallpaper Jixi scrap 179,image\n63,receipt Qiji scrap 282,image\n64,cat Dopo tray 650,image\n65,vacation Chefi dump 722,image\n66,Mune-Mesu_cipher_44 interior,image\n67,Jeln-Heche_cipher_67 claimed,image\n68,Calq-Niko_vault_14 ledger,image\n69,Yora-Chepo_orbit_66 interior,image\n70,Zari-Suga_orbit_43 admission,image\n71,lunch Telu scrap 392,image\n72,cat Vovo memo 747,code\n73,Silq-Hepo_whisper_48 residual,code\n74,spam Teko heap 738,code\n75,newsletter Qini tray 490,folder\n76,Brin-Mehe_ember_88 interior,folder\n77,vacation Raya packet 370,folder\n78,Quor-Pohe_mirror_54 claimed,other\n79,Jeln-Rahe_residue_80 ledger,other\n80,Mune-Fipo_whisper_20 formal,archive\n81,Daeth-Qizo_whisper_32 ledger,video\n82,wallpaper Dolu packet 452,sheet\n83,Silq-Vowu_residue_31 seal,slides", "id,title,kind\n1,cat Doya notes 845,doc\n2,spam Yaji tray 205,doc\n3,meme Xipo draft 218,doc\n4,lunch Jilu packet 567,doc\n5,Jeln-Voga_ember_99 seal,doc\n6,spam Vofi scrap 325,doc\n7,grocery Qiqi bin 561,doc\n8,Saph-Bavo_spool_71 ledger,doc\n9,cat Qite dump 187,doc\n10,lunch Zoba scrap 745,doc\n11,Flen-Lufi_pulse_18 admission,doc\n12,newsletter Hezo yard 17,doc\n13,vacation Pome yard 358,doc\n14,Silq-Yame_whisper_17 residual,doc\n15,Vora-Zoji_plume_86 admission,doc\n16,Vora-Pote_pulse_46 seal,doc\n17,vacation Gaxi dump 834,doc\n18,Mune-Niqi_vault_54 solvency,doc\n19,Flen-Polu_seal_16 seal,doc\n20,lunch Jivo list 434,doc\n21,wallpaper Rate draft 544,doc\n22,lunch Teko memo 234,pdf\n23,spam Gaji bin 278,pdf\n24,newsletter Meche notes 856,pdf\n25,cat Bani memo 415,pdf\n26,Jeln-Hesu_lattice_15 admission,pdf\n27,standup Luji yard 367,pdf\n28,standup Voche scrap 858,pdf\n29,Keth-Yalu_hinge_54 seal,pdf\n30,wallpaper Lute scrap 268,pdf\n31,wallpaper Luko heap 271,pdf\n32,cat Sume dump 974,pdf\n33,receipt Dopo packet 185,pdf\n34,cat Wuzo tray 82,pdf\n35,meme Baba packet 385,pdf\n36,spam Cheche list 720,pdf\n37,wallpaper Tevo dump 606,pdf\n38,spam Baba scrap 174,pdf\n39,Flen-Yaga_ledger_57 admission,pdf\n40,Nixa-Chete_lattice_18 interior,pdf\n41,Vora-Niga_vault_79 formal,pdf\n42,Mune-Raga_hinge_49 seal,pdf\n43,wallpaper Tevo list 40,text\n44,Velm-Wuji_shard_74 formal,text\n45,Saph-Qisu_ledger_81 ledger,text\n46,standup Gaga scrap 299,text\n47,Flen-Tefi_spool_34 admission,text\n48,lunch Ravo draft 202,text\n49,Calq-Doko_lattice_70 ledger,text\n50,lunch Suko scrap 897,text\n51,Mune-Jiko_pulse_20 claimed,text\n52,wallpaper Xiji draft 848,text\n53,Daeth-Yafi_cipher_51 ledger,text\n54,Yora-Gara_whisper_96 solvency,text\n55,lunch Jizo draft 819,text\n56,receipt Voche yard 856,text\n57,wallpaper Raga packet 603,text\n58,spam Voqi bin 293,text\n59,Yora-Vowu_orbit_75 residual,text\n60,cat Kozo tray 741,text\n61,receipt Telu scrap 201,image\n62,Vora-Suko_hinge_79 solvency,image\n63,wallpaper Jiche list 825,image\n64,meme Xiko yard 961,image\n65,standup Nime bin 875,image\n66,cat Vovo list 108,image\n67,Keth-Mewu_mirror_77 seal,image\n68,Nixa-Meqi_seal_11 seal,image\n69,Mune-Rasu_vault_92 admission,image\n70,grocery Poko draft 103,image\n71,Mune-Fini_plume_21 residual,image\n72,Nixa-Nivo_cipher_23 seal,code\n73,Brin-Fiko_pulse_24 claimed,code\n74,Saph-Pozo_ledger_24 seal,code\n75,receipt Jiga tray 630,folder\n76,meme Suya dump 71,folder\n77,standup Bate notes 987,folder\n78,lunch Heche bin 376,other\n79,vacation Nime draft 52,other\n80,receipt Tewu packet 389,archive\n81,standup Zoni yard 610,video\n82,receipt Cheji scrap 402,sheet\n83,spam Nisu dump 287,slides", "id,title,kind\n1,vacation Koko yard 290,doc\n2,receipt Poji scrap 6,doc\n3,meme Chega scrap 208,doc\n4,receipt Dopo bin 940,doc\n5,spam Niji scrap 531,doc\n6,vacation Yafi dump 491,doc\n7,receipt Zome dump 773,doc\n8,lunch Qifi memo 963,doc\n9,wallpaper Bafi yard 202,doc\n10,Nixa-Zote_pulse_31 formal,doc\n11,standup Lupo bin 468,doc\n12,spam Xizo packet 810,doc\n13,spam Chexi heap 447,doc\n14,Ornu-Hega_vault_49 interior,doc\n15,cat Xiwu heap 609,doc\n16,wallpaper Fiko scrap 213,doc\n17,spam Luvo yard 416,doc\n18,Toru-Raji_orbit_91 formal,doc\n19,spam Zote notes 511,doc\n20,meme Luba dump 226,doc\n21,Zari-Rawu_plume_48 ledger,doc\n22,Flen-Xihe_pulse_64 ledger,pdf\n23,Plym-Pote_plume_14 claimed,pdf\n24,grocery Xisu memo 408,pdf\n25,Nixa-Lupo_lattice_64 claimed,pdf\n26,receipt Hefi bin 250,pdf\n27,lunch Jilu yard 831,pdf\n28,meme Dovo memo 327,pdf\n29,Velm-Hevo_mirror_18 interior,pdf\n30,newsletter Doxi draft 713,pdf\n31,Toru-Heji_plume_62 residual,pdf\n32,cat Figa bin 949,pdf\n33,spam Voxi scrap 174,pdf\n34,Zari-Wuqi_whisper_78 interior,pdf\n35,Keth-Qiya_ember_64 claimed,pdf\n36,meme Xilu yard 628,pdf\n37,Yora-Wume_lattice_69 formal,pdf\n38,receipt Jido packet 199,pdf\n39,spam Xiba dump 578,pdf\n40,spam Niko notes 418,pdf\n41,wallpaper Nixi list 656,pdf\n42,lunch Jifi packet 830,pdf\n43,grocery Qilu heap 886,text\n44,cat Doko notes 218,text\n45,meme Voga dump 662,text\n46,standup Raba list 88,text\n47,spam Polu memo 99,text\n48,vacation Hete bin 193,text\n49,receipt Raxi tray 731,text\n50,Quor-Meba_seal_88 interior,text\n51,Yora-Chepo_ledger_59 admission,text\n52,Mune-Gako_whisper_68 formal,text\n53,Ornu-Voxi_lattice_28 interior,text\n54,newsletter Suni heap 155,text\n55,wallpaper Mete memo 579,text\n56,cat Fiya yard 906,text\n57,Keth-Kome_residue_76 formal,text\n58,wallpaper Doche tray 735,text\n59,receipt Basu packet 163,text\n60,Jeln-Xido_mirror_77 admission,text\n61,receipt Qixi notes 939,image\n62,receipt Hehe list 548,image\n63,lunch Vohe scrap 527,image\n64,Mune-Mezo_lattice_86 admission,image\n65,meme Balu list 64,image\n66,receipt Cheko scrap 986,image\n67,lunch Dora dump 917,image\n68,standup Podo yard 79,image\n69,Velm-Zoqi_vault_84 residual,image\n70,lunch Lume heap 820,image\n71,Keth-Wuwu_plume_85 admission,image\n72,Silq-Heni_orbit_32 residual,code\n73,Saph-Fini_ledger_43 seal,code\n74,Nixa-Xifi_vault_14 interior,code\n75,Ornu-Rako_whisper_23 seal,folder\n76,wallpaper Dodo tray 143,folder\n77,Quor-Luga_residue_99 formal,folder\n78,spam Xiche scrap 406,other\n79,wallpaper Rahe packet 29,other\n80,Saph-Doga_cipher_85 interior,archive\n81,standup Yaya dump 389,video\n82,receipt Koba packet 903,sheet\n83,Velm-Doya_mirror_43 admission,slides", "id,title,kind\n1,wallpaper Bara dump 707,doc\n2,lunch Yasu memo 793,doc\n3,newsletter Suqi memo 648,doc\n4,Velm-Fipo_plume_15 residual,doc\n5,Silq-Vohe_whisper_68 admission,doc\n6,receipt Rahe scrap 228,doc\n7,standup Chete scrap 508,doc\n8,newsletter Suhe packet 287,doc\n9,Quor-Galu_ember_53 ledger,doc\n10,wallpaper Poni memo 15,doc\n11,wallpaper Jiche draft 876,doc\n12,standup Xiya notes 619,doc\n13,Zari-Bate_shard_77 formal,doc\n14,grocery Voga yard 977,doc\n15,Zari-Vopo_spool_97 ledger,doc\n16,spam Jipo scrap 789,doc\n17,Plym-Xiga_lattice_42 formal,doc\n18,cat Mega packet 183,doc\n19,standup Gado dump 303,doc\n20,Wexi-Suko_ledger_66 interior,doc\n21,standup Suqi tray 521,doc\n22,newsletter Yaji list 335,pdf\n23,Ornu-Lulu_cipher_59 formal,pdf\n24,Nixa-Vofi_vault_92 ledger,pdf\n25,Velm-Suhe_spool_51 claimed,pdf\n26,Mune-Jiwu_shard_12 claimed,pdf\n27,Plym-Zora_residue_73 solvency,pdf\n28,Calq-Rasu_residue_42 interior,pdf\n29,grocery Rahe scrap 507,pdf\n30,meme Suwu heap 619,pdf\n31,Daeth-Pora_cipher_34 interior,pdf\n32,Nixa-Suba_residue_49 claimed,pdf\n33,Zari-Gazo_shard_40 admission,pdf\n34,standup Bafi scrap 166,pdf\n35,spam Dozo memo 484,pdf\n36,spam Jini tray 936,pdf\n37,Toru-Heqi_mirror_83 residual,pdf\n38,Mune-Hera_ledger_97 formal,pdf\n39,wallpaper Lura scrap 118,pdf\n40,Silq-Lume_mirror_21 interior,pdf\n41,grocery Lufi scrap 537,pdf\n42,vacation Gapo notes 496,pdf\n43,receipt Qite yard 374,text\n44,wallpaper Teba packet 256,text\n45,lunch Rasu tray 312,text\n46,newsletter Raya draft 350,text\n47,vacation Jipo tray 51,text\n48,receipt Qira packet 767,text\n49,receipt Xime heap 236,text\n50,meme Lufi scrap 110,text\n51,spam Vote memo 997,text\n52,meme Hezo dump 409,text\n53,vacation Qime draft 746,text\n54,Nixa-Zodo_plume_79 ledger,text\n55,receipt Dowu yard 313,text\n56,wallpaper Koko memo 370,text\n57,Yora-Fiba_mirror_23 ledger,text\n58,grocery Bapo notes 82,text\n59,vacation Dora packet 8,text\n60,wallpaper Doga notes 669,text\n61,receipt Xime scrap 879,image\n62,newsletter Sudo packet 341,image\n63,Daeth-Luzo_orbit_85 claimed,image\n64,newsletter Vosu list 302,image\n65,spam Niqi packet 318,image\n66,spam Wuvo draft 107,image\n67,Calq-Jiga_residue_83 solvency,image\n68,Zari-Wuche_vault_83 formal,image\n69,grocery Wuwu bin 737,image\n70,Silq-Dofi_hinge_38 interior,image\n71,receipt Tete dump 172,image\n72,standup Dodo bin 660,code\n73,Calq-Baji_residue_20 seal,code\n74,Jeln-Niya_whisper_32 seal,code\n75,Yora-Fihe_shard_70 ledger,folder\n76,Vora-Tevo_vault_66 residual,folder\n77,spam Baxi tray 197,folder\n78,Brin-Chelu_vault_91 solvency,other\n79,lunch Luche bin 851,other\n80,Mune-Cheme_hinge_52 ledger,archive\n81,spam Zoko tray 421,video\n82,Keth-Baqi_whisper_39 seal,sheet\n83,lunch Jilu scrap 917,slides", "id,title,kind\n1,Calq-Tera_hinge_65 claimed,doc\n2,Nixa-Zome_hinge_53 formal,doc\n3,Wexi-Koya_vault_21 ledger,doc\n4,standup Zowu draft 961,doc\n5,spam Qite yard 53,doc\n6,standup Chezo notes 247,doc\n7,Toru-Zovo_ember_20 interior,doc\n8,Zari-Baqi_orbit_69 claimed,doc\n9,meme Cheni yard 721,doc\n10,grocery Sufi dump 29,doc\n11,Calq-Pote_seal_68 residual,doc\n12,Nixa-Niqi_ledger_20 solvency,doc\n13,standup Pohe list 7,doc\n14,Nixa-Xiwu_shard_37 claimed,doc\n15,Quor-Kote_shard_26 ledger,doc\n16,standup Qido packet 256,doc\n17,wallpaper Povo bin 132,doc\n18,lunch Chete heap 16,doc\n19,spam Luxi tray 697,doc\n20,Silq-Doqi_spool_40 solvency,doc\n21,Mune-Heji_seal_38 admission,doc\n22,wallpaper Fixi memo 648,pdf\n23,receipt Koya dump 256,pdf\n24,receipt Nizo tray 70,pdf\n25,lunch Baxi bin 222,pdf\n26,lunch Qiba yard 721,pdf\n27,standup Meya bin 25,pdf\n28,meme Kozo memo 569,pdf\n29,Wexi-Hepo_seal_19 solvency,pdf\n30,vacation Niji memo 830,pdf\n31,receipt Vofi tray 786,pdf\n32,grocery Xiya scrap 804,pdf\n33,receipt Fifi list 257,pdf\n34,standup Dote draft 579,pdf\n35,standup Fiqi scrap 978,pdf\n36,spam Luzo scrap 191,pdf\n37,Brin-Xiji_plume_22 claimed,pdf\n38,Toru-Mexi_residue_42 ledger,pdf\n39,meme Bani scrap 746,pdf\n40,Plym-Medo_ledger_56 solvency,pdf\n41,cat Luqi notes 522,pdf\n42,Keth-Susu_lattice_58 seal,pdf\n43,Vora-Voni_spool_54 claimed,text\n44,Vora-Meche_ledger_89 claimed,text\n45,Toru-Vora_ledger_25 claimed,text\n46,vacation Wuni heap 859,text\n47,vacation Vowu notes 495,text\n48,Zari-Fiwu_cipher_93 ledger,text\n49,standup Yafi bin 828,text\n50,receipt Hevo list 924,text\n51,Daeth-Baba_plume_97 formal,text\n52,standup Powu tray 221,text\n53,wallpaper Dosu list 233,text\n54,grocery Qiga notes 432,text\n55,lunch Baga heap 585,text\n56,lunch Qira scrap 107,text\n57,Zari-Fiba_whisper_20 residual,text\n58,cat Zovo memo 199,text\n59,Vora-Chesu_pulse_56 residual,text\n60,Jeln-Jiba_orbit_12 solvency,text\n61,Flen-Zohe_mirror_39 interior,image\n62,cat Teya scrap 190,image\n63,grocery Niya list 542,image\n64,Nixa-Vome_spool_93 claimed,image\n65,Plym-Heya_seal_89 solvency,image\n66,Flen-Xiche_hinge_54 formal,image\n67,meme Zofi heap 432,image\n68,Toru-Razo_shard_50 admission,image\n69,standup Luji heap 64,image\n70,wallpaper Wuni bin 821,image\n71,Quor-Polu_spool_12 residual,image\n72,receipt Luche tray 855,code\n73,lunch Fime draft 708,code\n74,Flen-Dora_mirror_89 claimed,code\n75,Keth-Chefi_seal_69 solvency,folder\n76,wallpaper Yaba tray 190,folder\n77,newsletter Qihe list 968,folder\n78,Flen-Powu_orbit_22 interior,other\n79,Flen-Xiji_orbit_57 interior,other\n80,Zari-Wuqi_hinge_18 admission,archive\n81,Wexi-Dohe_pulse_87 admission,video\n82,wallpaper Meqi heap 538,sheet\n83,Quor-Volu_residue_96 ledger,slides"];
+const NONSENSE_PRIMARY = `id,title,kind
+1,cat Wusu draft 898,image
+2,Silq-Hepo_whisper_48 residual,text
+3,receipt Mevo packet 756,pdf
+4,Flen-Gafi_seal_24 admission,image
+5,cat Fiche dump 514,pdf
+6,Zari-Suga_orbit_43 admission,text
+7,receipt Qiji scrap 282,text
+8,cat Dopo tray 650,text
+9,wallpaper Vodo yard 233,doc
+10,Plym-Jifi_spool_79 ledger,pdf
+11,Quor-Gako_residue_47 interior,pdf
+12,vacation Zote scrap 720,other
+13,wallpaper Poga list 355,pdf
+14,vacation Heji scrap 302,doc
+15,Mune-Vodo_seal_29 seal,text
+16,vacation Dowu scrap 179,pdf
+17,spam Lupo scrap 218,text
+18,newsletter Mezo dump 928,folder
+19,Plym-Yavo_spool_26 interior,image
+20,Silq-Vowu_residue_31 seal,text
+21,Plym-Ravo_pulse_61 formal,other
+22,standup Fifi bin 214,pdf
+23,Nixa-Yaji_ember_69 seal,code
+24,grocery Teme notes 748,doc
+25,Calq-Niko_vault_14 ledger,text
+26,spam Mete list 158,code
+27,standup Chedo bin 383,doc
+28,wallpaper Qisu scrap 56,image
+29,Mune-Fifi_orbit_25 solvency,pdf
+30,Vora-Chera_whisper_13 ledger,archive
+31,newsletter Heche scrap 180,text
+32,Mune-Xiwu_spool_87 solvency,doc
+33,Mune-Mesu_cipher_44 interior,text
+34,Jeln-Jiga_residue_78 witness,image
+35,Quor-Pohe_mirror_54 claimed,text
+36,lunch Telu scrap 392,text
+37,newsletter Qini tray 490,text
+38,newsletter Qiba bin 854,pdf
+39,newsletter Raqi scrap 521,pdf
+40,newsletter Zoni tray 190,pdf
+41,Plym-Niqi_whisper_37 ledger,doc
+42,spam Teko heap 738,text
+43,Toru-Gaya_plume_39 residual,text
+44,wallpaper Xisu heap 394,doc
+45,meme Gahe scrap 764,code
+46,Nixa-Teba_shard_44 formal,doc
+47,wallpaper Kowu scrap 885,folder
+48,Brin-Mehe_ember_88 interior,text
+49,Jeln-Rahe_residue_80 ledger,text
+50,standup Meji heap 948,image
+51,Mune-Poba_orbit_47 refuse,doc
+52,Zari-Zowu_spool_16 refuse,doc
+53,vacation Poji heap 487,pdf
+54,vacation Gasu memo 355,doc
+55,receipt Zome list 823,folder
+56,Plym-Tesu_orbit_52 ledger,pdf
+57,Quor-Fira_orbit_21 claimed,text
+58,Mune-Fipo_whisper_20 witness,text
+59,cat Qipo yard 122,pdf
+60,Wexi-Voji_orbit_79 residual,text
+61,Zari-Xime_seal_40 refuse,pdf
+62,grocery Hete packet 509,doc
+63,wallpaper Zoqi notes 277,pdf
+64,vacation Chefi dump 722,text
+65,lunch Jisu heap 294,pdf
+66,Calq-Tevo_shard_70 witness,image
+67,Brin-Wulu_orbit_68 ledger,doc
+68,Yora-Doga_hinge_15 residual,image
+69,newsletter Bara scrap 337,doc
+70,standup Cheya scrap 77,pdf
+71,Calq-Doko_mirror_76 ledger,doc
+72,Keth-Wulu_vault_70 claimed,pdf
+73,newsletter Qite scrap 574,doc
+74,vacation Rado heap 882,doc
+75,Yora-Jite_hinge_18 ledger,doc
+76,receipt Pofi yard 778,video
+77,Wexi-Koqi_vault_93 formal,image
+78,lunch Sufi notes 615,pdf
+79,vacation Poko draft 318,image
+80,Quor-Meqi_cipher_25 solvency,image
+81,meme Popo bin 705,image
+82,Jeln-Fite_orbit_18 residual,pdf
+83,standup Zovo scrap 365,doc
+84,lunch Fido scrap 258,doc
+85,wallpaper Bawu bin 834,sheet
+86,lunch Xiya notes 389,other
+87,grocery Meme heap 659,code
+88,newsletter Yame dump 107,doc
+89,cat Vovo memo 747,text
+90,Toru-Balu_vault_50 residual,folder
+91,Velm-Suche_shard_84 admission,pdf
+92,Yora-Suche_pulse_46 residual,pdf
+93,cat Razo bin 853,text
+94,Velm-Luvo_mirror_91 residual,slides
+95,wallpaper Raya scrap 36,doc
+96,grocery Jizo heap 899,pdf
+97,Flen-Gako_seal_42 formal,pdf
+98,Nixa-Poqi_mirror_24 claimed,text
+99,vacation Raya packet 370,text
+100,vacation Fido bin 977,image
+101,wallpaper Bawu dump 626,doc
+102,receipt Gaqi tray 187,pdf
+103,cat Rasu yard 965,doc
+104,wallpaper Fiche scrap 300,doc
+105,grocery Baba dump 656,pdf
+106,Zari-Gako_residue_64 claimed,other
+107,Ornu-Yaya_residue_72 interior,doc
+108,Yora-Chepo_orbit_66 interior,text
+109,wallpaper Rawu packet 357,image
+110,vacation Suwu memo 357,code
+111,receipt Zoxi dump 337,doc
+112,spam Dohe dump 198,pdf
+113,wallpaper Jixi scrap 179,text
+114,Nixa-Yame_shard_15 ledger,doc
+115,newsletter Wudo dump 177,image
+116,Daeth-Kolu_ledger_49 interior,doc
+117,vacation Hera draft 360,doc
+118,newsletter Wuni scrap 341,pdf
+119,receipt Poxi scrap 366,pdf
+120,Mune-Vopo_residue_97 seal,pdf
+121,lunch Sute list 130,image
+122,cat Voche scrap 671,doc`;
+let nonsenseIdx = 0;
+let nonsenseTimer = null;
+function runNonsenseExample(forceIdx){
+  const i = (forceIdx!=null)?forceIdx:(nonsenseIdx%NONSENSE_VARIANTS.length);
+  nonsenseIdx = i+1;
+  const csv = NONSENSE_VARIANTS[i] || NONSENSE_PRIMARY;
+  $("paste").value = csv;
+  organize(parseDump("nonsense-"+i+".csv", csv));
+}
+function startConstantExample(){
+  runNonsenseExample(0);
+  if(nonsenseTimer) clearInterval(nonsenseTimer);
+  nonsenseTimer = setInterval(()=>{
+    if(document.hidden) return;
+    runNonsenseExample();
+  }, 48000); // ~48s rotate — constant living example
+}
+
 const STORIES = {
   quiet:`id,title,kind
 1,random grocery list noise archive,text
@@ -1058,7 +1205,9 @@ function clearAll(){
 $("run").onclick=()=>{const t=$("paste").value.trim();if(!t)return;organize(parseDump("paste.txt",t));};
 $("clear").onclick=clearAll;
 $("file").onchange=async()=>{const f=$("file").files[0];if(!f)return; $("paste").value=await f.text(); organize(parseDump(f.name,$("paste").value));};
-$("demoStory").onchange=()=>{const k=$("demoStory").value; if(!k||!STORIES[k])return; $("paste").value=STORIES[k]; organize(parseDump(k+".csv",STORIES[k])); $("demoStory").value="";};
+$("demoStory").onchange=()=>{const k=$("demoStory").value; if(!k)return;
+  if(k==="nonsense"){ startConstantExample(); $("demoStory").value=""; return; }
+  if(!STORIES[k])return; $("paste").value=STORIES[k]; organize(parseDump(k+".csv",STORIES[k])); $("demoStory").value="";};
 const dz=$("dropzone");
 dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("drag");});
 dz.addEventListener("dragleave",()=>dz.classList.remove("drag"));
@@ -1097,7 +1246,7 @@ const morePanel=$("morePanel"), btnMore=$("btnMore");
 btnMore.onclick=e=>{e.stopPropagation(); const open=!morePanel.classList.contains("open"); morePanel.classList.toggle("open",open); btnMore.setAttribute("aria-expanded",open?"true":"false");};
 document.addEventListener("click",e=>{if(!morePanel.contains(e.target)&&e.target!==btnMore){morePanel.classList.remove("open"); btnMore.setAttribute("aria-expanded","false");}});
 $("btnCheat").onclick=()=>{$("cheat").classList.add("open"); morePanel.classList.remove("open");};
-$("paste").value=STORIES.mixed; organize(parseDump("mixed.csv",STORIES.mixed));
+startConstantExample();
 </script>
 </body>
 </html>
