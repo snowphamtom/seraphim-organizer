@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -461,6 +461,51 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   /* leave seal room: slightly compact */
   #uploadBox{padding:.55rem .6rem}
 }
+
+/* uploadSortFX — intake pulse + figure arrival */
+#uploadBox.receiving{
+  animation: uploadReceive .7s ease-out 1;
+  border-color:var(--admit)!important;border-style:solid!important;
+}
+#uploadBox.sorting{
+  animation: uploadSort 1.1s ease-in-out 1;
+  border-color:rgba(86,212,224,.8)!important;border-style:solid!important;
+  box-shadow:0 0 36px rgba(86,180,194,.4), inset 0 0 24px rgba(86,180,194,.08)!important;
+}
+@keyframes uploadReceive{
+  0%{transform:scale(1);box-shadow:0 0 0 rgba(86,180,194,0)}
+  35%{transform:scale(1.02);box-shadow:0 0 40px rgba(86,180,194,.45)}
+  100%{transform:scale(1)}
+}
+@keyframes uploadSort{
+  0%,100%{filter:brightness(1)}
+  40%{filter:brightness(1.25)}
+  70%{filter:brightness(1.1)}
+}
+#sortedFigures.arrive .tray{animation: trayPop .55s ease-out both}
+#sortedFigures.arrive .tray.release{animation-delay:.08s}
+@keyframes trayPop{
+  0%{opacity:.4;transform:translateY(10px) scale(.97)}
+  100%{opacity:1;transform:none}
+}
+#sortedFigures .chipFig{
+  animation: chipIn .45s ease-out both;
+}
+@keyframes chipIn{
+  0%{opacity:0;transform:translateY(8px) scale(.85)}
+  100%{opacity:1;transform:none}
+}
+#uploadBox .scanBar{
+  display:none;height:2px;margin-top:.35rem;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--admit),var(--release),transparent);
+  background-size:200% 100%;
+}
+#uploadBox.sorting .scanBar{display:block;animation: scanSweep 1s linear infinite}
+@keyframes scanSweep{
+  0%{background-position:100% 0}
+  100%{background-position:-100% 0}
+}
+
 /* hide old collapsed intake glyph — desk replaces it */
 #intake{display:none!important}
 
@@ -871,6 +916,7 @@ let nonsenseTimer = null;
 let softCross = 0; // 0..1 soft re-ingest veil (no black-flash)
 let softCrossQueued = null;
 let shockwave = null; // {t0,cx,cy} sort pulse ring
+let uploadFX = {flash:0, sparks:[], t0:0}; // desk→seal stream on upload/sort
 function runNonsenseExample(forceIdx, soft){
   const i = (forceIdx!=null)?forceIdx:(nonsenseIdx%NONSENSE_VARIANTS.length);
   nonsenseIdx = i+1;
@@ -931,7 +977,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1543,6 +1589,96 @@ function drawFilmGrain(){
   /* disabled — sparse random rects read as blotch on OLED */
   return;
 }
+
+function triggerUploadFX(phase, verdicts){
+  /* phase: "receive" | "sort" — visual feedback for dump intake */
+  const box=$("uploadBox");
+  if(box){
+    box.classList.remove("receiving","sorting");
+    void box.offsetWidth;
+    if(phase==="receive") box.classList.add("receiving");
+    if(phase==="sort") box.classList.add("sorting");
+    clearTimeout(box._fxT);
+    box._fxT=setTimeout(()=>box.classList.remove("receiving","sorting"), phase==="sort"?1200:750);
+  }
+  const figs=$("sortedFigures");
+  if(figs && phase==="sort"){
+    figs.classList.remove("arrive"); void figs.offsetWidth; figs.classList.add("arrive");
+  }
+  uploadFX.t0=performance.now();
+  uploadFX.flash=phase==="receive"?0.85:1;
+  const n=phase==="receive"?28:Math.min(90, 36+((verdicts&&verdicts.length)||0)*0.35);
+  uploadFX.sparks=[];
+  for(let i=0;i<n;i++){
+    const admit=verdicts?(verdicts[i%verdicts.length].decision==="admit"):(i%3!==0);
+    uploadFX.sparks.push({
+      u:Math.random()*0.25, /* start delay */
+      life:0.55+Math.random()*0.55,
+      side:(Math.random()-0.5)*0.7,
+      bow:0.15+Math.random()*0.35,
+      hue:admit?195+Math.random()*25:300+Math.random()*25,
+      admit:!!admit,
+      sz:1.2+Math.random()*2.2
+    });
+  }
+  if(phase==="sort"){
+    shockwave={t0:performance.now()};
+    sealPulse=Math.max(sealPulse,1);
+    celebrate=Math.max(celebrate,0.9);
+  }else{
+    sealPulse=Math.max(sealPulse,0.45);
+  }
+}
+function drawUploadStream(cx,cy,s,t){
+  if(!uploadFX||uploadFX.flash<0.02 && !uploadFX.sparks.length) return;
+  const age=(performance.now()-uploadFX.t0)*0.001;
+  uploadFX.flash*=0.94;
+  /* origin: upload desk center (bottom) */
+  const ox=W*0.5, oy=H-Math.min(160, H*0.22);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  /* intake bloom at desk */
+  if(uploadFX.flash>0.05){
+    const g=ctx.createRadialGradient(ox,oy,0,ox,oy,80+uploadFX.flash*60);
+    g.addColorStop(0,hsl(195,95,65,uploadFX.flash*0.22));
+    g.addColorStop(0.5,hsl(280,90,55,uploadFX.flash*0.08));
+    g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(ox,oy,120,0,Math.PI*2); ctx.fill();
+  }
+  /* streams into seal */
+  const alive=[];
+  for(const sp of uploadFX.sparks){
+    const u=(age-sp.u)/sp.life;
+    if(u<0){ alive.push(sp); continue; }
+    if(u>1) continue;
+    const e=u*u*(3-2*u); /* smoothstep */
+    /* quadratic toward seal with side bow */
+    const mx=ox+(cx-ox)*0.45 + sp.side*s*sp.bow;
+    const my=oy+(cy-oy)*0.4 - sp.bow*s*0.5;
+    const x=(1-e)*(1-e)*ox + 2*(1-e)*e*mx + e*e*cx;
+    const y=(1-e)*(1-e)*oy + 2*(1-e)*e*my + e*e*cy;
+    const a=(1-e)*0.55;
+    ctx.fillStyle=hsl(sp.hue,95,62,a);
+    ctx.beginPath(); ctx.arc(x,y,sp.sz*(1-e*0.4),0,Math.PI*2); ctx.fill();
+    /* trail */
+    ctx.strokeStyle=hsl(sp.hue,90,55,a*0.35);
+    ctx.lineWidth=0.7;
+    ctx.beginPath(); ctx.moveTo(x,y);
+    const x0=(1-(e-0.08))*(1-(e-0.08))*ox + 2*(1-(e-0.08))*(e-0.08)*mx + (e-0.08)*(e-0.08)*cx;
+    const y0=(1-(e-0.08))*(1-(e-0.08))*oy + 2*(1-(e-0.08))*(e-0.08)*my + (e-0.08)*(e-0.08)*cy;
+    if(e>0.08){ ctx.lineTo(x0,y0); ctx.stroke(); }
+    alive.push(sp);
+  }
+  uploadFX.sparks=alive;
+  /* seal hitch flash when streams arrive */
+  if(age>0.35 && age<0.95){
+    const hit=Math.sin((age-0.35)*Math.PI/(0.6))*0.35;
+    ctx.strokeStyle=hsl(200,100,70,hit*0.4);
+    ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(cx,cy,s*0.42*(1+hit*0.08),0,Math.PI*2); ctx.stroke();
+  }
+  ctx.restore();
+}
+
 function drawSortShockwave(cx,cy,s){
   if(!shockwave) return;
   const age=(performance.now()-shockwave.t0)*0.001;
@@ -3020,6 +3156,7 @@ function ingestVerdicts(verdicts){
   pushGhostOrbit(verdicts, lastCI);
   afterglow.push({r:0.5,hue:195,life:1},{r:0.65,hue:250,life:0.9},{r:0.8,hue:305,life:0.8});
   shockwave={t0:performance.now()}; // G: sort pulse radial once
+  triggerUploadFX("sort", verdicts);
   const shOn=verdicts.some(v=>v.S_H); if(shOn&&!prevSH){sealLockFlash=1; if(chimeOn)softChime();} prevSH=shOn;
 }
 let audioCtx=null;
@@ -3095,6 +3232,7 @@ function frame(now){
   drawTrailsAndGlow(cxH,cyH,s,t);
   if(!(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t);
   if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
+  if(!reduceMotion) drawUploadStream(cx,cy,s,t);
   drawSortShockwave(cx,cy,s);
   drawDepthFogVignette(cx0,cy0,s);
   drawBloomClamp(cx0,cy0,s);
@@ -3173,6 +3311,7 @@ function runDeskSort(){
     tip&&(tip.textContent="Drop or paste a dump first", tip.className="");
     return;
   }
+  triggerUploadFX("receive");
   organize(parseDump("paste.txt", text));
 }
 function wireSortDesk(){
@@ -3185,13 +3324,13 @@ function wireSortDesk(){
   box.addEventListener("drop", async e=>{
     e.preventDefault(); box.classList.remove("drag");
     const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
-    if(f){ const t=await f.text(); setDeskText(t); organize(parseDump(f.name,t)); return; }
+    if(f){ const t=await f.text(); setDeskText(t); triggerUploadFX("receive"); organize(parseDump(f.name,t)); return; }
     const text=e.dataTransfer&&e.dataTransfer.getData("text/plain");
-    if(text){ setDeskText(text); organize(parseDump("paste.txt",text)); }
+    if(text){ setDeskText(text); triggerUploadFX("receive"); organize(parseDump("paste.txt",text)); }
   });
   if(file) file.addEventListener("change", async e=>{
     const f=e.target.files&&e.target.files[0]; if(!f) return;
-    const t=await f.text(); setDeskText(t); organize(parseDump(f.name,t));
+    const t=await f.text(); setDeskText(t); triggerUploadFX("receive"); organize(parseDump(f.name,t));
   });
   if(run) run.addEventListener("click", runDeskSort);
   if(clr) clr.addEventListener("click", ()=>{
@@ -3204,7 +3343,7 @@ function wireSortDesk(){
     const k=demo.value; if(!k) return;
     if(k==="nonsense"){ startConstantExample(); demo.value=""; return; }
     const body=STORIES[k]; if(!body) return;
-    setDeskText(body); organize(parseDump(k+".csv", body)); demo.value="";
+    setDeskText(body); triggerUploadFX("receive"); organize(parseDump(k+".csv", body)); demo.value="";
   });
   if(ta) ta.addEventListener("keydown", e=>{
     if((e.metaKey||e.ctrlKey)&&e.key==="Enter"){ e.preventDefault(); runDeskSort(); }
