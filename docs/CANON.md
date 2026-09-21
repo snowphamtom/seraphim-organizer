@@ -1,7 +1,7 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=stripToBones
-- **Marker:** `stripToBones` (after `excessPrune`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=4848bfd
+- **Commit:** `4848bfd` (`stripToBones` after `excessPrune`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
