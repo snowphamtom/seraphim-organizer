@@ -327,32 +327,37 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 #bgField .meta.plexus{
   background-image:url(bg-plexus.gif);
-  opacity:0.62;
-  filter:grayscale(1);
+  opacity:0.34; /* polishPass2: quieter field so neon seal owns contrast */
+  filter:grayscale(1) brightness(0.82);
 }
 #bgField .meta.grid{
   background-image:url(bg-grid.gif);
-  opacity:0.42;
-  filter:grayscale(1);
+  opacity:0.22;
+  filter:grayscale(1) brightness(0.78);
   transform:scale(1.06);
   transform-origin:center center;
 }
 #bgField .meta.blobs{
   background-image:url(bg-metaballs.gif);
-  opacity:0.28;
-  filter:invert(1) grayscale(1);
+  opacity:0.12; /* mud killer — soft depth only */
+  filter:invert(1) grayscale(1) brightness(0.7);
+}
+@media (max-width:900px){
+  #bgField .meta.plexus{opacity:0.22}
+  #bgField .meta.grid{opacity:0.14}
+  #bgField .meta.blobs{opacity:0.07}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .meta.plexus{opacity:0.35}
-  #bgField .meta.grid{opacity:0.22}
-  #bgField .meta.blobs{opacity:0.14}
+  #bgField .meta.plexus{opacity:0.22}
+  #bgField .meta.grid{opacity:0.14}
+  #bgField .meta.blobs{opacity:0.08}
 }
 
 </style>
 </head>
 <body>
 <div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div></div>
-<canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal gyro field"></canvas>
+<canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.55"></canvas>
 <header id="top">
   <div class="title">SERAPHIM</div>
@@ -783,7 +788,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2 */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -791,17 +796,19 @@ const mouse={x:0,y:0,tx:0,ty:0}; // x/y lerped toward tx/ty (normalized)
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isTouch=matchMedia('(pointer:coarse)').matches||('ontouchstart' in window);
 const isMobileLayout=()=>W<=900;
-const LERP=reduceMotion?1:0.15; // exp smooth ~0.12–0.18
+const LERP_BASE=reduceMotion?1:(isTouch?0.11:0.13); // polishPass2: softer settle, damp mobile jitter
 const cam={
   yaw:0.35,pitch:0.18,roll:0,panX:0,panY:0,zoom:1,auto:!reduceMotion,
   userYaw:0,userPitch:0,userRoll:0,
   // targets — pointer/wheel/auto write here; render uses lerped values
   tYaw:0.35,tPitch:0.18,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
   // living gyro base rates (rad/s); mild precession modulates in frame()
-  gyro:{wx:0.45,wy:0.62,wz:0.33}
+  gyro:{wx:0.38,wy:0.52,wz:0.28} /* slightly quieter tumble — purposeful, not jitter */
 };
-function lerpCam(){
-  const k=LERP;
+function lerpCam(dtMs){
+  /* frame-rate aware exp smooth — snappy enough, settles soft */
+  const dt=Math.min(48, Math.max(8, dtMs||16));
+  const k=reduceMotion?1:1-Math.pow(1-LERP_BASE, dt/16.67);
   cam.yaw+=(cam.tYaw-cam.yaw)*k; cam.pitch+=(cam.tPitch-cam.pitch)*k; cam.roll+=(cam.tRoll-cam.roll)*k;
   cam.panX+=(cam.tPanX-cam.panX)*k; cam.panY+=(cam.tPanY-cam.panY)*k;
   cam.zoom+=(cam.tZoom-cam.zoom)*k;
@@ -1389,74 +1396,70 @@ function drawSoftCrossVeil(){
 }
 
 function drawCrtPolish(cx,cy,s,t){
-  /* crtPolish: very light horizontal scanlines + soft hub lens flares at bright nodes.
-     Must not crush contrast or blotch; skip/reduce on ≤480; respects reduceMotion. */
+  /* crtPolish|polishPass2: instrument scanlines only; flares ONLY on cube hubs that receive tethers.
+     Soften further vs moiré/blotch; skip/reduce on ≤480; respects reduceMotion. */
   if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
   ctx.save();
-  /* scanlines — extremely light; tighter skip on phone */
+  /* scanlines — softer, wider step to kill moiré */
   if(!thin){
-    const step=mobile?4:3;
-    const a=mobile?0.018:0.028;
+    const step=mobile?5:4;
+    const a=mobile?0.010:0.016;
     ctx.globalCompositeOperation="source-over";
-    ctx.fillStyle=`rgba(0,8,16,${a})`;
+    ctx.fillStyle=`rgba(0,6,12,${a})`;
     for(let y=0;y<H;y+=step){
       ctx.fillRect(0,y,W,1);
     }
-    /* faint phosphor lift on alternate — keeps contrast alive */
+    /* faint phosphor lift — quieter */
     ctx.globalCompositeOperation="lighter";
-    ctx.fillStyle=`rgba(140,220,255,${mobile?0.006:0.009})`;
+    ctx.fillStyle=`rgba(140,220,255,${mobile?0.003:0.005})`;
     for(let y=1;y<H;y+=step*2){
       ctx.fillRect(0,y,W,0.5);
     }
   }else{
-    /* ≤480: every 6th line, barely there */
+    /* ≤480: every 8th line, barely instrument grain */
     ctx.globalCompositeOperation="source-over";
-    ctx.fillStyle="rgba(0,6,12,0.012)";
-    for(let y=0;y<H;y+=6) ctx.fillRect(0,y,W,1);
+    ctx.fillStyle="rgba(0,6,12,0.008)";
+    for(let y=0;y<H;y+=8) ctx.fillRect(0,y,W,1);
   }
-  /* soft hub lens flares — top/bottom of seal + bright cube/dodeca nodes */
+  /* hub flares — cube corners only (degree-3 tether lock-ins); no decorative poles */
   ctx.globalCompositeOperation="lighter";
   const flares=[];
-  /* seal poles */
-  const [tx,ty]=project(0,0.92,0,cx,cy,s);
-  const [bx,by]=project(0,-0.92,0,cx,cy,s);
-  flares.push({x:tx,y:ty,hue:175,pow:1.0});
-  flares.push({x:bx,y:by,hue:195,pow:0.85});
-  /* a few bright dodeca verts */
-  const pv=DODECA._projVerts;
-  if(pv&&pv.length){
-    for(let i=0;i<pv.length;i+=thin?5:3){
-      const v=pv[i]; if(!v||v.d<-0.2) continue;
-      flares.push({x:v.x,y:v.y,hue:160+i*7,pow:0.35+0.25*Math.max(0,v.d)});
-    }
-  }
   const cubeProj=INNER_CUBE._proj;
   if(cubeProj&&cubeProj.corners){
-    for(const c of cubeProj.corners){
-      if(!c||c.d<-0.15) continue;
-      flares.push({x:c.x,y:c.y,hue:150,pow:0.45+0.3*Math.max(0,c.d)});
+    for(let i=0;i<cubeProj.corners.length;i++){
+      const c=cubeProj.corners[i];
+      if(!c||c.d<-0.12) continue;
+      flares.push({x:c.x,y:c.y,hue:148+i*8,pow:0.55+0.35*Math.max(0,c.d)});
     }
   }
-  const breath=0.85+0.15*Math.sin(t*1.7);
-  const maxF=thin?4:(mobile?8:14);
+  /* face-center micro-hubs on desktop only — still receive admit tethers */
+  if(!thin && cubeProj&&cubeProj.faceCenters){
+    for(let i=0;i<cubeProj.faceCenters.length;i++){
+      const c=cubeProj.faceCenters[i];
+      if(!c||c.d<-0.1) continue;
+      flares.push({x:c.x,y:c.y,hue:165+i*10,pow:0.28+0.22*Math.max(0,c.d)});
+    }
+  }
+  const breath=0.88+0.12*Math.sin(t*1.35);
+  const maxF=thin?3:(mobile?6:10);
   for(let i=0;i<flares.length&&i<maxF;i++){
     const f=flares[i];
-    const R=(thin?10:mobile?16:22)*f.pow*breath;
+    const R=(thin?8:mobile?13:18)*f.pow*breath;
     const g=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,R);
-    const a0=(thin?0.04:0.07)*f.pow*breath;
+    const a0=(thin?0.035:0.055)*f.pow*breath;
     addStops(g,[
       [0,hsl(f.hue,90,70,a0)],
-      [0.35,hsl(f.hue+20,80,55,a0*0.45)],
+      [0.35,hsl(f.hue+20,80,55,a0*0.4)],
       [1,"rgba(0,0,0,0)"]
     ]);
     ctx.fillStyle=g;
     ctx.beginPath(); ctx.arc(f.x,f.y,R,0,Math.PI*2); ctx.fill();
-    /* tiny cross sparkle at hub */
-    if(!thin&&f.pow>0.6){
-      ctx.strokeStyle=hsl(f.hue,100,75,a0*0.7);
-      ctx.lineWidth=0.7;
-      const sp=3.2*f.pow;
+    /* cross sparkle only on strongest cube hubs */
+    if(!thin&&f.pow>0.7){
+      ctx.strokeStyle=hsl(f.hue,100,75,a0*0.55);
+      ctx.lineWidth=0.6;
+      const sp=2.6*f.pow;
       ctx.beginPath(); ctx.moveTo(f.x-sp,f.y); ctx.lineTo(f.x+sp,f.y); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(f.x,f.y-sp); ctx.lineTo(f.x,f.y+sp); ctx.stroke();
     }
@@ -1610,16 +1613,16 @@ function drawInnerCubeWire(cx,cy,s,t){
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
-  /* corner nodes — tether lock points (pulse with seal) */
+  /* corner nodes — tether lock points (brighter near edges — polishPass2 hierarchy) */
   for(let i=0;i<cc.length;i++){
     const v=cc[i];
-    const pulse=0.55+0.45*Math.sin(t*3.2+i*0.9)+sealBoost;
-    const near=Math.max(0.3, Math.min(1,(v.d+0.45)/0.9));
-    const rad=(thin?1.55:2.45)*(0.92+0.18*pulse);
-    ctx.fillStyle=hsl(150+i*12+t*30,100,66,Math.min(0.95,0.72*pulse*near));
+    const pulse=0.55+0.45*Math.sin(t*2.8+i*0.9)+sealBoost;
+    const near=Math.max(0.35, Math.min(1,(v.d+0.45)/0.9));
+    const rad=(thin?1.7:2.7)*(0.94+0.2*pulse);
+    ctx.fillStyle=hsl(150+i*12+t*28,100,70,Math.min(0.98,0.82*pulse*near));
     ctx.beginPath(); ctx.arc(v.x,v.y,rad,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*Math.min(0.7,0.45*pulse*near);
-    ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.85:1.0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*Math.min(0.85,0.55*pulse*near);
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.95:1.15,0,Math.PI*2); ctx.fill();
     ctx.globalAlpha=aHex;
   }
   /* face-center micro-nodes */
@@ -1637,7 +1640,7 @@ function drawInnerCubeWire(cx,cy,s,t){
 
 
 function drawStarfieldInPanels(cx,cy,s,t,verts){
-  /* dodeca: skip 6-wedge clip (broken on 12-face mesh); soft global cool field instead */
+  /* soft global cool field (dodeca — no wedge clip) */
   if(reduceMotion) return;
   const aHex=layerAlpha("hex");
   ctx.save(); ctx.globalAlpha=aHex*0.55; ctx.globalCompositeOperation="lighter";
@@ -1923,30 +1926,34 @@ function hashFigId(id){
   return h>>>0;
 }
 function drawOrganizeLattice(cx,cy,s,t){
-  /* organizing lattice — bgToDodeca|fateSplit|sortSnap|tetherVisible|cubeTether|organizeLattice.
-     Field/mint → dodeca verts+face centers; admit voxels → inner cube; optional short chain→cube.
-     Dashed/pulsed crawl toward seal; denser field; stronger mid dodeca scaffold. */
+  /* organizing lattice — bgToDodeca|fateSplit|sortSnap|tetherVisible|cubeTether|organizeLattice|polishPass2.
+     Field/mint → dodeca; admit → cube. Mid scaffold quieter; hubs brighter; links capped. */
   const pv=DODECA._projVerts, fcs=DODECA._faceCenters2d;
   const cubeProj=INNER_CUBE._proj;
   if(!pv||pv.length<3) return;
   const mobile=W<=900, thin=W<=480;
-  const step=thin?3:(mobile?2:1); /* denser subsample */
-  /* sortSnap: contract maxSeg toward seal for ~1.0s ease-out after organize */
+  const step=thin?3:(mobile?2:1);
+  /* sortSnap polishPass2: snappy attack (~0.22s) then soft settle (~0.95s) */
   const snapAge=(sortAnimT>0)?(performance.now()-sortAnimT)*0.001:99;
-  const snapDur=1.05;
+  const snapAttack=0.22, snapSettle=0.95;
   let snap=0;
-  if(snapAge>=0&&snapAge<snapDur){
-    const u=snapAge/snapDur; snap=1-((u*u*(3-2*u))); /* ease-out smoothstep invert */
+  if(snapAge>=0&&snapAge<snapAttack+snapSettle){
+    if(snapAge<snapAttack){
+      const u=snapAge/snapAttack; snap=u*u; /* ease-in attack — snappy engage */
+    }else{
+      const u=(snapAge-snapAttack)/snapSettle; snap=1-((u*u*(3-2*u))); /* soft settle */
+    }
   }
   snap=Math.max(snap, Math.min(1,sealPulse*0.55+sealLockFlash*0.7));
-  const maxSegBase=s*(thin?0.38:mobile?0.42:0.45);
-  const maxSeg=maxSegBase*(1-0.42*snap); /* contracts toward cube/dodeca during snap */
+  const maxSegBase=s*(thin?0.34:mobile?0.40:0.44);
+  const maxSeg=maxSegBase*(1-0.48*snap); /* stronger contract during snap */
   const shOn=sealLockFlash>0.04||sealPulse>0.08||(typeof lastCI==="number"&&lastCI>0&&prevSH);
-  const breathe=0.5+0.5*Math.sin(t*1.55);
-  const pulse=shOn?(0.78+0.22*Math.sin(t*4.5)):(0.55+0.22*breathe);
+  const breathe=0.5+0.5*Math.sin(t*1.25);
+  const pulse=shOn?(0.78+0.22*Math.sin(t*4.2)):(0.52+0.18*breathe);
   const sealPop=Math.min(1, sealPulse*0.55+sealLockFlash*0.85+(shOn?0.12:0)+0.35*snap);
-  const hueDrift=10*Math.sin(t*0.55);
-  const brightBreathe=0.92+0.08*Math.sin(t*1.9);
+  const hueDrift=8*Math.sin(t*0.48);
+  const brightBreathe=0.93+0.07*Math.sin(t*1.55);
+  let linkBudget=thin?48:(mobile?90:160); /* perf: hard cap lattice strokes */
   /* cube anchors (admit voxels) */
   const cubeAnchors=(cubeProj&&cubeProj.anchors&&cubeProj.anchors.length)?cubeProj.anchors.slice():[];
   if(!cubeAnchors.length && cubeProj&&cubeProj.corners){
@@ -1965,68 +1972,62 @@ function drawOrganizeLattice(cx,cy,s,t){
   const fallback=[];
   for(const p of nodes){ if(p._px!=null) fallback.push({x:p._px,y:p._py,d:0}); }
   if(!cubeAnchors.length && !dodecaAnchors.length && !fallback.length) return;
-  const lwBase=thin?0.85:(mobile?1.05:1.35);
-  const crawl=(performance.now()*0.001)*1.8; /* dashed crawl phase */
+  const lwBase=thin?0.62:(mobile?0.88:1.25); /* polishPass2: thinner phone tethers */
+  const crawl=(performance.now()*0.001)*1.8;
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  /* A) stronger mid dodeca-edge scaffold */
+  /* A) mid dodeca scaffold — quieter so foreground seal wins hierarchy */
   if(pv&&pv.length>=3){
-    ctx.lineWidth=thin?0.55:0.75;
+    ctx.lineWidth=thin?0.35:0.5;
     for(const [i,j] of DODECA.edges){
       const a=pv[i], b=pv[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
-      const scA=(0.07+0.11*depth)*pulse*(1+0.45*snap);
-      ctx.strokeStyle=hsl(168+t*16+hueDrift*0.4,85,56,scA);
+      const scA=(0.028+0.045*depth)*pulse*(1+0.25*snap); /* ~half prior */
+      ctx.strokeStyle=hsl(168+t*14+hueDrift*0.35,78,50,scA);
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
-  /* A2) cube-edge scaffold */
+  /* A2) cube-edge scaffold — slightly brighter near hubs (locking-in story) */
   if(cubeProj&&cubeProj.corners&&cubeProj.corners.length>=8){
     const cc=cubeProj.corners;
-    ctx.lineWidth=thin?0.7:0.95;
+    ctx.lineWidth=thin?0.55:0.85;
     for(const [i,j] of INNER_CUBE.edges){
       const a=cc[i], b=cc[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.15, Math.min(1,(md+0.45)/0.95));
-      ctx.strokeStyle=hsl(155+t*22+hueDrift*0.5,92,58,(0.10+0.16*depth)*pulse*(1+0.35*sealPop));
+      ctx.strokeStyle=hsl(155+t*20+hueDrift*0.45,94,60,(0.08+0.14*depth)*pulse*(1+0.4*sealPop));
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
-  /* A3) optional short dodeca→cube chain whispers (desktop) */
-  if(!thin && dodecaAnchors.length && cubeAnchors.length){
-    ctx.lineWidth=0.55;
-    const nChain=mobile?6:10;
+  /* A3) short dodeca→cube whispers — desktop only, quieter (depth story) */
+  if(!thin && !mobile && dodecaAnchors.length && cubeAnchors.length){
+    ctx.lineWidth=0.45;
+    const nChain=6;
     for(let i=0;i<nChain;i++){
       const dA=dodecaAnchors[(i*3)%dodecaAnchors.length];
       const cA=cubeAnchors[(i*5+1)%cubeAnchors.length];
       if(!dA||!cA) continue;
       const md=((dA.d||0)+(cA.d||0))*0.5;
       const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
-      ctx.strokeStyle=hsl(162+t*10,80,54,(0.04+0.08*depth)*pulse*(0.6+0.4*snap));
+      ctx.strokeStyle=hsl(162+t*10,78,52,(0.025+0.05*depth)*pulse*(0.5+0.5*snap));
       ctx.setLineDash([3.5,4.5]);
       ctx.lineDashOffset=-crawl*12-i*2;
       ctx.beginPath(); ctx.moveTo(dA.x,dA.y); ctx.lineTo(cA.x,cA.y); ctx.stroke();
       ctx.setLineDash([]);
     }
   }
-  /* B) cube face-center k-NN whisper */
+  /* B) cube face-center links — fixed 6-face ring, not O(n²) k-NN */
   const cfc=cubeProj&&cubeProj.faceCenters;
-  if(cfc&&cfc.length>=3&&!thin){
-    ctx.lineWidth=0.65;
-    for(let i=0;i<cfc.length;i++){
-      const dists=[];
-      for(let j=0;j<cfc.length;j++){
-        if(i===j) continue;
-        dists.push({j,d:Math.hypot(cfc[i].x-cfc[j].x,cfc[i].y-cfc[j].y)});
-      }
-      dists.sort((u,v)=>u.d-v.d);
-      for(let k=0;k<2&&k<dists.length;k++){
-        const nb=dists[k]; if(!nb||nb.d>s*0.4||i>nb.j) continue;
-        const md=(cfc[i].d+cfc[nb.j].d)*0.5;
-        const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
-        ctx.strokeStyle=hsl(175+t*12+hueDrift*0.3,82,56,(0.06+0.10*depth)*pulse);
-        ctx.beginPath(); ctx.moveTo(cfc[i].x,cfc[i].y); ctx.lineTo(cfc[nb.j].x,cfc[nb.j].y); ctx.stroke();
-      }
+  if(cfc&&cfc.length>=4&&!thin&&!mobile){
+    ctx.lineWidth=0.55;
+    /* opposite-face pairs only (3 edges) — purposeful lock geometry */
+    const pairs=[[0,1],[2,3],[4,5]];
+    for(const [i,j] of pairs){
+      if(!cfc[i]||!cfc[j]) continue;
+      const md=(cfc[i].d+cfc[j].d)*0.5;
+      const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
+      ctx.strokeStyle=hsl(175+t*10+hueDrift*0.25,80,54,(0.04+0.07*depth)*pulse);
+      ctx.beginPath(); ctx.moveTo(cfc[i].x,cfc[i].y); ctx.lineTo(cfc[j].x,cfc[j].y); ctx.stroke();
     }
   }
   /* fateSplit hues: admit cooler cyan/mint; release warmer rose/magenta fray */
@@ -2065,7 +2066,9 @@ function drawOrganizeLattice(cx,cy,s,t){
     ctx.setLineDash([]);
   }
   function linkFigure(px,py,id,hue,decision,boost){
+    if(linkBudget<=0) return;
     if(px==null||py==null||!Number.isFinite(px)) return;
+    linkBudget--;
     const isAdmit=decision==="admit";
     const isRelease=decision==="refuse"||decision==="release";
     /* bgToDodeca: field/mint → dodeca; admit voxels → cube */
@@ -2153,9 +2156,9 @@ function drawOrganizeLattice(cx,cy,s,t){
     const p=parts[i]; if(p._px==null) continue;
     linkFigure(p._px,p._py,p.id,p._hue!=null?p._hue:(p.hue||320),p.decision||"refuse",false);
   }
-  /* field dump-dust — denser subsample → dodeca (bgToDodeca) */
-  const fStep=thin?40:(mobile?28:16);
-  const nField=Math.min(field.length, thin?320:mobile?520:1100);
+  /* field dump-dust — harder subsample on phone (bgToDodeca|polishPass2) */
+  const fStep=thin?64:(mobile?36:18);
+  const nField=Math.min(field.length, thin?180:mobile?400:900);
   for(let k=0;k<nField;k+=fStep){
     const p=field[k]; if(!p) continue;
     const ang=p.a+t*0.02*(0.3+p.layer*0.4);
@@ -2223,8 +2226,8 @@ function drawNestedSeals(cx,cy,s,t){
   const baseScales=rings===2?[0.88,0.72]:(rings===3?[1.0,0.85,0.68]:[1.0,0.88,0.72,0.55]);
   const pulse=0.08*sealPulse+0.05*celebrate;
   /* slow scale oscillation — inward zoom breathe (~0.35 Hz feel) */
-  const breathe=reduceMotion?0:(0.018*Math.sin(t*0.55)+0.012*Math.sin(t*0.31+1.1));
-  const zoomIn=reduceMotion?0:(0.012*(0.5+0.5*Math.sin(t*0.42))); /* slight inward zoom */
+  const breathe=reduceMotion?0:(0.014*Math.sin(t*0.42)+0.008*Math.sin(t*0.23+1.1)); /* smoother nest breathe */
+  const zoomIn=reduceMotion?0:(0.009*(0.5+0.5*Math.sin(t*0.34)));
   const po=parallaxOff("seal");
   ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex;
   for(let r=0;r<rings;r++){
@@ -2478,10 +2481,10 @@ function frame(now){
   if(cam.auto){
     /* continuous gyroscopic tumble — integrate angular rates (omni 360°) */
     const dts=Math.min(0.05, Math.max(0, dt)*0.001);
-    const m=(W<=900)?0.7:1;
-    const wx=cam.gyro.wx*(1+0.12*Math.sin(t*0.31));
-    const wy=cam.gyro.wy*(1+0.10*Math.cos(t*0.27));
-    const wz=cam.gyro.wz*(1+0.08*Math.sin(t*0.19));
+    const m=(W<=480)?0.48:(W<=900)?0.58:1; /* polishPass2: damp mobile gyro jitter */
+    const wx=cam.gyro.wx*(1+0.08*Math.sin(t*0.27));
+    const wy=cam.gyro.wy*(1+0.07*Math.cos(t*0.23));
+    const wz=cam.gyro.wz*(1+0.05*Math.sin(t*0.17));
     cam.tYaw+=wx*dts*m; cam.tPitch+=wy*dts*m; cam.tRoll+=wz*dts*m;
   }
   const nudge=0.018;
@@ -2491,7 +2494,7 @@ function frame(now){
   if(keys.KeyS||keys.ArrowDown){cam.tUserPitch+=nudge;cam.auto=false;nav.idleAt=now;}
   if(keys.KeyQ){cam.tUserRoll-=nudge;cam.auto=false;nav.idleAt=now;}
   if(keys.KeyE){cam.tUserRoll+=nudge;cam.auto=false;nav.idleAt=now;}
-  lerpCam();
+  lerpCam(dt);
   const orbitSpeed=Math.hypot(cam.userYaw-lastYaw,cam.userPitch-lastPitch,cam.userRoll-lastRoll)+(cam.auto?0.004:0);
   lastYaw=cam.userYaw; lastPitch=cam.userPitch; lastRoll=cam.userRoll;
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
@@ -2500,7 +2503,7 @@ function frame(now){
   ctx.clearRect(0,0,W,H); /* GIF #bgField is the background — no black plate */
   // mobile: raise cy bias so seal owns mid (≥55% of viewport above dock)
   const s=Math.min(W,H)*(W<=900?0.70:0.66)*cam.zoom;
-  const cx0=W*0.50+cam.panX, cy0=(W<=900?H*0.30:H*0.50)+cam.panY;
+  const cx0=W*0.50+cam.panX, cy0=(W<=480?H*0.26:(W<=900?H*0.28:H*0.50))+cam.panY; /* polishPass2: raise seal on phone */
   // true parallax: per-layer offsets from mouse.tx/ty (+ DeviceOrientation)
   const pStar=parallaxOff("star"), pHex=parallaxOff("hex"), pVox=parallaxOff("voxel");
   const pMint=parallaxOff("mint"), pLab=parallaxOff("label"), pSeal=parallaxOff("seal");
