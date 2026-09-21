@@ -3,276 +3,306 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Seraphim Organizer · Offline</title>
+<title>Seraphim Organizer · Hex Core</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:#02010a;color:#f5e9ff;font-family:ui-sans-serif,system-ui,sans-serif}
+html,body{height:100%;background:#000;color:#e8e0ff;font-family:ui-sans-serif,system-ui,sans-serif;overflow:hidden}
 #fx{position:fixed;inset:0;z-index:0}
-#app{position:relative;z-index:1;min-height:100%;display:grid;grid-template-rows:auto auto 1fr auto;
-  padding:1rem 1.25rem;gap:.75rem;max-width:1200px;margin:0 auto}
-h1{font-size:1.1rem;letter-spacing:.2em;color:#ffe6a8;text-shadow:0 0 20px #ff4fd8}
-h1 small{display:block;font-size:.65rem;letter-spacing:.08em;color:#b8a0d8;margin-top:.3rem;font-weight:500}
-.law{font-size:.7rem;color:#9a88b8}
-.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
-button,.filebtn{background:rgba(20,8,40,.85);border:1px solid rgba(255,100,200,.45);color:#ffe6a8;
-  padding:.45rem .8rem;border-radius:4px;cursor:pointer;font-size:.75rem;letter-spacing:.06em}
-button.primary{border-color:#c8ff5a;box-shadow:0 0 14px rgba(200,255,90,.25)}
-button:disabled{opacity:.4;cursor:not-allowed}
-#drop{border:1px dashed rgba(180,80,255,.5);border-radius:10px;padding:1rem;background:rgba(8,4,20,.55);
-  min-height:110px;display:flex;flex-direction:column;gap:.5rem}
-#drop.hot{border-color:#c8ff5a;background:rgba(40,60,20,.35)}
-textarea{width:100%;min-height:70px;background:#0a0614;border:1px solid #3a2850;color:#f5e9ff;
-  border-radius:6px;padding:.5rem;font-family:ui-monospace,monospace;font-size:.75rem;resize:vertical}
-.stats{display:flex;gap:.8rem;flex-wrap:wrap;font-size:.75rem}
-.stats b{color:#c8ff5a}.stats .r b{color:#ff7ad9}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;min-height:0}
-@media(max-width:700px){.cols{grid-template-columns:1fr}}
-.col{background:rgba(6,2,18,.65);border:1px solid rgba(160,80,255,.3);border-radius:8px;padding:.6rem;
-  max-height:42vh;overflow:auto}
-.col h2{font-size:.7rem;letter-spacing:.14em;margin-bottom:.4rem}
-.col.admit h2{color:#c8ff5a}.col.refuse h2{color:#ff7ad9}
-.item{font-size:.72rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.06);line-height:1.35}
-.item .m{font-size:.6rem;color:#8a78a8;font-family:ui-monospace,monospace}
-footer{font-size:.65rem;color:#7a6898}
+#ui{position:fixed;inset:0;z-index:1;pointer-events:none;display:grid;
+  grid-template-rows:auto 1fr auto;padding:0.85rem 1rem;max-width:100%}
+#ui .hit{pointer-events:auto}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+h1{font-size:0.95rem;letter-spacing:0.22em;color:#fff;text-shadow:0 0 16px #ff4fd8,0 0 28px #40f0ff}
+h1 small{display:block;font-size:0.58rem;letter-spacing:0.1em;color:#9ab;margin-top:0.3rem;font-weight:500}
+.law{font-size:0.62rem;color:#8899aa;margin-top:0.25rem}
+.panel{background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.15);border-radius:8px;
+  padding:0.65rem;backdrop-filter:blur(8px);max-width:340px}
+.row{display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;margin-bottom:0.4rem}
+button,.filebtn{background:rgba(10,10,20,0.85);border:1px solid rgba(120,255,255,0.4);color:#dff;
+  padding:0.35rem 0.65rem;border-radius:4px;cursor:pointer;font-size:0.7rem}
+button.primary{border-color:#ff66cc;box-shadow:0 0 12px rgba(255,80,200,0.35)}
+button:disabled{opacity:0.35;cursor:not-allowed}
 input[type=file]{display:none}
+textarea{width:100%;min-height:52px;background:#050510;border:1px solid #334;color:#eef;
+  border-radius:4px;padding:0.4rem;font:0.68rem ui-monospace,monospace;resize:vertical}
+.stats{font-size:0.68rem;display:flex;gap:0.7rem;flex-wrap:wrap;margin-top:0.35rem}
+.stats b{color:#7dffb0}.stats .r b{color:#ff6ad5}
+footer{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;font-size:0.6rem;color:#778}
+.lists{display:flex;gap:0.5rem;max-width:420px}
+.list{flex:1;max-height:22vh;overflow:auto;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px;padding:0.4rem;pointer-events:auto}
+.list h3{font-size:0.58rem;letter-spacing:0.12em;margin-bottom:0.25rem}
+.list.a h3{color:#7dffb0}.list.r h3{color:#ff6ad5}
+.item{font-size:0.62rem;padding:0.2rem 0;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.85}
 </style>
 </head>
 <body>
 <canvas id="fx"></canvas>
-<div id="app">
+<div id="ui">
   <header>
-    <h1>SERAPHIM ORGANIZER<small>Offline · Headroom seal × Seraphim witness · no bots required</small></h1>
-    <p class="law">S<sub>H</sub> = S<sub>solv</sub> · R<sub>H</sub> · fail-closed · φ observes only · Seraphim V contracts (never alone grants)</p>
+    <div>
+      <h1>SERAPHIM CORE<small>Hex sorter · colored nodes · Headroom seal × Seraphim witness</small></h1>
+      <p class="law">S<sub>H</sub> = S<sub>solv</sub> · R<sub>H</sub> · white field = unsorted · core blobs = crystallized / vapor clusters</p>
+    </div>
+    <div class="panel hit">
+      <div class="row">
+        <label class="filebtn">Drop / file<input type="file" id="file" accept=".csv,.tsv,.json,.jsonl,.txt,.md"/></label>
+        <button class="primary" id="run">Sort</button>
+        <button id="dlJson" disabled>JSON</button>
+        <button id="dlCsv" disabled>CSV</button>
+      </div>
+      <textarea id="paste" placeholder="Paste dump or drop a file…"></textarea>
+      <div class="stats">
+        <span>n <b id="n">0</b></span>
+        <span>nodes <b id="na">0</b></span>
+        <span class="r">ash <b id="nr">0</b></span>
+        <span id="status" style="color:#9ab"></span>
+      </div>
+    </div>
   </header>
-  <section id="drop">
-    <div class="row">
-      <label class="filebtn">Drop / choose dump<input type="file" id="file" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.text"/></label>
-      <button class="primary" id="run">Organize</button>
-      <button id="dlJson" disabled>Download JSON</button>
-      <button id="dlCsv" disabled>Download CSV</button>
-      <button id="clear">Clear</button>
+  <div></div>
+  <footer>
+    <div class="lists">
+      <div class="list a hit"><h3>CRYSTALLIZE</h3><div id="listA"></div></div>
+      <div class="list r hit"><h3>VAPORIZE</h3><div id="listR"></div></div>
     </div>
-    <textarea id="paste" placeholder="Or paste CSV / JSON / JSONL / plain lines here…"></textarea>
-    <div class="stats">
-      <span>items <b id="n">0</b></span>
-      <span>crystallize <b id="na">0</b></span>
-      <span class="r">vaporize <b id="nr">0</b></span>
-      <span id="status" style="color:#b8a0d8"></span>
-    </div>
-  </section>
-  <div class="cols">
-    <div class="col admit"><h2>CRYSTALLIZE · admit</h2><div id="listA"></div></div>
-    <div class="col refuse"><h2>VAPORIZE · refuse</h2><div id="listR"></div></div>
-  </div>
-  <footer>PPA enablement: Headroom 64/150,688 · Magpie DEN never authorizes · Runs 100% in your browser · Save this file to keep forever</footer>
+    <div>Offline · https://snowphamtom.github.io/seraphim-organizer/</div>
+  </footer>
 </div>
 <script>
-/* ===== Headroom + Seraphim hybrid (browser port) ===== */
-const CORE_TOKENS=["magpie","gr-21","gr21","headroom","seraphim","howard","tripleecho","chimera","residual","solvency","claimed","interior","lean","ppa","uspto","monsters","ceilinggate","patent","coherence","ledger","witness","grimm","jones","refuse","admission"];
+const CORE_TOKENS=["magpie","headroom","seraphim","howard","residual","solvency","claimed","interior","lean","ppa","uspto","monsters","ceilinggate","patent","coherence","ledger","witness","grimm","jones","refuse","admission","chimera"];
 const KIND_COST={pdf:[3.5,2.5,1.5,1],docx:[3,2,1.2,.8],code:[2,1,.6,.4],json:[1,.8,.4,.3],csv:[1.2,1,.5,.3],text:[1,.8,.4,.3],image:[1.5,3,1,.8],other:[2,2,1,.7]};
-
-function sha256sync(str){
-  // lightweight FNV-1a + expand for audit digests (not cryptographic; offline UI)
-  let h=2166136261>>>0;
-  for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}
-  let s=(h>>>0).toString(16).padStart(8,'0');
-  for(let i=0;i<3;i++){h=Math.imul(h^s.length,16777619);s+=(h>>>0).toString(16).padStart(8,'0');}
-  return s.slice(0,24);
-}
-
-class RV{
-  constructor(c=0,m=0,p=0,q=0){this.compute=c;this.memory=m;this.power=p;this.thermal=q;}
+function sha(str){let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}let s=(h>>>0).toString(16).padStart(8,"0");for(let i=0;i<3;i++){h=Math.imul(h^s.length,16777619);s+=(h>>>0).toString(16).padStart(8,"0");}return s.slice(0,24);}
+class RV{constructor(c=0,m=0,p=0,q=0){this.compute=c;this.memory=m;this.power=p;this.thermal=q;}
   add(o){return new RV(this.compute+o.compute,this.memory+o.memory,this.power+o.power,this.thermal+o.thermal);}
   leq(o){return this.compute<=o.compute&&this.memory<=o.memory&&this.power<=o.power&&this.thermal<=o.thermal;}
-  toObj(){return {compute:this.compute,memory:this.memory,power:this.power,thermal:this.thermal};}
-}
+  toObj(){return{compute:this.compute,memory:this.memory,power:this.power,thermal:this.thermal};}}
+function affinity(t){t=t.toLowerCase();return CORE_TOKENS.filter(x=>t.includes(x));}
+function guessKind(text){const l=text.toLowerCase();for(const [e,k] of [[".pdf","pdf"],[".docx","docx"],[".py","code"],[".ts","code"],[".json","json"],[".csv","csv"],[".png","image"]]) if(l.includes(e)) return k;return "text";}
+function claimR(text){const kind=guessKind(text);let [c,m,p,q]=KIND_COST[kind]||KIND_COST.other;const dens=Math.min(3,1+text.length/120);c*=dens;m*=dens;if(affinity(text).length){q*=0.45;p*=0.7;}return new RV(c*1e6,m*1e6,p*100,q*200);}
+function howardOK(pairs,eps=0.15){if(!pairs.length)return{R_H:false,r_h:Infinity};let num=0,den=0;for(const p of pairs){num+=p.q*p.d*p.dk;den+=p.q*p.dk*p.dk;}const lam=den?num/den:0;let energy=0,wsum=0;for(const p of pairs){energy+=0.5*p.q*(p.d-lam*p.dk)**2;wsum+=p.q;}const r_h=Math.sqrt(Math.max(0,2*energy/(wsum||1)));return{R_H:r_h<=eps,r_h};}
+function pairsFor(text){const hits=affinity(text);if(!hits.length)return[];const o=[];for(let i=0;i<Math.min(hits.length,4);i++){const dk=1+0.1*i;o.push({q:1,d:dk*0.98,dk});}return o;}
+class Seraphim{constructor(){this.e=[1,.5,.25,.1];this.a=1-0.05*8;}step(){this.e=this.e.map((x,i)=>this.a*x+0.02*Math.sin(Date.now()/700+i));return this.e.reduce((s,x)=>s+x*x,0);}}
+class Controller{constructor(){this.I=new RV(5e10,2e11,5e4,2e5);this.C=new RV();this.ser=new Seraphim();this.chain=["genesis"];}
+  evaluate(text,id){const R=claimR(text);const how=howardOK(pairsFor(text));const V=this.ser.step();const proj=this.C.add(R);const S_solv=proj.leq(this.I);const S_H=S_solv&&how.R_H;let decision="refuse",cause="seal";if(S_H){this.C=proj;decision="admit";cause=null;}else if(!S_solv)cause="solvency";else cause="residual";const audit=sha(JSON.stringify({id,decision,S_H,prev:this.chain.at(-1)}));this.chain.push(audit);return{id,t:text.slice(0,400),decision,S_solv,R_H:how.R_H,S_H,cause,seraphim_V:V,audit,R:R.toObj(),kind:guessKind(text)};}}
+function parseDump(name,text){const items=[];const n=(name||"").toLowerCase();const push=(id,t)=>{const s=String(t||"").trim();if(s)items.push({id:String(id),text:s});};
+  try{if(n.endsWith(".json")||/^\s*[\[{]/.test(text)){const j=JSON.parse(text);const arr=Array.isArray(j)?j:(j.items||j.rows||j.data||[]);if(Array.isArray(arr))arr.forEach((row,i)=>{if(typeof row==="string")push(i,row);else push(row.id||i,row.title||row.text||row.name||JSON.stringify(row));});else push(0,JSON.stringify(j));return items;}}catch(_){}
+  if(n.endsWith(".jsonl")){text.split(/\r?\n/).forEach((line,i)=>{if(!line.trim())return;try{const o=JSON.parse(line);push(o.id||i,o.title||o.text||line);}catch{push(i,line);}});return items;}
+  if(n.endsWith(".csv")||n.endsWith(".tsv")||text.includes(",")||text.includes("\t")){const delim=text.includes("\t")?"\t":",";const lines=text.split(/\r?\n/).filter(l=>l.trim());if(lines.length){const headers=lines[0].split(delim).map(h=>h.replace(/^"|"$/g,"").trim());const ti=Math.max(0,headers.findIndex(h=>/title|name|text|file/i.test(h)));for(let i=1;i<lines.length;i++){const cols=lines[i].split(delim).map(c=>c.replace(/^"|"$/g,""));push(cols[0]||i,cols[ti]||cols.join(" · "));}if(items.length)return items;}}
+  text.split(/\r?\n/).forEach((line,i)=>push(i,line));return items;}
 
-function affinity(title){const t=title.toLowerCase();return CORE_TOKENS.filter(x=>t.includes(x));}
-function guessKind(text){
-  const l=text.toLowerCase();
-  for(const [e,k] of [['.pdf','pdf'],['.docx','docx'],['.py','code'],['.ts','code'],['.json','json'],['.csv','csv'],['.png','image'],['.jpg','image']]) if(l.includes(e)) return k;
-  return 'text';
-}
-function claimR(text){
-  const kind=guessKind(text);
-  let [c,m,p,q]=KIND_COST[kind]||KIND_COST.other;
-  const dens=Math.min(3,1+text.length/120);
-  c*=dens;m*=dens;
-  const aff=affinity(text);
-  if(aff.length){q*=0.45;p*=0.7;}
-  // scale to headroom units
-  return new RV(c*1e6,m*1e6,p*100,q*200);
-}
-function howardPairs(text){
-  const hits=affinity(text);
-  if(!hits.length) return [];
-  const pairs=[];
-  for(let i=0;i<Math.min(hits.length,4);i++){
-    const dk=1+0.1*i; pairs.push({q:1,d:dk*0.98,dk});
-  }
-  return pairs;
-}
-function howardOK(pairs,eps=0.15){
-  if(!pairs.length) return {R_H:false,r_h:Infinity,lam:0};
-  let num=0,den=0;
-  for(const p of pairs){num+=p.q*p.d*p.dk;den+=p.q*p.dk*p.dk;}
-  const lam=den?num/den:0;
-  let energy=0,wsum=0;
-  for(const p of pairs){energy+=0.5*p.q*(p.d-lam*p.dk)**2;wsum+=p.q;}
-  const r_h=Math.sqrt(Math.max(0,2*energy/(wsum||1)));
-  return {R_H:r_h<=eps,r_h,lam};
-}
+const canvas=document.getElementById("fx"), ctx=canvas.getContext("2d");
+let W=0,H=0,t0=performance.now();
+const field=[];
+function resize(){W=innerWidth;H=innerHeight;canvas.width=W;canvas.height=H;}
+addEventListener("resize",resize);resize();
 
-class Seraphim{
-  constructor(){this.e=[1,0.5,0.25,0.1];this.Ts=0.05;this.Kr=8;this.a=1-this.Ts*this.Kr;}
-  step(){
-    const eta=this.e.map((_,i)=>0.02*Math.sin(Date.now()/800+i));
-    this.e=this.e.map((x,i)=>this.a*x+eta[i]);
-    return this.e.reduce((s,x)=>s+x*x,0);
+function seedField(n){
+  field.length=0;
+  for(let i=0;i<Math.min(n,900);i++){
+    field.push({
+      a:Math.random()*Math.PI*2,
+      b:(Math.random()-0.5)*Math.PI*0.9,
+      r:0.35+Math.random()*0.55,
+      tw:Math.random()*10,
+      funnel:i%3,
+      delay:Math.random()*1.5,
+      v:null, core:null, hue:0, targetAdmit:false
+    });
   }
 }
 
-class Controller{
-  constructor(){
-    this.I=new RV(5e10,2e11,5e4,2e5);
-    this.C=new RV();
-    this.ser=new Seraphim();
-    this.chain=['genesis'];
+function drawHex(ctx,t){
+  const s=Math.min(W,H)*0.42;
+  const cx=W/2,cy=H/2;
+  const verts=[];
+  for(let i=0;i<6;i++){
+    const a=-Math.PI/2+i*Math.PI/3;
+    verts.push([cx+Math.cos(a)*s*1.05, cy+Math.sin(a)*s*0.92]);
   }
-  evaluate(text,id){
-    const R=claimR(text);
-    const pairs=howardPairs(text);
-    const how=howardOK(pairs);
-    const V=this.ser.step();
-    const proj=this.C.add(R);
-    const S_solv=proj.leq(this.I);
-    const S_H=S_solv&&how.R_H;
-    let decision='refuse',cause='seal';
-    if(S_H){this.C=proj;decision='admit';cause=null;}
-    else if(!S_solv) cause='solvency';
-    else cause='residual';
-    const audit=sha256sync(JSON.stringify({id,decision,S_H,prev:this.chain.at(-1)}));
-    this.chain.push(audit);
-    return {id,t:text.slice(0,500),decision,S_solv,R_H:how.R_H,S_H,cause,r_h:how.r_h,seraphim_V:V,audit,R:R.toObj()};
+  for(let i=0;i<6;i++){
+    const g=ctx.createLinearGradient(verts[i][0],verts[i][1],verts[(i+1)%6][0],verts[(i+1)%6][1]);
+    g.addColorStop(0,`hsl(${(i*60+t*40)%360},100%,65%)`);
+    g.addColorStop(1,`hsl(${((i+1)*60+t*40)%360},100%,65%)`);
+    ctx.strokeStyle=g;ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.moveTo(verts[i][0],verts[i][1]);ctx.lineTo(verts[(i+1)%6][0],verts[(i+1)%6][1]);ctx.stroke();
+  }
+  ctx.strokeStyle="rgba(255,255,255,0.12)";
+  for(let i=0;i<6;i+=2){
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(verts[i][0],verts[i][1]);ctx.stroke();
   }
 }
 
-function parseDump(name,text){
-  const items=[];
-  const n=(name||'').toLowerCase();
-  const push=(id,t)=>{const s=String(t||'').trim(); if(s) items.push({id:String(id),text:s});};
-  try{
-    if(n.endsWith('.json')||text.trim().startsWith('[')||text.trim().startsWith('{')){
-      const j=JSON.parse(text);
-      const arr=Array.isArray(j)?j:(j.items||j.rows||j.data||Object.values(j));
-      if(Array.isArray(arr)) arr.forEach((row,i)=>{
-        if(typeof row==='string') push(i,row);
-        else push(row.id||i, row.title||row.text||row.name||JSON.stringify(row));
-      });
-      else push(0,JSON.stringify(j));
-      return items;
+function drawSphereWire(ctx,t){
+  const s=Math.min(W,H)*0.22;
+  const cx=W/2,cy=H/2*0.98;
+  ctx.save();ctx.globalCompositeOperation="lighter";
+  for(let i=0;i<12;i++){
+    const hue=(i*30+t*50)%360;
+    ctx.strokeStyle=`hsla(${hue},100%,70%,0.35)`;
+    ctx.lineWidth=0.7;
+    ctx.beginPath();
+    for(let j=0;j<=64;j++){
+      const u=j/64*Math.PI*2;
+      const lat=(i/11-0.5)*Math.PI*0.95;
+      const x=Math.cos(lat)*Math.cos(u+t*0.3);
+      const y=Math.sin(lat);
+      const z=Math.cos(lat)*Math.sin(u+t*0.3);
+      const px=cx+x*s, py=cy-y*s*0.95+z*s*0.15;
+      j?ctx.lineTo(px,py):ctx.moveTo(px,py);
     }
-  }catch(_){}
-  if(n.endsWith('.jsonl')){
-    text.split(/\r?\n/).forEach((line,i)=>{if(!line.trim())return; try{const o=JSON.parse(line);push(o.id||i,o.title||o.text||line);}catch{push(i,line);}});
-    return items;
+    ctx.stroke();
   }
-  if(n.endsWith('.csv')||n.endsWith('.tsv')||text.includes(',')||text.includes('\t')){
-    const delim=text.includes('\t')&&((text.split('\t').length)>(text.split(',').length))?'\t':',';
-    const lines=text.split(/\r?\n/).filter(l=>l.trim());
-    if(!lines.length) return items;
-    const headers=lines[0].split(delim).map(h=>h.replace(/^"|"$/g,'').trim());
-    const titleIdx=Math.max(0,headers.findIndex(h=>/title|name|text|file|path/i.test(h)));
-    for(let i=1;i<lines.length;i++){
-      const cols=lines[i].split(delim).map(c=>c.replace(/^"|"$/g,''));
-      push(cols[0]||i, cols[titleIdx]||cols.join(' · '));
+  for(let i=0;i<10;i++){
+    const lon=i/10*Math.PI;
+    ctx.strokeStyle=`hsla(${(i*36+t*40)%360},100%,70%,0.28)`;
+    ctx.beginPath();
+    for(let j=0;j<=64;j++){
+      const lat=-Math.PI/2+j/64*Math.PI;
+      const x=Math.cos(lat)*Math.cos(lon+t*0.25);
+      const y=Math.sin(lat);
+      const z=Math.cos(lat)*Math.sin(lon+t*0.25);
+      const px=cx+x*s, py=cy-y*s*0.95+z*s*0.15;
+      j?ctx.lineTo(px,py):ctx.moveTo(px,py);
     }
-    if(items.length) return items;
+    ctx.stroke();
   }
-  text.split(/\r?\n/).forEach((line,i)=>push(i,line));
-  return items;
+  ctx.restore();
 }
 
-/* ===== UI + nebula ===== */
+function drawFunnels(ctx,t){
+  const s=Math.min(W,H)*0.42;
+  const cx=W/2,cy=H/2;
+  const tips=[[-0.85,-0.55],[0.85,-0.55],[0,0.9]];
+  tips.forEach((tip,fi)=>{
+    const tx=cx+tip[0]*s, ty=cy+tip[1]*s*0.85;
+    const bx=cx, by=cy;
+    ctx.save();ctx.globalCompositeOperation="lighter";
+    for(let i=0;i<=8;i++){
+      const u=i/8;
+      const x=tx+(bx-tx)*u, y=ty+(by-ty)*u;
+      const w=(1-u)*28+2;
+      ctx.strokeStyle=`hsla(${(fi*120+t*60+i*10)%360},100%,70%,${0.15+u*0.25})`;
+      ctx.beginPath();ctx.ellipse(x,y,w,w*0.35,0,0,Math.PI*2);ctx.stroke();
+    }
+    const grd=ctx.createLinearGradient(tx,ty,bx,by);
+    grd.addColorStop(0,`hsla(${fi*120+t*40},100%,70%,0.8)`);
+    grd.addColorStop(1,"rgba(255,255,255,0.15)");
+    ctx.strokeStyle=grd;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
+    ctx.restore();
+  });
+}
+
+function kindHue(v){
+  if(v.decision==="admit") return 100+Math.random()*50;
+  return 300+Math.random()*50;
+}
+
+function ingestVerdicts(verdicts){
+  seedField(Math.max(verdicts.length,200));
+  verdicts.forEach((v,i)=>{
+    if(i>=field.length)return;
+    field[i].v=v;
+    field[i].hue=kindHue(v);
+    field[i].targetAdmit=v.decision==="admit";
+    field[i].core=null;
+  });
+}
+
+function frame(now){
+  const t=(now-t0)*0.001;
+  ctx.fillStyle="#000";ctx.fillRect(0,0,W,H);
+  drawHex(ctx,t);
+  drawFunnels(ctx,t);
+  drawSphereWire(ctx,t);
+
+  const s=Math.min(W,H)*0.22;
+  const cx=W/2,cy=H/2*0.98;
+  const tipPx=[[-0.85,-0.55],[0.85,-0.55],[0,0.9]].map(tip=>[
+    W/2+tip[0]*Math.min(W,H)*0.42,
+    H/2+tip[1]*Math.min(W,H)*0.42*0.85
+  ]);
+
+  ctx.save();ctx.globalCompositeOperation="lighter";
+  for(const p of field){
+    const age=t-p.delay;
+    if(age<0)continue;
+    if(!p.v || age<0.8){
+      const x=Math.cos(p.a)*p.r, z=Math.sin(p.a)*p.r, y=Math.sin(p.b)*0.6;
+      const px=cx+x*s*1.6, py=cy+y*s*1.4+z*s*0.2;
+      const tw=0.4+0.6*Math.abs(Math.sin(t*3+p.tw));
+      ctx.fillStyle=`rgba(255,255,255,${0.35*tw})`;
+      ctx.fillRect(px,py,1.4,1.4);
+    } else if(age<2.2){
+      const u=Math.min(1,(age-0.8)/1.4);
+      const [fx,fy]=tipPx[p.funnel];
+      const px=fx+(cx-fx)*u, py=fy+(cy-fy)*u;
+      ctx.fillStyle=`hsla(${p.hue},100%,70%,0.85)`;
+      ctx.beginPath();ctx.arc(px,py,2,0,Math.PI*2);ctx.fill();
+    } else {
+      if(!p.core){
+        p.core={
+          a:Math.random()*Math.PI*2,
+          b:(Math.random()-0.5)*1.2,
+          r:0.15+Math.random()*0.55,
+          spin:0.2+Math.random()*0.5,
+          size:3+Math.random()*5+(p.targetAdmit?2:0)
+        };
+      }
+      const c=p.core;
+      c.a+=0.004*c.spin;
+      const x=Math.cos(c.b)*Math.cos(c.a+t*c.spin)*c.r;
+      const y=Math.sin(c.b)*c.r*0.9;
+      const z=Math.cos(c.b)*Math.sin(c.a+t*c.spin)*c.r;
+      const px=cx+x*s, py=cy-y*s+z*s*0.15;
+      const grd=ctx.createRadialGradient(px,py,0,px,py,c.size*2.2);
+      grd.addColorStop(0,`hsla(${p.hue},100%,75%,0.95)`);
+      grd.addColorStop(0.5,`hsla(${p.hue},100%,55%,0.45)`);
+      grd.addColorStop(1,"transparent");
+      ctx.fillStyle=grd;
+      ctx.beginPath();ctx.arc(px,py,c.size*2.2,0,Math.PI*2);ctx.fill();
+    }
+  }
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,s*1.1);
+  g.addColorStop(0,"rgba(255,255,255,0.12)");
+  g.addColorStop(0.5,"rgba(255,80,200,0.06)");
+  g.addColorStop(1,"transparent");
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,s*1.1,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
 let last=null;
 const $=id=>document.getElementById(id);
-const drop=$('drop'), file=$('file'), paste=$('paste');
-
-function setStatus(s){$('status').textContent=s;}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
 function render(res){
-  last=res;
-  $('n').textContent=res.n;
-  $('na').textContent=res.counts.admit;
-  $('nr').textContent=res.counts.refuse;
-  const a=$('listA'), r=$('listR'); a.innerHTML=''; r.innerHTML='';
-  for(const v of res.verdicts){
-    const el=document.createElement('div'); el.className='item';
-    el.innerHTML=`<div>${escapeHtml(v.t)}</div><div class="m">${v.decision} · S_H=${v.S_H} · ${v.cause||'ok'} · ${v.audit}</div>`;
-    (v.decision==='admit'?a:r).appendChild(el);
-  }
-  $('dlJson').disabled=false; $('dlCsv').disabled=false;
+  last=res;$("n").textContent=res.n;$("na").textContent=res.counts.admit;$("nr").textContent=res.counts.refuse;
+  const a=$("listA"),r=$("listR");a.innerHTML="";r.innerHTML="";
+  res.verdicts.slice(0,80).forEach(v=>{
+    const el=document.createElement("div");el.className="item";
+    el.innerHTML=`${esc(v.t.slice(0,80))}<div style="opacity:.5;font-size:.55rem">${v.cause||"ok"} · ${v.audit}</div>`;
+    (v.decision==="admit"?a:r).appendChild(el);
+  });
+  $("dlJson").disabled=false;$("dlCsv").disabled=false;
+  ingestVerdicts(res.verdicts);
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));}
-
 function organize(items){
-  setStatus('Running hybrid gate…');
-  const ctrl=new Controller();
-  const verdicts=[];
-  for(const it of items) verdicts.push(ctrl.evaluate(it.text,it.id));
-  const counts={admit:verdicts.filter(v=>v.decision==='admit').length,refuse:verdicts.filter(v=>v.decision==='refuse').length};
-  const res={n:verdicts.length,counts,verdicts,seal:'S_H = S_solv · R_H',offline:true,stamp:new Date().toISOString()};
-  render(res); setStatus('Done · offline');
+  $("status").textContent="Sorting…";
+  const ctrl=new Controller();const verdicts=[];
+  for(const it of items)verdicts.push(ctrl.evaluate(it.text,it.id));
+  const counts={admit:verdicts.filter(v=>v.decision==="admit").length,refuse:verdicts.filter(v=>v.decision==="refuse").length};
+  render({n:verdicts.length,counts,verdicts,seal:"S_H = S_solv · R_H",offline:true,stamp:new Date().toISOString()});
+  $("status").textContent="Core locked";
 }
-
-$('run').onclick=()=>{
-  const t=paste.value.trim();
-  if(!t){setStatus('Paste or choose a file');return;}
-  organize(parseDump('paste.txt',t));
-};
-file.onchange=async()=>{
-  const f=file.files[0]; if(!f)return;
-  paste.value=await f.text();
-  organize(parseDump(f.name,paste.value));
-};
-drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('hot');});
-drop.addEventListener('dragleave',()=>drop.classList.remove('hot'));
-drop.addEventListener('drop',async e=>{
-  e.preventDefault();drop.classList.remove('hot');
-  const f=e.dataTransfer.files[0]; if(!f)return;
-  paste.value=await f.text();
-  organize(parseDump(f.name,paste.value));
-});
-$('clear').onclick=()=>{paste.value='';$('listA').innerHTML='';$('listR').innerHTML='';$('n').textContent=0;$('na').textContent=0;$('nr').textContent=0;last=null;$('dlJson').disabled=true;$('dlCsv').disabled=true;setStatus('');};
-$('dlJson').onclick=()=>{if(!last)return;const b=new Blob([JSON.stringify(last,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='seraphim-organize.json';a.click();};
-$('dlCsv').onclick=()=>{if(!last)return;const rows=[['id','decision','S_solv','R_H','S_H','cause','audit','text'],...last.verdicts.map(v=>[v.id,v.decision,v.S_solv,v.R_H,v.S_H,v.cause||'',v.audit,JSON.stringify(v.t)])];
-  const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='seraphim-organize.csv';a.click();};
-
-// nebula bg
-(function(){
-  const c=$('fx'),g=c.getContext('2d');
-  function resize(){c.width=innerWidth;c.height=innerHeight;}
-  addEventListener('resize',resize);resize();
-  let t0=performance.now();
-  function frame(now){
-    const t=(now-t0)*0.001; const W=c.width,H=c.height;
-    g.fillStyle='rgba(2,1,10,0.25)'; g.fillRect(0,0,W,H);
-    g.globalCompositeOperation='lighter';
-    const cx=W*0.5,cy=H*0.42;
-    for(let i=0;i<6;i++){
-      const a=t*0.2+i; const x=cx+Math.cos(a)*W*0.1; const y=cy+Math.sin(a*0.7)*H*0.08;
-      const r=70+i*20; const grd=g.createRadialGradient(x,y,0,x,y,r);
-      const cols=[['rgba(255,230,160,.3)','rgba(255,80,200,.08)'],['rgba(180,255,90,.22)','rgba(80,255,180,.06)'],['rgba(140,80,255,.25)','rgba(255,60,160,.06)']];
-      const col=cols[i%3];
-      grd.addColorStop(0,col[0]); grd.addColorStop(1,'transparent');
-      g.fillStyle=grd; g.beginPath(); g.arc(x,y,r,0,Math.PI*2); g.fill();
-    }
-    g.fillStyle='rgba(255,250,220,.85)'; g.beginPath(); g.arc(cx,cy,18,0,Math.PI*2); g.fill();
-    g.globalCompositeOperation='source-over';
-    requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
-})();
+$("run").onclick=()=>{const t=$("paste").value.trim();if(!t){$("status").textContent="Paste or drop a file";return;}organize(parseDump("paste.txt",t));};
+$("file").onchange=async()=>{const f=$("file").files[0];if(!f)return;$("paste").value=await f.text();organize(parseDump(f.name,$("paste").value));};
+const panel=document.querySelector(".panel");
+panel.addEventListener("dragover",e=>{e.preventDefault();});
+panel.addEventListener("drop",async e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(!f)return;$("paste").value=await f.text();organize(parseDump(f.name,$("paste").value));});
+$("dlJson").onclick=()=>{if(!last)return;const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(last,null,2)],{type:"application/json"}));a.download="seraphim-organize.json";a.click();};
+$("dlCsv").onclick=()=>{if(!last)return;const rows=[["id","decision","S_H","cause","audit","text"],...last.verdicts.map(v=>[v.id,v.decision,v.S_H,v.cause||"",v.audit,JSON.stringify(v.t)])];const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="seraphim-organize.csv";a.click();};
+seedField(400);
 </script>
 </body>
 </html>
