@@ -1161,6 +1161,25 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
   top: auto !important;
 }
 
+
+/* clientTrioFeatures — folder export controls */
+#trayAdmit .folderExport,
+#trayRelease .folderExport,
+.tray .folderExport{
+  display:flex; gap:.55rem; margin:.15rem 0 .3rem; flex-wrap:wrap;
+  position:relative; z-index:2;
+}
+#trayAdmit .folderExport button,
+#trayRelease .folderExport button{
+  appearance:none; background:transparent; border:none;
+  color:rgba(120,210,220,.75); font:inherit; font-size:.52rem;
+  letter-spacing:.04em; cursor:pointer; padding:0;
+}
+#trayAdmit .folderExport button::before,
+#trayRelease .folderExport button::before{ content:"> "; opacity:.55; color:rgba(250,220,100,.7); }
+#trayAdmit .folderExport button:hover,
+#trayRelease .folderExport button:hover{ color:rgba(200,255,250,.95); }
+
 /* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
 #phaseWhisper{
   align-self:center;
@@ -1381,10 +1400,18 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
     <div id="sortedFigures" aria-live="polite" aria-label="Sorted folders">
     <div class="tray admit" id="trayAdmit" role="region" aria-label="Organized folder">
       <h3>Organized <span class="count" id="figAdmitN">0</span></h3>
+      <div class="folderExport" aria-label="Export Organized">
+        <button type="button" id="exportAdmitCsv" title="Download Organized as CSV">export csv</button>
+        <button type="button" id="exportAdmitJson" title="Download Organized as JSON">export json</button>
+      </div>
             <div class="chips" id="figAdmit"><div class="empty">Empty</div></div>
     </div>
     <div class="tray release" id="trayRelease" role="region" aria-label="Aside folder">
       <h3>Aside <span class="count" id="figReleaseN">0</span></h3>
+      <div class="folderExport" aria-label="Export Aside">
+        <button type="button" id="exportReleaseCsv" title="Download Aside as CSV">export csv</button>
+        <button type="button" id="exportReleaseJson" title="Download Aside as JSON">export json</button>
+      </div>
             <div class="chips" id="figRelease"><div class="empty">Empty</div></div>
     </div>
   </div>
@@ -1806,7 +1833,10 @@ function deskIsIdleEmpty(){
 function idleDemoAllowed(){
   if(document.hidden) return false;
   if(!deskIsIdleEmpty()) return false;
-  if((performance.now()-deskUserTouchAt)<IDLE_TOUCH_COOLDOWN_MS) return false;
+  const ub=document.getElementById("uploadBox"), ta=document.getElementById("pasteDesk");
+  if(ub && (document.activeElement===ub || (ta && document.activeElement===ta))) return false;
+  const cool = Math.max(typeof IDLE_TOUCH_COOLDOWN_MS==="number"?IDLE_TOUCH_COOLDOWN_MS:8000, 45000);
+  if((performance.now()-deskUserTouchAt)<cool) return false;
   return true;
 }
 function runNonsenseExample(forceIdx, soft){
@@ -2006,6 +2036,7 @@ const STORIES = {
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
    - tunnelAsSent: show GIF as Taylor sent — light field, black dots, full-bleed; kill invert+screen+vignette+perspective warp; soft desk scrim only.
+   - clientTrioFeatures: sort-on-paste, per-folder export, persist window positions, idle quiet
    - clientBgFirst: translucent low-docked windows so seal/background stays readable
    - clientNoNoise: hide all non-essential chrome; keep upload + Organized + Aside + sort
    - clientOsWindowsLive: upload/Organized/Aside as free-floating draggable OS windows
@@ -5705,6 +5736,24 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
     const r = document.getElementById("trayRelease");
     const H = window.innerHeight, W = window.innerWidth;
     document.body.classList.add("clientBgFirst");
+
+    function tryRestore(el){
+      if(!el||!el.id) return false;
+      try{
+        const all = JSON.parse(localStorage.getItem("seraphim.winPos.v1")||"{}");
+        const p = all[el.id];
+        if(!p||!p.left||!p.top) return false;
+        el.style.position = "fixed";
+        el.style.left = p.left;
+        el.style.top = p.top;
+        if(p.width) el.style.width = p.width;
+        el.style.right = "auto";
+        el.style.bottom = "auto";
+        el.style.transform = "none";
+        el.dataset.userMoved = "1";
+        return true;
+      }catch(_){ return false; }
+    }
     function dock(el, left, bottom){
       if(!el) return;
       // only if user hasn't dragged (no top set by drag) OR always reset on first boot
@@ -5721,17 +5770,14 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
     }
     const gap = 10;
     const uw = Math.min(300, W * 0.88);
-    dock(ub, Math.max(12, W*0.03), safe + 6);
+    if(!tryRestore(ub)) dock(ub, Math.max(12, W*0.03), safe + 6);
     // stack folders on right, low
     const fw = Math.min(320, W * 0.42);
     if(r){
-      r.style.width = fw + "px";
-      dock(r, W - fw - Math.max(12, W*0.03), safe + 6);
+      if(!tryRestore(r)){ r.style.width = fw + "px"; dock(r, W - fw - Math.max(12, W*0.03), safe + 6); }
     }
     if(a){
-      a.style.width = fw + "px";
-      const rh = (r && r.offsetHeight) || 140;
-      dock(a, W - fw - Math.max(12, W*0.03), safe + 6 + rh + gap);
+      if(!tryRestore(a)){ a.style.width = fw + "px"; const rh = (r && r.offsetHeight) || 140; dock(a, W - fw - Math.max(12, W*0.03), safe + 6 + rh + gap); }
     }
   }
   // mark user moves
@@ -5749,6 +5795,126 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
   else setTimeout(place, 80);
   window.addEventListener("resize", ()=>setTimeout(place, 30));
 })();
+
+/* clientTrioFeatures: sort-on-paste · per-folder export · persist window positions · idle quiet */
+(function clientTrioFeatures(){
+  const POS_KEY = "seraphim.winPos.v1";
+  function savePos(el){
+    if(!el||!el.id) return;
+    try{
+      const all = JSON.parse(localStorage.getItem(POS_KEY)||"{}");
+      all[el.id] = { left: el.style.left, top: el.style.top, width: el.style.width };
+      localStorage.setItem(POS_KEY, JSON.stringify(all));
+      el.dataset.userMoved = "1";
+    }catch(_){}
+  }
+  function restorePos(el){
+    if(!el||!el.id) return false;
+    try{
+      const all = JSON.parse(localStorage.getItem(POS_KEY)||"{}");
+      const p = all[el.id];
+      if(!p||!p.left||!p.top) return false;
+      el.style.position = "fixed";
+      el.style.left = p.left;
+      el.style.top = p.top;
+      if(p.width) el.style.width = p.width;
+      el.style.right = "auto";
+      el.style.bottom = "auto";
+      el.style.transform = "none";
+      el.dataset.userMoved = "1";
+      return true;
+    }catch(_){ return false; }
+  }
+  function wirePersist(){
+    ["uploadBox","trayAdmit","trayRelease"].forEach(id=>{
+      const el = document.getElementById(id);
+      if(!el) return;
+      restorePos(el);
+      const bar = el.querySelector(".winBar");
+      if(!bar) return;
+      const done = ()=>savePos(el);
+      bar.addEventListener("mouseup", done);
+      bar.addEventListener("touchend", done);
+    });
+  }
+  function folderRows(which){
+    if(typeof lastResult==="undefined" || !lastResult || !lastResult.verdicts) return [];
+    return lastResult.verdicts.filter(v => which==="admit" ? v.decision==="admit" : v.decision!=="admit");
+  }
+  function downloadFolder(which, asJson){
+    const rows = folderRows(which);
+    const label = which==="admit" ? "organized" : "aside";
+    if(!rows.length) return;
+    let blob, name;
+    if(asJson){
+      blob = new Blob([JSON.stringify({ folder: label, n: rows.length, verdicts: rows }, null, 2)], {type:"application/json"});
+      name = "seraphim-"+label+".json";
+    } else {
+      const head = ["id","decision","display","S_H","S_solv","R_H","cause","kind","audit","text"];
+      const lines = [head.join(",")].concat(rows.map(v=>{
+        const cells = [v.id, v.decision, v.decision==="admit"?"organized":"aside", v.S_H, v.S_solv, v.R_H, v.cause||"", v.kind||"", v.audit||"", JSON.stringify(v.t||"")];
+        return cells.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",");
+      }));
+      blob = new Blob([lines.join("\n")], {type:"text/csv"});
+      name = "seraphim-"+label+".csv";
+    }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  }
+  function wireExports(){
+    [
+      ["exportAdmitCsv", "admit", false],
+      ["exportAdmitJson", "admit", true],
+      ["exportReleaseCsv", "release", false],
+      ["exportReleaseJson", "release", true],
+    ].forEach(([id, which, asJson])=>{
+      const btn = document.getElementById(id);
+      if(!btn || btn.__seraphimExport) return;
+      btn.__seraphimExport = true;
+      btn.addEventListener("click", e=>{
+        e.preventDefault(); e.stopPropagation();
+        if(typeof markDeskUserTouch==="function") markDeskUserTouch();
+        downloadFolder(which, asJson);
+      });
+    });
+  }
+  let pasteTimer = null;
+  function wirePasteAutoSort(){
+    const ta = document.getElementById("pasteDesk");
+    if(!ta || ta.__seraphimPasteSort) return;
+    ta.__seraphimPasteSort = true;
+    const run = ()=>{
+      const text = String(ta.value||"").trim();
+      if(!text) return;
+      if(typeof markDeskUserTouch==="function") markDeskUserTouch();
+      if(typeof triggerUploadFX==="function") triggerUploadFX("receive");
+      if(typeof organize==="function" && typeof parseDump==="function") organize(parseDump("paste.txt", ta.value));
+    };
+    ta.addEventListener("paste", ()=>{
+      if(typeof markDeskUserTouch==="function") markDeskUserTouch();
+      clearTimeout(pasteTimer);
+      pasteTimer = setTimeout(run, 400);
+    });
+    ta.addEventListener("input", ()=>{
+      if(typeof markDeskUserTouch==="function") markDeskUserTouch();
+      if(String(ta.value||"").trim().length < 12) return;
+      clearTimeout(pasteTimer);
+      pasteTimer = setTimeout(run, 850);
+    });
+  }
+  function boot(){
+    wirePersist();
+    wireExports();
+    wirePasteAutoSort();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", ()=>setTimeout(boot, 140));
+  else setTimeout(boot, 140);
+})();
+
+
 
 
 
