@@ -6416,6 +6416,194 @@ html,body{
 }
 /* end noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres */
 
+/* ========== purpleOnlySite|allPurpleHues ========== */
+/* ENTIRE site = purple hue family only (lilac→violet→deep purple→near-black).
+   NO gold, cyan, magenta-as-hot-pink, orange, green chrome.
+   Keyed assets regenerated as purple ink on transparent; CSS filters reinforce.
+   Sphere field (was gold-dotfield) remains MASTER clock — now purple spheres. */
+
+:root{
+  --void:#0a0014 !important;
+  --ink:#f3e8ff !important;
+  --mute:#c4b5fd !important;
+  --admit:#ddd6fe !important;
+  --release:#a78bfa !important;
+  --mint:#ede9fe !important;
+  --cyan:#c4b5fd !important;   /* lilac stand-in — never cyan chrome */
+  --mag:#7c3aed !important;    /* deep violet — not hot-pink magenta */
+  --warn:#e9d5ff !important;
+  --gold:#e9d5ff !important;   /* lilac — never amber/gold chrome */
+  --amber:#d8b4fe !important;
+  --glass:rgba(10,0,20,0.82) !important;
+  --line:rgba(167,139,250,0.30) !important;
+  --holo-wash:linear-gradient(135deg,rgba(243,232,255,0.09),rgba(124,58,237,0.07),rgba(46,16,80,0.10)) !important;
+  /* purple spheres MASTER (asset filenames keep gold-* for path stability) */
+  --sphere-T:var(--gold-T,4.5s) !important;
+  --gold-T:4.5s !important;
+  --field-T:calc(var(--gold-T) / 1.6180339887) !important;
+  --field-T2:var(--gold-T) !important;
+  --field-T3:calc(var(--gold-T) * 1.6180339887) !important;
+  --Tphi:calc(var(--gold-T) / 1.6180339887) !important;
+  --Tphi2:var(--gold-T) !important;
+  --Tphi3:calc(var(--gold-T) * 1.6180339887) !important;
+  --T1:calc(var(--gold-T) / 2.6180339887) !important;
+}
+html,body{
+  background:#0a0014 !important;
+  color:var(--ink) !important;
+}
+#bgField{ background:#05000c !important; }
+
+/* —— Media: purple ink assets + soft purple grade (no gold/cyan/orange shift) —— */
+#bgField > .hexIridescentBg picture,
+#bgField > .hexIridescentBg img{
+  filter:
+    brightness(0.62) contrast(1.08) saturate(1.05)
+    drop-shadow(0 0 18px rgba(124,58,237,.18))
+    blur(0.45px) !important;
+}
+#bgField > .goldDotfield picture,
+#bgField > .goldDotfield img{
+  filter:
+    drop-shadow(0 0 10px rgba(233,213,255,.50))
+    drop-shadow(0 0 26px rgba(167,139,250,.32))
+    brightness(1.08) contrast(1.18) saturate(1.12) !important;
+}
+#bgField > .omniGyroRig .goldNetwork picture,
+#bgField > .omniGyroRig .goldNetwork img{
+  filter:
+    drop-shadow(0 0 12px rgba(233,213,255,.55))
+    drop-shadow(0 0 28px rgba(124,58,237,.34))
+    brightness(1.06) contrast(1.20) saturate(1.10) !important;
+}
+#bgField > .omniGyroRig .keyedDodecaWire picture,
+#bgField > .omniGyroRig .keyedDodecaWire img{
+  filter:
+    drop-shadow(0 0 12px rgba(196,181,253,.52))
+    drop-shadow(0 0 24px rgba(167,139,250,.30))
+    brightness(1.02) contrast(1.10) saturate(1.05)
+    blur(0.28px) !important;
+}
+#bgField > .omniGyroRig .seedInDodeca picture,
+#bgField > .omniGyroRig .seedInDodeca img{
+  filter:
+    drop-shadow(0 0 10px rgba(243,232,255,.58))
+    drop-shadow(0 0 20px rgba(167,139,250,.42))
+    brightness(1.10) contrast(1.16) saturate(1.08) !important;
+}
+
+/* Purple depth vignette — no cool cyan / warm gold wash */
+#bgField::before{
+  background:
+    radial-gradient(ellipse 28% 22% at var(--seal-x,50%) var(--seal-y,42%),
+      rgba(243,232,255,0.14) 0%,
+      rgba(167,139,250,0.09) 32%,
+      rgba(76,29,149,0.06) 55%,
+      transparent 74%),
+    radial-gradient(ellipse 88% 78% at var(--seal-x,50%) var(--seal-y,42%),
+      transparent 40%, rgba(10,0,20,0.38) 100%),
+    radial-gradient(ellipse 100% 92% at 50% 100%, rgba(5,0,12,0.80) 0%, transparent 56%),
+    radial-gradient(ellipse 96% 72% at 50% 0%, rgba(8,0,18,0.58) 0%, transparent 50%) !important;
+}
+
+/* Sphere field MASTER — purple spheres drive φ family */
+#bgField > .goldDotfield .plane{
+  animation:goldDotfieldPhiPulse var(--sphere-T,var(--gold-T,4.5s)) ease-in-out infinite !important;
+  animation-delay:0s !important;
+}
+#bgField > .omniGyroRig .goldNetwork .plane{
+  animation:goldNetworkPhiMotion var(--field-T3,calc(4.5s * 1.6180339887)) linear infinite !important;
+  animation-delay:0s !important;
+}
+#bgField > .omniGyroRig .seedInDodeca .plane,
+#bgField > .omniGyroRig .seedInDodeca{
+  animation:seedInDodecaPulse var(--sphere-T,var(--gold-T,4.5s)) ease-in-out infinite !important;
+  animation-delay:0s !important;
+}
+
+/* Desk / rail / spec — purple glass only; labels Disorganized/Organized/Aside */
+#sortDesk{
+  color:rgba(243,232,255,.96) !important;
+  background:
+    linear-gradient(180deg,
+      rgba(14,0,28,0.30) 0%,
+      rgba(10,0,20,0.90) 22%,
+      rgba(5,0,12,0.98) 100%) !important;
+  border:1px solid rgba(167,139,250,0.28) !important;
+  box-shadow:
+    0 -8px 32px rgba(5,0,12,.70),
+    0 0 40px rgba(124,58,237,.08),
+    inset 0 1px 0 rgba(233,213,255,.10) !important;
+  backdrop-filter:blur(12px) saturate(0.92) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(0.92) !important;
+}
+#sortedFigures .tray.admit h3{
+  color:#ede9fe !important;
+  text-shadow:0 0 14px rgba(167,139,250,0.60), 0 0 4px rgba(243,232,255,0.25) !important;
+}
+#sortedFigures .tray.release h3{
+  color:#c4b5fd !important;
+  text-shadow:0 0 14px rgba(124,58,237,0.55), 0 0 4px rgba(233,213,255,0.18) !important;
+}
+#uploadBox,#pasteDesk{
+  background:rgba(10,0,20,0.86) !important;
+  border-color:rgba(167,139,250,0.28) !important;
+  box-shadow:none !important;
+}
+#uploadBox .uh b, #uploadBox b{ color:rgba(243,232,255,0.98) !important; }
+#dataRail, #specBar{
+  color:rgba(196,181,253,0.78) !important;
+  border-color:rgba(124,58,237,0.28) !important;
+  background:rgba(8,0,18,0.55) !important;
+}
+#dataRail .tick, #specBar .tick, #dataRail span, #specBar span{
+  color:rgba(196,181,253,0.70) !important;
+}
+#top{
+  background:var(--holo-wash),rgba(10,0,20,0.72) !important;
+  border-color:rgba(167,139,250,0.28) !important;
+  box-shadow:0 0 24px rgba(124,58,237,0.10), inset 0 1px 0 rgba(243,232,255,0.06) !important;
+}
+#top .title{
+  text-shadow:0 0 12px rgba(167,139,250,.40), 0 0 18px rgba(124,58,237,.22) !important;
+  color:rgba(243,232,255,.95) !important;
+}
+.metrics{ color:rgba(196,181,253,.72) !important; }
+.metrics b{ color:rgba(243,232,255,.90) !important; }
+.metrics .a b{ color:#e9d5ff !important; }
+.metrics .r b{ color:#a78bfa !important; }
+
+/* Kill leftover non-purple chrome accents (cyan/gold/orange/green/hot-pink) */
+#cheat h3, #cheat .close:hover{ color:#c4b5fd !important; border-color:rgba(167,139,250,.45) !important; box-shadow:0 0 12px rgba(124,58,237,.28) !important; }
+button, .btn, #sortDesk button{
+  border-color:rgba(167,139,250,0.32) !important;
+}
+#sortDesk button:hover{
+  border-color:rgba(196,181,253,0.55) !important;
+  box-shadow:0 0 12px rgba(124,58,237,.25) !important;
+}
+
+@media (prefers-reduced-motion:reduce){
+  #bgField > .omniGyroRig .keyedDodecaWire{
+    opacity:0.30 !important;
+    filter:blur(1.1px) !important;
+  }
+  #bgField > .hexIridescentBg img.still{
+    filter:brightness(0.58) contrast(1.02) saturate(0.95) blur(1.2px) !important;
+  }
+  #bgField > .goldDotfield img.still,
+  #bgField > .omniGyroRig .goldNetwork img.still{
+    filter:
+      drop-shadow(0 0 8px rgba(233,213,255,.40))
+      brightness(1.04) contrast(1.10) saturate(1.05) !important;
+  }
+  #bgField > .goldDotfield .plane,
+  #bgField > .omniGyroRig .goldNetwork .plane{
+    animation:none !important;
+  }
+}
+/* end purpleOnlySite|allPurpleHues */
+
 </style>
 </head>
 <body>
@@ -6429,7 +6617,7 @@ html,body{
       <img class="still" src="media/hex-iridescent-bg-still.webp" alt="" decoding="async" width="500" height="500"/>
     </div>
   </div>
-  <div class="goldDotfield" aria-hidden="true"><!-- goldMovingNodeGif|goldKeyedOverlays: animated gold node field (webp gif) hub-locked -->
+  <div class="goldDotfield" aria-hidden="true"><!-- purpleOnlySite|allPurpleHues: purple-ink sphere field MASTER (was gold-dotfield); hub-locked -->
     <div class="plane">
       <picture>
         <source srcset="media/gold-dotfield-keyed.webp" type="image/webp"/>
@@ -7251,7 +7439,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres|depthPerspectiveHarmony|perspectiveDepthPass|impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:purpleOnlySite|allPurpleHues|noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres|depthPerspectiveHarmony|perspectiveDepthPass|impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -7344,11 +7532,11 @@ const cam={
 };
 
 function syncTempoClock(){
-  /* motionSyncGoldSpheres|clientMotionHarmonic: gold-dotfield 4.5s = MASTER; φ family + gyro lock to it */
+  /* purpleOnlySite|motionSyncGoldSpheres|clientMotionHarmonic: purple sphere field 4.5s = MASTER; φ family + gyro lock to it */
   if(syncTempoClock._done) return;
   syncTempoClock._done=1;
   const root=document.documentElement;
-  const GOLD_T=4.5; /* gold-dotfield-keyed.webp 90×50ms */
+  const GOLD_T=4.5; /* purple sphere field (gold-dotfield-keyed.webp purple ink) 90×50ms MASTER */
   TEMPO.base=(2*Math.PI)*(PHI*PHI)/GOLD_T; /* Tphi2 === GOLD_T */
   const b=TEMPO.base;
   const T1=(2*Math.PI)/b;
@@ -7375,7 +7563,7 @@ function syncTempoClock(){
     cam.gyro.wx=0; cam.gyro.wy=0; cam.gyro.wz=0; cam.gyro.omni=0;
     cam.auto=false;
   } else {
-    /* gyro rates: one gold-sphere path family — 2π/GOLD_T · φ^k (no competing clocks) */
+    /* gyro rates: one purple-sphere path family — 2π/GOLD_T · φ^k (no competing clocks) */
     const w0=(2*Math.PI)/GOLD_T;
     cam.gyro.wx=w0/PHI;
     cam.gyro.wy=w0/(PHI*PHI);
@@ -7892,7 +8080,7 @@ function seedFog(){ /* clientNoOtherAesthetics */ return;
 }
 /* holoPalette: prefer hues in ~185–325 (cyan→indigo→magenta→orchid); clamp L≤68 */
 function hsl(h,s,l,a=1){
-  /* purpleMonoRamp|purpleWhiteBlack: map any hue → purple mono (lilac↔violet); L drives white→void */
+  /* purpleOnlySite|allPurpleHues|purpleMonoRamp: map ANY hue → purple family only (lilac↔violet↔deep); L drives white→void; no gold/cyan/orange/green */
   const L0=Math.min(96,Math.max(0,l));
   const L=Math.min(88, L0); /* allow brighter lilac highlights */
   const t=L/88; /* 0 void … 1 near-white lilac */
@@ -8719,7 +8907,7 @@ function drawCyberNatureField(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){ /* noStaticStraightLines|purpleMonoRamp|motionSyncGoldSpheres: curved bones + purple hsl + gold TEMPO */
+function drawDodecaFrame(cx,cy,s,t){ /* purpleOnlySite|noStaticStraightLines|purpleMonoRamp: curved bones + purple hsl + purple-sphere TEMPO */
   drawCyberNatureField(cx,cy,s,t);
   /* soft seal whisper under pillars — keep readable, not lattice-hero */
   if(false){ /* retired thick lattice hero path kept below for reference */ return; } /* clientSeeThrough|clientNeonLattice|clientThickSkeleton: softened cyan↔magenta lattice bones */
