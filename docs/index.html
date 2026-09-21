@@ -327,30 +327,30 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 #bgField .meta.plexus{
   background-image:url(bg-plexus.gif);
-  opacity:0.34; /* polishPass2: quieter field so neon seal owns contrast */
-  filter:grayscale(1) brightness(0.82);
+  opacity:0.16; /* polishPass3: unsorted field whisper — seal owns contrast */
+  filter:grayscale(1) brightness(0.78);
 }
 #bgField .meta.grid{
   background-image:url(bg-grid.gif);
-  opacity:0.22;
-  filter:grayscale(1) brightness(0.78);
+  opacity:0.10;
+  filter:grayscale(1) brightness(0.74);
   transform:scale(1.06);
   transform-origin:center center;
 }
 #bgField .meta.blobs{
   background-image:url(bg-metaballs.gif);
-  opacity:0.12; /* mud killer — soft depth only */
-  filter:invert(1) grayscale(1) brightness(0.7);
+  opacity:0.05; /* soft depth only — no mud */
+  filter:invert(1) grayscale(1) brightness(0.65);
 }
 @media (max-width:900px){
-  #bgField .meta.plexus{opacity:0.22}
-  #bgField .meta.grid{opacity:0.14}
-  #bgField .meta.blobs{opacity:0.07}
+  #bgField .meta.plexus{opacity:0.10}
+  #bgField .meta.grid{opacity:0.06}
+  #bgField .meta.blobs{opacity:0.03}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .meta.plexus{opacity:0.22}
-  #bgField .meta.grid{opacity:0.14}
-  #bgField .meta.blobs{opacity:0.08}
+  #bgField .meta.plexus{opacity:0.10}
+  #bgField .meta.grid{opacity:0.06}
+  #bgField .meta.blobs{opacity:0.04}
 }
 
 </style>
@@ -358,7 +358,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 <body>
 <div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div></div>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
-<canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.55"></canvas>
+<canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.28"></canvas><!-- polishPass3: WebGL underlay quieter so canvas seal wins -->
 <header id="top">
   <div class="title">SERAPHIM</div>
   <span class="whisper" title="Wizard turns fumbled speech into seal">fumble → seal</span>
@@ -788,7 +788,32 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2 */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3 */
+/* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
+   Story: bg-field → dodeca lock → cube crystallize / mint release.
+   Grammar: cool admit→cube; warm release→outward; seal = foreground authority.
+   SURVIVING layers (why they stay):
+   - bgField GIFs: unsorted chaos under seal (whisper depth only)
+   - starfield dust: dump particles awaiting lock
+   - funnels: intake mouths at dodeca faces (cool admit path)
+   - organize lattice: visible tether field→dodeca / admit→cube
+   - inner cube wire: crystallize destination (admit mass)
+   - mint mesh: release fate outward (warm refuse)
+   - dodeca seal frame: absolute foreground authority
+   - seal breath: C/I fill = live seal pulse
+   - prove-break: focus residual S_solv·R_H·S_H readout
+   - softCross: re-ingest veil (no black flash)
+   - CRT hub flares: tether lock-ins only (scanlines instrument, desktop)
+   QUIETED / SKIPPED (decorative or fight story):
+   - aurora: skip ≤900; desktop α×0.5 (mood only)
+   - fogShards: skip ≤900; α×0.5
+   - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
+   - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
+   - chromatic edges: skip ≤900; α×0.5
+   - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
+   - depth vignette: outer α cut (GIF is the void)
+   - film grain / bloomClamp: already no-op
+*/
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -1274,30 +1299,17 @@ function layerAlpha(which){
 }
 /* —— HYBRID VISUAL STACK —— */
 function drawAurora(cx,cy,s,t){
-  if(reduceMotion||skipHeavy) return;
-  // LENS #4 / refine: phone skip; mid ≤900 one ribbon α≤0.015
-  if(W<=480) return;
-  if(W<=900){
-    ctx.save(); ctx.globalCompositeOperation="lighter";
-    const hue=180+Math.sin(t*0.3)*8;
-    ctx.strokeStyle=hsl(hue,70,44,0.015);
-    ctx.lineWidth=5; ctx.beginPath();
-    for(let i=0;i<=40;i++){
-      const u=i/40, x=cx+(u-0.5)*s*2.4;
-      const y=cy-s*0.8+Math.sin(u*Math.PI*2.1+t*0.5)*s*0.14;
-      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
-    }
-    ctx.stroke(); ctx.restore(); return;
-  }
+  /* polishPass3: mood only — skip ≤900; desktop α cut ≥50% (does not teach organize) */
+  if(reduceMotion||skipHeavy||W<=900) return;
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  for(let r=0;r<2;r++){ /* quieter ribbons */
+  for(let r=0;r<2;r++){
     const hue=170+r*28+Math.sin(t*0.3+r)*10;
-    ctx.strokeStyle=hsl(hue,80,46,0.018+r*0.005);
-    ctx.lineWidth=5+r*3; ctx.beginPath();
-    for(let i=0;i<=48;i++){
-      const u=i/48, x=cx+(u-0.5)*s*2.6;
-      const y=cy-s*0.85+Math.sin(u*Math.PI*2.2+t*0.55+r*0.7)*s*(0.18+r*0.04)
-        +Math.sin(u*Math.PI*5.1+t*0.3+r)*s*0.06;
+    ctx.strokeStyle=hsl(hue,80,46,0.008+r*0.002);
+    ctx.lineWidth=4+r*2; ctx.beginPath();
+    for(let i=0;i<=40;i++){
+      const u=i/40, x=cx+(u-0.5)*s*2.6;
+      const y=cy-s*0.85+Math.sin(u*Math.PI*2.2+t*0.55+r*0.7)*s*(0.16+r*0.03)
+        +Math.sin(u*Math.PI*5.1+t*0.3+r)*s*0.05;
       i?ctx.lineTo(x,y):ctx.moveTo(x,y);
     }
     ctx.stroke();
@@ -1305,9 +1317,10 @@ function drawAurora(cx,cy,s,t){
   ctx.restore();
 }
 function drawDualHexGhost(cx,cy,s,t){
-  if(reduceMotion||W<=480) return; /* skip dual ghost on ≤480 */
+  /* polishPass3: counter-seal whisper — skip ≤900; α×0.5 (depth memory, not second authority) */
+  if(reduceMotion||W<=900) return;
   const aHex=layerAlpha("hex");
-  ctx.save(); ctx.globalAlpha=aHex*0.22; ctx.globalCompositeOperation="lighter";
+  ctx.save(); ctx.globalAlpha=aHex*0.10; ctx.globalCompositeOperation="lighter";
   const gyaw=-(cam.userYaw)*0.35+t*0.04, gpitch=-(cam.userPitch)*0.25;
   const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
   const sc=1.18;
@@ -1325,42 +1338,43 @@ function drawDualHexGhost(cx,cy,s,t){
   ctx.restore();
 }
 function drawChromaticHexEdges(verts,t){
-  /* chromatic fringe on N dodeca edges (from DODECA._projVerts); verts arg kept for call compat */
-  if(reduceMotion||W<=480) return;
+  /* polishPass3: RGB fringe = optic edge cue only; skip ≤900; α×0.5; verts arg call-compat */
+  if(reduceMotion||W<=900) return;
   const pv=DODECA._projVerts; if(!pv||pv.length<3) return;
   ctx.save(); ctx.globalCompositeOperation="lighter";
   const edged=DODECA.edges.map(([i,j],ei)=>{
     const a=pv[i], b=pv[j];
     return {a,b,ei,md:(a.d+b.d)*0.5};
-  }).sort((u,v)=>v.md-u.md); /* near first */
-  const n=Math.min(10, edged.length);
+  }).sort((u,v)=>v.md-u.md);
+  const n=Math.min(6, edged.length);
   for(let k=0;k<n;k++){
     const {a,b}=edged[k];
     const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
-    const nx=(-dy/len)*2.0, ny=(dx/len)*2.0;
-    ctx.lineWidth=1.05;
-    ctx.strokeStyle="rgba(255,60,80,0.11)"; ctx.beginPath();ctx.moveTo(a.x+nx,a.y+ny);ctx.lineTo(b.x+nx,b.y+ny);ctx.stroke();
-    ctx.strokeStyle="rgba(60,255,120,0.09)"; ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
-    ctx.strokeStyle="rgba(60,120,255,0.11)"; ctx.beginPath();ctx.moveTo(a.x-nx,a.y-ny);ctx.lineTo(b.x-nx,b.y-ny);ctx.stroke();
+    const nx=(-dy/len)*1.6, ny=(dx/len)*1.6;
+    ctx.lineWidth=0.85;
+    ctx.strokeStyle="rgba(255,60,80,0.05)"; ctx.beginPath();ctx.moveTo(a.x+nx,a.y+ny);ctx.lineTo(b.x+nx,b.y+ny);ctx.stroke();
+    ctx.strokeStyle="rgba(60,255,120,0.04)"; ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    ctx.strokeStyle="rgba(60,120,255,0.05)"; ctx.beginPath();ctx.moveTo(a.x-nx,a.y-ny);ctx.lineTo(b.x-nx,b.y-ny);ctx.stroke();
   }
   ctx.restore();
 }
 function drawDepthFogVignette(cx,cy,s){
+  /* polishPass3: soft rim only — GIF is the void; cut outer black that fought bgField */
+  if(W<=900) return;
   ctx.save();
-  const g=ctx.createRadialGradient(cx,cy,s*0.15,cx,cy,Math.max(W,H)*0.72);
+  const g=ctx.createRadialGradient(cx,cy,s*0.2,cx,cy,Math.max(W,H)*0.78);
   addStops(g,[
-    [0,"rgba(40,120,160,0.04)"],
-    [0.35,"rgba(0,0,0,0)"],
-    [0.7,"rgba(0,0,0,0.18)"],
-    [1,"rgba(0,0,0,0.55)"]
+    [0,"rgba(40,120,160,0.02)"],
+    [0.4,"rgba(0,0,0,0)"],
+    [0.78,"rgba(0,0,0,0.08)"],
+    [1,"rgba(0,0,0,0.22)"]
   ]);
   ctx.globalCompositeOperation="source-over";
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  // soft center glow
-  const g2=ctx.createRadialGradient(cx,cy,0,cx,cy,s*0.55);
-  addStops(g2,[[0,"rgba(80,200,220,0.025)"],[1,"rgba(0,0,0,0)"]]);
+  const g2=ctx.createRadialGradient(cx,cy,0,cx,cy,s*0.5);
+  addStops(g2,[[0,"rgba(80,200,220,0.012)"],[1,"rgba(0,0,0,0)"]]);
   ctx.globalCompositeOperation="lighter";
-  ctx.fillStyle=g2; ctx.beginPath();ctx.arc(cx,cy,s*0.55,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=g2; ctx.beginPath();ctx.arc(cx,cy,s*0.5,0,Math.PI*2);ctx.fill();
   ctx.restore();
 }
 function drawFilmGrain(){
@@ -1396,31 +1410,25 @@ function drawSoftCrossVeil(){
 }
 
 function drawCrtPolish(cx,cy,s,t){
-  /* crtPolish|polishPass2: instrument scanlines only; flares ONLY on cube hubs that receive tethers.
-     Soften further vs moiré/blotch; skip/reduce on ≤480; respects reduceMotion. */
+  /* polishPass3|crtPolish: hub flares = tether lock purpose; scanlines desktop instrument only.
+     Skip all CRT paint on ≤900 (grain fought the seal story). */
   if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
   ctx.save();
-  /* scanlines — softer, wider step to kill moiré */
-  if(!thin){
-    const step=mobile?5:4;
-    const a=mobile?0.010:0.016;
+  /* scanlines — desktop only, quieter */
+  if(!mobile){
+    const step=5;
+    const a=0.010;
     ctx.globalCompositeOperation="source-over";
     ctx.fillStyle=`rgba(0,6,12,${a})`;
     for(let y=0;y<H;y+=step){
       ctx.fillRect(0,y,W,1);
     }
-    /* faint phosphor lift — quieter */
     ctx.globalCompositeOperation="lighter";
-    ctx.fillStyle=`rgba(140,220,255,${mobile?0.003:0.005})`;
+    ctx.fillStyle="rgba(140,220,255,0.003)";
     for(let y=1;y<H;y+=step*2){
       ctx.fillRect(0,y,W,0.5);
     }
-  }else{
-    /* ≤480: every 8th line, barely instrument grain */
-    ctx.globalCompositeOperation="source-over";
-    ctx.fillStyle="rgba(0,6,12,0.008)";
-    for(let y=0;y<H;y+=8) ctx.fillRect(0,y,W,1);
   }
   /* hub flares — cube corners only (degree-3 tether lock-ins); no decorative poles */
   ctx.globalCompositeOperation="lighter";
@@ -1640,11 +1648,11 @@ function drawInnerCubeWire(cx,cy,s,t){
 
 
 function drawStarfieldInPanels(cx,cy,s,t,verts){
-  /* soft global cool field (dodeca — no wedge clip) */
+  /* polishPass3: dump dust awaiting lock — cool field only; quieter so lattice/seal win */
   if(reduceMotion) return;
   const aHex=layerAlpha("hex");
-  ctx.save(); ctx.globalAlpha=aHex*0.55; ctx.globalCompositeOperation="lighter";
-  const n=Math.min(field.length, W<=480?400:900);
+  ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.22:0.28); ctx.globalCompositeOperation="lighter";
+  const n=Math.min(field.length, W<=480?220:W<=900?400:700);
   for(let k=0;k<n;k++){
     const p=field[k]; if(!p) continue;
     const u=(k/n + p.phase*0.01 + t*0.004)%1;
@@ -1654,20 +1662,20 @@ function drawStarfieldInPanels(cx,cy,s,t,verts){
     const py=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
     const tw=0.28+0.5*Math.abs(Math.sin(t*p.tws+p.tw));
     const sz=(p.sz||1)*(0.35+0.7*p.layer*tw);
-    ctx.fillStyle=`rgba(195,220,255,${0.08+0.16*tw*(0.3+p.layer*0.4)})`;
+    ctx.fillStyle=`rgba(195,220,255,${0.04+0.08*tw*(0.3+p.layer*0.4)})`; /* polishPass3 dust α×0.5 */
     ctx.fillRect(px,py,sz,sz);
   }
   ctx.restore();
 }
 
 function drawFunnelsAndBeams(cx,cy,s,t){
-  /* sacred 12-face crystal: funnel mouths at dodeca face centers (6 stable / 3 primary) */
+  /* polishPass3: intake mouths only — cool admit path into seal; no rainbow disco.
+     ≤3 mouths; sparse rings; soft cool beam → center. Purpose = "dump enters here." */
   const aHex=layerAlpha("hex");
-  const mouths=[]; ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
+  const mouths=[]; ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.55:0.72); ctx.globalCompositeOperation="lighter";
   const fcs=DODECA._faceCenters2d;
   let tips;
   if(fcs&&fcs.length>=12){
-    /* rank faces by radial distance from seal center in screen space — pick outer 6 */
     const ranked=fcs.map((fc,fi)=>{
       const dx=fc[0]-cx, dy=fc[1]-cy;
       return {fi,x:fc[0],y:fc[1],d:fc[2],r2:dx*dx+dy*dy};
@@ -1681,69 +1689,77 @@ function drawFunnelsAndBeams(cx,cy,s,t){
       return {x:tx,y:ty,label:tip.label,side:tip.side};
     });
   }
-  /* beyondHuman quiet — empty labels; 3 primary mouths (desktop can draw all 6 softly) */
-  const primary=W>900?tips.slice(0,Math.min(6,tips.length)):tips.filter((_,i)=>i%2===0).slice(0,3);
+  /* always ≤3 primary mouths — readable intake, not light show */
+  const primary=tips.filter((_,i)=>i%2===0).slice(0,3);
+  const thin=W<=480;
   primary.forEach((tip,fi)=>{
     const tx=tip.x, ty=tip.y;
     const [bx,by]=project(0,0,0,cx,cy,s);
     const dx=bx-tx, dy=by-ty, beamAng=Math.atan2(dy,dx);
-    const rings=28, ribs=20;
+    const rings=thin?8:12, ribs=thin?0:8;
+    /* cool admit grammar: cyan→mint only */
+    const baseHue=155+fi*12;
     for(let i=0;i<=rings;i++){
-      const u=i/rings, along=u*0.68;
+      const u=i/rings, along=u*0.62;
       const x=tx+dx*along, y=ty+dy*along;
-      const rad=2.8+u*u*74;
-      const w=rad, h=rad*0.38;
-      const hue=(fi*120+t*55+i*7+u*50)%360;
-      ctx.strokeStyle=hsl(hue,100,Math.min(62,46+u*16),0.09+u*0.16);
-      ctx.lineWidth=0.55+u*0.45;
+      const rad=2.2+u*u*48;
+      const w=rad, h=rad*0.36;
+      ctx.strokeStyle=hsl(baseHue+u*18,90,Math.min(58,44+u*12),0.04+u*0.08);
+      ctx.lineWidth=0.45+u*0.3;
       ctx.beginPath();ctx.ellipse(x,y,w,h,beamAng,0,Math.PI*2);ctx.stroke();
     }
     for(let r=0;r<ribs;r++){
       const ang=r/ribs*Math.PI*2, ca=Math.cos(ang), sa=Math.sin(ang);
-      ctx.strokeStyle=hsl(fi*120+r*16+t*40,100,54,0.11);
-      ctx.lineWidth=0.5;
+      ctx.strokeStyle=hsl(baseHue+r*4,85,50,0.05);
+      ctx.lineWidth=0.4;
       ctx.beginPath();
       for(let i=0;i<=rings;i++){
-        const u=i/rings, along=u*0.62;
+        const u=i/rings, along=u*0.55;
         const x=tx+dx*along, y=ty+dy*along;
-        const rad=2.8+u*u*74, w=rad*0.95, h=rad*0.38*0.95;
+        const rad=2.2+u*u*48, w=rad*0.9, h=rad*0.36*0.9;
         const rx=x+ca*w, ry=y+sa*h;
         i?ctx.lineTo(rx,ry):ctx.moveTo(rx,ry);
       }
       ctx.stroke();
     }
-    for(let pass=0;pass<6;pass++){
-      const lw=16-pass*2.4;
+    /* soft cool beam — 2 passes max */
+    const passes=thin?1:2;
+    for(let pass=0;pass<passes;pass++){
+      const lw=thin?6:(10-pass*3);
       const beamGrad=ctx.createLinearGradient(tx,ty,bx,by);
-      const bloomCut=(W<=480||reduceMotion)?0.62:0.78; const baseA=(0.10+pass*0.04)*(pass<3?0.7:1)*bloomCut;
+      const baseA=(0.045+pass*0.02)*(W<=900?0.7:1);
       const beamStops=[];
-      for(let k=0;k<=8;k++){const kk=k/8, mid=Math.abs(kk-0.5)<0.12; beamStops.push([kk,hsl(fi*120+k*32+t*48,100,mid?62:48, mid?baseA*1.35:baseA)]);}
+      for(let k=0;k<=6;k++){
+        const kk=k/6, mid=Math.abs(kk-0.5)<0.14;
+        beamStops.push([kk,hsl(baseHue+k*8,95,mid?58:46, mid?baseA*1.25:baseA)]);
+      }
       addStops(beamGrad, beamStops);
       ctx.lineWidth=lw; ctx.strokeStyle=beamGrad; ctx.lineCap="round";
       ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
     }
-    const pulse=(t*0.85+fi*0.31)%1;
+    /* single cool pulse mote traveling mouth→center */
+    const pulse=(t*0.7+fi*0.31)%1;
     const cxp=tx+dx*pulse, cyp=ty+dy*pulse;
-    const cg=ctx.createRadialGradient(cxp,cyp,0,cxp,cyp,18);
-    cg.addColorStop(0,hsl(fi*120+t*60,100,64,0.42));
-    cg.addColorStop(0.4,hsl(fi*120+40+t*40,100,55,0.16));
+    const cg=ctx.createRadialGradient(cxp,cyp,0,cxp,cyp,12);
+    cg.addColorStop(0,hsl(baseHue+10,100,60,0.22));
+    cg.addColorStop(0.5,hsl(baseHue+20,90,52,0.08));
     cg.addColorStop(1,"rgba(0,0,0,0)");
-    ctx.fillStyle=cg; ctx.beginPath();ctx.arc(cxp,cyp,18,0,Math.PI*2);ctx.fill();
-    ctx.lineWidth=1.4; ctx.strokeStyle=hsl(fi*120+t*40,100,62,0.28+0.08*Math.sin(t*4+fi));
-    ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
+    ctx.fillStyle=cg; ctx.beginPath();ctx.arc(cxp,cyp,12,0,Math.PI*2);ctx.fill();
     mouths.push({x:tx,y:ty,label:tip.label||"",side:tip.side});
   });
   ctx.restore(); return mouths;
 }
 
 function drawSphereWire(cx,cy,s,t){
+  /* polishPass3: globe wire fought dodeca authority — skip ≤900; desktop α×0.35 cool-only */
+  if(reduceMotion||W<=900) return;
   const aHex=layerAlpha("hex"), R=0.62;
-  const wireMul=W<=900?0.5:1; /* LENS #4: sphere wire α×0.5 on mobile */
+  const wireMul=0.35;
   ctx.save(); ctx.globalAlpha=aHex*wireMul; ctx.globalCompositeOperation="lighter";
-  for(let i=0;i<24;i++){const lat=(i/23-0.5)*Math.PI*0.95; ctx.strokeStyle=hsl((i*26+t*48)%360,100,54,0.34*wireMul); ctx.lineWidth=0.62; ctx.beginPath(); let first=true; for(let j=0;j<=64;j++){const u=j/64*Math.PI*2+t*0.3; const x=Math.cos(lat)*Math.cos(u)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(u)*R; const [px,py,d]=project(x,y,z,cx,cy,s); if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);} ctx.stroke();}
-  for(let i=0;i<20;i++){const lon=i/20*Math.PI; ctx.strokeStyle=hsl((i*30+t*40)%360,100,52,0.30); ctx.lineWidth=0.58; ctx.beginPath(); let first=true; for(let j=0;j<=56;j++){const lat=-Math.PI/2+j/56*Math.PI; const x=Math.cos(lat)*Math.cos(lon+t*0.25)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(lon+t*0.25)*R; const [px,py,d]=project(x,y,z,cx,cy,s); if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);} ctx.stroke();}
+  for(let i=0;i<16;i++){const lat=(i/15-0.5)*Math.PI*0.95; ctx.strokeStyle=hsl(160+i*2,70,50,0.12*wireMul); ctx.lineWidth=0.5; ctx.beginPath(); let first=true; for(let j=0;j<=48;j++){const u=j/48*Math.PI*2+t*0.25; const x=Math.cos(lat)*Math.cos(u)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(u)*R; const [px,py,d]=project(x,y,z,cx,cy,s); if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);} ctx.stroke();}
+  for(let i=0;i<12;i++){const lon=i/12*Math.PI; ctx.strokeStyle=hsl(170+i*3,65,48,0.10); ctx.lineWidth=0.45; ctx.beginPath(); let first=true; for(let j=0;j<=40;j++){const lat=-Math.PI/2+j/40*Math.PI; const x=Math.cos(lat)*Math.cos(lon+t*0.2)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(lon+t*0.2)*R; const [px,py,d]=project(x,y,z,cx,cy,s); if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);} ctx.stroke();}
   const [ex,ey]=project(0,0,0,cx,cy,s); const g=ctx.createRadialGradient(ex,ey,s*R*0.15,ex,ey,s*R*1.05);
-  g.addColorStop(0,"rgba(40,180,220,0.025)"); g.addColorStop(0.55,"rgba(180,60,160,0.02)"); g.addColorStop(1,"rgba(0,0,0,0)");
+  g.addColorStop(0,"rgba(40,180,220,0.012)"); g.addColorStop(0.55,"rgba(40,120,160,0.008)"); g.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=g;ctx.beginPath();ctx.arc(ex,ey,s*R*1.05,0,Math.PI*2);ctx.fill(); ctx.restore();
 }
 function hueClampAdmit(h){return 140+((h%50+50)%50);} // 140–190 (legacy fallback)
@@ -1809,6 +1825,7 @@ function paintMetaballIso(centers, dimAlpha){
   }
 }
 function drawVoxels(cx,cy,s,t){
+  /* polishPass3 fate: ADMIT = cool voxel crystal INSIDE cube (kept) */
   const aV=layerAlpha("voxel"); if(!voxels.length||aV<0.05)return;
   const dim=focusId!=null?0.22:1;
   const L=kindLightSplit("admit",50);
@@ -1844,6 +1861,7 @@ function drawVoxels(cx,cy,s,t){
   ctx.restore();
 }
 function drawMintRelease(cx,cy,s,t){
+  /* polishPass3 fate: RELEASE = warm mint mesh OUTWARD (refused soft) */
   const aM=layerAlpha("mint"); if(aM<0.05)return; const dim=focusId!=null?0.18:1;
   const Lr=kindLightSplit("refuse",46);
   ctx.save(); ctx.globalAlpha=aM;
@@ -1926,8 +1944,8 @@ function hashFigId(id){
   return h>>>0;
 }
 function drawOrganizeLattice(cx,cy,s,t){
-  /* organizing lattice — bgToDodeca|fateSplit|sortSnap|tetherVisible|cubeTether|organizeLattice|polishPass2.
-     Field/mint → dodeca; admit → cube. Mid scaffold quieter; hubs brighter; links capped. */
+  /* organizing lattice — polishPass3|bgToDodeca|fateSplit|organizeLattice.
+     PURPOSE: visible grammar — field/mint→dodeca lock; admit→cube crystallize. Cool admit / warm release. */
   const pv=DODECA._projVerts, fcs=DODECA._faceCenters2d;
   const cubeProj=INNER_CUBE._proj;
   if(!pv||pv.length<3) return;
@@ -2218,28 +2236,26 @@ function drawTrailsAndGlow(cx,cy,s,t){
   ctx.restore();
 }
 function drawNestedSeals(cx,cy,s,t){
-  /* recursiveNest: nested dodeca wire shells that breathe — infinite crystal, not one shell.
-     Scales ~0.55/0.72/0.88/1.0 with slow oscillation + slight inward zoom feel. Mobile: fewer. */
+  /* polishPass3|recursiveNest: depth cue only — ≤2 shells, α×0.5; never a second seal.
+     Purpose: crystal has thickness. Mobile: one whisper circle. */
   const aHex=layerAlpha("hex");
   const thin=W<=480, mobile=W<=900;
-  const rings=thin?2:(mobile?3:4);
-  const baseScales=rings===2?[0.88,0.72]:(rings===3?[1.0,0.85,0.68]:[1.0,0.88,0.72,0.55]);
-  const pulse=0.08*sealPulse+0.05*celebrate;
-  /* slow scale oscillation — inward zoom breathe (~0.35 Hz feel) */
-  const breathe=reduceMotion?0:(0.014*Math.sin(t*0.42)+0.008*Math.sin(t*0.23+1.1)); /* smoother nest breathe */
-  const zoomIn=reduceMotion?0:(0.009*(0.5+0.5*Math.sin(t*0.34)));
+  const rings=thin?1:(mobile?1:2);
+  const baseScales=rings===1?[0.88]:[0.92,0.74];
+  const pulse=0.06*sealPulse+0.03*celebrate;
+  const breathe=reduceMotion?0:(0.010*Math.sin(t*0.42));
   const po=parallaxOff("seal");
-  ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex;
+  ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex*0.55;
   for(let r=0;r<rings;r++){
-    const depthFrac=r/(rings-1||1);
-    const sc=baseScales[r]*(1+pulse*(r===0?1.15:0.55))*(1+breathe*(1-depthFrac*0.6))*(1-zoomIn*depthFrac);
-    const hue=r===0?200:r===1?168:r===2?145:122;
-    const alpha=(0.09+0.055*Math.sin(t*1.05+r*0.9))*(0.65+0.35*sealPulse)+(celebrate>0?0.035*celebrate:0);
-    if(thin){
+    const depthFrac=rings===1?0:r/(rings-1);
+    const sc=baseScales[r]*(1+pulse*(r===0?1.0:0.4))*(1+breathe*(1-depthFrac*0.5));
+    const hue=r===0?190:155;
+    const alpha=(0.045+0.025*Math.sin(t*1.05+r*0.9))*(0.65+0.35*sealPulse);
+    if(thin||mobile){
       const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
-      ctx.strokeStyle=hsl(hue+t*12,88,52,alpha);
-      ctx.lineWidth=r===0?1.0:0.8;
-      ctx.beginPath(); ctx.arc(ex,ey,s*sc*0.55,0,Math.PI*2); ctx.stroke();
+      ctx.strokeStyle=hsl(hue+t*8,80,50,alpha);
+      ctx.lineWidth=0.75;
+      ctx.beginPath(); ctx.arc(ex,ey,s*sc*0.52,0,Math.PI*2); ctx.stroke();
       continue;
     }
     const edged=DODECA.edges.map(([i,j])=>{
@@ -2248,19 +2264,10 @@ function drawNestedSeals(cx,cy,s,t){
       const pb=project(b.x*sc,b.y*sc,b.z*sc,cx+po.ox,cy+po.oy,s);
       return {pa,pb,md:(pa[2]+pb[2])*0.5};
     }).sort((u,v)=>u.md-v.md);
-    ctx.strokeStyle=hsl(hue+t*12,90,52,alpha*(0.85+0.15*(1-depthFrac)));
-    ctx.lineWidth=r===0?1.05:(r===1?0.9:(r===2?0.75:0.65));
+    ctx.strokeStyle=hsl(hue+t*8,85,50,alpha*(0.9+0.1*(1-depthFrac)));
+    ctx.lineWidth=r===0?0.85:0.65;
     for(const ed of edged){
       ctx.beginPath(); ctx.moveTo(ed.pa[0],ed.pa[1]); ctx.lineTo(ed.pb[0],ed.pb[1]); ctx.stroke();
-    }
-    /* whisper ring between shells — depth cue for infinite nest */
-    if(r<rings-1){
-      const midSc=(baseScales[r]+baseScales[r+1])*0.5*(1+breathe*0.5)*(1-zoomIn*(depthFrac+0.5)/rings);
-      const midR=s*midSc*0.55*(1+0.012*Math.sin(t*1.5+r));
-      const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
-      ctx.strokeStyle=hsl(hue+28,78,50,alpha*0.32);
-      ctx.lineWidth=0.55;
-      ctx.beginPath(); ctx.arc(ex,ey,midR,0,Math.PI*2); ctx.stroke();
     }
   }
   ctx.restore();
@@ -2284,16 +2291,17 @@ function pushGhostOrbit(verdicts,ciPct){
   while(ghostOrbits.length>cap) ghostOrbits.pop();
 }
 function drawGhostOrbits(cx,cy,s,t){
-  if(!ghostOrbits.length||reduceMotion) return;
+  /* polishPass3: prior-sort memory shells — skip ≤900; fade α×0.5 (history, not clutter) */
+  if(!ghostOrbits.length||reduceMotion||W<=900) return;
   const start=1; /* index 0 = current organize; shells = prior */
-  const maxG=W<=900?1:2;
+  const maxG=1;
   let drawn=0;
   ctx.save(); ctx.globalCompositeOperation="lighter";
   for(let gi=start;gi<ghostOrbits.length&&drawn<maxG;gi++){
     const g=ghostOrbits[gi];
     const age=(performance.now()-g.t0)*0.001;
-    const fade=Math.max(0.08, Math.min(0.28, 0.26-age*0.008));
-    if(fade<0.09 && age>20) continue;
+    const fade=Math.max(0.04, Math.min(0.12, 0.12-age*0.006));
+    if(fade<0.05 && age>16) continue;
     const slow=t*0.08*(0.55+gi*0.12);
     const sc=1.08+gi*0.06+0.02*Math.sin(slow);
     const gyaw=g.spin*0.15+slow*0.4, gpitch=g.pitch*0.1;
@@ -2406,16 +2414,16 @@ function drawSealBreath(cx,cy,s,t){
   ctx.restore();
 }
 function drawFogShards(cx,cy,s,t,orbitSpeed){
+  /* polishPass3: ambient debris — skip ≤900; α×0.5 (does not teach organize) */
+  if(reduceMotion||W<=900) return;
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  const react=1+Math.min(2.5,orbitSpeed*18);
+  const react=1+Math.min(2.0,orbitSpeed*14);
   for(const f of fogShards){
-    f.ph+=0.01*f.spin*react;
+    f.ph+=0.008*f.spin*react;
     const [px,py,d,persp]=project(f.x+Math.sin(f.ph)*0.02*react,f.y+Math.cos(f.ph*0.8)*0.015,f.z+Math.sin(f.ph*1.1)*0.02,cx,cy,s);
-    if(d<-0.7)continue; const fog=Math.max(0.08,Math.min(0.35,0.15+d*0.08)), sz=f.s*s*persp*react;
-    ctx.fillStyle=`rgba(140,200,180,${fog*0.14})`; ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz,py+sz*0.5);ctx.lineTo(px-sz,py+sz*0.5);ctx.fill();
+    if(d<-0.7)continue; const fog=Math.max(0.06,Math.min(0.28,0.12+d*0.06)), sz=f.s*s*persp*react;
+    ctx.fillStyle=`rgba(140,200,180,${fog*0.07})`; ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz,py+sz*0.5);ctx.lineTo(px-sz,py+sz*0.5);ctx.fill();
   }
-  const g=ctx.createRadialGradient(cx,cy,s*0.2,cx,cy,s*1.6);
-  /* vignette skipped — bgField GIF replaces black void */
   ctx.restore();
 }
 function drawBloomClamp(cx,cy,s){
@@ -2513,39 +2521,37 @@ function frame(now){
   const cxM=cx0+pMint.ox, cyM=cy0+pMint.oy;
   const cxL=cx0+pLab.ox, cyL=cy0+pLab.oy;
   const cx=cx0+pSeal.ox, cy=cy0+pSeal.oy;
-  /* draw order (dodecaForeground): bg → mid organize lattice → overlays → seal absolute front → labels */
-  // 1–2) background under / around seal
+  /* polishPass3 draw order: bg whisper → intake → organize → seal authority → fate labels
+     Story: field → dodeca lock → cube crystallize / mint release. Seal always paints last-but-labels. */
+  // 1) underlay (quiet / skipped on mobile by each fn)
   if(threeOk) drawThreeOrbit(cxS,cyS,s,t); else if(webglOk && !skipHeavy) drawWebGLStars(cxS,cyS,s,t);
   if(!skipHeavy) drawAurora(cxS,cyS,s,t);
   if(!skipHeavy) drawFogShards(cxS,cyS,s,t,orbitSpeed);
   drawGhostOrbits(cxH,cyH,s,t);
   drawDualHexGhost(cxH,cyH,s,t);
-  // project seal anchors early (no paint) for funnels / lattice / cube tethers
   const verts=projectDodecaSeal(cxH,cyH,s);
   projectInnerCube(cxH,cyH,s);
   if(!reduceMotion) drawStarfieldInPanels(cxS,cyS,s,t,verts);
-  // 3–4) mid — data organizing into seal (voxels/mint/lattice/funnels/hubs)
+  // 2) mid organize — intake mouths → voxels(admit/cool) + mint(release/warm) → lattice tethers
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
-  drawTrailsAndGlow(cxH,cyH,s,t); /* hubs first so lattice can bind node._px */
+  drawTrailsAndGlow(cxH,cyH,s,t);
   if(!(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t);
-  if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s); /* demoted stubs only */
-  // overlays that would occlude — BEFORE dodeca (clear core left for seal)
+  if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
   drawSortShockwave(cx,cy,s);
   drawDepthFogVignette(cx0,cy0,s);
   drawBloomClamp(cx0,cy0,s);
   drawFilmGrain();
   drawSoftCrossVeil();
-  // 5) dodeca + inner cube + contents ALWAYS foreground — nothing after paints over the crystal
+  // 3) SEAL FOREGROUND AUTHORITY — dodeca + cube; nested/chromatic/sphere muted
   drawHexFrame(cxH,cyH,s,t);
-  drawInnerCubeWire(cxH,cyH,s,t); /* cubeTether — luminous inner crystal receiving lattice */
+  drawInnerCubeWire(cxH,cyH,s,t);
   drawNestedSeals(cxH,cyH,s,t);
   drawChromaticHexEdges(verts,t);
   if(!skipHeavy) drawSphereWire(cxH,cyH,s*0.96,t);
   drawSealBreath(cx,cy,s,t);
   drawProveBreak(cx0,cy0,s,t);
-  if(!skipHeavy) drawCrtPolish(cx,cy,s,t); /* crtPolish — scanlines + hub flares */
-  // 6) seal labels only (UI chrome; tip is HTML)
+  if(!skipHeavy) drawCrtPolish(cx,cy,s,t);
   drawCanvasLabels(cxL,cyL,s,mouths,verts);
   // FPS guard: drop WebGL if frames tank on mobile
   if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
