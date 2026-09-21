@@ -259,14 +259,28 @@ select{appearance:none;background:rgba(6,12,22,0.5);border:1px solid rgba(120,22
   </div>
 </div>
 <script id="app">
-/* nuclear: never let addColorStop throw or accept out-of-range */
+/* nuclear: clamp every gradient stop on create */
 (function(){
-  const orig=CanvasGradient.prototype.addColorStop;
-  CanvasGradient.prototype.addColorStop=function(offset,color){
-    let o=Number(offset);
-    if(!Number.isFinite(o)) o=0;
-    o=Math.max(0,Math.min(1,o));
-    try{return orig.call(this,o,color);}catch(_){return;}
+  function wrapGrad(g){
+    if(!g||g.__seraphimStopWrap) return g;
+    const orig=g.addColorStop.bind(g);
+    g.addColorStop=function(offset,color){
+      let o=Number(offset);
+      if(!Number.isFinite(o)) o=0;
+      o=Math.max(0,Math.min(1,o));
+      try{return orig(o,color);}catch(_){return;}
+    };
+    g.__seraphimStopWrap=true;
+    return g;
+  }
+  const CL=CanvasRenderingContext2D.prototype.createLinearGradient;
+  const CR=CanvasRenderingContext2D.prototype.createRadialGradient;
+  CanvasRenderingContext2D.prototype.createLinearGradient=function(x0,y0,x1,y1){
+    return wrapGrad(CL.call(this,x0,y0,x1,y1));
+  };
+  CanvasRenderingContext2D.prototype.createRadialGradient=function(x0,y0,r0,x1,y1,r1){
+    r0=Math.max(0,Number(r0)||0); r1=Math.max(0,Number(r1)||0);
+    return wrapGrad(CR.call(this,x0,y0,r0,x1,y1,r1));
   };
 })();
 /* ========== GATE (offline Headroom × Seraphim) ========== */
@@ -597,14 +611,15 @@ function drawHexFrame(cx,cy,s,t){
   for(let i=0;i<6;i++){const a=outer[i],b=outer[(i+1)%6]; ctx.strokeStyle=hsl(i*60+t*25,100,48,0.20); ctx.lineWidth=1.35; ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();}
   for(let i=0;i<6;i++){
     const a=verts[i],b=verts[(i+1)%6];
-    const travel=(t*0.42+i/6)%1;
+    const spark=(t*0.42+i/6)%1;
     const g=ctx.createLinearGradient(a[0],a[1],b[0],b[1]);
+    // fixed stops only — never dynamic offsets (addColorStop IndexSizeError class)
     addStops(g,[
-      [0,hsl(i*60+t*35,100,54,0.82)],
-      [travel-0.10,hsl(i*60+t*35,100,54,0.88)],
-      [travel,hsl(i*60+45+t*35,100,68,1)],
-      [travel+0.10,hsl(i*60+t*35,100,54,0.88)],
-      [1,hsl((i+1)*60+t*35,100,54,0.82)]
+      [0,hsl(i*60+t*35+spark*40,100,52,0.78)],
+      [0.35,hsl(i*60+t*35+spark*40,100,56,0.88)],
+      [0.5,hsl(i*60+50+t*35+spark*60,100,66,0.95)],
+      [0.65,hsl(i*60+t*35+spark*40,100,56,0.88)],
+      [1,hsl((i+1)*60+t*35+spark*40,100,52,0.78)]
     ]);
     ctx.strokeStyle=g;ctx.lineWidth=4.6; ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
     const spark=(t*0.55+(i+0.5)/6)%1;
