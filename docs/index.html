@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -318,45 +318,67 @@ body.reveal-chrome #log, #log:hover{opacity:.55}
 body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
-/* tunnelAsSent|tunnelGridBg|bgSealCenterLock|stripToBones
-   Taylor tunnel-dots GIF AS SENT — light gray bg + black dots, full-bleed cover.
-   NO invert, NO mix-blend-mode:screen, NO heavy vignette/mask, NO perspective corridor warp.
-   VP = live seal via --seal-x/--seal-y: simple translate center + object-fit cover.
-   Opacity near 1. Soft dark scrim lives on #sortDesk only (not over tunnel). */
+/* fourAssetCanon|tunnelAsSent|bgSealCenterLock|stripToBones
+   Taylor: these 4 GIFs are all you need — as-sent, no invert/screen warp.
+   Layer order (back→front): tunnel-grid → iso-tunnel → beam-rain → hex-core → canvas seal/desk */
 #bgField{
   position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-  background:#e8e8e8; /* match GIF light field */
+  background:#e8e8e8;
   --seal-x:50%;
   --seal-y:42%;
 }
-#bgField .tunnelGrid{
-  position:absolute;inset:0;
-  overflow:hidden;
-  z-index:0;
+#bgField .assetLayer{
+  position:absolute;inset:0;overflow:hidden;
 }
-#bgField .tunnelGrid .plane{
+#bgField .assetLayer .plane{
   position:absolute;
   left:var(--seal-x); top:var(--seal-y);
-  /* large enough to cover viewport when seal is off-center */
-  width:max(200vw, 200vh); height:max(200vw, 200vh);
   transform:translate(-50%,-50%);
   transform-origin:50% 50%;
-  opacity:0.95;
-  /* tunnelAsSent: no filter / blend / mask */
 }
-#bgField .tunnelGrid img{
+#bgField .assetLayer img{
   display:block;width:100%;height:100%;
-  object-fit:cover;
-  object-position:50% 50%; /* GIF VP at plane center = seal */
+  object-fit:cover;object-position:50% 50%;
 }
-#bgField .tunnelGrid img.still{display:none}
-
+#bgField .assetLayer img.still{display:none}
+/* 1 tunnel — full field as sent */
+#bgField .tunnelGrid{z-index:0}
+#bgField .tunnelGrid .plane{
+  width:max(200vw,200vh); height:max(200vw,200vh);
+  opacity:0.95;
+}
+/* 2 iso wireframe depth — dark gif, screen so black drops out on light tunnel OR normal with opacity */
+#bgField .isoTunnel{z-index:1}
+#bgField .isoTunnel .plane{
+  width:min(92vmin,720px); height:min(92vmin,720px);
+  opacity:0.55;
+  mix-blend-mode:multiply;
+}
+/* 3 beam rain — flow under core */
+#bgField .beamRain{z-index:2}
+#bgField .beamRain .plane{
+  width:min(70vmin,560px); height:min(70vmin,560px);
+  opacity:0.72;
+  mix-blend-mode:normal;
+}
+/* 4 hex core — engine at seal hub */
+#bgField .hexCore{z-index:3}
+#bgField .hexCore .plane{
+  width:min(52vmin,420px); height:min(52vmin,420px);
+  opacity:0.92;
+  border-radius:8px;
+}
 @media (max-width:900px){
   #bgField .tunnelGrid .plane{opacity:0.92}
+  #bgField .isoTunnel .plane{opacity:0.4; width:min(88vmin,560px); height:min(88vmin,560px)}
+  #bgField .beamRain .plane{opacity:0.55; width:min(62vmin,420px); height:min(62vmin,420px)}
+  #bgField .hexCore .plane{opacity:0.88; width:min(46vmin,320px); height:min(46vmin,320px)}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .tunnelGrid img.anim{display:none}
-  #bgField .tunnelGrid img.still{display:block}
+  #bgField .assetLayer img.anim{display:none}
+  #bgField .assetLayer img.still{display:block}
+}
+
   #bgField .tunnelGrid .plane{opacity:0.95}
 }
 
@@ -575,11 +597,29 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- tunnelAsSent|tunnelGridBg|bgSealCenterLock|stripToBones — GIF as sent, no invert/screen/vignette -->
-  <div class="tunnelGrid" aria-hidden="true">
+<div id="bgField" aria-hidden="true"><!-- fourAssetCanon: tunnel + iso + beam + hex only -->
+  <div class="assetLayer tunnelGrid" aria-hidden="true">
     <div class="plane">
-      <img class="anim" src="media/tunnel-grid.gif" alt="" width="500" height="500" decoding="async" fetchpriority="low">
+      <img class="anim" src="media/tunnel-grid.gif" alt="" width="500" height="500" decoding="async" fetchpriority="high">
       <img class="still" src="media/tunnel-grid-still.jpg" alt="" width="500" height="500" decoding="async" fetchpriority="low">
+    </div>
+  </div>
+  <div class="assetLayer isoTunnel" aria-hidden="true">
+    <div class="plane">
+      <img class="anim" src="media/iso-tunnel.gif" alt="" width="500" height="500" decoding="async" fetchpriority="low">
+      <img class="still" src="media/iso-tunnel-still.jpg" alt="" width="500" height="500" decoding="async" fetchpriority="low">
+    </div>
+  </div>
+  <div class="assetLayer beamRain" aria-hidden="true">
+    <div class="plane">
+      <img class="anim" src="media/beam-rain.gif" alt="" width="420" height="420" decoding="async" fetchpriority="low">
+      <img class="still" src="media/beam-rain-still.jpg" alt="" width="420" height="420" decoding="async" fetchpriority="low">
+    </div>
+  </div>
+  <div class="assetLayer hexCore" aria-hidden="true">
+    <div class="plane">
+      <img class="anim" src="media/hex-core.gif" alt="" width="420" height="420" decoding="async" fetchpriority="low">
+      <img class="still" src="media/hex-core-still.jpg" alt="" width="420" height="420" decoding="async" fetchpriority="low">
     </div>
   </div>
 </div>
@@ -1202,13 +1242,14 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort */
+/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
    Palette (holoPalette): cyan↔indigo↔magenta↔orchid diagonal iridescence on void #000.
      admit/crystallize = cool cyan-indigo; release = magenta/orchid; prism accents = pale yellow/peach/lime.
    SURVIVING layers (why they stay):
+   - fourAssetCanon: tunnel-grid + iso-tunnel + beam-rain + hex-core only (as-sent)
    - tunnelAsSent|tunnelGridBg: Taylor tunnel-dots GIF AS SENT (light bg, black dots, α≈0.95); NO invert/screen/vignette/warp; VP locked to seal via translate+cover
    - hybridEngineTrio: quieted under tunnelAsSent (beams/plasma no-op — muddy light GIF); seal+organize story remain
    - masterpieceFlow: one φ TEMPO organism — desk→seal→trays continuous path
