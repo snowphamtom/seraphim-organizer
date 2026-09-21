@@ -748,7 +748,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:false,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -1200,8 +1200,8 @@ function buildVoxels(admits){
     const gx=(i%grid)-(grid-1)/2, gy=(Math.floor(i/grid)%grid)-(grid-1)/2, gz=Math.floor(i/(grid*grid))-(grid-1)/2;
     const v=admits[i%Math.max(1,admits.length)]||null;
     const stagger=(i%3===0)?0.014:0;
-    // hard LEFT hemisphere bias for crystallize lava
-    voxels.push({bx:gx*0.042-0.18,by:gy*0.042+stagger*0.5,bz:gz*0.042,
+    // centered on seal axis (hex origin) — cube aligns with frame
+    voxels.push({bx:gx*0.042,by:gy*0.042+stagger*0.5,bz:gz*0.042,
       jx:Math.random()*Math.PI*2,jy:Math.random()*Math.PI*2,jz:Math.random()*Math.PI*2,js:8+Math.random()*14,
       hue:hueClampAdmit(i*47+fnv1a(String(v&&v.id||i))),size:0.015+Math.random()*0.008,
       id:v?v.id:null,title:v?v.t:"",toks:v?v.toks:[]});
@@ -1252,8 +1252,9 @@ function drawVoxels(cx,cy,s,t){
   const sorted=voxels.map(v=>{
     const j=0.012;
     const pull=0.012*coa;
-    const x=v.bx*(1-pull*0.4)+(-0.22)*pull+Math.sin(t*v.js+v.jx)*j;
-    const y=0.02+v.by+Math.sin(t*v.js*0.9+v.jy)*j+Math.sin(t*0.28+v.jx)*0.008;
+    // breathe toward origin (true seal center) — no left drift
+    const x=v.bx*(1-pull*0.55)+Math.sin(t*v.js+v.jx)*j;
+    const y=v.by*(1-pull*0.35)+Math.sin(t*v.js*0.9+v.jy)*j+Math.sin(t*0.28+v.jx)*0.008;
     const z=v.bz+Math.sin(t*v.js*1.1+v.jz)*j;
     const pr=project(x,y,z,cx,cy,s);
     return{v,px:pr[0],py:pr[1],d:pr[2],persp:pr[3]};
