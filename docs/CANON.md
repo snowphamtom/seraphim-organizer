@@ -4,8 +4,9 @@
   - Outer facets = Tier-1 pillars as dodeca faces / rivets (N1 Visual Field · N2 Seal Hub Sync · N3 Sort Desk · N4 Aesthetic Law · N5 Ship Continuity)
   - Inner fire = Seed-of-Life core (nested inside neon dodeca)
   - Lattice veins = vesica piscis mesh feeding the gem (symbiotic mid/bg)
-  - Desk cuts = **ORGANIZED** | **ASIDE** as labeled output facets (CRYSTALLIZE|VAPORIZE mapped)
+  - Desk cuts = **ORGANIZED** | **ASIDE** as labeled output facets (CRYSTALLIZE|RELEASE mapped)
   - Motion = inverse-omni dual as the gem’s twin refraction
+- **Polish harmonize:** `polishHarmonize|layersAloneAndTogether` — every layer coheres alone (keys 1–5) and shares one center/size/angle/φ family together; symbiotic bg; gem facets carry angled light/shadow; vesica √3:1 almonds; desk Organized/Aside in purple/black/white only.
 - **Centerpiece (mid/fore):** neon dodeca reads as **cut gem** with seed fire inside; canvas owns mid/fore. Field labels ORGANIZED (left) / ASIDE (right).
 - **Vesica mesh (mid/bg):** `vesicaPiscisMeshLattice` — overlapping-circle almond grid as refractive veins under the gem; purple/black/white; φ-synced breathe + drift; no stagnant lines. Not a hero; not flower-of-life.
 - **NO flower-of-life** (`removeFlowerOfLife`) — FoL lattice culled; seed ≠ flower; vesica mesh ≠ FoL.
@@ -18,4 +19,4 @@
 - **Depth ladder (back→front):** dark void → vesica veins → soft dots → still dodeca (twin refraction) → tethers → gem facets + pillar rivets → tumbling dodeca bones → seed-of-life fire → prism energy → ORGANIZED|ASIDE cuts → desk (front).
 - **Topology encode:** in-page `<!-- THE GEM topology -->` + `#seraphimTopologyGem` JSON (N1…N5).
 - **Fences:** no crystallize / release / dump / S_H in user-visible strings; no XYZ room grid; no white-paper void; no flower-of-life; no lattice-as-hero; no stationary straight field lines; no gold/cyan/hot-pink/orange/green chrome.
-- **Live tip:** `?v=<shortsha>` — tip: `deriveTheGem|masterpieceTopologyGem` (neon dodeca = cut gem; seed fire; vesica veins; ORGANIZED|ASIDE cuts; inverse-omni twin refraction; purple/black/white; desk usable; reduced-motion stills)
+- **Live tip:** `?v=<shortsha>` — tip: `deriveTheGem|masterpieceTopologyGem|polishHarmonize|layersAloneAndTogether` (layers solo-safe 1–5: vesica/gem/seed/desk/bg; shared center/size/angle; √3 vesica almonds; gem light/shadow facets lit; purple/black/white desk; CRYSTALLIZE|RELEASE→Organized|Aside; reduced-motion stills)
