@@ -1215,111 +1215,81 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
 }
 
 
+
 /* clientFillField — spiral fills empty space; windows mid-dock not bottom-parked */
-/* clientSpiralLock — spiral hub rides --seal-x/--seal-y (= live dodeca cx,cy) */
+/* clientSpiralLock|clientGeoLock — spiral hub = seal; size from shared maxR */
 #bgField .spiralField{
   position:absolute; inset:auto; z-index:0;
   left:var(--seal-x, 50%);
   top:var(--seal-y, 40%);
-  width:max(160vw, 160vh);
-  height:max(160vw, 160vh);
+  width:var(--seal-spiral, max(160vw, 160vh));
+  height:var(--seal-spiral, max(160vw, 160vh));
   transform:translate(-50%, -50%);
   display:block !important;
-  opacity:0.92;
+  opacity:0.90;
   pointer-events:none;
 }
 #bgField .spiralField picture,
 #bgField .spiralField img{
   display:block; width:100%; height:100%;
   object-fit:cover;
-  object-position:50% 50%; /* image hub = geometric center → seal hub */
+  object-position:50% 50%;
   animation:spiralPulse 18s ease-in-out infinite alternate;
   transform-origin:50% 50%;
 }
 @keyframes spiralPulse{
-  0%{ transform:scale(1.04) rotate(-2deg); filter:saturate(1.15) contrast(1.1) brightness(0.95); }
-  100%{ transform:scale(1.12) rotate(2.5deg); filter:saturate(1.35) contrast(1.18) brightness(1.05); }
+  /* scale only — never rotate (would break center/angle lock) */
+  0%{ transform:scale(1.02); filter:saturate(1.15) contrast(1.1) brightness(0.95); }
+  100%{ transform:scale(1.08); filter:saturate(1.32) contrast(1.16) brightness(1.04); }
 }
-#bgField .nebulaWhisper{
-  position:absolute; inset:auto; z-index:1;
-  left:var(--seal-x, 50%);
-  top:var(--seal-y, 40%);
-  width:max(140vw, 140vh);
-  height:max(140vw, 140vh);
-  transform:translate(-50%, -50%);
-  opacity:0.28;
-  mix-blend-mode:screen;
-  pointer-events:none;
-}
-#bgField .nebulaWhisper img{
-  width:100%; height:100%; object-fit:cover; object-position:50% 50%;
-}
-#bgField .magpieSealWorld{
-  opacity:0.22 !important; /* quiet under spiral — canvas seal still carries */
-  z-index:2;
-}
+#bgField .nebulaWhisper{ display:none!important; }
+#bgField .magpieSealWorld{ display:none!important; }
 @media (prefers-reduced-motion:reduce){
   #bgField .spiralField img{ animation:none !important; }
 }
 
 
-
-/* clientHexCoreKeyed — black keyed out; locked to dodeca hub via --seal-x/y/s */
-/* clientHexCore3D — GIF is pre-rendered 3D billboard; canvas project() owns tumble */
+/* clientGeoLock — hex + tunnel share exact center/size; billboard only */
 #bgField{
   perspective: none;
   perspective-origin: var(--seal-x, 50%) var(--seal-y, 40%);
 }
-#bgField .hexCoreKeyed{
-  position:absolute; inset:auto; z-index:3;
+#bgField .hexCoreKeyed,
+#bgField .tunnelWindowsKeyed{
+  position:absolute; inset:auto;
   left:var(--seal-x, 50%);
   top:var(--seal-y, 40%);
   width:var(--seal-s, min(78vmin, 560px));
   height:var(--seal-s, min(78vmin, 560px));
   transform:translate(-50%, -50%);
   display:block !important;
-  opacity:0.82;
   pointer-events:none;
   mix-blend-mode:screen;
-  filter:saturate(1.12) contrast(1.06) brightness(1.05);
+  backface-visibility:hidden;
 }
-#bgField .hexCoreKeyed picture,
-#bgField .hexCoreKeyed img{
-  display:block; width:100%; height:100%;
-  object-fit:contain; object-position:center;
+#bgField .hexCoreKeyed{
+  z-index:3;
+  opacity:0.92;
+  filter:saturate(1.1) contrast(1.05) brightness(1.04);
 }
-#bgField .hexCoreKeyed img.still{ display:none; }
-@media (prefers-reduced-motion:reduce){
-  #bgField .hexCoreKeyed img.anim{ display:none !important; }
-  #bgField .hexCoreKeyed img.still{ display:block !important; }
-}
-
-/* clientTrioAssets — spiral + tunnel-windows + hex-core (black keyed) */
 #bgField .tunnelWindowsKeyed{
-  position:absolute; inset:auto; z-index:2;
-  left:var(--seal-x, 50%);
-  top:var(--seal-y, 40%);
-  width:var(--seal-tunnel, min(120vmin, 900px));
-  height:var(--seal-tunnel, min(120vmin, 900px));
-  transform:translate(-50%, -50%);
-  display:block !important;
-  opacity:0.72;
-  pointer-events:none;
-  mix-blend-mode:screen;
+  z-index:2;
+  opacity:0.78;
   filter:saturate(1.12) contrast(1.06) brightness(1.04);
 }
+#bgField .hexCoreKeyed img,
 #bgField .tunnelWindowsKeyed img{
   display:block; width:100%; height:100%;
   object-fit:contain; object-position:center;
 }
+#bgField .hexCoreKeyed img.still,
 #bgField .tunnelWindowsKeyed img.still{ display:none; }
 @media (prefers-reduced-motion:reduce){
+  #bgField .hexCoreKeyed img.anim,
   #bgField .tunnelWindowsKeyed img.anim{ display:none !important; }
+  #bgField .hexCoreKeyed img.still,
   #bgField .tunnelWindowsKeyed img.still{ display:block !important; }
 }
-
-
-
 
 /* mid-band window defaults (JS also places) */
 #uploadBox{
@@ -2250,10 +2220,10 @@ const TEMPO={
   fib:PHI                   // omnidiscipline Fibonacci node spacing
 };
 const cam={
-  yaw:0.35,pitch:0.18,roll:0,panX:0,panY:0,zoom:1,auto:!reduceMotion,
+  yaw:0.48,pitch:0.38,roll:0,panX:0,panY:0,zoom:1,auto:false, /* clientGeoLock iso */
   userYaw:0,userPitch:0,userRoll:0,
   // targets — pointer/wheel/auto write here; render uses lerped values
-  tYaw:0.35,tPitch:0.18,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
+  tYaw:0.48,tPitch:0.38,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
   // living gyro — TEMPO φ family (tempoHarmonic)
   gyro:{wx:TEMPO.base*1.35, wy:TEMPO.base*1.05, wz:TEMPO.base*0.72}
 };
@@ -2272,7 +2242,7 @@ function lerpCam(dtMs){
 const nav={mode:null,down:false,dragging:false,sx:0,sy:0,oyaw:0,opitch:0,ox:0,oy:0,moved:0,btn:0,shift:false,idleAt:0};
 const pinch={active:false,id0:null,id1:null,dist0:1,zoom0:1,pts:new Map()};
 const CLICK_PX=4, ZOOM_MIN=0.35, ZOOM_MAX=3.0;
-let cinemaUntil=reduceMotion?0:(performance.now()+3800); // 3–4s cinematic auto-orbit on load
+let cinemaUntil=0; /* clientGeoLock: no cinema tumble — keep GIF/dodeca angles registered */
 let lastFrameTs=performance.now(), skipHeavy=false;
 const keys=Object.create(null);
 let layerSolo=0, layerSoloUntil=0, constellation=false, chimeOn=false;
@@ -4728,8 +4698,25 @@ function drawSealContrastVeil(cx,cy,s){ /* hexCoreGyroSeal */ return;
 
 
 
+
+/* clientGeoLock — one hub, one scale, shared hex angles; GIF billboards overlap canvas */
+const GEO={
+  /* isometric pose so projected dodeca ring sits under hex GIF */
+  yaw:0.48, pitch:0.38, roll:0,
+  /* square GIF content: outer hex ≈ full half-diagonal of contain box */
+  fit:1.00,
+  spiralFit:2.55,
+  /* pointy-top hex (matches GIF frame); funnels on every other vertex */
+  hex0:Math.PI/6,
+  funnelVerts:[1,3,5],
+  sphereK:0.36,
+  funnelOuterK:0.92,
+  funnelInnerK:0.40,
+  lockCam:true
+};
+
 function syncHexCoreToDodeca(cx,cy,s){
-  /* clientHexCore3D — billboard size only; no CSS YPR (GIF is already 3D art) */
+  /* clientGeoLock — identical center (cx,cy); identical --seal-s for hex+tunnel; spiral from same maxR */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_hexCoreEl) _hexCoreEl=document.querySelector("#bgField .hexCoreKeyed");
   if(!_bgFieldEl) return;
@@ -4738,203 +4725,146 @@ function syncHexCoreToDodeca(cx,cy,s){
   if(pv&&pv.length){
     maxR=0;
     for(let i=0;i<pv.length;i++){
-      const v=pv[i];
-      const r=Math.hypot(v.x-cx,v.y-cy);
-      if(r>maxR) maxR=r;
-    }
-  }
-  _sealHub.hexR=maxR;
-  const ss=Math.round(maxR*2*1.06)+"px";
-  if(_bgFieldEl._sealS!==ss){ _bgFieldEl._sealS=ss; _bgFieldEl.style.setProperty("--seal-s", ss); }
-  const tun=Math.round(maxR*2*1.85)+"px";
-  if(_bgFieldEl._sealTun!==tun){ _bgFieldEl._sealTun=tun; _bgFieldEl.style.setProperty("--seal-tunnel", tun); }
-}
-
-function drawHexCore3D(cx,cy,s,t){
-  /* clientHexCore3D — true projected sphere + triad funnels + hex cage (matches GIF structure) */
-  if(reduceMotion) return;
-  const thin=W<=480, mobile=W<=900;
-  const pulse=0.55+0.45*Math.sin(t*TEMPO.base*2.8);
-  ctx.save(); ctx.globalCompositeOperation="lighter";
-
-  /* --- central sphere wire (lat/lon) via project() --- */
-  const Rs=0.38;
-  const mer=thin?8:(mobile?10:14);
-  const par=thin?5:(mobile?6:8);
-  for(let m=0;m<mer;m++){
-    const lon=m/mer*Math.PI*2;
-    ctx.beginPath();
-    let first=true;
-    for(let k=0;k<=24;k++){
-      const lat=-Math.PI/2+k/24*Math.PI;
-      const x=Rs*Math.cos(lat)*Math.cos(lon);
-      const y=Rs*Math.sin(lat);
-      const z=Rs*Math.cos(lat)*Math.sin(lon);
-      const [px,py,d]=project(x,y,z,cx,cy,s);
-      const near=Math.max(0.25, Math.min(1, 0.55+d*0.4));
-      if(first){ ctx.moveTo(px,py); first=false; }
-      else ctx.lineTo(px,py);
-      if(k===12){
-        ctx.strokeStyle=hsl(280+m*18+t*40,95,60,(0.12+0.1*pulse)*near*(mobile?0.7:1));
-        ctx.lineWidth=thin?0.55:0.85;
-        ctx.stroke(); ctx.beginPath(); ctx.moveTo(px,py);
-      }
-    }
-    ctx.strokeStyle=hsl(200+m*12+t*30,95,58,(0.10+0.08*pulse)*(mobile?0.65:1));
-    ctx.lineWidth=thin?0.5:0.75;
-    ctx.stroke();
-  }
-  for(let p=1;p<par;p++){
-    const lat=-Math.PI/2+p/par*Math.PI;
-    const rr=Rs*Math.cos(lat), yy=Rs*Math.sin(lat);
-    ctx.beginPath();
-    for(let k=0;k<=36;k++){
-      const lon=k/36*Math.PI*2;
-      const [px,py]=project(rr*Math.cos(lon), yy, rr*Math.sin(lon), cx,cy,s);
-      k?ctx.lineTo(px,py):ctx.moveTo(px,py);
-    }
-    ctx.closePath();
-    ctx.strokeStyle=hsl(320+p*15+t*25,90,58,0.10+0.08*pulse);
-    ctx.lineWidth=thin?0.45:0.7;
-    ctx.stroke();
-  }
-  /* lava metaballs — soft projected blobs inside sphere */
-  if(!thin){
-    for(let i=0;i<5;i++){
-      const a=t*TEMPO.base*(0.35+i*0.07)+i*1.7;
-      const bx=Math.cos(a)*0.14*(0.6+0.4*Math.sin(t+i));
-      const by=Math.sin(a*1.3)*0.12;
-      const bz=Math.sin(a*0.9)*0.14;
-      const [px,py,d,persp]=project(bx,by,bz,cx,cy,s);
-      const hue=[320,25,95,185,55][i];
-      const rad=(7+i)*persp*(0.85+0.15*pulse);
-      const g=ctx.createRadialGradient(px,py,0,px,py,rad*2.2);
-      g.addColorStop(0,hsl(hue,100,62,0.35*persp));
-      g.addColorStop(0.45,hsl(hue+20,95,55,0.12*persp));
-      g.addColorStop(1,"rgba(0,0,0,0)");
-      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(px,py,rad*2.2,0,Math.PI*2); ctx.fill();
-    }
-  }
-
-  /* --- triad funnels in local XY (tumble with cam via project) --- */
-  const triad=lockSealTriad(cx,cy);
-  /* map screen triad angles → 3D directions in seal XY before projection:
-     use unit vectors in world that project near those angles — sample face centers */
-  const dirs=[];
-  const fcs=DODECA&&DODECA.faceCenters;
-  if(fcs&&fcs.length>=3){
-    const used=new Set();
-    for(const ang of triad){
-      let best=null, bestScore=1e9;
-      for(let fi=0;fi<fcs.length;fi++){
-        if(used.has(fi)) continue;
-        const fc=fcs[fi];
-        const [px,py]=project(fc.x,fc.y,fc.z,cx,cy,s);
-        const a=Math.atan2(py-cy,px-cx);
-        let da=Math.abs(((a-ang+Math.PI*3)%(Math.PI*2))-Math.PI);
-        if(da<bestScore){bestScore=da; best={fi,x:fc.x,y:fc.y,z:fc.z};}
-      }
-      if(best){ used.add(best.fi); const L=Math.hypot(best.x,best.y,best.z)||1;
-        dirs.push({x:best.x/L,y:best.y/L,z:best.z/L}); }
-    }
-  }
-  while(dirs.length<3){
-    const a=dirs.length*Math.PI*2/3;
-    dirs.push({x:Math.cos(a),y:Math.sin(a),z:0});
-  }
-
-  const rings=thin?5:(mobile?7:9);
-  for(let fi=0;fi<3;fi++){
-    const d=dirs[fi];
-    /* orthonormal basis for funnel rings */
-    let ux=-d.y, uy=d.x, uz=0;
-    let ul=Math.hypot(ux,uy,uz); if(ul<1e-4){ ux=0; uy=-d.z; uz=d.y; ul=Math.hypot(ux,uy,uz); }
-    ux/=ul; uy/=ul; uz/=ul;
-    let vx=d.y*uz-d.z*uy, vy=d.z*ux-d.x*uz, vz=d.x*uy-d.y*ux;
-    const vl=Math.hypot(vx,vy,vz)||1; vx/=vl; vy/=vl; vz/=vl;
-    const hue0=185+fi*55+t*20;
-    for(let i=0;i<=rings;i++){
-      const u=i/rings; /* 0=outer mouth, 1=near sphere */
-      const along=0.95-u*0.52;
-      const ringR=(0.28*(1-u)+0.05)*(0.92+0.08*pulse);
-      const cx3=d.x*along, cy3=d.y*along, cz3=d.z*along;
-      const segs=thin?10:16;
-      ctx.beginPath();
-      for(let k=0;k<=segs;k++){
-        const th=k/segs*Math.PI*2;
-        const ox=cx3+(ux*Math.cos(th)+vx*Math.sin(th))*ringR;
-        const oy=cy3+(uy*Math.cos(th)+vy*Math.sin(th))*ringR;
-        const oz=cz3+(uz*Math.cos(th)+vz*Math.sin(th))*ringR;
-        const [px,py]=project(ox,oy,oz,cx,cy,s);
-        k?ctx.lineTo(px,py):ctx.moveTo(px,py);
-      }
-      ctx.closePath();
-      ctx.strokeStyle=hsl(hue0+u*40,95,58,(0.14+0.1*(1-u))*pulse*(mobile?0.7:1));
-      ctx.lineWidth=thin?0.55:0.85;
-      ctx.stroke();
-    }
-    /* rainbow lightning pill along funnel throat */
-    const p0=0.82, p1=0.48;
-    const [ax,ay]=project(d.x*p0,d.y*p0,d.z*p0,cx,cy,s);
-    const [bx,by]=project(d.x*p1,d.y*p1,d.z*p1,cx,cy,s);
-    const g=ctx.createLinearGradient(ax,ay,bx,by);
-    g.addColorStop(0,hsl(hue0,100,62,0.55));
-    g.addColorStop(0.5,hsl(hue0+60,100,60,0.7));
-    g.addColorStop(1,hsl(hue0+120,100,58,0.45));
-    ctx.strokeStyle=g;
-    ctx.lineWidth=thin?3.2:5.2;
-    ctx.lineCap="round";
-    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
-    ctx.strokeStyle=hsl(0,0,100,0.35);
-    ctx.lineWidth=thin?1.1:1.8;
-    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
-  }
-
-  /* --- outer hex cage in local XY (6 verts) — tumbles with project --- */
-  const hexR=1.02;
-  const hexPts=[];
-  for(let i=0;i<6;i++){
-    const a=i/6*Math.PI*2+Math.PI/6;
-    hexPts.push(project(Math.cos(a)*hexR, Math.sin(a)*hexR, 0, cx,cy,s));
-  }
-  ctx.beginPath();
-  for(let i=0;i<6;i++){
-    const p=hexPts[i];
-    i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);
-  }
-  ctx.closePath();
-  ctx.strokeStyle=hsl(200+t*30,95,60,0.35+0.15*pulse);
-  ctx.lineWidth=thin?1.1:1.6;
-  ctx.stroke();
-  /* spokes hub → hex verts */
-  const [hx0,hy0]=project(0,0,0,cx,cy,s);
-  for(let i=0;i<6;i++){
-    const p=hexPts[i];
-    ctx.strokeStyle=hsl(280+i*20,90,58,0.12+0.08*pulse);
-    ctx.lineWidth=0.7;
-    ctx.beginPath(); ctx.moveTo(hx0,hy0); ctx.lineTo(p[0],p[1]); ctx.stroke();
-    ctx.fillStyle=hsl(0,0,100,0.55);
-    ctx.beginPath(); ctx.arc(p[0],p[1],thin?1.3:1.8,0,Math.PI*2); ctx.fill();
-  }
-
-  ctx.restore();
-}
-
-function drawHexCoreWires(cx,cy,s,t){
-  /* clientHexCore3D — tether billboard GIF to live dodeca edges (exact sides) */
-  const pv=DODECA._projVerts;
-  if(!pv||!pv.length||!DODECA.edges) return;
-  if(reduceMotion) return;
-  const thin=W<=480, mobile=W<=900;
-  let maxR=_sealHub.hexR||0;
-  if(!maxR){
-    for(let i=0;i<pv.length;i++){
       const r=Math.hypot(pv[i].x-cx,pv[i].y-cy);
       if(r>maxR) maxR=r;
     }
   }
-  const hexR=maxR*0.72;
+  _sealHub.cx=cx; _sealHub.cy=cy; _sealHub.s=s; _sealHub.hexR=maxR;
+  /* always write center (px) so CSS layers cannot drift */
+  const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
+  if(_bgFieldEl._sealX!==sx){ _bgFieldEl._sealX=sx; _bgFieldEl.style.setProperty("--seal-x", sx); }
+  if(_bgFieldEl._sealY!==sy){ _bgFieldEl._sealY=sy; _bgFieldEl.style.setProperty("--seal-y", sy); }
+  const ss=Math.round(maxR*2*GEO.fit)+"px";
+  if(_bgFieldEl._sealS!==ss){ _bgFieldEl._sealS=ss; _bgFieldEl.style.setProperty("--seal-s", ss); }
+  /* tunnel uses SAME size as hex — exact overlap of centers + box */
+  if(_bgFieldEl._sealTun!==ss){ _bgFieldEl._sealTun=ss; _bgFieldEl.style.setProperty("--seal-tunnel", ss); }
+  const sp=Math.round(maxR*2*GEO.spiralFit)+"px";
+  if(_bgFieldEl._sealSp!==sp){ _bgFieldEl._sealSp=sp; _bgFieldEl.style.setProperty("--seal-spiral", sp); }
+  /* hold camera on GIF-matched isometric so angles/vectors stay registered */
+  if(GEO.lockCam && !nav.down && !reduceMotion){
+    const k=0.045;
+    cam.tYaw+=(GEO.yaw-cam.tYaw)*k;
+    cam.tPitch+=(GEO.pitch-cam.tPitch)*k;
+    cam.tRoll+=(GEO.roll-cam.tRoll)*k;
+    cam.tUserYaw+=(0-cam.tUserYaw)*k;
+    cam.tUserPitch+=(0-cam.tUserPitch)*k;
+    cam.tUserRoll+=(0-cam.tUserRoll)*k;
+    cam.auto=false;
+  }
+}
+
+function drawHexCore3D(cx,cy,s,t){
+  /* clientGeoLock — screen-space hex/sphere/funnels registered to (cx,cy,maxR) = GIF box */
+  if(reduceMotion) return;
+  const maxR=_sealHub.hexR|| (s*0.55);
+  if(!(maxR>2)) return;
+  const thin=W<=480, mobile=W<=900;
+  const pulse=0.55+0.45*Math.sin(t*TEMPO.base*2.8);
+  const hex0=GEO.hex0;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+
+  /* outer hex — exact angles of GIF frame */
+  const hexPts=[];
+  for(let i=0;i<6;i++){
+    const a=hex0+i*Math.PI/3;
+    hexPts.push([cx+Math.cos(a)*maxR, cy+Math.sin(a)*maxR]);
+  }
+  ctx.beginPath();
+  for(let i=0;i<6;i++){ const p=hexPts[i]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]); }
+  ctx.closePath();
+  ctx.strokeStyle=hsl(200+t*28,95,60,0.42+0.18*pulse);
+  ctx.lineWidth=thin?1.2:1.75;
+  ctx.stroke();
+  /* spokes (vectors) hub → hex verts — same rays as GIF */
+  for(let i=0;i<6;i++){
+    const p=hexPts[i];
+    ctx.strokeStyle=hsl(280+i*18,90,58,0.16+0.1*pulse);
+    ctx.lineWidth=thin?0.6:0.85;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(p[0],p[1]); ctx.stroke();
+    ctx.fillStyle="rgba(255,255,255,0.7)";
+    ctx.beginPath(); ctx.arc(p[0],p[1],thin?1.4:1.9,0,Math.PI*2); ctx.fill();
+  }
+
+  /* sphere wire — screen circle (GIF sphere is view-centered); light 3D via project for depth cue */
+  const Rs=GEO.sphereK;
+  const mer=thin?7:(mobile?9:12);
+  for(let m=0;m<mer;m++){
+    const lon=m/mer*Math.PI*2;
+    ctx.beginPath();
+    for(let k=0;k<=20;k++){
+      const lat=-Math.PI/2+k/20*Math.PI;
+      const [px,py]=project(Rs*Math.cos(lat)*Math.cos(lon), Rs*Math.sin(lat), Rs*Math.cos(lat)*Math.sin(lon), cx,cy,s);
+      k?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    }
+    ctx.strokeStyle=hsl(210+m*14+t*30,95,58,0.14+0.1*pulse);
+    ctx.lineWidth=thin?0.5:0.75;
+    ctx.stroke();
+  }
+  /* screen-space sphere rim exactly maxR*sphereK/unit — also draw registered rim */
+  const sphR=maxR*(GEO.sphereK/0.55)*0.55; /* ≈ maxR * sphereK relative to unit dodeca */
+  const sphRR=maxR*0.38;
+  ctx.strokeStyle=hsl(300+t*20,95,60,0.22+0.12*pulse);
+  ctx.lineWidth=thin?0.9:1.25;
+  ctx.beginPath(); ctx.arc(cx,cy,sphRR,0,Math.PI*2); ctx.stroke();
+
+  /* lava blobs — screen space inside sphRR */
+  if(!thin){
+    for(let i=0;i<5;i++){
+      const a=t*TEMPO.base*(0.35+i*0.07)+i*1.7;
+      const rr=sphRR*(0.25+0.2*Math.sin(t+i));
+      const px=cx+Math.cos(a)*rr*0.7, py=cy+Math.sin(a*1.2)*rr*0.55;
+      const hue=[320,25,95,185,55][i];
+      const rad=sphRR*(0.18+0.04*i)*(0.85+0.15*pulse);
+      const g=ctx.createRadialGradient(px,py,0,px,py,rad*2);
+      g.addColorStop(0,hsl(hue,100,62,0.32));
+      g.addColorStop(0.5,hsl(hue+20,95,55,0.1));
+      g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(px,py,rad*2,0,Math.PI*2); ctx.fill();
+    }
+  }
+
+  /* funnels + lightning pills — exact GIF funnel verts (angles) */
+  const rings=thin?5:(mobile?7:9);
+  for(let fi=0;fi<GEO.funnelVerts.length;fi++){
+    const vi=GEO.funnelVerts[fi];
+    const ang=hex0+vi*Math.PI/3;
+    const ux=Math.cos(ang), uy=Math.sin(ang);
+    const hue0=185+fi*55+t*20;
+    for(let i=0;i<=rings;i++){
+      const u=i/rings;
+      const along=maxR*(GEO.funnelOuterK - u*(GEO.funnelOuterK-GEO.funnelInnerK));
+      const ringR=maxR*(0.22*(1-u)+0.035);
+      const mx=cx+ux*along, my=cy+uy*along;
+      ctx.beginPath();
+      ctx.ellipse(mx, my, ringR, ringR*0.42, ang, 0, Math.PI*2);
+      ctx.strokeStyle=hsl(hue0+u*40,95,58,(0.16+0.1*(1-u))*pulse*(mobile?0.7:1));
+      ctx.lineWidth=thin?0.55:0.8;
+      ctx.stroke();
+    }
+    const a0=maxR*GEO.funnelOuterK*0.88, a1=maxR*GEO.funnelInnerK*1.05;
+    const ax=cx+ux*a0, ay=cy+uy*a0, bx=cx+ux*a1, by=cy+uy*a1;
+    const g=ctx.createLinearGradient(ax,ay,bx,by);
+    g.addColorStop(0,hsl(hue0,100,62,0.55));
+    g.addColorStop(0.5,hsl(hue0+60,100,60,0.72));
+    g.addColorStop(1,hsl(hue0+120,100,58,0.45));
+    ctx.strokeStyle=g; ctx.lineWidth=thin?3:5; ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+    ctx.strokeStyle="rgba(255,255,255,0.35)"; ctx.lineWidth=thin?1:1.6;
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawHexCoreWires(cx,cy,s,t){
+  /* clientGeoLock — tether every dodeca edge to hex rim on the SAME angle ray */
+  const pv=DODECA._projVerts;
+  if(!pv||!pv.length||!DODECA.edges) return;
+  if(reduceMotion) return;
+  const maxR=_sealHub.hexR||0;
+  if(!(maxR>2)) return;
+  const thin=W<=480, mobile=W<=900;
   const pulse=0.55+0.45*Math.sin(t*TEMPO.base*3.1);
+  const rimK=0.88;
   ctx.save(); ctx.globalCompositeOperation="lighter";
   for(let ei=0;ei<DODECA.edges.length;ei++){
     const [i,j]=DODECA.edges[ei];
@@ -4942,23 +4872,25 @@ function drawHexCoreWires(cx,cy,s,t){
     if(!a||!b) continue;
     const depth=((a.d||0)+(b.d||0))*0.5;
     const near=Math.max(0.2, Math.min(1, 0.5+depth*0.45));
-    const hue=188+(ei%5)*24+10*Math.sin(t*0.7+ei);
-    const a0=(0.14+0.12*pulse)*near*(mobile?0.65:1);
-    ctx.strokeStyle=hsl(hue+18,100,66,a0*0.85);
-    ctx.lineWidth=(thin?0.55:0.8)*near;
+    const hue=188+(ei%5)*24;
+    const a0=(0.16+0.12*pulse)*near*(mobile?0.7:1);
+    /* exact side */
+    ctx.strokeStyle=hsl(hue+18,100,66,a0*0.9);
+    ctx.lineWidth=(thin?0.6:0.9)*near;
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    /* vector from rim (same angle as edge mid) → mid — overlap hitch */
     const mx=(a.x+b.x)*0.5, my=(a.y+b.y)*0.5;
     const ang=Math.atan2(my-cy, mx-cx);
-    const hx=cx+Math.cos(ang)*hexR, hy=cy+Math.sin(ang)*hexR;
-    ctx.strokeStyle=hsl(hue+8,95,60,a0*0.4);
-    ctx.lineWidth=thin?0.45:0.65;
+    const hx=cx+Math.cos(ang)*maxR*rimK, hy=cy+Math.sin(ang)*maxR*rimK;
+    ctx.strokeStyle=hsl(hue,95,60,a0*0.45);
+    ctx.lineWidth=thin?0.5:0.7;
     ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(mx,my); ctx.stroke();
   }
+  /* vert nodes on exact corners */
   for(let i=0;i<pv.length;i++){
     const v=pv[i];
-    const near=Math.max(0.25, Math.min(1, 0.55+(v.d||0)*0.4));
-    ctx.fillStyle=hsl(200+i*7+t*18,100,66,(0.3+0.2*pulse)*near);
-    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.1:1.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=hsl(200+i*7,100,66,0.35+0.2*pulse);
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.15:1.55,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 }
@@ -5851,7 +5783,7 @@ function frame(now){
     const ck=Math.max(0, Math.min(1, (cinemaUntil-now)/3800));
     sealPulse=Math.max(sealPulse, 0.42+0.28*ck);
   }
-  if(!nav.down && !cam.auto && now-nav.idleAt>2200) cam.auto=true;
+  if(!nav.down && !cam.auto && now-nav.idleAt>2200 && !GEO.lockCam) cam.auto=true;
   if(cam.auto){
     /* continuous gyroscopic tumble — integrate angular rates (omni 360°) */
     const dts=Math.min(0.05, Math.max(0, dt)*0.001);
