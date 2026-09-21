@@ -328,6 +328,59 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   mix-blend-mode:screen;
 }
 
+/* fallingCodeDepth — angled synthwave code corridor (whisper under seal) */
+#bgField .codeRain{
+  position:absolute;inset:0;
+  perspective:920px;
+  perspective-origin:46% 40%;
+  overflow:hidden;
+  z-index:0;
+}
+#bgField .codeRain .plane{
+  position:absolute;
+  left:50%; top:36%;
+  width:155%; height:175%;
+  transform:translate(-52%,-40%) rotateX(58deg) rotateY(-7deg) scale(1.38);
+  transform-origin:50% 72%;
+  transform-style:preserve-3d;
+  opacity:0.30;
+  mix-blend-mode:screen;
+  filter:saturate(1.12) brightness(0.82) contrast(1.05);
+  -webkit-mask-image:radial-gradient(ellipse 68% 62% at 46% 44%,
+    rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 28%, rgba(0,0,0,0.75) 52%, #000 78%);
+  mask-image:radial-gradient(ellipse 68% 62% at 46% 44%,
+    rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 28%, rgba(0,0,0,0.75) 52%, #000 78%);
+  will-change:transform;
+}
+#bgField .codeRain .drift{
+  width:100%; height:118%;
+  animation:codeRainFall 32s linear infinite;
+}
+#bgField .codeRain picture,
+#bgField .codeRain img{
+  display:block;width:100%;height:100%;
+  object-fit:cover;
+  object-position:38% 22%; /* side-bias — keep hot columns off seal center */
+}
+#bgField .codeRain::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 48% 42% at 50% 42%, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.28) 42%, transparent 72%),
+    linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 28%, transparent 68%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.25) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.3) 100%);
+}
+@keyframes codeRainFall{
+  from{transform:translate3d(0,-5%,0)}
+  to{transform:translate3d(0,7%,0)}
+}
+@media (max-width:900px){
+  #bgField .codeRain .plane{opacity:0.16; width:170%; height:190%;
+    transform:translate(-50%,-38%) rotateX(54deg) rotateY(-5deg) scale(1.28)}
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .codeRain .drift{animation:none}
+}
+
 
 
 
@@ -532,7 +585,18 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"></div>
+<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth -->
+  <div class="codeRain" aria-hidden="true">
+    <div class="plane">
+      <div class="drift">
+        <picture>
+          <source srcset="media/falling-code.webp" type="image/webp">
+          <img src="media/falling-code.jpg" alt="" width="1028" height="1828" decoding="async" fetchpriority="low">
+        </picture>
+      </div>
+    </div>
+  </div>
+</div>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.14"></canvas><!-- fgContrast: WebGL underlay quieter so seal+HUD win -->
 <header id="top">
@@ -1101,7 +1165,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1109,6 +1173,7 @@ const STORIES = {
      admit/crystallize = cool cyan-indigo; release = magenta/orchid; prism accents = pale yellow/peach/lime.
    SURVIVING layers (why they stay):
    - bgField GIFs: unsorted chaos under seal (whisper depth only)
+   - fallingCodeDepth: angled neon code corridor under #bgField (atmosphere only)
    - starfield dust: dump particles awaiting lock
    - funnels: intake mouths at dodeca faces (cool cyan admit path)
    - organize lattice: visible tether field→dodeca / admit→cube
