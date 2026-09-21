@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2805,57 +2805,37 @@ function drawDodecaLatticeCage(cx,cy,s,t){
   return faceCenters;
 }
 function drawCyberNatureField(cx,cy,s,t){
-  /* magpieImpressSupersede — dense Magpie/Seraphim WORK instrument; ALL layers moving φ-TEMPO */
+  /* mergePolish — one Magpie instrument: soft rings + seal + node-net lattice + quiet streams + thematic glow */
   if(reduceMotion && skipHeavy) return;
   const thin=W<=480, mobile=W<=900;
-  const hues=[186,312,52,28]; /* cyan→magenta→yellow→orange residual */
+  const hues=[186,312,52,28];
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
   const cel=(typeof celebrate==="number"?celebrate:0);
   const flash=(typeof sealLockFlash==="number"?sealLockFlash:0);
-  const pulseBoost=1+0.55*sealP+0.35*cel+0.45*flash;
+  const pulseBoost=1+0.35*sealP+0.22*cel+0.28*flash; /* calmer than impress flood */
   ctx.save();
   ctx.globalCompositeOperation="lighter";
 
-  /* —— L3 far residual ring field (many ellipses, dashed, iridescent) —— */
-  const nFar=thin?18:(mobile?32:48);
-  for(let i=0;i<nFar;i++){
-    const u=i/(nFar-1||1);
-    const baseR=s*(0.55+u*1.55);
-    const jitter=Math.sin(t*TEMPO.base*2.4+i*0.61)*s*0.012;
-    const rx=baseR+jitter, ry=rx*(0.34+0.06*Math.sin(t*TEMPO.base*0.8+i*0.12));
-    const hue=hues[i%hues.length]+18*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.5+i*0.27);
-    const a=(0.035+0.07*(1-u)+0.03*Math.sin(t*TEMPO.base*3.1+i))*pulseBoost;
-    ctx.strokeStyle=hsl(hue,94,64,Math.min(0.5,a));
-    ctx.lineWidth=thin?0.45:(mobile?0.6:0.75);
-    ctx.setLineDash([2+(i%4), 3+(i%3)]);
-    ctx.lineDashOffset=-(t*TEMPO.base*(28+i%7)+i*4)*(i%2?-1:1);
+  /* merged residual rings — one quiet band (was L3+L4 flood) */
+  const nRings=thin?8:(mobile?12:16);
+  for(let i=0;i<nRings;i++){
+    const u=i/(nRings-1||1);
+    const baseR=s*(0.14+u*0.95);
+    const rx=baseR*(1.02+0.02*Math.sin(t*TEMPO.base+i*0.2));
+    const ry=rx*(0.38+0.04*Math.cos(t*TEMPO.base*0.9+i*0.15));
+    const hue=hues[i%hues.length]+10*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.4+i);
+    const a=(0.04+0.08*(1-u))*pulseBoost;
+    ctx.strokeStyle=hsl(hue,90,62,Math.min(0.42,a));
+    ctx.lineWidth=thin?0.5:(mobile?0.65:0.8);
+    ctx.setLineDash([3,3]);
+    ctx.lineDashOffset=-(t*TEMPO.base*(18+i%4))*(i%2?-1:1);
     ctx.beginPath();
-    ctx.ellipse(cx, cy+s*0.06, Math.max(2,rx), Math.max(1.2,ry), 0.04*Math.sin(t*TEMPO.base*0.65+i*0.05), 0, Math.PI*2);
-    ctx.stroke();
-  }
-
-  /* —— L4 mid residual rings denser + counter-rotating dash offset —— */
-  const nMid=thin?14:(mobile?24:36);
-  for(let i=0;i<nMid;i++){
-    const u=i/(nMid-1||1);
-    const baseR=s*(0.10+u*0.72);
-    const jitter=Math.cos(t*TEMPO.base*3.1+i*0.9)*s*0.008;
-    const rx=(baseR+jitter)*(1.02+0.025*Math.sin(t*TEMPO.base*1.4+i));
-    const ry=rx*(0.38+0.05*Math.cos(t*TEMPO.base*1.1+i*0.2));
-    const hue=hues[(i+1)%hues.length]+14*Math.cos(t*TEMPO.base*TEMPO.iri+i*0.4);
-    const a=(0.06+0.11*(1-u)+0.04*Math.sin(t*TEMPO.base*4.2+i))*pulseBoost;
-    ctx.strokeStyle=hsl(hue,96,66,Math.min(0.62,a));
-    ctx.lineWidth=thin?0.55:(mobile?0.75:0.95);
-    ctx.setLineDash(i%2?[3,2]:[2,4]);
-    ctx.lineDashOffset=(t*TEMPO.base*(42+(i%5)*3)+i*6)*(i%2?1:-1); /* counter-rotate */
-    ctx.beginPath();
-    ctx.ellipse(cx, cy+s*0.05, Math.max(2,rx), Math.max(1.2,ry), -0.05*Math.sin(t*TEMPO.base*0.9+i*0.07), 0, Math.PI*2);
+    ctx.ellipse(cx, cy+s*0.05, Math.max(2,rx), Math.max(1.2,ry), 0, 0, Math.PI*2);
     ctx.stroke();
   }
   ctx.setLineDash([]);
 
-  /* build primary seal projection (shared) */
-  let pv=null, nested=null;
+  let pv=null;
   if(DODECA && DODECA.verts && DODECA.edges){
     const sc=1.06;
     pv=[];
@@ -2864,238 +2844,25 @@ function drawCyberNatureField(cx,cy,s,t){
       const pr=project(v.x*sc,v.y*sc,v.z*sc,cx,cy,s);
       pv.push({x:pr[0],y:pr[1],d:pr[2]});
     }
-    /* keep mid-layer consumers in sync if frame already projected — refresh for seal scale */
     DODECA._projVertsSeal=pv;
 
-    /* —— L13 soft ghost twin seal (parallax offset, ~0.3α) —— */
-    if(!thin){
-      const gOffX=s*(0.028+0.012*Math.sin(t*TEMPO.base*0.7));
-      const gOffY=s*(0.018+0.01*Math.cos(t*TEMPO.base*0.55));
-      const gsc=1.06*0.97;
-      const ghost=[];
-      for(let i=0;i<DODECA.verts.length;i++){
-        const v=DODECA.verts[i];
-        const pr=project(v.x*gsc,v.y*gsc,v.z*gsc,cx+gOffX,cy+gOffY,s);
-        ghost.push({x:pr[0],y:pr[1],d:pr[2]});
-      }
-      ctx.save();
-      ctx.globalAlpha=0.30*pulseBoost;
-      const glw=thin?0.7:(mobile?0.95:1.2);
-      for(let ei=0;ei<DODECA.edges.length;ei++){
-        const [i,j]=DODECA.edges[ei];
-        const A=ghost[i], B=ghost[j];
-        const hue=hues[(ei+2)%hues.length]+10*Math.sin(t*TEMPO.base+ei);
-        ctx.strokeStyle=hsl(hue,90,60,0.55);
-        ctx.lineWidth=glw*0.7;
-        ctx.setLineDash([3,4]);
-        ctx.lineDashOffset=t*TEMPO.base*22+ei*3;
-        ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
-      }
-      ctx.restore();
-      ctx.setLineDash([]);
-    }
-
-    /* —— L5 dashed dodeca seal (primary) —— */
-    const lw=thin?1.05:(mobile?1.45:1.85);
+    /* L5 seal — primary silhouette */
+    const lw=thin?1.15:(mobile?1.55:1.95);
     for(let ei=0;ei<DODECA.edges.length;ei++){
       const [i,j]=DODECA.edges[ei];
       const A=pv[i], B=pv[j];
-      const near=Math.max(0.15,Math.min(1,(A.d+B.d)*0.5+0.55));
-      const hue=hues[ei%hues.length]+14*Math.sin(t*TEMPO.base*2.2+ei);
-      const pulse=0.65+0.35*Math.sin(t*TEMPO.base*3.0+ei*0.4);
-      ctx.strokeStyle=hsl(hue,96,64,(0.32+0.48*near)*pulse*pulseBoost);
-      ctx.lineWidth=lw*(0.55+near*0.75);
-      ctx.setLineDash([5+(ei%3), 3+(ei%2)]);
-      ctx.lineDashOffset=-(t*TEMPO.base*58+ei*6);
+      const near=Math.max(0.2,Math.min(1,(A.d+B.d)*0.5+0.55));
+      const hue=hues[ei%hues.length]+10*Math.sin(t*TEMPO.base*1.8+ei);
+      const pulse=0.75+0.25*Math.sin(t*TEMPO.base*2.4+ei*0.35);
+      ctx.strokeStyle=hsl(hue,96,64,(0.38+0.48*near)*pulse*pulseBoost);
+      ctx.lineWidth=lw*(0.6+near*0.7);
+      ctx.setLineDash([5+(ei%2), 3]);
+      ctx.lineDashOffset=-(t*TEMPO.base*42+ei*5);
       ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
     }
+    ctx.setLineDash([]);
 
-    /* —— L5b NODE NET LATTICE — fill dodeca volume with dense lattice —— */
-    if(!window._magpieNodeLattice){
-      const pts=[];
-      const golden=Math.PI*(3-Math.sqrt(5));
-      /* shell layers (nested spheres) + face midpoints + verts as anchors */
-      const shells=thin?[0.35,0.55,0.78]:(mobile?[0.28,0.45,0.62,0.82]:[0.22,0.38,0.52,0.66,0.82]);
-      const perShell=thin?18:(mobile?28:36);
-      for(let s=0;s<shells.length;s++){
-        const R=shells[s];
-        const n=perShell+(s*2);
-        for(let i=0;i<n;i++){
-          const y=1-(i/(n-1||1))*2;
-          const rr=Math.sqrt(Math.max(0,1-y*y));
-          const th=golden*(i+s*7);
-          pts.push({
-            x:Math.cos(th)*rr*R,
-            y:y*R*0.95,
-            z:Math.sin(th)*rr*R,
-            phase:(i+s*11)*0.31,
-            hub:(s===shells.length-1 && i%4===0)?1:(s===0?1:0),
-            shell:s
-          });
-        }
-      }
-      /* center hub */
-      pts.push({x:0,y:0,z:0,phase:0,hub:1,shell:-1});
-      /* lattice edges: same-shell ring neighbors + radial to inner shell + kNN */
-      const edges=[];
-      const seen=new Set();
-      const addE=(i,j)=>{
-        if(i===j) return;
-        const a=Math.min(i,j), b=Math.max(i,j);
-        const k=a+","+b;
-        if(seen.has(k)) return;
-        seen.add(k); edges.push([a,b]);
-      };
-      /* group by shell */
-      const byShell={};
-      for(let i=0;i<pts.length;i++){
-        const s=pts[i].shell;
-        (byShell[s]=byShell[s]||[]).push(i);
-      }
-      const shellKeys=Object.keys(byShell).map(Number).sort((a,b)=>a-b);
-      for(const s of shellKeys){
-        const arr=byShell[s];
-        /* ring lattice on shell */
-        for(let i=0;i<arr.length;i++){
-          addE(arr[i], arr[(i+1)%arr.length]);
-          if(arr.length>6) addE(arr[i], arr[(i+2)%arr.length]);
-        }
-      }
-      /* radial spokes between consecutive shells (nearest) */
-      for(let si=0;si<shellKeys.length-1;si++){
-        const A=byShell[shellKeys[si]], B=byShell[shellKeys[si+1]];
-        for(const ia of A){
-          let best=-1, bd=1e9;
-          const pa=pts[ia];
-          for(const ib of B){
-            const pb=pts[ib];
-            const d=(pa.x-pb.x)**2+(pa.y-pb.y)**2+(pa.z-pb.z)**2;
-            if(d<bd){bd=d;best=ib;}
-          }
-          if(best>=0) addE(ia,best);
-        }
-      }
-      /* extra kNN fill so volume reads as net */
-      const kN=thin?2:(mobile?3:4);
-      for(let i=0;i<pts.length;i++){
-        const dlist=[];
-        for(let j=0;j<pts.length;j++){
-          if(i===j) continue;
-          const a=pts[i], b=pts[j];
-          dlist.push({j,d:(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2});
-        }
-        dlist.sort((u,v)=>u.d-v.d);
-        for(let q=0;q<kN;q++) addE(i,dlist[q].j);
-      }
-      window._magpieNodeLattice={pts,edges};
-    }
-    {
-      const net=window._magpieNodeLattice;
-      const spin=t*TEMPO.base*0.48;
-      const cosS=Math.cos(spin), sinS=Math.sin(spin);
-      const projected=[];
-      const sc=1.06;
-      for(let i=0;i<net.pts.length;i++){
-        const p=net.pts[i];
-        let x=p.x*cosS-p.z*sinS, z=p.x*sinS+p.z*cosS, y=p.y;
-        const breathe=1+0.035*Math.sin(t*TEMPO.base*2.4+p.phase);
-        x*=breathe; y*=breathe; z*=breathe;
-        const pr=project(x,y,z,cx,cy,s);
-        const nx=(x+1)*0.5, ny=(y+1)*0.5;
-        let hue=186+nx*90+(1-ny)*80;
-        if(Math.hypot(x,y,z)<0.28) hue=48+18*Math.sin(t*TEMPO.base+p.phase);
-        projected.push({x:pr[0],y:pr[1],d:pr[2],hue,hub:p.hub,phase:p.phase,lx:x,ly:y,lz:z,shell:p.shell});
-      }
-      /* wire outer-shell nodes to nearest dodeca verts — lattice meets seal */
-      if(pv && DODECA.verts){
-        for(let i=0;i<projected.length;i++){
-          const P=projected[i];
-          if(P.shell<(thin?1:2) && P.shell!==-1 && !P.hub) continue; /* outer + hubs only */
-          const dlist=[];
-          for(let vi=0;vi<DODECA.verts.length;vi++){
-            const v=DODECA.verts[vi];
-            const dx=P.lx-v.x*sc, dy=P.ly-v.y*sc, dz=P.lz-v.z*sc;
-            dlist.push({vi,d:dx*dx+dy*dy+dz*dz});
-          }
-          dlist.sort((a,b)=>a.d-b.d);
-          const nWire=P.hub?2:1;
-          for(let w=0;w<nWire;w++){
-            const V=pv[dlist[w].vi];
-            if(!V) continue;
-            const near=Math.max(0.25,Math.min(1,(P.d+V.d)*0.5+0.5));
-            const pulse=0.75+0.25*Math.sin(t*TEMPO.base*3.6+i*0.25);
-            const a=(0.5+0.4*near)*pulse*pulseBoost;
-            const g=ctx.createLinearGradient(P.x,P.y,V.x,V.y);
-            g.addColorStop(0,hsl(P.hue,100,70,a));
-            g.addColorStop(1,hsl(hues[dlist[w].vi%hues.length],96,64,a*0.9));
-            ctx.strokeStyle=g;
-            ctx.lineWidth=(thin?1.05:(mobile?1.4:1.75))*(0.6+near*0.55);
-            ctx.setLineDash([4,2]);
-            ctx.lineDashOffset=-(t*TEMPO.base*52+i*4);
-            ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(V.x,V.y); ctx.stroke();
-          }
-        }
-        ctx.setLineDash([]);
-      }
-      /* lattice edges — fill the cage */
-      const edged=net.edges.map(([i,j],ei)=>{
-        const A=projected[i], B=projected[j];
-        return {A,B,ei,md:(A.d+B.d)*0.5};
-      }).sort((u,v)=>u.md-v.md);
-      for(let e=0;e<edged.length;e++){
-        const {A,B,md,ei}=edged[e];
-        const near=Math.max(0.18,Math.min(1,md+0.55));
-        const hue=(A.hue+B.hue)*0.5;
-        const a=(0.32+0.48*near)*(0.82+0.18*Math.sin(t*TEMPO.base*3.2+ei))*pulseBoost;
-        ctx.strokeStyle=hsl(hue,96,66,Math.min(0.85,a));
-        ctx.lineWidth=thin?0.85:(mobile?1.15:1.45);
-        ctx.setLineDash([]);
-        ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
-      }
-      /* nodes — seal-bright, fill volume */
-      for(let i=0;i<projected.length;i++){
-        const P=projected[i];
-        const near=Math.max(0.22,Math.min(1,P.d+0.55));
-        const tw=0.78+0.22*Math.sin(t*TEMPO.base*4.2+P.phase);
-        const rad=(P.hub?4.5:2.8)*(thin?0.78:(mobile?0.92:1.08))*(0.78+0.32*near)*tw;
-        const a=Math.min(0.99,(0.78+0.22*near)*tw*pulseBoost);
-        const g=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,rad*3.4);
-        g.addColorStop(0,hsl(P.hue,100,84,0.9*a));
-        g.addColorStop(0.45,hsl(P.hue,98,66,0.42*a));
-        g.addColorStop(1,"rgba(0,0,0,0)");
-        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(P.x,P.y,rad*3.4,0,Math.PI*2); ctx.fill();
-        ctx.fillStyle=hsl(P.hue,100,78,a);
-        ctx.beginPath(); ctx.arc(P.x,P.y,rad,0,Math.PI*2); ctx.fill();
-        ctx.fillStyle=`rgba(255,255,255,${0.6*a})`;
-        ctx.beginPath(); ctx.arc(P.x-rad*0.22,P.y-rad*0.26,rad*0.3,0,Math.PI*2); ctx.fill();
-      }
-    }
-
-    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */
-    if(!thin || !reduceMotion){
-      const nsc=0.62+0.015*Math.sin(t*TEMPO.base*2.4);
-      nested=[];
-      for(let i=0;i<DODECA.verts.length;i++){
-        const v=DODECA.verts[i];
-        const pr=project(v.x*nsc,v.y*nsc,v.z*nsc,cx,cy,s);
-        nested.push({x:pr[0],y:pr[1],d:pr[2]});
-      }
-      const nlw=thin?0.7:(mobile?0.95:1.25);
-      for(let ei=0;ei<DODECA.edges.length;ei++){
-        const [i,j]=DODECA.edges[ei];
-        const A=nested[i], B=nested[j];
-        const near=Math.max(0.2,Math.min(1,(A.d+B.d)*0.5+0.5));
-        const hue=hues[(ei+1)%hues.length]+10*Math.cos(t*TEMPO.base*2.6+ei);
-        const pulse=0.7+0.3*Math.sin(t*TEMPO.base*3.4+ei*0.35);
-        ctx.strokeStyle=hsl(hue,94,62,(0.22+0.38*near)*pulse*pulseBoost);
-        ctx.lineWidth=nlw*(0.5+near*0.6);
-        ctx.setLineDash([3+(ei%2), 4+(ei%3)]);
-        ctx.lineDashOffset=+(t*TEMPO.base*72+ei*7); /* opposite scroll */
-        ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
-      }
-    }
-
-    /* —— L7 face-hub jewels + edge data pulses traveling along edges —— */
+    /* face hubs — quiet jewels (merged L7) */
     if(DODECA.faces && !thin){
       for(let fi=0;fi<DODECA.faces.length;fi++){
         const face=DODECA.faces[fi];
@@ -3103,130 +2870,159 @@ function drawCyberNatureField(cx,cy,s,t){
         for(const vi of face){ const p=pv[vi]; if(!p) continue; sx+=p.x; sy+=p.y; n++; }
         if(n<3) continue;
         const fx=sx/n, fy=sy/n;
-        const jp=0.55+0.45*Math.sin(t*TEMPO.base*4.0+fi)+0.25*sealP;
+        const jp=0.5+0.35*Math.sin(t*TEMPO.base*3.2+fi)+0.2*sealP;
         const hue=hues[fi%hues.length];
-        const jr=mobile?1.4:2.1;
-        const jg=ctx.createRadialGradient(fx,fy,0,fx,fy,jr*3);
-        jg.addColorStop(0,hsl(hue,100,78,0.55*jp*pulseBoost));
-        jg.addColorStop(0.45,hsl(hue+20,95,60,0.22*jp));
-        jg.addColorStop(1,"rgba(0,0,0,0)");
-        ctx.fillStyle=jg; ctx.beginPath(); ctx.arc(fx,fy,jr*3,0,Math.PI*2); ctx.fill();
-        ctx.fillStyle=hsl(hue,95,72,0.75*jp);
-        ctx.beginPath(); ctx.arc(fx,fy,jr,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=hsl(hue,95,70,0.35*jp*pulseBoost);
+        ctx.beginPath(); ctx.arc(fx,fy,mobile?1.5:2.0,0,Math.PI*2); ctx.fill();
       }
     }
-    /* edge pulses — motes racing along edges */
-    const nPulse=thin?8:(mobile?16:28);
-    for(let k=0;k<nPulse;k++){
-      const ei=k%DODECA.edges.length;
-      const [i,j]=DODECA.edges[ei];
-      const A=pv[i], B=pv[j];
-      const u=((t*TEMPO.base*1.15+k*0.37)%1);
-      const px=A.x+(B.x-A.x)*u, py=A.y+(B.y-A.y)*u;
-      const hue=hues[k%hues.length];
-      ctx.fillStyle=hsl(hue,100,70,0.45+0.35*Math.sin(t*TEMPO.base*5+k));
-      ctx.beginPath(); ctx.arc(px,py,thin?1.0:1.55,0,Math.PI*2); ctx.fill();
+
+    /* NODE NET LATTICE — hero fill (kept, slightly calmed) */
+    if(!window._magpieNodeLattice){
+      const pts=[];
+      const golden=Math.PI*(3-Math.sqrt(5));
+      const shells=thin?[0.38,0.58,0.80]:(mobile?[0.32,0.50,0.68,0.84]:[0.28,0.44,0.58,0.72,0.86]);
+      const perShell=thin?16:(mobile?24:32);
+      for(let s=0;s<shells.length;s++){
+        const R=shells[s];
+        const n=perShell+s*2;
+        for(let i=0;i<n;i++){
+          const y=1-(i/(n-1||1))*2;
+          const rr=Math.sqrt(Math.max(0,1-y*y));
+          const th=golden*(i+s*7);
+          pts.push({x:Math.cos(th)*rr*R,y:y*R*0.95,z:Math.sin(th)*rr*R,phase:(i+s*11)*0.31,hub:(s===shells.length-1&&i%4===0)?1:(s===0?1:0),shell:s});
+        }
+      }
+      pts.push({x:0,y:0,z:0,phase:0,hub:1,shell:-1});
+      const edges=[]; const seen=new Set();
+      const addE=(i,j)=>{ if(i===j)return; const a=Math.min(i,j),b=Math.max(i,j),k=a+","+b; if(seen.has(k))return; seen.add(k); edges.push([a,b]); };
+      const byShell={};
+      for(let i=0;i<pts.length;i++){ const s=pts[i].shell; (byShell[s]=byShell[s]||[]).push(i); }
+      const shellKeys=Object.keys(byShell).map(Number).sort((a,b)=>a-b);
+      for(const s of shellKeys){
+        const arr=byShell[s];
+        for(let i=0;i<arr.length;i++){ addE(arr[i],arr[(i+1)%arr.length]); if(arr.length>6) addE(arr[i],arr[(i+2)%arr.length]); }
+      }
+      for(let si=0;si<shellKeys.length-1;si++){
+        const A=byShell[shellKeys[si]], B=byShell[shellKeys[si+1]];
+        for(const ia of A){
+          let best=-1,bd=1e9; const pa=pts[ia];
+          for(const ib of B){ const pb=pts[ib]; const d=(pa.x-pb.x)**2+(pa.y-pb.y)**2+(pa.z-pb.z)**2; if(d<bd){bd=d;best=ib;} }
+          if(best>=0) addE(ia,best);
+        }
+      }
+      const kN=thin?2:(mobile?3:3);
+      for(let i=0;i<pts.length;i++){
+        const dlist=[];
+        for(let j=0;j<pts.length;j++){ if(i===j)continue; const a=pts[i],b=pts[j]; dlist.push({j,d:(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2}); }
+        dlist.sort((u,v)=>u.d-v.d);
+        for(let q=0;q<kN;q++) addE(i,dlist[q].j);
+      }
+      window._magpieNodeLattice={pts,edges};
     }
-    ctx.setLineDash([]);
+    {
+      const net=window._magpieNodeLattice;
+      const spin=t*TEMPO.base*0.42;
+      const cosS=Math.cos(spin), sinS=Math.sin(spin);
+      const projected=[];
+      for(let i=0;i<net.pts.length;i++){
+        const p=net.pts[i];
+        let x=p.x*cosS-p.z*sinS, z=p.x*sinS+p.z*cosS, y=p.y;
+        const breathe=1+0.03*Math.sin(t*TEMPO.base*2.1+p.phase);
+        x*=breathe; y*=breathe; z*=breathe;
+        const pr=project(x,y,z,cx,cy,s);
+        const nx=(x+1)*0.5, ny=(y+1)*0.5;
+        let hue=186+nx*90+(1-ny)*80;
+        if(Math.hypot(x,y,z)<0.28) hue=48+16*Math.sin(t*TEMPO.base+p.phase);
+        projected.push({x:pr[0],y:pr[1],d:pr[2],hue,hub:p.hub,phase:p.phase,lx:x,ly:y,lz:z,shell:p.shell});
+      }
+      /* wire outer shell → seal verts */
+      for(let i=0;i<projected.length;i++){
+        const P=projected[i];
+        if(P.shell<(thin?1:2) && P.shell!==-1 && !P.hub) continue;
+        const dlist=[];
+        for(let vi=0;vi<DODECA.verts.length;vi++){
+          const v=DODECA.verts[vi];
+          const dx=P.lx-v.x*sc, dy=P.ly-v.y*sc, dz=P.lz-v.z*sc;
+          dlist.push({vi,d:dx*dx+dy*dy+dz*dz});
+        }
+        dlist.sort((a,b)=>a.d-b.d);
+        const V=pv[dlist[0].vi]; if(!V) continue;
+        const near=Math.max(0.25,Math.min(1,(P.d+V.d)*0.5+0.5));
+        const a=(0.4+0.35*near)*pulseBoost;
+        const g=ctx.createLinearGradient(P.x,P.y,V.x,V.y);
+        g.addColorStop(0,hsl(P.hue,100,68,a));
+        g.addColorStop(1,hsl(hues[dlist[0].vi%hues.length],94,62,a*0.85));
+        ctx.strokeStyle=g;
+        ctx.lineWidth=(thin?0.95:(mobile?1.25:1.55))*(0.55+near*0.5);
+        ctx.setLineDash([3,2]);
+        ctx.lineDashOffset=-(t*TEMPO.base*36+i*3);
+        ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(V.x,V.y); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      const edged=net.edges.map(([i,j],ei)=>{ const A=projected[i],B=projected[j]; return {A,B,ei,md:(A.d+B.d)*0.5}; }).sort((u,v)=>u.md-v.md);
+      for(let e=0;e<edged.length;e++){
+        const {A,B,md,ei}=edged[e];
+        const near=Math.max(0.2,Math.min(1,md+0.55));
+        const hue=(A.hue+B.hue)*0.5;
+        const a=(0.28+0.4*near)*pulseBoost;
+        ctx.strokeStyle=hsl(hue,95,64,Math.min(0.72,a));
+        ctx.lineWidth=thin?0.75:(mobile?1.0:1.25);
+        ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+      }
+      for(let i=0;i<projected.length;i++){
+        const P=projected[i];
+        const near=Math.max(0.22,Math.min(1,P.d+0.55));
+        const tw=0.82+0.18*Math.sin(t*TEMPO.base*3.6+P.phase);
+        const rad=(P.hub?3.8:2.4)*(thin?0.8:(mobile?0.92:1.05))*(0.8+0.28*near)*tw;
+        const a=Math.min(0.95,(0.72+0.25*near)*tw*pulseBoost);
+        const g=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,rad*2.8);
+        g.addColorStop(0,hsl(P.hue,100,80,0.75*a));
+        g.addColorStop(0.5,hsl(P.hue,96,62,0.28*a));
+        g.addColorStop(1,"rgba(0,0,0,0)");
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(P.x,P.y,rad*2.8,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=hsl(P.hue,100,76,a);
+        ctx.beginPath(); ctx.arc(P.x,P.y,rad,0,Math.PI*2); ctx.fill();
+      }
+    }
   }
 
-  /* —— L8 sort streams: disorganized → hub (many, fast dashOffset) —— */
-  const nIn=thin?10:(mobile?20:32);
+  /* quiet sort streams (merged L8+L9 — fewer, softer) */
+  const nIn=thin?5:(mobile?8:12);
   for(let p=0;p<nIn;p++){
     const side=(p%3)-1;
-    const ang=-Math.PI/2 + side*0.62 + (p*0.14) + 0.1*Math.sin(t*TEMPO.base*1.2+p);
-    const rad=s*(0.92+(p%5)*0.07);
-    const x0=cx+Math.cos(ang)*rad*1.25;
-    const y0=cy-s*1.05+(p%6)*s*0.035;
-    const x1=cx+side*s*0.06;
-    const y1=cy+s*0.04;
+    const ang=-Math.PI/2+side*0.55+p*0.18;
+    const rad=s*(0.95+(p%3)*0.06);
+    const x0=cx+Math.cos(ang)*rad*1.15;
+    const y0=cy-s*0.95;
+    const x1=cx+side*s*0.05, y1=cy+s*0.03;
     const hue=side<0?hues[0]:(side>0?hues[1]:hues[2]);
-    const pulse=0.5+0.5*Math.sin(t*TEMPO.base*5.0+p*0.55);
-    ctx.strokeStyle=hsl(hue+10*Math.sin(t+p),94,66,(0.18+0.28*pulse)*pulseBoost);
-    ctx.lineWidth=thin?0.85:(mobile?1.1:1.4);
-    ctx.setLineDash([2+(p%3), 2+(p%4)]);
-    ctx.lineDashOffset=-(t*TEMPO.base*78+p*11);
-    ctx.beginPath();
-    ctx.moveTo(x0,y0);
-    ctx.quadraticCurveTo(
-      (x0+x1)*0.5+Math.sin(t*TEMPO.base*2.6+p)*s*0.05,
-      (y0+y1)*0.45,
-      x1,y1);
-    ctx.stroke();
-  }
-
-  /* —— L9 organize/aside EXIT streams hub → desk trays (loud) —— */
-  const nOut=thin?8:(mobile?14:22);
-  const deskY=H-Math.min(160,H*0.22);
-  for(let p=0;p<nOut;p++){
-    const admit=p%2===0;
-    const tx=cx+(admit?-1:1)*s*(0.55+0.18*(p%4)*0.25)+Math.sin(t*TEMPO.base+p)*s*0.03;
-    const ty=deskY-s*0.08+(p%5)*6;
-    const x0=cx+(admit?-0.04:0.04)*s;
-    const y0=cy+s*0.08;
-    const hue=admit?hues[0]:hues[1];
-    const pulse=0.5+0.5*Math.sin(t*TEMPO.base*4.6+p*0.7);
-    ctx.strokeStyle=hsl(hue,95,64,(0.16+0.26*pulse)*pulseBoost);
-    ctx.lineWidth=thin?0.9:(mobile?1.15:1.45);
-    ctx.setLineDash([3+(p%2), 2+(p%3)]);
-    ctx.lineDashOffset=-(t*TEMPO.base*68+p*8);
-    ctx.beginPath();
-    ctx.moveTo(x0,y0);
-    ctx.quadraticCurveTo(
-      (x0+tx)*0.5+Math.cos(t*TEMPO.base*1.8+p)*s*0.06,
-      (y0+ty)*0.55,
-      tx,ty);
-    ctx.stroke();
+    ctx.strokeStyle=hsl(hue,90,62,(0.12+0.14*Math.sin(t*TEMPO.base*3.5+p))*pulseBoost);
+    ctx.lineWidth=thin?0.7:1.0;
+    ctx.setLineDash([2,3]);
+    ctx.lineDashOffset=-(t*TEMPO.base*48+p*8);
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.quadraticCurveTo((x0+x1)*0.5, (y0+y1)*0.5, x1,y1); ctx.stroke();
   }
   ctx.setLineDash([]);
 
-  /* —— L10 orbiting keeper micro-nodes (dozen+, fast) —— */
-  const nKeep=thin?8:(mobile?14:22);
-  for(let k=0;k<nKeep;k++){
-    const ang=t*TEMPO.base*(TEMPO.spark||PHI)*0.85 + k*2.399963;
-    const rr=s*(0.22+0.08*(k%5)/5 + 0.02*Math.sin(t*TEMPO.base*3+k));
-    const elev=0.12*Math.sin(t*TEMPO.base*1.6+k*0.9);
-    const px=cx+Math.cos(ang)*rr*(1.0+elev*0.15);
-    const py=cy+Math.sin(ang)*rr*0.78+elev*s*0.05;
-    const hue=hues[k%hues.length];
-    const a=0.35+0.4*Math.sin(t*TEMPO.base*4.5+k)+0.2*sealP;
-    ctx.fillStyle=hsl(hue,100,70,a*0.85);
-    ctx.beginPath(); ctx.arc(px,py,thin?1.1:1.7,0,Math.PI*2); ctx.fill();
-    if(!thin){
-      ctx.strokeStyle=hsl(hue,90,60,a*0.25);
-      ctx.lineWidth=0.6;
-      ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(cx+(px-cx)*0.35, cy+(py-cy)*0.35); ctx.stroke();
-    }
-  }
-
-  /* —— L11 thematic central glow — multi-stop cyan→magenta→yellow residual flare —— */
-  const hubPulse=0.55+0.45*Math.sin(t*TEMPO.base*PHI) + 0.55*sealP + 0.4*cel + 0.7*flash;
-  const R=s*(0.28+0.04*Math.sin(t*TEMPO.base*2.1));
-  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
-  g.addColorStop(0,hsl(186,100,78,0.42*hubPulse));           /* cyan core */
-  g.addColorStop(0.22,hsl(200,95,68,0.28*hubPulse));
-  g.addColorStop(0.45,hsl(312,92,62,0.20*hubPulse));          /* magenta */
-  g.addColorStop(0.68,hsl(52,95,62,0.12*hubPulse));           /* yellow residual */
-  g.addColorStop(0.85,hsl(28,90,55,0.06*hubPulse));           /* orange rim */
+  /* thematic hub glow — merged L11, restrained */
+  const breath=0.55+0.45*Math.sin(t*TEMPO.base*PHI)+0.35*sealP+0.25*flash;
+  const R=s*(0.16+0.04*breath);
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R*2.4);
+  g.addColorStop(0,hsl(186,100,72,0.28*breath*pulseBoost));
+  g.addColorStop(0.35,hsl(48,95,62,0.12*breath));
+  g.addColorStop(0.65,hsl(312,90,58,0.08*breath));
   g.addColorStop(1,"rgba(0,0,0,0)");
-  ctx.fillStyle=g;
-  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fill();
-  /* ring flash on sealPulse / celebrate */
-  if(sealP>0.05 || cel>0.05 || flash>0.04){
-    const ringA=(0.18*sealP+0.14*cel+0.28*flash)*(0.7+0.3*Math.sin(t*TEMPO.base*8));
-    ctx.strokeStyle=hsl(186+40*Math.sin(t*TEMPO.base*3),100,70,ringA);
-    ctx.lineWidth=thin?1.4:2.4;
-    ctx.setLineDash([6,4]);
-    ctx.lineDashOffset=-t*TEMPO.base*90;
-    ctx.beginPath(); ctx.arc(cx,cy,s*(0.16+0.06*flash),0,Math.PI*2); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.strokeStyle=hsl(312,95,65,ringA*0.7);
-    ctx.lineWidth=thin?1.0:1.6;
-    ctx.beginPath(); ctx.arc(cx,cy,s*(0.22+0.08*sealP),0,Math.PI*2); ctx.stroke();
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*2.4,0,Math.PI*2); ctx.fill();
+  if(flash>0.05||sealP>0.2){
+    ctx.strokeStyle=hsl(186,100,70,(0.25+0.35*flash+0.2*sealP)*pulseBoost);
+    ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.arc(cx,cy,R*(1.15+0.2*flash),0,Math.PI*2); ctx.stroke();
   }
 
   ctx.restore();
 }
+
 function drawDodecaFrame(cx,cy,s,t){
   /* magpieImpressSupersede — full Magpie WORK layer stack */
   drawCyberNatureField(cx,cy,s,t);
@@ -3917,7 +3713,7 @@ function drawFunnelsAndBeams(cx,cy,s,t){
   /* polishPass3: intake mouths only — cool cyan-indigo admit path into seal; no rainbow disco.
      ≤3 mouths; sparse rings; soft cool beam → center. Purpose = "dump enters here." */
   const aHex=layerAlpha("hex");
-  const mouths=[]; ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.78:0.95); ctx.globalCompositeOperation="lighter"; /* magpieImpressSupersede: loud funnels */
+  const mouths=[]; ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.45:0.55); ctx.globalCompositeOperation="lighter"; /* mergePolish: soft funnels */
   const fcs=DODECA._faceCenters2d;
   let tips;
   /* sameVectors|balancePolish: ≤3 mouths on shared sealRay triad (locked to face normals) */
@@ -5169,7 +4965,7 @@ function frame(now){
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
   if(!skipHeavy) drawTrailsAndGlow(cxH,cyH,s,t);
-  if(!(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t);
+  if(!skipHeavy && !(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t); /* mergePolish: quieter */
   if(!reduceMotion) drawUploadStream(cx,cy,s,t);
   drawSortShockwave(cx,cy,s);
   drawBloomClamp(cx0,cy0,s); /* clear light/shadow anti-blotch */
