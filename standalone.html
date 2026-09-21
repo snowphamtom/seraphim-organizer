@@ -1195,6 +1195,47 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
   #bgField::after{ animation:none !important; }
 }
 
+
+/* clientFillField — spiral fills empty space; windows mid-dock not bottom-parked */
+#bgField .spiralField{
+  position:absolute; inset:0; z-index:0;
+  display:block !important;
+  opacity:0.92;
+  pointer-events:none;
+}
+#bgField .spiralField picture,
+#bgField .spiralField img{
+  display:block; width:100%; height:100%;
+  object-fit:cover;
+  object-position:50% 42%;
+  animation:spiralPulse 18s ease-in-out infinite alternate;
+  transform-origin:50% 45%;
+}
+@keyframes spiralPulse{
+  0%{ transform:scale(1.05) rotate(-2deg); filter:saturate(1.15) contrast(1.1) brightness(0.95); }
+  100%{ transform:scale(1.14) rotate(2.5deg); filter:saturate(1.35) contrast(1.18) brightness(1.05); }
+}
+#bgField .nebulaWhisper{
+  position:absolute; inset:0; z-index:1;
+  opacity:0.28;
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
+#bgField .nebulaWhisper img{
+  width:100%; height:100%; object-fit:cover; object-position:50% 50%;
+}
+#bgField .magpieSealWorld{
+  opacity:0.22 !important; /* quiet under spiral — canvas seal still carries */
+  z-index:2;
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .spiralField img{ animation:none !important; }
+}
+/* mid-band window defaults (JS also places) */
+#uploadBox{
+  bottom:auto !important;
+}
+
 /* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
 #phaseWhisper{
   align-self:center;
@@ -1379,10 +1420,18 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 </head>
 <body>
 <div id="bgField" aria-hidden="true"><!-- magpieImpressSupersede: Magpie seal plate + canvas layers (no forest) -->
+  <div class="spiralField" aria-hidden="true">
+    <picture>
+      <img src="media/spiral-field.jpg" alt="" width="500" height="1000" decoding="async" fetchpriority="high">
+    </picture>
+  </div>
+  <div class="nebulaWhisper" aria-hidden="true">
+    <img src="media/nebula-field-still.jpg" alt="" width="1024" height="1024" decoding="async">
+  </div>
   <div class="magpieSealWorld cyberNatureWorld">
     <picture>
       <source srcset="media/magpie-seal-plate.webp" type="image/webp">
-      <img src="media/magpie-seal-plate.png" alt="" width="1024" height="1024" decoding="async" fetchpriority="high">
+      <img src="media/magpie-seal-plate.png" alt="" width="1024" height="1024" decoding="async">
     </picture>
   </div>
 </div>
@@ -5409,8 +5458,8 @@ function frame(now){
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
   ctx.clearRect(0,0,W,H); /* GIF #bgField is the background — no black plate */
   // mobile: raise cy bias so seal owns mid (≥55% of viewport above dock)
-  const s=Math.min(W,H)*(W<=900?0.70:0.66)*cam.zoom;
-  const cx0=W*0.50+cam.panX, cy0=(W<=480?H*0.26:(W<=900?H*0.28:H*0.50))+cam.panY; /* polishPass2: raise seal on phone */
+  const s=Math.min(W,H)*(W<=900?0.78:0.74)*cam.zoom; /* clientFillField: bigger seal fills mid */
+  const cx0=W*0.50+cam.panX, cy0=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY; /* clientFillField: seal owns mid, fill empty top */
   // true parallax: per-layer offsets from mouse.tx/ty (+ DeviceOrientation)
   const pStar=parallaxOff("star"), pLab=parallaxOff("label");
   /* sameVectors: one hub — seal/hex/voxel/mint/lattice/funnels share cx,cy (VP fixed) */
@@ -5765,7 +5814,7 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
     function tryRestore(el){
       if(!el||!el.id) return false;
       try{
-        const all = JSON.parse(localStorage.getItem("seraphim.winPos.v1")||"{}");
+        const all = JSON.parse(localStorage.getItem("seraphim.winPos.v2")||"{}");
         const p = all[el.id];
         if(!p||!p.left||!p.top) return false;
         el.style.position = "fixed";
@@ -5793,16 +5842,24 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
       el.style.width = w + "px";
       el.style.transform = "none";
     }
-    const gap = 10;
-    const uw = Math.min(300, W * 0.88);
-    if(!tryRestore(ub)) dock(ub, Math.max(12, W*0.03), safe + 6);
-    // stack folders on right, low
-    const fw = Math.min(320, W * 0.42);
+    const gap = 12;
+    const fw = Math.min(300, W * 0.40);
+    const side = Math.max(12, W*0.03);
+    /* mid-lower band — leave top ~40% for spiral/seal, not empty black */
+    const bandBottom = Math.max(H * 0.08, safe + 8);
+    if(!tryRestore(ub)){
+      ub.style.width = Math.min(300, W*0.46) + "px";
+      dock(ub, side, bandBottom + (H * 0.12));
+    }
     if(r){
-      if(!tryRestore(r)){ r.style.width = fw + "px"; dock(r, W - fw - Math.max(12, W*0.03), safe + 6); }
+      if(!tryRestore(r)){ r.style.width = fw + "px"; dock(r, W - fw - side, bandBottom); }
     }
     if(a){
-      if(!tryRestore(a)){ a.style.width = fw + "px"; const rh = (r && r.offsetHeight) || 140; dock(a, W - fw - Math.max(12, W*0.03), safe + 6 + rh + gap); }
+      if(!tryRestore(a)){
+        a.style.width = fw + "px";
+        const rh = (r && r.offsetHeight) || 130;
+        dock(a, W - fw - side, bandBottom + rh + gap);
+      }
     }
   }
   // mark user moves
@@ -5823,7 +5880,7 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
 
 /* clientTrioFeatures: sort-on-paste · per-folder export · persist window positions · idle quiet */
 (function clientTrioFeatures(){
-  const POS_KEY = "seraphim.winPos.v1";
+  const POS_KEY = "seraphim.winPos.v2";
   function savePos(el){
     if(!el||!el.id) return;
     try{
