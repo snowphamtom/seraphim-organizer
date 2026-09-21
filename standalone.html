@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light dark"/>
 <meta name="description" content="Seraphim organizer: drop disorganized content, get an organized field. Soft."/>
-<meta name="theme-color" content="#f2f0ea"/>
+<meta name="theme-color" content="#030a12"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -3716,17 +3716,97 @@ body::after{ display:none !important; content:none !important; }
   pointer-events:none !important; width:0 !important; height:0 !important;
 }
 
+
+
+/* clientDataMeshSync — cyan data-mesh field; all motion on one φ TEMPO clock */
+:root{
+  --void:#030a12 !important;
+  --T1:1.822s; /* 2π/TEMPO.base — set by JS */
+  --Tphi:2.948s;
+  --Tphi2:4.770s;
+  --Tphi3:7.718s;
+  --mesh-spin:var(--Tphi3);
+  --mesh-breathe:var(--Tphi2);
+}
+html,body{
+  background-color:#030a12 !important;
+  background-image:none !important;
+  color:#e8eef8 !important;
+}
+#bgField{
+  background-color:#030a12 !important;
+  background-image:none !important;
+  display:block !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  z-index:0 !important;
+  pointer-events:none !important;
+}
+#bgField > .latticeField{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  position:absolute !important; inset:0 !important; z-index:0 !important;
+  pointer-events:none !important; overflow:hidden !important;
+  contain:strict;
+}
+#bgField > .latticeField .plane{
+  position:absolute !important;
+  left:50% !important; top:42% !important;
+  width:max(150vw,150vh) !important; height:max(150vw,150vh) !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:50% 50% !important;
+  animation:meshSpin var(--mesh-spin) linear infinite, meshBreathe var(--mesh-breathe) ease-in-out infinite alternate !important;
+}
+@keyframes meshSpin{
+  from{ transform:translate(-50%,-50%) rotate(0deg) scale(1.02); }
+  to{ transform:translate(-50%,-50%) rotate(360deg) scale(1.02); }
+}
+@keyframes meshBreathe{
+  from{ filter:brightness(0.92) saturate(1.05); }
+  to{ filter:brightness(1.08) saturate(1.18); }
+}
+#bgField > .latticeField picture,
+#bgField > .latticeField img{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  width:100% !important; height:100% !important;
+  object-fit:cover !important; object-position:50% 50% !important;
+  filter:none !important; mix-blend-mode:normal !important;
+  pointer-events:none !important;
+  animation:none !important;
+}
+#bgField > .latticeField img.still{ display:none !important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .latticeField .plane{ animation:none !important; }
+  #bgField > .latticeField img.anim,
+  #bgField > .latticeField picture{ display:none !important; }
+  #bgField > .latticeField img.still{
+    display:block !important; width:100% !important; height:100% !important;
+    object-fit:cover !important;
+  }
+}
+body::after{ display:none !important; content:none !important; }
+#fx{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  z-index:2 !important; pointer-events:auto !important;
+  background:transparent !important;
+}
+#top .title{
+  color:rgba(180,230,255,.72)!important;
+  text-shadow:0 0 18px rgba(34,211,238,.28), 0 0 28px rgba(0,0,0,.45)!important;
+}
+/* desk chip / scan already use --T* — keep φ family */
+#uploadBox.sorting .scanBar{ animation-duration:var(--Tmicro, calc(var(--T1) / 1.618)) !important; }
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientLatticeNuke: light lattice, webp-first -->
+<div id="bgField" aria-hidden="true"><!-- clientDataMeshSync: cyan data-mesh field -->
   <div class="latticeField" aria-hidden="true">
     <div class="plane">
       <picture>
-        <source srcset="media/lattice-tunnel.webp" type="image/webp"/>
-        <img class="anim" src="media/lattice-tunnel.gif" alt="" decoding="async" fetchpriority="low" width="480" height="480"/>
+        <source srcset="media/data-mesh.webp" type="image/webp"/>
+        <img class="anim" src="media/data-mesh.gif" alt="" decoding="async" fetchpriority="low" width="640" height="360"/>
       </picture>
-      <img class="still" src="media/lattice-tunnel-still.webp" alt="" decoding="async" width="480" height="480"/>
+      <img class="still" src="media/data-mesh-still.webp" alt="" decoding="async" width="640" height="360"/>
     </div>
   </div>
 </div>
@@ -4452,6 +4532,29 @@ const cam={
   // living gyro — TEMPO φ family (tempoHarmonic)
   gyro:{wx:TEMPO.base*(PHI*0.85), wy:TEMPO.base*0.85, wz:TEMPO.base*(0.85/PHI)} /* clientOmniGyroTree: φ-rational ω */
 };
+
+function syncTempoClock(){
+  /* clientDataMeshSync: one φ clock → CSS + gyro (boot once — never per-frame) */
+  if(syncTempoClock._done) return;
+  syncTempoClock._done=1;
+  const root=document.documentElement;
+  const b=TEMPO.base;
+  const T1=(2*Math.PI)/b;
+  const Tphi=T1*PHI, Tphi2=T1*PHI*PHI, Tphi3=T1*PHI*PHI*PHI;
+  root.style.setProperty('--T1', T1.toFixed(3)+'s');
+  root.style.setProperty('--Tphi', Tphi.toFixed(3)+'s');
+  root.style.setProperty('--Tphi2', Tphi2.toFixed(3)+'s');
+  root.style.setProperty('--Tphi3', Tphi3.toFixed(3)+'s');
+  root.style.setProperty('--Tmicro', (T1/PHI).toFixed(3)+'s');
+  root.style.setProperty('--Tchip', (T1/(PHI*PHI)).toFixed(3)+'s');
+  root.style.setProperty('--mesh-spin', Tphi3.toFixed(3)+'s');
+  root.style.setProperty('--mesh-breathe', Tphi2.toFixed(3)+'s');
+  cam.gyro.wx=b*(1/PHI);
+  cam.gyro.wy=b*(1/(PHI*PHI));
+  cam.gyro.wz=b*(1/(PHI*PHI*PHI));
+}
+syncTempoClock();
+
 function lerpCam(dtMs){
   /* frame-rate aware exp smooth — snappy enough, settles soft */
   const dt=Math.min(48, Math.max(8, dtMs||16));
@@ -8285,7 +8388,7 @@ function frame(now){
     const dts=Math.min(0.05, Math.max(0, dt)*0.001);
     const m=(W<=480)?0.88:(W<=900)?0.94:1; /* speedDetail: mobile keeps pace */
     /* impressShowpiece: slightly faster orbit during cinema open */
-    const cinemaSpin=cinemaOn?(2.15+0.45*((cinemaUntil-now)/3800)):1.55; /* magpieImpressSupersede: brisk */
+    const cinemaSpin=1; /* clientDataMeshSync: no speed fork — one TEMPO */
     /* omnidiscipline: conserved angular-momentum family — one φ organism tumble */
     const wx=cam.gyro.wx*(1+0.16*Math.sin(t*TEMPO.base*0.28))*cinemaSpin; /* φ-tree axis 1 */
     const wy=cam.gyro.wy*(1+0.14*Math.cos(t*(TEMPO.base*0.28/PHI)))*cinemaSpin; /* axis 1/φ */
