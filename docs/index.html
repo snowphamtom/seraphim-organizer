@@ -1299,6 +1299,35 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
   }
 }
 
+/* clientTrioAssets — spiral + tunnel-windows + hex-core (black keyed) */
+#bgField .tunnelWindowsKeyed{
+  position:absolute; inset:auto; z-index:2;
+  left:var(--seal-x, 50%);
+  top:var(--seal-y, 40%);
+  width:var(--seal-tunnel, min(120vmin, 900px));
+  height:var(--seal-tunnel, min(120vmin, 900px));
+  transform:translate(-50%, -50%) rotateY(var(--seal-yaw, 0deg)) rotateX(var(--seal-pitch, 0deg)) rotateZ(var(--seal-roll, 0deg));
+  transform-style:preserve-3d;
+  will-change:transform;
+  display:block !important;
+  opacity:0.88;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  filter:saturate(1.15) contrast(1.08) brightness(1.05);
+  backface-visibility:hidden;
+}
+#bgField .tunnelWindowsKeyed img{
+  display:block; width:100%; height:100%;
+  object-fit:contain; object-position:center;
+}
+#bgField .tunnelWindowsKeyed img.still{ display:none; }
+@media (prefers-reduced-motion:reduce){
+  #bgField .tunnelWindowsKeyed img.anim{ display:none !important; }
+  #bgField .tunnelWindowsKeyed img.still{ display:block !important; }
+  #bgField .tunnelWindowsKeyed{ transform:translate(-50%, -50%) !important; }
+}
+
+
 
 /* mid-band window defaults (JS also places) */
 #uploadBox{
@@ -1494,6 +1523,11 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
       <img src="media/spiral-field.jpg" alt="" width="500" height="1000" decoding="async" fetchpriority="high">
     </picture>
   </div>
+  <div class="tunnelWindowsKeyed" aria-hidden="true">
+    <img class="anim" src="media/tunnel-windows-keyed.webp" alt="" width="420" height="420" decoding="async">
+    <img class="still" src="media/tunnel-windows-keyed.png" alt="" width="420" height="420" decoding="async">
+  </div>
+
   <div class="hexCoreKeyed" aria-hidden="true">
     <img class="anim" src="media/hex-core-keyed.webp" alt="" width="480" height="480" decoding="async">
     <img class="still" src="media/hex-core-keyed.png" alt="" width="480" height="480" decoding="async">
@@ -4800,7 +4834,7 @@ function drawHexCoreWires(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawWindowLightnings(cx,cy,s,t){
+function drawWindowLightnings(cx,cy,s,t){ /* clientTrioAssets: quiet bolts — tunnel gif owns lightning */ return;
   /* clientWinLightning — jagged bolts: floating windows ↔ nearest dodeca verts */
   const pv=DODECA._projVerts;
   if(!pv||pv.length<4) return;
