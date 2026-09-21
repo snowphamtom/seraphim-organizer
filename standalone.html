@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2910,74 +2910,110 @@ function drawCyberNatureField(cx,cy,s,t){
       ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
     }
 
-    /* —— L5b INNER NODE CONNECTIONS — seal-bright plexus wired TO the dodeca —— */
-    if(!window._magpieInnerNetV2){
-      const N=thin?56:(mobile?100:160);
+    /* —— L5b NODE NET LATTICE — fill dodeca volume with dense lattice —— */
+    if(!window._magpieNodeLattice){
       const pts=[];
       const golden=Math.PI*(3-Math.sqrt(5));
-      for(let i=0;i<N;i++){
-        const y=1-(i/(N-1))*2;
-        const r=Math.sqrt(Math.max(0,1-y*y));
-        const th=golden*i;
-        const rad=0.22+0.58*((i*PHI)%1);
-        pts.push({
-          x:Math.cos(th)*r*rad,
-          y:y*rad*0.92,
-          z:Math.sin(th)*r*rad,
-          phase:i*0.37,
-          hub:((i*17)%5===0)?1:0
-        });
+      /* shell layers (nested spheres) + face midpoints + verts as anchors */
+      const shells=thin?[0.35,0.55,0.78]:(mobile?[0.28,0.45,0.62,0.82]:[0.22,0.38,0.52,0.66,0.82]);
+      const perShell=thin?18:(mobile?28:36);
+      for(let s=0;s<shells.length;s++){
+        const R=shells[s];
+        const n=perShell+(s*2);
+        for(let i=0;i<n;i++){
+          const y=1-(i/(n-1||1))*2;
+          const rr=Math.sqrt(Math.max(0,1-y*y));
+          const th=golden*(i+s*7);
+          pts.push({
+            x:Math.cos(th)*rr*R,
+            y:y*R*0.95,
+            z:Math.sin(th)*rr*R,
+            phase:(i+s*11)*0.31,
+            hub:(s===shells.length-1 && i%4===0)?1:(s===0?1:0),
+            shell:s
+          });
+        }
       }
+      /* center hub */
+      pts.push({x:0,y:0,z:0,phase:0,hub:1,shell:-1});
+      /* lattice edges: same-shell ring neighbors + radial to inner shell + kNN */
       const edges=[];
-      const kN=thin?4:(mobile?5:6);
-      for(let i=0;i<N;i++){
+      const seen=new Set();
+      const addE=(i,j)=>{
+        if(i===j) return;
+        const a=Math.min(i,j), b=Math.max(i,j);
+        const k=a+","+b;
+        if(seen.has(k)) return;
+        seen.add(k); edges.push([a,b]);
+      };
+      /* group by shell */
+      const byShell={};
+      for(let i=0;i<pts.length;i++){
+        const s=pts[i].shell;
+        (byShell[s]=byShell[s]||[]).push(i);
+      }
+      const shellKeys=Object.keys(byShell).map(Number).sort((a,b)=>a-b);
+      for(const s of shellKeys){
+        const arr=byShell[s];
+        /* ring lattice on shell */
+        for(let i=0;i<arr.length;i++){
+          addE(arr[i], arr[(i+1)%arr.length]);
+          if(arr.length>6) addE(arr[i], arr[(i+2)%arr.length]);
+        }
+      }
+      /* radial spokes between consecutive shells (nearest) */
+      for(let si=0;si<shellKeys.length-1;si++){
+        const A=byShell[shellKeys[si]], B=byShell[shellKeys[si+1]];
+        for(const ia of A){
+          let best=-1, bd=1e9;
+          const pa=pts[ia];
+          for(const ib of B){
+            const pb=pts[ib];
+            const d=(pa.x-pb.x)**2+(pa.y-pb.y)**2+(pa.z-pb.z)**2;
+            if(d<bd){bd=d;best=ib;}
+          }
+          if(best>=0) addE(ia,best);
+        }
+      }
+      /* extra kNN fill so volume reads as net */
+      const kN=thin?2:(mobile?3:4);
+      for(let i=0;i<pts.length;i++){
         const dlist=[];
-        for(let j=0;j<N;j++){
+        for(let j=0;j<pts.length;j++){
           if(i===j) continue;
           const a=pts[i], b=pts[j];
           dlist.push({j,d:(a.x-b.x)**2+(a.y-b.y)**2+(a.z-b.z)**2});
         }
         dlist.sort((u,v)=>u.d-v.d);
-        for(let q=0;q<kN;q++){
-          const j=dlist[q].j;
-          if(i<j) edges.push([i,j]);
-        }
+        for(let q=0;q<kN;q++) addE(i,dlist[q].j);
       }
-      const hubs=pts.map((p,i)=>({i,h:p.hub})).filter(o=>o.h);
-      for(let h=0;h<hubs.length;h++){
-        for(let g=h+1;g<hubs.length;g++){
-          if(((h+g)*13)%2===0) edges.push([hubs[h].i, hubs[g].i]);
-        }
-      }
-      window._magpieInnerNetV2={pts,edges};
+      window._magpieNodeLattice={pts,edges};
     }
     {
-      const net=window._magpieInnerNetV2;
-      const spin=t*TEMPO.base*0.55;
+      const net=window._magpieNodeLattice;
+      const spin=t*TEMPO.base*0.48;
       const cosS=Math.cos(spin), sinS=Math.sin(spin);
       const projected=[];
-      const local3=[];
+      const sc=1.06;
       for(let i=0;i<net.pts.length;i++){
         const p=net.pts[i];
         let x=p.x*cosS-p.z*sinS, z=p.x*sinS+p.z*cosS, y=p.y;
-        const breathe=1+0.045*Math.sin(t*TEMPO.base*2.2+p.phase);
+        const breathe=1+0.035*Math.sin(t*TEMPO.base*2.4+p.phase);
         x*=breathe; y*=breathe; z*=breathe;
-        local3.push({x,y,z});
         const pr=project(x,y,z,cx,cy,s);
         const nx=(x+1)*0.5, ny=(y+1)*0.5;
-        let hue=186 + nx*90 + (1-ny)*80;
-        if(Math.hypot(x,y,z)<0.35) hue=48+20*Math.sin(t*TEMPO.base+p.phase);
-        projected.push({x:pr[0],y:pr[1],d:pr[2],hue,hub:p.hub,phase:p.phase,lx:x,ly:y,lz:z});
+        let hue=186+nx*90+(1-ny)*80;
+        if(Math.hypot(x,y,z)<0.28) hue=48+18*Math.sin(t*TEMPO.base+p.phase);
+        projected.push({x:pr[0],y:pr[1],d:pr[2],hue,hub:p.hub,phase:p.phase,lx:x,ly:y,lz:z,shell:p.shell});
       }
-      /* WIRE TO DODECA — each node → 1–2 nearest seal verts (pv at sc=1.06) */
+      /* wire outer-shell nodes to nearest dodeca verts — lattice meets seal */
       if(pv && DODECA.verts){
-        const sealLoc=DODECA.verts; /* object-space verts; scale matches L5 sc */
-        const sc=1.06;
         for(let i=0;i<projected.length;i++){
           const P=projected[i];
+          if(P.shell<(thin?1:2) && P.shell!==-1 && !P.hub) continue; /* outer + hubs only */
           const dlist=[];
-          for(let vi=0;vi<sealLoc.length;vi++){
-            const v=sealLoc[vi];
+          for(let vi=0;vi<DODECA.verts.length;vi++){
+            const v=DODECA.verts[vi];
             const dx=P.lx-v.x*sc, dy=P.ly-v.y*sc, dz=P.lz-v.z*sc;
             dlist.push({vi,d:dx*dx+dy*dy+dz*dz});
           }
@@ -2986,57 +3022,56 @@ function drawCyberNatureField(cx,cy,s,t){
           for(let w=0;w<nWire;w++){
             const V=pv[dlist[w].vi];
             if(!V) continue;
-            const near=Math.max(0.2,Math.min(1,(P.d+V.d)*0.5+0.5));
-            const pulse=0.7+0.3*Math.sin(t*TEMPO.base*3.8+i*0.3+w);
-            const a=(0.42+0.38*near)*pulse*pulseBoost;
+            const near=Math.max(0.25,Math.min(1,(P.d+V.d)*0.5+0.5));
+            const pulse=0.75+0.25*Math.sin(t*TEMPO.base*3.6+i*0.25);
+            const a=(0.5+0.4*near)*pulse*pulseBoost;
             const g=ctx.createLinearGradient(P.x,P.y,V.x,V.y);
-            g.addColorStop(0,hsl(P.hue,100,68,a));
-            g.addColorStop(1,hsl(hues[dlist[w].vi%hues.length],96,64,a*0.85));
+            g.addColorStop(0,hsl(P.hue,100,70,a));
+            g.addColorStop(1,hsl(hues[dlist[w].vi%hues.length],96,64,a*0.9));
             ctx.strokeStyle=g;
-            ctx.lineWidth=(thin?1.0:(mobile?1.35:1.7))*(0.55+near*0.65); /* match seal stroke */
-            ctx.setLineDash([3+(i%2), 2]);
-            ctx.lineDashOffset=-(t*TEMPO.base*48+i*5);
+            ctx.lineWidth=(thin?1.05:(mobile?1.4:1.75))*(0.6+near*0.55);
+            ctx.setLineDash([4,2]);
+            ctx.lineDashOffset=-(t*TEMPO.base*52+i*4);
             ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(V.x,V.y); ctx.stroke();
           }
         }
         ctx.setLineDash([]);
       }
-      /* plexus edges — seal-bright hair→wire */
+      /* lattice edges — fill the cage */
       const edged=net.edges.map(([i,j],ei)=>{
         const A=projected[i], B=projected[j];
         return {A,B,ei,md:(A.d+B.d)*0.5};
       }).sort((u,v)=>u.md-v.md);
       for(let e=0;e<edged.length;e++){
-        const {A,B,md}=edged[e];
-        const near=Math.max(0.15,Math.min(1,md+0.55));
+        const {A,B,md,ei}=edged[e];
+        const near=Math.max(0.18,Math.min(1,md+0.55));
         const hue=(A.hue+B.hue)*0.5;
-        const a=(0.28+0.42*near)*(0.8+0.2*Math.sin(t*TEMPO.base*3.5+e*0.2))*pulseBoost;
-        ctx.strokeStyle=hsl(hue,96,66,Math.min(0.78,a));
-        ctx.lineWidth=thin?0.75:(mobile?1.05:1.35);
+        const a=(0.32+0.48*near)*(0.82+0.18*Math.sin(t*TEMPO.base*3.2+ei))*pulseBoost;
+        ctx.strokeStyle=hsl(hue,96,66,Math.min(0.85,a));
+        ctx.lineWidth=thin?0.85:(mobile?1.15:1.45);
         ctx.setLineDash([]);
         ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
       }
-      /* nodes — as visible as dodeca verts/edges */
+      /* nodes — seal-bright, fill volume */
       for(let i=0;i<projected.length;i++){
         const P=projected[i];
-        const near=Math.max(0.2,Math.min(1,P.d+0.55));
-        const tw=0.75+0.25*Math.sin(t*TEMPO.base*4.5+P.phase);
-        const rad=(P.hub?4.2:2.6)*(thin?0.75:(mobile?0.9:1.05))*(0.75+0.35*near)*tw;
-        const a=Math.min(0.98,(0.72+0.28*near)*tw*pulseBoost);
-        const g=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,rad*3.2);
-        g.addColorStop(0,hsl(P.hue,100,82,0.85*a));
-        g.addColorStop(0.4,hsl(P.hue,98,65,0.45*a));
+        const near=Math.max(0.22,Math.min(1,P.d+0.55));
+        const tw=0.78+0.22*Math.sin(t*TEMPO.base*4.2+P.phase);
+        const rad=(P.hub?4.5:2.8)*(thin?0.78:(mobile?0.92:1.08))*(0.78+0.32*near)*tw;
+        const a=Math.min(0.99,(0.78+0.22*near)*tw*pulseBoost);
+        const g=ctx.createRadialGradient(P.x,P.y,0,P.x,P.y,rad*3.4);
+        g.addColorStop(0,hsl(P.hue,100,84,0.9*a));
+        g.addColorStop(0.45,hsl(P.hue,98,66,0.42*a));
         g.addColorStop(1,"rgba(0,0,0,0)");
-        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(P.x,P.y,rad*3.2,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(P.x,P.y,rad*3.4,0,Math.PI*2); ctx.fill();
         ctx.fillStyle=hsl(P.hue,100,78,a);
         ctx.beginPath(); ctx.arc(P.x,P.y,rad,0,Math.PI*2); ctx.fill();
-        /* crisp core like seal jewels */
-        ctx.fillStyle=`rgba(255,255,255,${0.55*a})`;
-        ctx.beginPath(); ctx.arc(P.x-rad*0.2,P.y-rad*0.25,rad*0.28,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=`rgba(255,255,255,${0.6*a})`;
+        ctx.beginPath(); ctx.arc(P.x-rad*0.22,P.y-rad*0.26,rad*0.3,0,Math.PI*2); ctx.fill();
       }
     }
 
-    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */
+    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */    /* —— L6 nested secondary dodeca ~0.62 scale, opposite dash scroll —— */
     if(!thin || !reduceMotion){
       const nsc=0.62+0.015*Math.sin(t*TEMPO.base*2.4);
       nested=[];
