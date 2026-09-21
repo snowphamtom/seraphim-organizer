@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -3979,10 +3979,65 @@ html,body{
   z-index:3 !important;
 }
 
+
+/* clientLatticeDepth — lattice-dot tunnel GIF = FG→BG depth field (dots smaller toward hub) */
+#bgField{
+  --seal-x:50% !important;
+  --seal-y:50% !important;
+  background:#ffffff !important;
+}
+#bgField > .latticeDepth{
+  display:block !important; visibility:visible !important; opacity:0.65 !important;
+  position:absolute !important; inset:0 !important;
+  z-index:0 !important;
+  pointer-events:none !important; overflow:hidden !important;
+}
+#bgField > .latticeDepth .plane{
+  position:absolute !important;
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:max(165vw,165vh) !important;
+  height:max(165vw,165vh) !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:50% 50% !important;
+}
+#bgField > .latticeDepth picture,
+#bgField > .latticeDepth img{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  width:100% !important; height:100% !important;
+  object-fit:cover !important; object-position:50% 50% !important;
+  filter:none !important; mix-blend-mode:normal !important;
+  pointer-events:none !important;
+}
+#bgField > .latticeDepth img.still{ display:none !important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .latticeDepth img.anim,
+  #bgField > .latticeDepth picture{ display:none !important; }
+  #bgField > .latticeDepth img.still{ display:block !important; }
+}
+/* gifts soft under-wash — do not fight lattice or engine */
+#bgField > .giftStack{ z-index:1 !important; }
+#bgField > .giftStack .gift.hex{ opacity:0.12 !important; }
+#bgField > .giftStack .gift.iris{ opacity:0.10 !important; }
+#bgField > .giftStack .gift.mandala{ opacity:0.14 !important; }
+#bgField > .giftStack .gift.star{ opacity:0.11 !important; }
+#bgField > .giftStack .gift.scribble{ opacity:0.07 !important; }
+#fx{ z-index:3 !important; }
+
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientGiftEngine: 5 gifts → one field; dodeca = engine -->
+<div id="bgField" aria-hidden="true"><!-- clientLatticeDepth: lattice GIF depth + soft gifts; dodeca = engine -->
+  <div class="latticeDepth" aria-hidden="true">
+    <div class="plane">
+      <picture>
+        <source srcset="media/lattice-depth.webp" type="image/webp"/>
+        <img class="anim" src="media/lattice-depth.gif" alt="" decoding="async" fetchpriority="low" width="500" height="500"/>
+      </picture>
+      <img class="still" src="media/lattice-depth-still.webp" alt="" decoding="async" width="500" height="500"/>
+    </div>
+  </div>
   <div class="giftStack">
     <div class="gift hex" aria-hidden="true">
       <div class="plane">
@@ -8594,58 +8649,8 @@ function drawFieldWhisper(cx,cy,s,t){
 function drawAxisRoomGrid(cx,cy,s,t){ return; }
 
 function drawPerspectiveDotField(cx,cy,s,t){
-  /* clientOmniMid: FG→BG dots — large at rim (near), tiny at hub (far) */
-  if(reduceMotion){
-    ctx.save();
-    ctx.fillStyle="rgba(20,24,32,0.06)";
-    for(let i=0;i<48;i++){
-      const a=i*PHI*Math.PI*2, r=s*(0.2+0.7*((i%7)/7));
-      const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r*0.62;
-      const u=r/(s*0.95);
-      const rad=Math.max(0.4, 2.8*(1-u*0.85));
-      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill();
-    }
-    ctx.restore();
-    return;
-  }
-  ctx.save();
-  ctx.globalCompositeOperation="source-over";
-  const thin=W<=480, mobile=W<=900;
-  const rings=thin?7:(mobile?9:12);
-  const spokes=thin?18:(mobile?24:32);
-  const spin=t*TEMPO.base*(TEMPO.city||1/(PHI*PHI));
-  const breath=0.97+0.03*Math.sin(t*TEMPO.base*(TEMPO.nest||1/PHI));
-  for(let ri=0;ri<rings;ri++){
-    const u=(ri+0.5)/rings; /* 0 near hub (BG), 1 near rim (FG) */
-    const R=s*(0.12+0.92*u*u)*breath; /* quadratic: denser small near center */
-    const n=Math.max(8, Math.floor(spokes*(0.45+0.7*u)));
-    const a0=spin*(0.35+0.25*(1-u))+ri*0.11;
-    /* FG large dark dots, BG tiny */
-    const rad=Math.max(0.35, (thin?1.1:1.6)*(0.25+0.95*u*u));
-    const alpha=0.10+0.38*u*u;
-    ctx.fillStyle=`rgba(12,16,28,${alpha})`;
-    for(let k=0;k<n;k++){
-      const a=a0+k*(Math.PI*2/n);
-      const x=cx+Math.cos(a)*R;
-      const y=cy+Math.sin(a)*R*(0.58+0.08*u);
-      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill();
-    }
-  }
-  /* radial spoke dust — reinforces vanishing point at seal */
-  const spokeN=thin?10:(mobile?14:18);
-  for(let k=0;k<spokeN;k++){
-    const a=spin*0.2+k*(Math.PI*2/spokeN);
-    for(let j=1;j<=10;j++){
-      const u=j/10;
-      const R=s*(0.14+0.88*u*u);
-      const rad=Math.max(0.3,(thin?0.9:1.25)*u*u);
-      const x=cx+Math.cos(a)*R;
-      const y=cy+Math.sin(a)*R*(0.58+0.08*u);
-      ctx.fillStyle=`rgba(12,16,28,${0.06+0.28*u*u})`;
-      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill();
-    }
-  }
-  ctx.restore();
+  /* clientLatticeDepth: GIF lattice-depth is FG→BG authority — skip procedural double */
+  return;
 }
 
 function frame(now){
@@ -8687,7 +8692,7 @@ function frame(now){
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
-  ctx.clearRect(0,0,W,H); /* clientOmniMid: dots FG→BG; dodeca mid-ground omni engine */
+  ctx.clearRect(0,0,W,H); /* clientLatticeDepth: GIF depth field; dodeca mid-ground omni engine */
   const s=Math.min(W,H)*(W<=900?0.62:0.58)*cam.zoom; /* mid-ground scale — not full-bleed hero */
   const cx=W*0.5, cy=H*0.50+cam.panY*0.35; /* true center mid-ground */
   drawPerspectiveDotField(cx,cy,s,t);
