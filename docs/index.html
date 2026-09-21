@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -344,122 +344,111 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 /* —— uploadSortedDesk: obvious upload + sorted figures trays —— */
+
+/* markdownDesk — no windows/boxes; plain ## sections */
 #sortDesk{
   position:fixed;z-index:12;left:50%;transform:translateX(-50%);
-  bottom:max(14px,calc(var(--safe-b) + 12px));
-  width:min(720px,94vw);
-  display:flex;flex-direction:column;gap:.45rem;
+  bottom:max(10px,calc(var(--safe-b) + 8px));
+  width:min(640px,94vw);
+  display:flex;flex-direction:column;gap:.55rem;
   pointer-events:auto;
-  font-size:.72rem;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.68rem;line-height:1.45;
+  color:rgba(210,228,240,.88);
+  background:transparent;border:none;box-shadow:none;
+  text-shadow:0 1px 8px rgba(0,0,0,.65);
 }
 #uploadBox{
-  border:1.5px dashed rgba(86,212,224,.45);
-  border-radius:14px;
-  background:rgba(6,8,18,.72);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  box-shadow:0 8px 32px rgba(0,0,0,.45),0 0 24px rgba(86,180,194,.08);
-  padding:.7rem .85rem .75rem;
-  transition:border-color .2s, box-shadow .2s, background .2s;
+  border:none;border-radius:0;background:transparent;
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  box-shadow:none;padding:0;outline:none;
 }
-#uploadBox.drag,#uploadBox:focus-within{
-  border-color:var(--admit);
-  border-style:solid;
-  box-shadow:0 0 28px rgba(86,180,194,.28);
-  background:rgba(8,16,28,.82);
+#uploadBox.drag,#uploadBox:focus-within,#uploadBox.receiving,#uploadBox.sorting{
+  border:none;box-shadow:none;background:transparent;filter:none;
 }
 #uploadBox .uh{
-  display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;margin-bottom:.4rem;
+  display:flex;align-items:baseline;gap:.55rem;margin:0 0 .2rem;
 }
 #uploadBox .uh b{
-  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(86,212,224,.9);
+  font-size:.72rem;letter-spacing:.02em;text-transform:none;font-weight:700;
+  color:rgba(230,240,250,.92);
 }
-#uploadBox .uh span{font-size:.58rem;color:rgba(160,190,210,.55)}
+#uploadBox .uh b::before{content:"## ";color:rgba(86,212,224,.75);font-weight:600}
+#uploadBox .uh span{font-size:.58rem;color:rgba(160,190,210,.45);letter-spacing:0}
 #uploadBox .dropHint{
-  text-align:center;padding:.55rem .4rem .45rem;
-  color:rgba(200,230,245,.78);font-size:.78rem;letter-spacing:.02em;
+  text-align:left;padding:0 0 .25rem;color:rgba(180,205,220,.55);font-size:.62rem;
 }
 #uploadBox .dropHint em{color:var(--admit);font-style:normal;font-weight:600}
 #uploadBox .actions{
-  display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;justify-content:center;margin-top:.35rem;
+  display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;justify-content:flex-start;margin:.15rem 0 .25rem;
 }
 #uploadBox .actions .filebtn,
-#uploadBox .actions button{
-  display:inline-flex!important;align-items:center;justify-content:center;
-  min-height:38px;padding:.35rem .7rem;border-radius:8px;cursor:pointer;
+#uploadBox .actions button,
+#uploadBox .actions select{
+  appearance:none;background:transparent!important;border:none!important;box-shadow:none!important;
+  color:rgba(86,212,224,.85)!important;padding:0!important;min-height:auto!important;
+  border-radius:0!important;font:inherit;font-size:.62rem;cursor:pointer;text-decoration:underline;
+  text-underline-offset:2px;
 }
-#uploadBox .actions .filebtn{
-  background:rgba(86,180,194,.12);border:1px solid rgba(86,212,224,.4);color:#dff;
-}
-#uploadBox .actions #runSort{
-  background:rgba(86,180,194,.28);border:1px solid rgba(86,212,224,.65);
-  color:#e8fffe;font-weight:700;letter-spacing:.06em;
-}
-#uploadBox .actions #runSort:hover{box-shadow:0 0 16px rgba(86,180,194,.35)}
+#uploadBox .actions #runSort{color:rgba(200,255,250,.95)!important;font-weight:700;text-decoration:none}
+#uploadBox .actions #runSort::before{content:"> ";opacity:.7}
+#uploadBox .actions #clearDesk,#uploadBox .actions .ghost-chip{color:rgba(160,190,210,.55)!important;text-decoration:none}
 #uploadBox textarea{
-  display:block!important;width:100%;margin-top:.4rem;min-height:52px;resize:vertical;
-  background:rgba(0,0,0,.35);border:1px solid rgba(100,200,255,.22);
-  border-radius:8px;color:#e8f4ff;padding:.4rem .5rem;font:inherit;font-size:.68rem;
+  display:block!important;width:100%;margin:0;min-height:64px;resize:vertical;
+  background:transparent;border:none;border-left:2px solid rgba(86,212,224,.25);
+  border-radius:0;color:rgba(220,235,248,.9);padding:.15rem .55rem;
+  font:inherit;font-size:.62rem;line-height:1.4;outline:none;
 }
-#uploadBox textarea::placeholder{color:rgba(160,190,210,.4)}
+#uploadBox textarea::placeholder{color:rgba(140,170,190,.35)}
+#uploadBox .scanBar{display:none;height:1px;margin:.25rem 0 0;border-radius:0;
+  background:linear-gradient(90deg,transparent,var(--admit),var(--release),transparent);background-size:200% 100%}
+#uploadBox.sorting .scanBar{display:block;animation:scanSweep 1s linear infinite}
 #sortedFigures{
-  display:grid;grid-template-columns:1fr 1fr;gap:.4rem;
-  min-height:0;
+  display:grid;grid-template-columns:1fr 1fr;gap:.75rem 1.2rem;min-height:0;
 }
 #sortedFigures .tray{
-  border-radius:12px;padding:.4rem .45rem .5rem;
-  background:rgba(6,8,18,.68);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border:1px solid rgba(100,200,255,.18);
-  max-height:22vh;overflow:auto;
+  border:none;border-radius:0;padding:0;background:transparent;
+  backdrop-filter:none;-webkit-backdrop-filter:none;max-height:22vh;overflow:auto;
 }
-#sortedFigures .tray.admit{border-color:rgba(86,180,194,.35)}
-#sortedFigures .tray.release{border-color:rgba(198,100,192,.32)}
 #sortedFigures .tray h3{
-  margin:0 0 .3rem;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;
-  font-weight:600;opacity:.85;
+  margin:0 0 .25rem;font-size:.72rem;letter-spacing:.02em;text-transform:none;
+  font-weight:700;opacity:1;float:none;
 }
-#sortedFigures .tray.admit h3{color:var(--admit)}
-#sortedFigures .tray.release h3{color:var(--release)}
+#sortedFigures .tray.admit h3{color:rgba(86,212,224,.95)}
+#sortedFigures .tray.release h3{color:rgba(220,140,210,.9)}
+#sortedFigures .tray.admit h3::before{content:"## ";opacity:.75}
+#sortedFigures .tray.release h3::before{content:"## ";opacity:.75}
 #sortedFigures .tray .count{
-  float:right;font-family:ui-monospace,monospace;font-size:.7em;opacity:.7;
+  float:none;margin-left:.35rem;font-family:inherit;font-size:.85em;opacity:.55;font-weight:500;
 }
-#sortedFigures .chips{display:flex;flex-wrap:wrap;gap:.28rem;clear:both}
+#sortedFigures .tray .count::before{content:"(";opacity:.7}
+#sortedFigures .tray .count::after{content:")";opacity:.7}
+#sortedFigures .chips{display:block;clear:both}
 #sortedFigures .chipFig{
-  display:inline-flex;align-items:center;gap:.2rem;
-  max-width:100%;padding:.18rem .4rem;border-radius:999px;
-  font-size:.58rem;line-height:1.2;cursor:default;
-  border:1px solid transparent;background:rgba(255,255,255,.04);
-  color:rgba(230,238,248,.88);
+  display:block;max-width:100%;padding:.05rem 0;border-radius:0;margin:0;
+  font-size:.6rem;line-height:1.35;cursor:pointer;
+  border:none;background:transparent;color:rgba(210,228,240,.82);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-#sortedFigures .tray.admit .chipFig{
-  border-color:rgba(86,180,194,.35);background:rgba(86,180,194,.1);
-}
-#sortedFigures .tray.release .chipFig{
-  border-color:rgba(198,100,192,.32);background:rgba(198,100,192,.08);
-}
-#sortedFigures .chipFig .k{
-  font-size:.85em;opacity:.55;font-family:ui-monospace,monospace;
-}
-#sortedFigures .chipFig .ttl{
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:14em;
-}
+#sortedFigures .chipFig::before{content:"- ";color:rgba(160,190,210,.45)}
+#sortedFigures .tray.admit .chipFig,
+#sortedFigures .tray.release .chipFig{border:none;background:transparent}
+#sortedFigures .chipFig .k{font-size:.9em;opacity:.45;margin-right:.25rem}
+#sortedFigures .chipFig .k::after{content:":"}
+#sortedFigures .chipFig .ttl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:none}
 #sortedFigures .empty{
-  font-size:.58rem;color:rgba(160,190,210,.4);padding:.25rem .1rem;
+  font-size:.58rem;color:rgba(140,170,190,.35);padding:.1rem 0;font-style:italic;
 }
-#sortDesk .deskNote{
-  text-align:center;font-size:.52rem;color:rgba(160,190,210,.4);letter-spacing:.04em;
-}
+#sortedFigures .empty::before{content:"_ ";opacity:.5}
+#sortDesk .deskNote{display:none}
 @media (max-width:900px){
   #sortDesk{width:min(100vw - 12px, 640px);bottom:max(8px,calc(var(--safe-b) + 8px))}
-  #sortedFigures{grid-template-columns:1fr 1fr;gap:.3rem}
+  #sortedFigures{grid-template-columns:1fr 1fr;gap:.4rem .8rem}
   #sortedFigures .tray{max-height:16vh}
-  #uploadBox .dropHint{font-size:.7rem;padding:.4rem}
 }
 @media (max-width:480px){
-  #sortedFigures{grid-template-columns:1fr;max-height:28vh}
-  #sortedFigures .tray{max-height:12vh}
-  /* leave seal room: slightly compact */
-  #uploadBox{padding:.55rem .6rem}
+  #sortedFigures{grid-template-columns:1fr;max-height:32vh}
+  #sortedFigures .tray{max-height:14vh}
 }
 
 /* uploadSortFX — intake pulse + figure arrival */
@@ -528,35 +517,35 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </header>
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
 
-<section id="sortDesk" aria-label="Disorganized content in, organized figures out">
+<section id="sortDesk" aria-label="Disorganized content in, organized and aside out">
   <div id="uploadBox" tabindex="0">
     <div class="uh"><b>Disorganized</b><span>csv · tsv · json · txt · md</span></div>
-    <div class="dropHint">Drop disorganized content, or <em>choose</em> / paste below</div>
+    <div class="dropHint">drop or paste disorganized content · <em>choose</em> a file</div>
     <div class="actions">
-      <label class="filebtn">Choose file<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
-      <button type="button" id="runSort" class="primary">Sort → figures</button>
-      <button type="button" id="clearDesk" class="ghost">Clear</button>
+      <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
+      <button type="button" id="runSort" class="primary">sort</button>
+      <button type="button" id="clearDesk" class="ghost">clear</button>
       <select id="demoDesk" class="ghost-chip" aria-label="Demo content" title="Demo content">
-        <option value="">Demo…</option>
+        <option value="">demo…</option>
         <option value="quiet">Quiet Noise</option>
         <option value="keepers">Seal Keepers</option>
         <option value="mixed">Mixed Drift</option>
         <option value="nonsense">Constant nonsense</option>
       </select>
     </div>
-    <textarea id="pasteDesk" placeholder="paste disorganized rows…" rows="2"></textarea>
+    <textarea id="pasteDesk" placeholder="- paste disorganized content…" rows="3"></textarea>
   </div>
   <div id="sortedFigures" aria-live="polite">
     <div class="tray admit" id="trayAdmit">
       <h3>Organized <span class="count" id="figAdmitN">0</span></h3>
-      <div class="chips" id="figAdmit"><div class="empty">Sorted keepers appear here</div></div>
+      <div class="chips" id="figAdmit"><div class="empty">nothing organized yet</div></div>
     </div>
     <div class="tray release" id="trayRelease">
       <h3>Aside <span class="count" id="figReleaseN">0</span></h3>
-      <div class="chips" id="figRelease"><div class="empty">Soft aside appear here</div></div>
+      <div class="chips" id="figRelease"><div class="empty">nothing aside yet</div></div>
     </div>
   </div>
-  <div class="deskNote">figures = sort outcomes · orbit seal still sorts in motion</div>
+  
 </section>
 
 <aside id="intake" title="long-press or press I to reveal instrument">
@@ -977,7 +966,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -3290,14 +3279,14 @@ function renderSortedFigures(verdicts){
     const el=document.createElement("div");
     el.className="chipFig"; el.title=(v.cause||"")+" · "+(v.kind||"");
     el.dataset.id=v.id;
-    el.innerHTML="<span class=\"k\">"+(v.kind||"?")+"</span><span class=\"ttl\">"+esc((v.t||"").slice(0,48))+"</span>";
+    el.innerHTML="<span class=\"k\">"+(v.kind||"x")+"</span><span class=\"ttl\">"+esc((v.t||"").slice(0,72))+"</span>";
     el.addEventListener("click",()=>focusNode(v.id));
     return el;
   };
   a.innerHTML=""; r.innerHTML="";
-  if(!admits.length) a.innerHTML="<div class=\"empty\">Sorted keepers appear here</div>";
+  if(!admits.length) a.innerHTML="<div class=\"empty\">nothing organized yet</div>";
   else admits.slice(-40).reverse().forEach(v=>a.appendChild(mk(v)));
-  if(!releases.length) r.innerHTML="<div class=\"empty\">Soft outside S<sub>H</sub> appear here</div>";
+  if(!releases.length) r.innerHTML="<div class=\"empty\">nothing aside yet</div>";
   else releases.slice(-40).reverse().forEach(v=>r.appendChild(mk(v)));
 }
 function deskText(){ return ($("pasteDesk")&&$("pasteDesk").value)||($("paste")&&$("paste").value)||""; }
