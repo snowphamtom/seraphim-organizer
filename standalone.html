@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -342,6 +342,128 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 
+
+/* —— uploadSortedDesk: obvious upload + sorted figures trays —— */
+#sortDesk{
+  position:fixed;z-index:12;left:50%;transform:translateX(-50%);
+  bottom:max(14px,calc(var(--safe-b) + 12px));
+  width:min(720px,94vw);
+  display:flex;flex-direction:column;gap:.45rem;
+  pointer-events:auto;
+  font-size:.72rem;
+}
+#uploadBox{
+  border:1.5px dashed rgba(86,212,224,.45);
+  border-radius:14px;
+  background:rgba(6,8,18,.72);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 8px 32px rgba(0,0,0,.45),0 0 24px rgba(86,180,194,.08);
+  padding:.7rem .85rem .75rem;
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+#uploadBox.drag,#uploadBox:focus-within{
+  border-color:var(--admit);
+  border-style:solid;
+  box-shadow:0 0 28px rgba(86,180,194,.28);
+  background:rgba(8,16,28,.82);
+}
+#uploadBox .uh{
+  display:flex;align-items:baseline;justify-content:space-between;gap:.5rem;margin-bottom:.4rem;
+}
+#uploadBox .uh b{
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(86,212,224,.9);
+}
+#uploadBox .uh span{font-size:.58rem;color:rgba(160,190,210,.55)}
+#uploadBox .dropHint{
+  text-align:center;padding:.55rem .4rem .45rem;
+  color:rgba(200,230,245,.78);font-size:.78rem;letter-spacing:.02em;
+}
+#uploadBox .dropHint em{color:var(--admit);font-style:normal;font-weight:600}
+#uploadBox .actions{
+  display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;justify-content:center;margin-top:.35rem;
+}
+#uploadBox .actions .filebtn,
+#uploadBox .actions button{
+  display:inline-flex!important;align-items:center;justify-content:center;
+  min-height:38px;padding:.35rem .7rem;border-radius:8px;cursor:pointer;
+}
+#uploadBox .actions .filebtn{
+  background:rgba(86,180,194,.12);border:1px solid rgba(86,212,224,.4);color:#dff;
+}
+#uploadBox .actions #runSort{
+  background:rgba(86,180,194,.28);border:1px solid rgba(86,212,224,.65);
+  color:#e8fffe;font-weight:700;letter-spacing:.06em;
+}
+#uploadBox .actions #runSort:hover{box-shadow:0 0 16px rgba(86,180,194,.35)}
+#uploadBox textarea{
+  display:block!important;width:100%;margin-top:.4rem;min-height:52px;resize:vertical;
+  background:rgba(0,0,0,.35);border:1px solid rgba(100,200,255,.22);
+  border-radius:8px;color:#e8f4ff;padding:.4rem .5rem;font:inherit;font-size:.68rem;
+}
+#uploadBox textarea::placeholder{color:rgba(160,190,210,.4)}
+#sortedFigures{
+  display:grid;grid-template-columns:1fr 1fr;gap:.4rem;
+  min-height:0;
+}
+#sortedFigures .tray{
+  border-radius:12px;padding:.4rem .45rem .5rem;
+  background:rgba(6,8,18,.68);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(100,200,255,.18);
+  max-height:22vh;overflow:auto;
+}
+#sortedFigures .tray.admit{border-color:rgba(86,180,194,.35)}
+#sortedFigures .tray.release{border-color:rgba(198,100,192,.32)}
+#sortedFigures .tray h3{
+  margin:0 0 .3rem;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:600;opacity:.85;
+}
+#sortedFigures .tray.admit h3{color:var(--admit)}
+#sortedFigures .tray.release h3{color:var(--release)}
+#sortedFigures .tray .count{
+  float:right;font-family:ui-monospace,monospace;font-size:.7em;opacity:.7;
+}
+#sortedFigures .chips{display:flex;flex-wrap:wrap;gap:.28rem;clear:both}
+#sortedFigures .chipFig{
+  display:inline-flex;align-items:center;gap:.2rem;
+  max-width:100%;padding:.18rem .4rem;border-radius:999px;
+  font-size:.58rem;line-height:1.2;cursor:default;
+  border:1px solid transparent;background:rgba(255,255,255,.04);
+  color:rgba(230,238,248,.88);
+}
+#sortedFigures .tray.admit .chipFig{
+  border-color:rgba(86,180,194,.35);background:rgba(86,180,194,.1);
+}
+#sortedFigures .tray.release .chipFig{
+  border-color:rgba(198,100,192,.32);background:rgba(198,100,192,.08);
+}
+#sortedFigures .chipFig .k{
+  font-size:.85em;opacity:.55;font-family:ui-monospace,monospace;
+}
+#sortedFigures .chipFig .ttl{
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:14em;
+}
+#sortedFigures .empty{
+  font-size:.58rem;color:rgba(160,190,210,.4);padding:.25rem .1rem;
+}
+#sortDesk .deskNote{
+  text-align:center;font-size:.52rem;color:rgba(160,190,210,.4);letter-spacing:.04em;
+}
+@media (max-width:900px){
+  #sortDesk{width:min(100vw - 12px, 640px);bottom:max(8px,calc(var(--safe-b) + 8px))}
+  #sortedFigures{grid-template-columns:1fr 1fr;gap:.3rem}
+  #sortedFigures .tray{max-height:16vh}
+  #uploadBox .dropHint{font-size:.7rem;padding:.4rem}
+}
+@media (max-width:480px){
+  #sortedFigures{grid-template-columns:1fr;max-height:28vh}
+  #sortedFigures .tray{max-height:12vh}
+  /* leave seal room: slightly compact */
+  #uploadBox{padding:.55rem .6rem}
+}
+/* hide old collapsed intake glyph — desk replaces it */
+#intake{display:none!important}
+
 </style>
 </head>
 <body>
@@ -360,6 +482,38 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   </div>
 </header>
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
+
+<section id="sortDesk" aria-label="Upload dump and view sorted figures">
+  <div id="uploadBox" tabindex="0">
+    <div class="uh"><b>Upload dump</b><span>csv · tsv · json · txt · md</span></div>
+    <div class="dropHint">Drop a file here, or <em>choose</em> / paste below</div>
+    <div class="actions">
+      <label class="filebtn">Choose file<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
+      <button type="button" id="runSort" class="primary">Sort → figures</button>
+      <button type="button" id="clearDesk" class="ghost">Clear</button>
+      <select id="demoDesk" class="ghost-chip" aria-label="Demo dumps" title="Demo dumps">
+        <option value="">Demo…</option>
+        <option value="quiet">Quiet Noise</option>
+        <option value="keepers">Seal Keepers</option>
+        <option value="mixed">Mixed Drift</option>
+        <option value="nonsense">Constant nonsense</option>
+      </select>
+    </div>
+    <textarea id="pasteDesk" placeholder="paste dump rows here…" rows="2"></textarea>
+  </div>
+  <div id="sortedFigures" aria-live="polite">
+    <div class="tray admit" id="trayAdmit">
+      <h3>Crystallized <span class="count" id="figAdmitN">0</span></h3>
+      <div class="chips" id="figAdmit"><div class="empty">Sorted keepers appear here</div></div>
+    </div>
+    <div class="tray release" id="trayRelease">
+      <h3>Released <span class="count" id="figReleaseN">0</span></h3>
+      <div class="chips" id="figRelease"><div class="empty">Soft outside S<sub>H</sub> appear here</div></div>
+    </div>
+  </div>
+  <div class="deskNote">figures = gate verdicts · orbit seal still sorts in motion</div>
+</section>
+
 <aside id="intake" title="long-press or press I to reveal instrument">
   <div class="sec-h"><span>INTAKE</span>
     <button type="button" class="ghost" id="btnMore" title="Reveal instrument (I)" aria-label="Reveal instrument" aria-expanded="false">···</button>
@@ -777,7 +931,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -2986,7 +3140,78 @@ function pushLog(verdicts){
   });
   log.innerHTML=""; log.appendChild(frag);
 }
-function render(res){lastResult=res; updateMetrics(res); pushLog(res.verdicts); $("dlJson").disabled=false; $("dlCsv").disabled=false; ingestVerdicts(res.verdicts);}
+
+function renderSortedFigures(verdicts){
+  const a=$("figAdmit"), r=$("figRelease"), an=$("figAdmitN"), rn=$("figReleaseN");
+  if(!a||!r) return;
+  const admits=(verdicts||[]).filter(v=>v.decision==="admit");
+  const releases=(verdicts||[]).filter(v=>v.decision!=="admit");
+  if(an) an.textContent=String(admits.length);
+  if(rn) rn.textContent=String(releases.length);
+  const mk=(v)=>{
+    const el=document.createElement("div");
+    el.className="chipFig"; el.title=(v.cause||"")+" · "+(v.kind||"");
+    el.dataset.id=v.id;
+    el.innerHTML="<span class=\"k\">"+(v.kind||"?")+"</span><span class=\"ttl\">"+esc((v.t||"").slice(0,48))+"</span>";
+    el.addEventListener("click",()=>focusId(v.id));
+    return el;
+  };
+  a.innerHTML=""; r.innerHTML="";
+  if(!admits.length) a.innerHTML="<div class=\"empty\">Sorted keepers appear here</div>";
+  else admits.slice(-40).reverse().forEach(v=>a.appendChild(mk(v)));
+  if(!releases.length) r.innerHTML="<div class=\"empty\">Soft outside S<sub>H</sub> appear here</div>";
+  else releases.slice(-40).reverse().forEach(v=>r.appendChild(mk(v)));
+}
+function deskText(){ return ($("pasteDesk")&&$("pasteDesk").value)||($("paste")&&$("paste").value)||""; }
+function setDeskText(t){
+  if($("pasteDesk")) $("pasteDesk").value=t;
+  if($("paste")) $("paste").value=t;
+}
+function runDeskSort(){
+  const text=deskText();
+  if(!String(text).trim()){
+    tip&&(tip.textContent="Drop or paste a dump first", tip.className="");
+    return;
+  }
+  organize(parseDump("paste.txt", text));
+}
+function wireSortDesk(){
+  const box=$("uploadBox"), file=$("fileDesk"), run=$("runSort"), clr=$("clearDesk"), demo=$("demoDesk"), ta=$("pasteDesk");
+  if(!box) return;
+  const over=e=>{e.preventDefault();e.stopPropagation();box.classList.add("drag");};
+  const leave=e=>{e.preventDefault();box.classList.remove("drag");};
+  ["dragenter","dragover"].forEach(ev=>box.addEventListener(ev,over));
+  ["dragleave","drop"].forEach(ev=>box.addEventListener(ev,leave));
+  box.addEventListener("drop", async e=>{
+    e.preventDefault(); box.classList.remove("drag");
+    const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+    if(f){ const t=await f.text(); setDeskText(t); organize(parseDump(f.name,t)); return; }
+    const text=e.dataTransfer&&e.dataTransfer.getData("text/plain");
+    if(text){ setDeskText(text); organize(parseDump("paste.txt",text)); }
+  });
+  if(file) file.addEventListener("change", async e=>{
+    const f=e.target.files&&e.target.files[0]; if(!f) return;
+    const t=await f.text(); setDeskText(t); organize(parseDump(f.name,t));
+  });
+  if(run) run.addEventListener("click", runDeskSort);
+  if(clr) clr.addEventListener("click", ()=>{
+    setDeskText(""); if($("fileDesk")) $("fileDesk").value="";
+    updateMetrics(null); $("log")&&($("log").innerHTML="");
+    renderSortedFigures([]);
+    if($("dlJson")) $("dlJson").disabled=true; if($("dlCsv")) $("dlCsv").disabled=true;
+  });
+  if(demo) demo.addEventListener("change", ()=>{
+    const k=demo.value; if(!k) return;
+    if(k==="nonsense"){ startConstantExample(); demo.value=""; return; }
+    const body=STORIES[k]; if(!body) return;
+    setDeskText(body); organize(parseDump(k+".csv", body)); demo.value="";
+  });
+  if(ta) ta.addEventListener("keydown", e=>{
+    if((e.metaKey||e.ctrlKey)&&e.key==="Enter"){ e.preventDefault(); runDeskSort(); }
+  });
+}
+
+function render(res){lastResult=res; updateMetrics(res); pushLog(res.verdicts); renderSortedFigures(res.verdicts); if($("dlJson"))$("dlJson").disabled=false; if($("dlCsv"))$("dlCsv").disabled=false; ingestVerdicts(res.verdicts);}
 function focusNode(id){
   focusId=id;
   document.querySelectorAll("#log .ev").forEach(el=>{el.classList.toggle("focus",String(el.dataset.id)===String(id));});
