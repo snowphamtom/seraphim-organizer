@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light dark"/>
 <meta name="description" content="Seraphim organizer: drop disorganized content, get an organized field. Soft."/>
-<meta name="theme-color" content="#000000"/>
+<meta name="theme-color" content="#0a0014"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -6214,6 +6214,208 @@ html,body{
 
 /* end masterpieceCanonRestore */
 
+
+/* ========== noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres ========== */
+/* Purple monochrome ramp: near-white lilac → violet → deep purple → near-black void.
+   Gold spheres (gold-dotfield 4.5s loop) = MASTER clock; φ family locked to --gold-T.
+   No visible stationary straight field lines — curves / gyro / TEMPO / demote. */
+
+:root{
+  --void:#0a0014 !important;
+  --ink:#f3e8ff !important;          /* near-white lilac */
+  --mute:#b794f6 !important;         /* soft lilac */
+  --admit:#c4b5fd !important;        /* light violet */
+  --release:#a78bfa !important;      /* violet */
+  --mint:#e9d5ff !important;         /* lilac highlight */
+  --cyan:#c4b5fd !important;         /* was cyan → lilac */
+  --mag:#7c3aed !important;          /* deep violet */
+  --warn:#e9d5ff !important;         /* purple-gold / lilac accent */
+  --gold:#e9d5ff !important;
+  --amber:#d8b4fe !important;
+  --glass:rgba(10,0,20,0.78) !important;
+  --line:rgba(196,181,253,0.28) !important;
+  /* motionSyncGoldSpheres — gold-dotfield webp = 90×50ms = 4.5s MASTER */
+  --gold-T:4.5s !important;
+  --field-T:calc(var(--gold-T) / 1.6180339887) !important;
+  --field-T2:var(--gold-T) !important;
+  --field-T3:calc(var(--gold-T) * 1.6180339887) !important;
+  --Tphi:calc(var(--gold-T) / 1.6180339887) !important;
+  --Tphi2:var(--gold-T) !important;
+  --Tphi3:calc(var(--gold-T) * 1.6180339887) !important;
+  --T1:calc(var(--gold-T) / 2.6180339887) !important;
+  --holo-wash:linear-gradient(135deg,rgba(233,213,255,0.08),rgba(124,58,237,0.06),rgba(46,16,80,0.08)) !important;
+}
+html,body{
+  background:#0a0014 !important;
+  color:var(--ink) !important;
+}
+#bgField{
+  background:#05000c !important;
+}
+
+/* —— Purple grade across media layers (hue→violet family; gold→lilac/purple-gold) —— */
+#bgField > .hexIridescentBg picture,
+#bgField > .hexIridescentBg img{
+  /* soften hex straight-edge read + purple mono */
+  filter:
+    brightness(0.55) contrast(1.05) saturate(0.55)
+    sepia(0.35) hue-rotate(230deg) blur(0.55px) !important;
+}
+#bgField > .goldDotfield picture,
+#bgField > .goldDotfield img{
+  filter:
+    drop-shadow(0 0 8px rgba(233,213,255,.42))
+    drop-shadow(0 0 22px rgba(167,139,250,.28))
+    brightness(1.12) contrast(1.22) saturate(0.85)
+    sepia(0.22) hue-rotate(245deg) !important; /* purple-gold / lilac nodes */
+}
+#bgField > .omniGyroRig .goldNetwork picture,
+#bgField > .omniGyroRig .goldNetwork img{
+  filter:
+    drop-shadow(0 0 10px rgba(233,213,255,.50))
+    drop-shadow(0 0 26px rgba(124,58,237,.30))
+    brightness(1.10) contrast(1.24) saturate(0.88)
+    sepia(0.18) hue-rotate(248deg) !important;
+}
+#bgField > .omniGyroRig .keyedDodecaWire picture,
+#bgField > .omniGyroRig .keyedDodecaWire img{
+  filter:
+    drop-shadow(0 0 10px rgba(196,181,253,.48))
+    drop-shadow(0 0 22px rgba(167,139,250,.28))
+    brightness(0.95) contrast(1.12) saturate(0.70)
+    sepia(0.25) hue-rotate(255deg) blur(0.35px) !important; /* soft curved read */
+}
+#bgField > .omniGyroRig .seedInDodeca picture,
+#bgField > .omniGyroRig .seedInDodeca img{
+  filter:
+    drop-shadow(0 0 8px rgba(243,232,255,.55))
+    drop-shadow(0 0 18px rgba(167,139,250,.40))
+    brightness(1.08) contrast(1.18) saturate(0.80)
+    sepia(0.15) hue-rotate(250deg) !important;
+}
+
+/* Depth vignette — purple mono */
+#bgField::before{
+  background:
+    radial-gradient(ellipse 28% 22% at var(--seal-x,50%) var(--seal-y,42%),
+      rgba(243,232,255,0.12) 0%,
+      rgba(167,139,250,0.08) 30%,
+      rgba(76,29,149,0.05) 55%,
+      transparent 74%),
+    radial-gradient(ellipse 88% 78% at var(--seal-x,50%) var(--seal-y,42%),
+      transparent 40%, rgba(10,0,20,0.35) 100%),
+    radial-gradient(ellipse 100% 92% at 50% 100%, rgba(5,0,12,0.78) 0%, transparent 56%),
+    radial-gradient(ellipse 96% 72% at 50% 0%, rgba(8,0,18,0.55) 0%, transparent 50%) !important;
+}
+/* Kill CRT scanline straight rules in field (stationary straight strokes) */
+#bgField::after{
+  background:
+    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(5,0,12,0.45) 100%) !important;
+  opacity:0.55 !important;
+  mix-blend-mode:multiply !important;
+}
+
+/* —— noStaticStraightLines: demote leftover straight-edge / grid / wire / beam chrome in field —— */
+#bgField > .neonLattice,
+#bgField > .latticeDepth,
+#bgField > .latticeField,
+#bgField > .keyedStarField,
+#bgField > .crystalWash,
+#bgField > .honeyBack,
+#bgField > .hexVoid,
+#bgField > .engineGem,
+#bgField > .coreSeedHub,
+#bgField .tunnelGrid,
+#bgField .beamRainWhisper,
+#bgField .hexCore .beamTrio,
+#bgField .hexCore .voxelSpin{
+  opacity:0 !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+/* motionSyncGoldSpheres — gold-dotfield MASTER; network/seed lock to --gold-T family, phase 0 */
+#bgField > .goldDotfield .plane{
+  animation:goldDotfieldPhiPulse var(--gold-T,4.5s) ease-in-out infinite !important;
+  animation-delay:0s !important;
+}
+#bgField > .omniGyroRig .goldNetwork .plane{
+  animation:goldNetworkPhiMotion var(--field-T3,calc(4.5s * 1.6180339887)) linear infinite !important;
+  animation-delay:0s !important;
+}
+#bgField > .omniGyroRig .seedInDodeca .plane,
+#bgField > .omniGyroRig .seedInDodeca{
+  animation:seedInDodecaPulse var(--gold-T,4.5s) ease-in-out infinite !important;
+  animation-delay:0s !important;
+}
+/* wire rides omni gyro only — no second CSS spin clock */
+#bgField > .omniGyroRig .keyedDodecaWire .plane{
+  animation:none !important;
+}
+
+/* Desk usable — purple glass; borders OK for usability (not field strokes) */
+#sortDesk{
+  color:rgba(243,232,255,.96) !important;
+  background:
+    linear-gradient(180deg,
+      rgba(12,0,24,0.28) 0%,
+      rgba(10,0,20,0.88) 22%,
+      rgba(5,0,12,0.97) 100%) !important;
+  border:1px solid rgba(196,181,253,0.22) !important;
+  box-shadow:
+    0 -8px 32px rgba(5,0,12,.65),
+    inset 0 1px 0 rgba(233,213,255,.08) !important;
+  backdrop-filter:blur(12px) saturate(0.95) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(0.95) !important;
+}
+#sortedFigures .tray.admit h3{
+  color:#e9d5ff !important;
+  text-shadow:0 0 14px rgba(167,139,250,0.55), 0 0 4px rgba(243,232,255,0.2) !important;
+}
+#sortedFigures .tray.release h3{
+  color:#c4b5fd !important;
+  text-shadow:0 0 14px rgba(124,58,237,0.50), 0 0 4px rgba(233,213,255,0.15) !important;
+}
+#uploadBox,#pasteDesk{
+  background:rgba(10,0,20,0.82) !important;
+  border-color:rgba(196,181,253,0.24) !important;
+}
+#uploadBox .uh b, #uploadBox b{ color:rgba(243,232,255,0.98) !important; }
+#dataRail, #specBar{
+  color:rgba(196,181,253,0.75) !important;
+  border-color:rgba(124,58,237,0.25) !important;
+}
+
+/* reduced-motion: still CURVES / soft shapes — hide frozen straight wire edges; keep soft purple stills */
+@media (prefers-reduced-motion:reduce){
+  #bgField > .omniGyroRig .keyedDodecaWire{
+    opacity:0.28 !important;
+    filter:blur(1.2px) !important;
+  }
+  #bgField > .omniGyroRig .keyedDodecaWire img.still{
+    filter:
+      brightness(0.9) contrast(1.05) saturate(0.55)
+      sepia(0.3) hue-rotate(255deg) blur(1.1px) !important;
+  }
+  #bgField > .hexIridescentBg img.still{
+    filter:
+      brightness(0.52) contrast(1.0) saturate(0.45)
+      sepia(0.4) hue-rotate(230deg) blur(1.4px) !important;
+  }
+  #bgField > .goldDotfield img.still,
+  #bgField > .omniGyroRig .goldNetwork img.still{
+    filter:
+      drop-shadow(0 0 8px rgba(233,213,255,.35))
+      brightness(1.05) contrast(1.12) saturate(0.75)
+      sepia(0.22) hue-rotate(245deg) !important;
+  }
+  #bgField > .goldDotfield .plane,
+  #bgField > .omniGyroRig .goldNetwork .plane{
+    animation:none !important;
+  }
+}
+/* end noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres */
+
 </style>
 </head>
 <body>
@@ -7049,7 +7251,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:depthPerspectiveHarmony|perspectiveDepthPass|impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres|depthPerspectiveHarmony|perspectiveDepthPass|impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -7111,7 +7313,7 @@ const LERP_BASE=reduceMotion?1:(isTouch?0.10:0.13); // refinePolish2: softer set
 const PHI=1.6180339887;
 const TEMPO={
   /* magpieImpressSupersede: dense fast work instrument — base≥2.8; every layer uses base·φ^k */
-  base:3.45,           // rad/s primary yaw — clientBgDynamic (was 2.85)
+  base:(2*Math.PI)*((1.6180339887*1.6180339887)/4.5), /* motionSyncGoldSpheres: Tphi2=gold 4.5s */
   neon:1/PHI,
   sculpt:1/(PHI*PHI),
   city:1/(PHI*PHI*PHI),     // ≈0.236 field drift
@@ -7142,13 +7344,16 @@ const cam={
 };
 
 function syncTempoClock(){
-  /* clientMotionHarmonic|clientDataMeshSync: one φ clock → CSS field + gyro (boot once) */
+  /* motionSyncGoldSpheres|clientMotionHarmonic: gold-dotfield 4.5s = MASTER; φ family + gyro lock to it */
   if(syncTempoClock._done) return;
   syncTempoClock._done=1;
   const root=document.documentElement;
+  const GOLD_T=4.5; /* gold-dotfield-keyed.webp 90×50ms */
+  TEMPO.base=(2*Math.PI)*(PHI*PHI)/GOLD_T; /* Tphi2 === GOLD_T */
   const b=TEMPO.base;
   const T1=(2*Math.PI)/b;
   const Tphi=T1*PHI, Tphi2=T1*PHI*PHI, Tphi3=T1*PHI*PHI*PHI;
+  root.style.setProperty('--gold-T', GOLD_T.toFixed(3)+'s');
   root.style.setProperty('--T1', T1.toFixed(3)+'s');
   root.style.setProperty('--Tphi', Tphi.toFixed(3)+'s');
   root.style.setProperty('--Tphi2', Tphi2.toFixed(3)+'s');
@@ -7158,24 +7363,23 @@ function syncTempoClock(){
   root.style.setProperty('--mesh-spin', Tphi3.toFixed(3)+'s');
   root.style.setProperty('--mesh-breathe', Tphi2.toFixed(3)+'s');
   root.style.setProperty('--field-scale', '1');
-  /* clientMotionHarmonic — one organism: field layers share φ periods + hub scale */
+  /* one organism: field layers share gold-locked φ periods */
   root.style.setProperty('--field-T', Tphi.toFixed(3)+'s');
   root.style.setProperty('--field-T2', Tphi2.toFixed(3)+'s');
   root.style.setProperty('--field-T3', Tphi3.toFixed(3)+'s');
-  root.style.setProperty('--field-hub', '96vmin'); /* clientShowpiecePush matched hub */
-  root.style.setProperty('--field-cover', '170vmin'); /* hex void + lattice cover */
-  root.style.setProperty('--field-tile', '28vmin'); /* honeycomb tile cell */
+  root.style.setProperty('--field-hub', '96vmin');
+  root.style.setProperty('--field-cover', '170vmin');
+  root.style.setProperty('--field-tile', '28vmin');
   root.style.setProperty('--field-tile-rgb', '42vmin');
   if((typeof STILL_ENGINE!=="undefined" && STILL_ENGINE) || reduceMotion){
-    /* prefers-reduced-motion / still engine → stills, no tumble */
     cam.gyro.wx=0; cam.gyro.wy=0; cam.gyro.wz=0; cam.gyro.omni=0;
     cam.auto=false;
   } else {
-    /* clientOmniGyroSync: restore full φ omni rates — one TEMPO family */
-    /* impressShowpiece|showOffPass: full φ omni showpiece rates */
-    cam.gyro.wx=b*(1.08/PHI);
-    cam.gyro.wy=b*(1.08/(PHI*PHI));
-    cam.gyro.wz=b*(1.10/(PHI*PHI*PHI));
+    /* gyro rates: one gold-sphere path family — 2π/GOLD_T · φ^k (no competing clocks) */
+    const w0=(2*Math.PI)/GOLD_T;
+    cam.gyro.wx=w0/PHI;
+    cam.gyro.wy=w0/(PHI*PHI);
+    cam.gyro.wz=w0/(PHI*PHI*PHI);
     cam.gyro.omni=1;
   }
 }
@@ -7687,7 +7891,15 @@ function seedFog(){ /* clientNoOtherAesthetics */ return;
   for(let i=0;i<16;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:TEMPO.base*(TEMPO.dust||1.2)*0.85+(Math.random()-0.5)*TEMPO.base*(TEMPO.dust||1.2)*0.45,ph:Math.random()*Math.PI*2});
 }
 /* holoPalette: prefer hues in ~185–325 (cyan→indigo→magenta→orchid); clamp L≤68 */
-function hsl(h,s,l,a=1){const L=Math.min(68,Math.max(0,l)); return`hsla(${((h%360)+360)%360},${s}%,${L}%,${a})`;}
+function hsl(h,s,l,a=1){
+  /* purpleMonoRamp|purpleWhiteBlack: map any hue → purple mono (lilac↔violet); L drives white→void */
+  const L0=Math.min(96,Math.max(0,l));
+  const L=Math.min(88, L0); /* allow brighter lilac highlights */
+  const t=L/88; /* 0 void … 1 near-white lilac */
+  const hue=268 + 18*(t-0.5); /* deep purple → lilac */
+  const sat=Math.min(85, Math.max(28, s*0.55 + 38*(1-Math.abs(t-0.55))));
+  return`hsla(${((hue%360)+360)%360},${sat}%,${L}%,${a})`;
+}
 function addStops(g, pairs){
   const sorted=pairs.map(([o,c])=>{let x=Number(o); if(!Number.isFinite(x))x=0; return[Math.max(0,Math.min(1,x)),c];}).sort((a,b)=>a[0]-b[0]);
   let last=-1;
@@ -8485,10 +8697,10 @@ function drawCyberNatureField(cx,cy,s,t){
     if(!thin){
       ctx.strokeStyle=hsl(hue+40,100,82,0.16*depth+0.05);
       ctx.lineWidth=0.7*persp;
-      ctx.setLineDash([2,5]);
+      ctx.setLineDash([]); /* noStaticStraightLines: organic dashless curve */
       ctx.beginPath();
       ctx.moveTo(px-2.2*persp, py0);
-      ctx.lineTo(px-1.4*persp+sway*0.5, py0-h*0.88);
+      ctx.quadraticCurveTo(px-2.0*persp+sway*0.35, py0-h*0.45, px-1.4*persp+sway*0.5, py0-h*0.88);
       ctx.stroke();
     }
     /* tip spark — perspective jewel */
@@ -8507,7 +8719,7 @@ function drawCyberNatureField(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){ /* masterpieceCanonRestore: ripples+pillars hero; soft seal bones as foreground */
+function drawDodecaFrame(cx,cy,s,t){ /* noStaticStraightLines|purpleMonoRamp|motionSyncGoldSpheres: curved bones + purple hsl + gold TEMPO */
   drawCyberNatureField(cx,cy,s,t);
   /* soft seal whisper under pillars — keep readable, not lattice-hero */
   if(false){ /* retired thick lattice hero path kept below for reference */ return; } /* clientSeeThrough|clientNeonLattice|clientThickSkeleton: softened cyan↔magenta lattice bones */
@@ -8535,21 +8747,27 @@ function drawDodecaFrame(cx,cy,s,t){ /* masterpieceCanonRestore: ripples+pillars
     g0.addColorStop(0,hsl(hueC,100,58,aGlow*0.7));
     g0.addColorStop(0.5,hsl((hueC+hueM)*0.5,100,68,aGlow*0.92));
     g0.addColorStop(1,hsl(hueM,100,60,aGlow*0.7));
+    /* noStaticStraightLines|allLinesInMotion: curved seal bones ride TEMPO (never sit still as straight strokes) */
+    const mx=(a.x+b.x)*0.5, my=(a.y+b.y)*0.5;
+    const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+    const nx=-dy/len, ny=dx/len;
+    const bow=(6+9*near)*Math.sin(t*TEMPO.base*(TEMPO.rings||0.382)+ei*0.55+breath);
+    const cxp=mx+nx*bow, cyp=my+ny*bow;
     ctx.strokeStyle=g0;
     ctx.lineWidth=(thin?5.4:8.0)*near;
     ctx.lineCap="round";
-    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.quadraticCurveTo(cxp,cyp,b.x,b.y); ctx.stroke();
     const g1=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
     g1.addColorStop(0,hsl(hueC,100,74,aCore));
     g1.addColorStop(0.5,hsl(ei%2?308:192,100,82,Math.min(0.99,aCore+0.14)));
     g1.addColorStop(1,hsl(hueM,100,76,aCore));
     ctx.strokeStyle=g1;
     ctx.lineWidth=(thin?2.15:3.25)*near*(0.88+0.16*pulse);
-    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.quadraticCurveTo(cxp,cyp,b.x,b.y); ctx.stroke();
     if(!thin && near>0.4){
       ctx.strokeStyle=hsl(ei%2?320:184,100,92,Math.min(0.72,0.32*near*pulse));
       ctx.lineWidth=(thin?0.7:1.15)*near;
-      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.quadraticCurveTo(cxp*0.98+mx*0.02,cyp*0.98+my*0.02,b.x,b.y); ctx.stroke();
     }
   }
   for(let i=0;i<pv.length;i++){
@@ -9077,8 +9295,8 @@ function drawBeamRain(cx,cy,s,t){
 }
 
 function syncGyroSharedCenter(cx,cy,s,t){
-  /* clientOmniGyroSync|dodecaGyroAgreed|clientProportionalFigures|sharedSealMetrics|impressShowpiece|showOffPass|depthPerspectiveHarmony|perspectiveDepthPass:
-     ONE hub (--seal-x/--seal-y/--seal-r) + ONE rigid YPR + proportional depth ladder — perspective theater locked */
+  /* motionSyncGoldSpheres|clientOmniGyroSync|sharedSealMetrics|noStaticStraightLines|purpleMonoRamp:
+     ONE hub + rigid YPR locked to gold-sphere TEMPO; proportional depth; purple mono */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
   cx=W*0.5; cy=H*0.5; /* clientOmniMid: gifts + engine share true center */
