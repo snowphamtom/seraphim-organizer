@@ -2218,7 +2218,7 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 }
 
 
-/* clientNoOtherAesthetics — only hybrid-a + hybrid-b; mute everything else visual */
+/* clientNoOtherAesthetics — trio field only; mute everything else visual */
 #fx, #fxgl{ display:none!important; opacity:0!important; visibility:hidden!important; }
 #dataRail, #specBar, #introChip, #phaseWhisper, #navhint, #cheat{ display:none!important; }
 #top .whisper, #top .chip.law{ display:none!important; }
@@ -2228,7 +2228,7 @@ body{ background:#000!important; }
 
 
 
-/* clientPixelAbsorbed48h — ONE hub: φ-locked duo + glass OS desk (absorbs 48h craft) */
+/* clientPixelAbsorbed48h — ONE hub: φ-locked trio + glass OS desk (absorbs 48h craft) */
 :root{
   --px-cyan:#5eead4;
   --px-mag:#e879f9;
@@ -2689,15 +2689,113 @@ html,body{
   }
 }
 
+
+/* ========== clientTrioOnly — three keyed layers; φ-nested spin; full-bleed ========== */
+#bgField{
+  --trio-a:0deg;
+  --trio-b:0deg;
+  --trio-c:0deg;
+  --trio-tilt:5deg;
+  --trio-z-a:-36px;
+  --trio-z-b:0px;
+  --trio-z-c:28px;
+}
+#bgField > .trioField{
+  --hub-x:50%!important;
+  --hub-y:50%!important;
+  --fill-w:max(100vw,100vh)!important;
+  --fill-h:max(100vw,100vh)!important;
+  position:fixed!important; inset:0!important; z-index:1!important;
+  pointer-events:none!important; overflow:hidden!important;
+  perspective:140vw!important;
+  perspective-origin:50% 50%!important;
+  transform-style:preserve-3d!important;
+}
+#bgField > .trioField > img{
+  position:absolute!important;
+  left:var(--hub-x)!important;
+  top:var(--hub-y)!important;
+  width:var(--fill-w)!important;
+  height:var(--fill-h)!important;
+  max-width:none!important;
+  max-height:none!important;
+  min-width:100vw!important;
+  min-height:100vh!important;
+  margin:0!important; padding:0!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  mix-blend-mode:screen!important;
+  transform-origin:center center!important;
+  transform-style:preserve-3d!important;
+  will-change:transform;
+  -webkit-mask-image:none!important;
+          mask-image:none!important;
+}
+#bgField > .trioField > img.still{ display:none!important; }
+/* A field — slowest underlay */
+#bgField > .trioField > img.trioField{
+  opacity:.86!important; z-index:1!important;
+  filter:contrast(1.5) brightness(1.05) saturate(1.15) hue-rotate(8deg)!important;
+  transform:translate3d(-50%,-50%,var(--trio-z-a,-36px))
+            rotateX(var(--trio-tilt,5deg))
+            rotateZ(var(--trio-a,0deg))!important;
+}
+/* B grid — mid nest */
+#bgField > .trioField > img.trioGrid{
+  opacity:.92!important; z-index:2!important;
+  filter:contrast(1.45) brightness(1.15) saturate(1.2)!important;
+  transform:translate3d(-50%,-50%,var(--trio-z-b,0px))
+            rotateX(var(--trio-tilt,5deg))
+            rotateZ(var(--trio-b,0deg))!important;
+}
+/* C core — fastest nest */
+#bgField > .trioField > img.trioCore{
+  opacity:1!important; z-index:3!important;
+  filter:contrast(1.55) brightness(1.18) saturate(1.35)!important;
+  transform:translate3d(-50%,-50%,var(--trio-z-c,28px))
+            rotateX(var(--trio-tilt,5deg))
+            rotateZ(var(--trio-c,0deg))!important;
+}
+#bgField > .trioField::after{
+  content:""!important;
+  position:absolute!important; inset:0!important; z-index:5!important;
+  pointer-events:none!important;
+  background:radial-gradient(ellipse 85% 80% at 50% 50%, transparent 55%, rgba(0,0,0,.18) 100%)!important;
+  opacity:.55!important;
+  mix-blend-mode:normal!important;
+}
+/* mute prior duo / hybrid leftovers if any linger in cascade */
+#bgField .duoField,
+#bgField .hybridA,
+#bgField .hybridB{ display:none!important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .trioField{ perspective:none!important; }
+  #bgField > .trioField > img.trioField,
+  #bgField > .trioField > img.trioGrid,
+  #bgField > .trioField > img.trioCore{
+    transform:translate(-50%,-50%)!important;
+    filter:contrast(1.45) brightness(1.05) saturate(1.15)!important;
+  }
+  #bgField > .trioField > img.anim{ display:none!important; }
+  #bgField > .trioField > img.still{ display:block!important; }
+  #bgField > .trioField::after{ opacity:.9!important; }
+}
+@media (max-width:700px){
+  #bgField > .trioField{ --hub-x:50%!important; --hub-y:50%!important; }
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientTwoOnly: hybrid-a + hybrid-b only -->
-  <div class="duoField" aria-hidden="true">
-    <img class="hybridA anim" src="media/hybrid-a-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
-    <img class="hybridA still" src="media/hybrid-a-keyed.png" alt="" width="500" height="500" decoding="async">
-    <img class="hybridB anim" src="media/hybrid-b-keyed.webp" alt="" width="768" height="768" decoding="async" fetchpriority="high">
-    <img class="hybridB still" src="media/hybrid-b-keyed.png" alt="" width="768" height="768" decoding="async">
+<div id="bgField" aria-hidden="true"><!-- clientTrioOnly: trio-field + trio-grid + trio-core -->
+  <div class="trioField" aria-hidden="true">
+    <img class="trioField anim" src="media/trio-field-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
+    <img class="trioField still" src="media/trio-field-keyed.png" alt="" width="500" height="500" decoding="async">
+    <img class="trioGrid anim" src="media/trio-grid-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
+    <img class="trioGrid still" src="media/trio-grid-keyed.png" alt="" width="500" height="500" decoding="async">
+    <img class="trioCore anim" src="media/trio-core-keyed.webp" alt="" width="530" height="530" decoding="async" fetchpriority="high">
+    <img class="trioCore still" src="media/trio-core-keyed.png" alt="" width="530" height="530" decoding="async">
   </div>
 </div>
 <div id="dataRail" aria-hidden="true"></div>
@@ -3332,7 +3430,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientPixelAbsorbed48h|clientOptimalFinal|clientMasterpieceDuo|clientForcePerspective|clientDuoHarmony|clientTwoOnly|clientNoOtherAesthetics|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
+/* SERAPHIM_MARKERS:clientTrioOnly|clientPixelAbsorbed48h|clientOptimalFinal|clientMasterpieceDuo|clientForcePerspective|clientDuoHarmony|clientTwoOnly|clientNoOtherAesthetics|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -6195,35 +6293,40 @@ function drawDeskSealWiring(cx,cy,s,t){ return;
 }
 
 function syncSpinPhase(t){
-  /* clientPixelAbsorbed48h — ~120s outer φ crawl, nested 1/φ, soft tilt breathe; z -88/+32; no scale */
+  /* clientTrioOnly — A slowest field, B mid grid, C fastest core; nested 1/φ rates; same direction */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
   if(typeof reduceMotion!=="undefined" && reduceMotion){
-    _bgFieldEl.style.setProperty("--duo-a","0deg");
-    _bgFieldEl.style.setProperty("--duo-b","0deg");
-    _bgFieldEl.style.setProperty("--duo-tilt","5deg");
-    _bgFieldEl.style.setProperty("--duo-z-a","-24px");
-    _bgFieldEl.style.setProperty("--duo-z-b","12px");
+    _bgFieldEl.style.setProperty("--trio-a","0deg");
+    _bgFieldEl.style.setProperty("--trio-b","0deg");
+    _bgFieldEl.style.setProperty("--trio-c","0deg");
+    _bgFieldEl.style.setProperty("--trio-tilt","5deg");
+    _bgFieldEl.style.setProperty("--trio-z-a","-36px");
+    _bgFieldEl.style.setProperty("--trio-z-b","0px");
+    _bgFieldEl.style.setProperty("--trio-z-c","28px");
     return;
   }
   const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
   const phi=(typeof PHI==="number")?PHI:1.6180339887;
-  /* ~120s full rotation for outer (A); B nested at 1/φ */
+  /* ~120s full rotation for outer field (A); B = A·φ; C = A·φ² — same direction */
   const omega=base*(1/(phi*phi*phi))*0.06429;
   const theta=t*omega;
   const degA=(theta*180/Math.PI);
-  const degB=(theta/phi*180/Math.PI);
-  /* shallow tilt — fills frame; no empty foreshorten void */
+  const degB=(theta*phi*180/Math.PI);
+  const degC=(theta*phi*phi*180/Math.PI);
   const tilt=(5+0.8*Math.sin(t*base*(1/phi)*0.28)).toFixed(2)+"deg";
   const a=degA.toFixed(3)+"deg";
   const b=degB.toFixed(3)+"deg";
-  if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoTilt!==tilt){
-    _bgFieldEl._duoA=a; _bgFieldEl._duoB=b; _bgFieldEl._duoTilt=tilt;
-    _bgFieldEl.style.setProperty("--duo-a", a);
-    _bgFieldEl.style.setProperty("--duo-b", b);
-    _bgFieldEl.style.setProperty("--duo-tilt", tilt);
-    _bgFieldEl.style.setProperty("--duo-z-a", "-24px");
-    _bgFieldEl.style.setProperty("--duo-z-b", "12px");
+  const c=degC.toFixed(3)+"deg";
+  if(_bgFieldEl._trioA!==a || _bgFieldEl._trioB!==b || _bgFieldEl._trioC!==c || _bgFieldEl._trioTilt!==tilt){
+    _bgFieldEl._trioA=a; _bgFieldEl._trioB=b; _bgFieldEl._trioC=c; _bgFieldEl._trioTilt=tilt;
+    _bgFieldEl.style.setProperty("--trio-a", a);
+    _bgFieldEl.style.setProperty("--trio-b", b);
+    _bgFieldEl.style.setProperty("--trio-c", c);
+    _bgFieldEl.style.setProperty("--trio-tilt", tilt);
+    _bgFieldEl.style.setProperty("--trio-z-a", "-36px");
+    _bgFieldEl.style.setProperty("--trio-z-b", "0px");
+    _bgFieldEl.style.setProperty("--trio-z-c", "28px");
   }
 }
 
