@@ -1285,6 +1285,80 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 
+
+/* clientUltimateHybrid — last-24h best of Seraphim+Magpie in one field */
+/* Magpie seal plate whisper under spinning trio */
+#bgField .magpieSealWorld.cyberNatureWorld,
+#bgField .magpieSealWorld{
+  display:block!important;
+  visibility:visible!important;
+  opacity:0.32!important;
+  pointer-events:none!important;
+  position:absolute!important;
+  inset:auto!important;
+  left:var(--seal-x,50%)!important;
+  top:var(--seal-y,40%)!important;
+  width:var(--seal-s, max(100vw,100vh))!important;
+  height:var(--seal-s, max(100vw,100vh))!important;
+  min-width:100vw!important;
+  min-height:100vh!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:1!important;
+  mix-blend-mode:screen!important;
+  filter:saturate(1.35) contrast(1.35) brightness(0.85) hue-rotate(12deg)!important;
+  -webkit-mask-image:radial-gradient(ellipse 88% 88% at 50% 50%,
+    #000 0%, #000 48%, rgba(0,0,0,.75) 78%, transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 88% 88% at 50% 50%,
+    #000 0%, #000 48%, rgba(0,0,0,.75) 78%, transparent 100%)!important;
+  animation:sealSpinHybrid 233s linear infinite!important;
+}
+#bgField .magpieSealWorld img{
+  width:100%!important; height:100%!important;
+  object-fit:cover!important; object-position:center!important;
+}
+@keyframes sealSpinHybrid{
+  from{ transform:translate(-50%,-50%) scale(1.1) rotate(0deg); }
+  to{ transform:translate(-50%,-50%) scale(1.1) rotate(-360deg); }
+}
+/* hybrid engine trio: beam-rain as outer sort-stream whisper */
+#bgField .beamRainWhisper{
+  position:absolute; inset:auto; z-index:2;
+  left:var(--seal-x,50%); top:var(--seal-y,40%);
+  width:var(--seal-spiral, max(100vw,100vh));
+  height:var(--seal-spiral, max(100vw,100vh));
+  min-width:100vw; min-height:100vh;
+  transform:translate(-50%,-50%);
+  display:block!important;
+  opacity:0.26;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  filter:saturate(1.4) contrast(1.4) brightness(0.8) hue-rotate(-5deg);
+  -webkit-mask-image:radial-gradient(ellipse 92% 92% at 50% 50%,
+    transparent 0%, transparent 28%, rgba(0,0,0,.5) 48%, #000 70%, rgba(0,0,0,.7) 90%, transparent 100%);
+  mask-image:radial-gradient(ellipse 92% 92% at 50% 50%,
+    transparent 0%, transparent 28%, rgba(0,0,0,.5) 48%, #000 70%, rgba(0,0,0,.7) 90%, transparent 100%);
+  animation:beamSpinHybrid 177s linear infinite;
+}
+#bgField .beamRainWhisper img{
+  display:block; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+}
+#bgField .beamRainWhisper img.still{ display:none; }
+@keyframes beamSpinHybrid{
+  from{ transform:translate(-50%,-50%) scale(1.14) rotate(0deg); }
+  to{ transform:translate(-50%,-50%) scale(1.14) rotate(360deg); }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .magpieSealWorld,
+  #bgField .beamRainWhisper{ animation:none!important; }
+  #bgField .beamRainWhisper img.anim{ display:none!important; }
+  #bgField .beamRainWhisper img.still{ display:block!important; }
+}
+/* layer order reminder: spiral(0) < seal(1) < beam(2) < tunnel(2+) < hex(3) */
+#bgField .spiralField{ z-index:0!important; }
+#bgField .tunnelWindowsKeyed{ z-index:2!important; }
+#bgField .hexCoreKeyed{ z-index:3!important; }
+
 /* clientContrastBlack — deep void + high contrast field (don't fear black) */
 html,body,#bgField{
   background:#000!important;
@@ -1790,7 +1864,7 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
   0%,100%{ transform:none; }
 }
 #bgField .nebulaWhisper{ display:none!important; }
-#bgField .magpieSealWorld{ display:none!important; }
+/* magpieSealWorld restored by clientUltimateHybrid */
 @media (prefers-reduced-motion:reduce){
   #bgField .spiralField img{ animation:none !important; }
 }
@@ -2032,6 +2106,11 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
       <img src="media/spiral-field.jpg" alt="" width="500" height="1000" decoding="async" fetchpriority="high">
     </picture>
   </div>
+  <div class="beamRainWhisper" aria-hidden="true">
+    <img class="anim" src="media/beam-rain.webp" alt="" width="640" height="640" decoding="async">
+    <img class="still" src="media/beam-rain-still.jpg" alt="" width="640" height="640" decoding="async">
+  </div>
+
   <div class="tunnelWindowsKeyed" aria-hidden="true">
     <img class="anim" src="media/tunnel-windows-keyed.webp" alt="" width="420" height="420" decoding="async">
     <img class="still" src="media/tunnel-windows-keyed.png" alt="" width="420" height="420" decoding="async">
@@ -5465,15 +5544,94 @@ function drawHexCoreWires(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawWindowLightnings(cx,cy,s,t){ /* clientTrioAssets: quiet bolts — tunnel gif owns lightning */ return;
+
+function drawUltimateHybrid(cx,cy,s,t){
+  /* clientUltimateHybrid — Magpie engine-graph + residual rings + node plexus on Seraphim field */
+  if(reduceMotion||skipHeavy) return;
+  const thin=W<=480, mobile=W<=900;
+  const pv=DODECA&&DODECA._projVerts;
+  const breath=0.55+0.45*Math.sin(t*TEMPO.base*1.4);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+
+  /* Magpie residual rings — φ-spaced hairlines around hub */
+  const rings=thin?3:(mobile?4:5);
+  for(let i=0;i<rings;i++){
+    const u=i/(rings-0.01);
+    const R=s*(0.22+u*0.55)*(1+0.012*Math.sin(t*TEMPO.base/PHI+i));
+    const hue=i%2?305:195;
+    ctx.strokeStyle=hsl(hue,90,60,(0.06+0.05*breath)*(1-u*0.35));
+    ctx.lineWidth=thin?0.5:0.7;
+    ctx.setLineDash(i%2?[3,5]:[]);
+    ctx.lineDashOffset=-(t*TEMPO.base*18*(i%2?-1:1));
+    ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  /* Magpie engine-graph: node-net lattice on dodeca verts + inner plexus */
+  if(pv&&pv.length){
+    const nodes=pv.map(v=>({x:v.x,y:v.y,d:v.d||0}));
+    /* seed inner nodes on φ spiral in seal disk */
+    const nInner=thin?8:(mobile?12:18);
+    for(let i=0;i<nInner;i++){
+      const a=i*PHI*Math.PI*2/(nInner)+t*TEMPO.base*0.08;
+      const r=s*(0.12+0.28*((i*PHI)%1));
+      nodes.push({x:cx+Math.cos(a)*r, y:cy+Math.sin(a)*r*0.92, d:0.2});
+    }
+    /* k-NN edges (k=2) — Magpie node-net whisper */
+    const k=thin?1:2;
+    for(let i=0;i<nodes.length;i++){
+      const A=nodes[i];
+      const near=[];
+      for(let j=0;j<nodes.length;j++){
+        if(i===j) continue;
+        const B=nodes[j];
+        const d2=(A.x-B.x)*(A.x-B.x)+(A.y-B.y)*(A.y-B.y);
+        near.push({j,d2});
+      }
+      near.sort((u,v)=>u.d2-v.d2);
+      for(let m=0;m<Math.min(k,near.length);m++){
+        if(near[m].j<i) continue; /* draw once */
+        const B=nodes[near[m].j];
+        const hue=((i+m)%2)?305:195;
+        ctx.strokeStyle=hsl(hue,90,62,0.05+0.04*breath);
+        ctx.lineWidth=0.55;
+        ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+      }
+    }
+    for(let i=0;i<nodes.length;i++){
+      const N=nodes[i];
+      const hue=i%2?305:195;
+      ctx.fillStyle=hsl(hue,95,68,0.12+0.1*breath);
+      ctx.beginPath(); ctx.arc(N.x,N.y,thin?0.8:1.15,0,Math.PI*2); ctx.fill();
+    }
+  }
+
+  /* dashed Magpie dodeca silhouette boost (on top of hairline) */
+  if(pv&&DODECA.edges){
+    for(let ei=0;ei<DODECA.edges.length;ei++){
+      const [i,j]=DODECA.edges[ei];
+      const a=pv[i], b=pv[j];
+      if(!a||!b) continue;
+      ctx.strokeStyle=hsl(ei%2?300:200,85,60,0.05+0.04*breath);
+      ctx.lineWidth=0.45;
+      ctx.setLineDash([2,4]);
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+  }
+  ctx.restore();
+}
+
+function drawWindowLightnings(cx,cy,s,t){
+  /* clientUltimateHybrid: soft cyan/mag bolts windows↔seal */
   /* clientWinLightning — jagged bolts: floating windows ↔ nearest dodeca verts */
   const pv=DODECA._projVerts;
   if(!pv||pv.length<4) return;
   const thin=W<=480, mobile=W<=900;
   const ids=[
-    {id:"uploadBox", hue:142, boost:1.05},
-    {id:"trayAdmit", hue:192, boost:1.0},
-    {id:"trayRelease", hue:305, boost:1.0}
+    {id:"uploadBox", hue:195, boost:1.0},
+    {id:"trayAdmit", hue:192, boost:1.05},
+    {id:"trayRelease", hue:305, boost:1.05}
   ];
   const flash=0.55+0.45*Math.sin(t*TEMPO.base*7.2);
   const pulseBoost=0.35*sealPulse+0.55*celebrate+0.4*sealLockFlash;
@@ -6400,8 +6558,9 @@ function frame(now){
   if(!reduceMotion) drawUploadStream(cx,cy,s,t);
   drawSortShockwave(cx,cy,s);
   drawSoftCrossVeil();
-  drawHexFrame(cxH,cyH,s,t); /* quiet dodeca edges only */
-  /* no beam/plasma/funnels/voxels/mint/lattice/trails/three/hexCore3D/wires — clutter */
+  if(!reduceMotion && !skipHeavy) drawUltimateHybrid(cxH,cyH,s,t); /* clientUltimateHybrid */
+  drawHexFrame(cxH,cyH,s,t); /* quiet dodeca edges */
+  if(!reduceMotion && !skipHeavy) drawWindowLightnings(cxH,cyH,s,t); /* Magpie bolts */
   // FPS guard: drop WebGL if frames tank on mobile
   if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
   else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
