@@ -1360,7 +1360,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .hexCoreKeyed{ z-index:3!important; }
 
 
-/* clientHybridRefine — polish ultimate hybrid: quieter Magpie whispers, hex hero, deep black */
+/* clientHybridRefine — polish two-source hybrid (A tunnel-dots + B hex-core): quieter Magpie whispers, hex hero, deep black */
 #bgField .magpieSealWorld.cyberNatureWorld,
 #bgField .magpieSealWorld{
   opacity:0.18!important;
@@ -2147,38 +2147,67 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
   #bgField::after{ animation-duration:4.5s; }
 }
 
+
+/* clientTwoOnly — field is only hybrid-a (tunnel dots) + hybrid-b (hex-core family) */
+#bgField .spiralField,
+#bgField .beamRainWhisper,
+#bgField .tunnelWindowsKeyed,
+#bgField .hexCoreKeyed,
+#bgField .nebulaWhisper,
+#bgField .magpieSealWorld,
+#bgField .hexCore,
+#bgField .tunnelGrid{ display:none!important; }
+
+#bgField .duoField{
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  display:grid; place-items:center;
+  --seal-x:50%; --seal-y:42%;
+  --seal-s:min(118vw,118vh);
+}
+#bgField .duoField img{
+  grid-area:1/1;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  mix-blend-mode:screen;
+  transform-origin:center center;
+  will-change:transform;
+  -webkit-mask-image:radial-gradient(ellipse 94% 90% at 50% 46%,#000 48%,transparent 100%);
+          mask-image:radial-gradient(ellipse 94% 90% at 50% 46%,#000 48%,transparent 100%);
+}
+#bgField .duoField img.still{ display:none; }
+#bgField .duoField .hybridA{
+  width:var(--seal-s); height:var(--seal-s);
+  max-width:none; max-height:none;
+  opacity:.9; z-index:1;
+  filter:contrast(1.4) brightness(1.15) saturate(1.1);
+  animation:duoSpinA 96s linear infinite;
+}
+#bgField .duoField .hybridB{
+  width:calc(var(--seal-s) * .94); height:calc(var(--seal-s) * .94);
+  max-width:none; max-height:none;
+  opacity:.98; z-index:2;
+  filter:contrast(1.45) brightness(1.2) saturate(1.25);
+  animation:duoSpinB 72s linear infinite;
+}
+@keyframes duoSpinA{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes duoSpinB{ from{transform:rotate(0deg)} to{transform:rotate(-360deg)} }
+@media (prefers-reduced-motion:reduce){
+  #bgField .duoField .hybridA,
+  #bgField .duoField .hybridB{ animation:none!important; }
+  #bgField .duoField img.anim{ display:none!important; }
+  #bgField .duoField img.still{ display:block!important; }
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- magpieImpressSupersede: Magpie seal plate + canvas layers (no forest) -->
-  <div class="spiralField" aria-hidden="true">
-    <picture>
-      <img src="media/spiral-field.jpg" alt="" width="500" height="1000" decoding="async" fetchpriority="high">
-    </picture>
-  </div>
-  <div class="beamRainWhisper" aria-hidden="true">
-    <img class="anim" src="media/beam-rain.webp" alt="" width="640" height="640" decoding="async">
-    <img class="still" src="media/beam-rain-still.jpg" alt="" width="640" height="640" decoding="async">
-  </div>
-
-  <div class="tunnelWindowsKeyed" aria-hidden="true">
-    <img class="anim" src="media/tunnel-windows-keyed.webp" alt="" width="420" height="420" decoding="async">
-    <img class="still" src="media/tunnel-windows-keyed.png" alt="" width="420" height="420" decoding="async">
-  </div>
-
-  <div class="hexCoreKeyed" aria-hidden="true">
-    <img class="anim" src="media/hex-core-keyed.webp" alt="" width="480" height="480" decoding="async">
-    <img class="still" src="media/hex-core-keyed.png" alt="" width="480" height="480" decoding="async">
-  </div>
-
-  <div class="nebulaWhisper" aria-hidden="true">
-    <img src="media/nebula-field-still.jpg" alt="" width="1024" height="1024" decoding="async">
-  </div>
-  <div class="magpieSealWorld cyberNatureWorld">
-    <picture>
-      <source srcset="media/magpie-seal-plate.webp" type="image/webp">
-      <img src="media/magpie-seal-plate.png" alt="" width="1024" height="1024" decoding="async">
-    </picture>
+<div id="bgField" aria-hidden="true"><!-- clientTwoOnly: hybrid-a + hybrid-b only -->
+  <div class="duoField" aria-hidden="true">
+    <img class="hybridA anim" src="media/hybrid-a-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
+    <img class="hybridA still" src="media/hybrid-a-keyed.png" alt="" width="500" height="500" decoding="async">
+    <img class="hybridB anim" src="media/hybrid-b-keyed.webp" alt="" width="768" height="768" decoding="async" fetchpriority="high">
+    <img class="hybridB still" src="media/hybrid-b-keyed.png" alt="" width="768" height="768" decoding="async">
   </div>
 </div>
 <div id="dataRail" aria-hidden="true"></div>
