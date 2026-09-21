@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -4038,7 +4038,7 @@ html,body{
   width:max(180vw,180vh) !important;
   height:max(180vw,180vh) !important;
   transform-origin:50% 50% !important;
-  animation:latticeDepthDrift 22s linear infinite !important;
+  animation:latticeDepthDrift var(--field-T3,var(--Tphi3,7.718s)) linear infinite !important; /* clientMotionHarmonic */
 }
 @media (prefers-reduced-motion:reduce){
   #bgField > .latticeDepth .plane{
@@ -4047,10 +4047,202 @@ html,body{
   }
 }
 
+
+/* clientHoneyBack — inverted neon honeycomb GIF = furthest-back field on white (full invert, tile/cover, not whisper) */
+@keyframes honeyPhiDrift{
+  0%{ transform:translate(-50%,-50%) rotate(0deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(1.8deg) scale(1.04); }
+}
+#bgField > .honeyBack{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  z-index:-2 !important;
+  pointer-events:none !important; overflow:hidden !important;
+  opacity:0.62 !important; /* full field — not timid */
+}
+#bgField > .honeyBack .plane{
+  position:absolute !important;
+  left:50% !important; top:50% !important;
+  width:max(220vw,220vh) !important;
+  height:max(220vw,220vh) !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:50% 50% !important;
+  background-image:url("media/honey-hex-inv.gif") !important;
+  background-size:min(28vmin,200px) min(28vmin,200px) !important;
+  background-repeat:repeat !important;
+  background-position:50% 50% !important;
+  animation:honeyPhiDrift var(--field-T3,var(--Tphi3,7.718s)) linear infinite !important; /* clientMotionHarmonic */
+  filter:none !important;
+  mix-blend-mode:multiply !important; /* dark lattice ink on white void */
+}
+/* RGB keyed cluster soft under-tile (secondary; inv GIF is authority) */
+#bgField > .honeyBack .rgbTile{
+  position:absolute !important; inset:0 !important;
+  opacity:0.22 !important;
+  background-image:url("media/honey-hex.webp") !important;
+  background-size:min(42vmin,280px) min(42vmin,280px) !important;
+  background-repeat:repeat !important;
+  background-position:50% 50% !important;
+  mix-blend-mode:multiply !important;
+  pointer-events:none !important;
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField > .honeyBack .plane{
+    animation:none !important;
+    background-image:url("media/honey-hex-inv-still.webp") !important;
+  }
+}
+
+/* clientCrystalWash — mid/back crystalline lattice; graded for white void visibility */
+#bgField > .crystalWash{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  z-index:-1 !important;
+  pointer-events:none !important; overflow:hidden !important;
+  opacity:0.34 !important; /* under neon dodeca + core */
+}
+#bgField > .crystalWash .plane{
+  position:absolute !important;
+  left:var(--seal-x,50%) !important;
+  top:var(--seal-y,50%) !important;
+  width:min(92vmin,720px) !important;
+  height:min(92vmin,720px) !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:50% 50% !important;
+}
+#bgField > .crystalWash picture,
+#bgField > .crystalWash img{
+  display:block !important; width:100% !important; height:100% !important;
+  object-fit:contain !important; object-position:50% 50% !important;
+  filter:contrast(1.15) saturate(1.2) brightness(0.92) !important;
+  mix-blend-mode:multiply !important;
+  pointer-events:none !important;
+}
+#bgField > .crystalWash img.still{ display:none !important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .crystalWash img.anim,
+  #bgField > .crystalWash picture{ display:none !important; }
+  #bgField > .crystalWash img.still{ display:block !important; }
+}
+
+/* stack: honey (-2) < crystal (-1) < latticeDepth (0) < gifts (1) < fx (3) */
+#bgField > .latticeDepth{ z-index:0 !important; }
+#bgField > .giftStack{ z-index:1 !important; }
+
+/* ========== clientMotionHarmonic — field organism: φ TEMPO only; shared center; omni dodeca excluded ========== */
+:root{
+  --field-T:var(--Tphi,2.948s);
+  --field-T2:var(--Tphi2,4.770s);
+  --field-T3:var(--Tphi3,7.718s);
+  --field-hub:100vmin;
+  --field-cover:180vmin;
+  --field-tile:28vmin;
+  --field-tile-rgb:42vmin;
+}
+@keyframes fieldBreathe{
+  0%{ transform:translate(-50%,-50%) scale(1.00) rotate(0deg); }
+  100%{ transform:translate(-50%,-50%) scale(1.06) rotate(0deg); }
+}
+@keyframes fieldWeaveCW{
+  0%{ transform:translate(-50%,-50%) rotate(0deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(360deg) scale(1.00); }
+}
+@keyframes fieldWeaveCCW{
+  0%{ transform:translate(-50%,-50%) rotate(0deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(-360deg) scale(1.00); }
+}
+@keyframes fieldHoneyDrift{
+  0%{ transform:translate(-50%,-50%) rotate(0deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(8deg) scale(1.03); }
+}
+@keyframes fieldRgbCounter{
+  0%{ transform:translate(-50%,-50%) rotate(0deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(-8deg) scale(1.02); }
+}
+
+/* kill one-off 22s / 89s — TEMPO owns duration */
+#bgField > .latticeDepth .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:var(--field-cover) !important;
+  height:var(--field-cover) !important;
+  max-width:none !important; max-height:none !important;
+  transform-origin:50% 50% !important;
+  animation:fieldBreathe var(--field-T3) linear infinite alternate !important;
+}
+#bgField > .honeyBack .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:var(--field-cover) !important;
+  height:var(--field-cover) !important;
+  background-size:var(--field-tile) var(--field-tile) !important;
+  background-position:50% 50% !important;
+  animation:fieldHoneyDrift var(--field-T3) linear infinite !important;
+}
+#bgField > .honeyBack .rgbTile{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  right:auto !important; bottom:auto !important;
+  width:var(--field-cover) !important;
+  height:var(--field-cover) !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:50% 50% !important;
+  background-size:var(--field-tile-rgb) var(--field-tile-rgb) !important;
+  background-position:50% 50% !important;
+  animation:fieldRgbCounter var(--field-T2) linear infinite !important;
+  inset:auto !important;
+  position:absolute !important;
+}
+#bgField > .crystalWash .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:min(var(--field-hub),720px) !important;
+  height:min(var(--field-hub),720px) !important;
+  animation:fieldBreathe var(--field-T2) linear infinite alternate !important;
+}
+/* gifts: restore weave on φ clock (was frozen); matched hub scale; alternate dirs */
+#bgField > .giftStack .gift .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:min(var(--field-hub),720px) !important;
+  height:min(var(--field-hub),720px) !important;
+  transform-origin:50% 50% !important;
+  animation:fieldWeaveCW var(--field-T3) linear infinite !important;
+}
+#bgField > .giftStack .gift.hex .plane{ animation-name:fieldWeaveCW !important; animation-duration:var(--field-T3) !important; animation-direction:normal !important; }
+#bgField > .giftStack .gift.iris .plane{ animation-name:fieldWeaveCCW !important; animation-duration:var(--field-T3) !important; animation-direction:normal !important; }
+#bgField > .giftStack .gift.mandala .plane{ animation-name:fieldWeaveCW !important; animation-duration:var(--field-T2) !important; animation-direction:normal !important; }
+#bgField > .giftStack .gift.star .plane{ animation-name:fieldWeaveCCW !important; animation-duration:var(--field-T2) !important; animation-direction:normal !important; }
+#bgField > .giftStack .gift.scribble .plane{ animation-name:fieldWeaveCW !important; animation-duration:var(--field-T) !important; animation-direction:normal !important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .latticeDepth .plane,
+  #bgField > .honeyBack .plane,
+  #bgField > .honeyBack .rgbTile,
+  #bgField > .crystalWash .plane,
+  #bgField > .giftStack .gift .plane{
+    animation:none !important;
+  }
+}
+/* end clientMotionHarmonic — omni dodeca / face fills / core-seed / neon lattice keep independent tumble via canvas */
+
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientFaceFillOmni: lattice streams; omni dodeca mid-ground with face fills -->
+<div id="bgField" aria-hidden="true"><!-- clientHoneyBack|clientCrystalWash|clientFaceFillOmni -->
+  <div class="honeyBack" aria-hidden="true"><!-- clientHoneyBack: inverted honeycomb authority -->
+    <div class="rgbTile" role="presentation"></div>
+    <div class="plane" role="presentation"></div>
+  </div>
+  <div class="crystalWash" aria-hidden="true"><!-- clientCrystalWash: white-visible crystalline -->
+    <div class="plane">
+      <picture>
+        <source srcset="media/crystal-wash.webp" type="image/webp"/>
+        <img class="anim" src="media/crystal-wash.gif" alt="" decoding="async" fetchpriority="low" width="400" height="600"/>
+      </picture>
+      <img class="still" src="media/crystal-wash-still.webp" alt="" decoding="async" width="400" height="600"/>
+    </div>
+  </div>
   <div class="latticeDepth" aria-hidden="true">
     <div class="plane">
       <picture>
@@ -4740,7 +4932,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -4833,7 +5025,7 @@ const cam={
 };
 
 function syncTempoClock(){
-  /* clientDataMeshSync: one φ clock → CSS + gyro (boot once — never per-frame) */
+  /* clientMotionHarmonic|clientDataMeshSync: one φ clock → CSS field + gyro (boot once) */
   if(syncTempoClock._done) return;
   syncTempoClock._done=1;
   const root=document.documentElement;
@@ -4849,6 +5041,14 @@ function syncTempoClock(){
   root.style.setProperty('--mesh-spin', Tphi3.toFixed(3)+'s');
   root.style.setProperty('--mesh-breathe', Tphi2.toFixed(3)+'s');
   root.style.setProperty('--field-scale', '1');
+  /* clientMotionHarmonic — one organism: field layers share φ periods + hub scale */
+  root.style.setProperty('--field-T', Tphi.toFixed(3)+'s');
+  root.style.setProperty('--field-T2', Tphi2.toFixed(3)+'s');
+  root.style.setProperty('--field-T3', Tphi3.toFixed(3)+'s');
+  root.style.setProperty('--field-hub', '100vmin'); /* shared center figure size */
+  root.style.setProperty('--field-cover', '180vmin'); /* depth/honey cover */
+  root.style.setProperty('--field-tile', '28vmin'); /* honeycomb tile cell */
+  root.style.setProperty('--field-tile-rgb', '42vmin');
   if(typeof STILL_ENGINE!=="undefined" && STILL_ENGINE){
     cam.gyro.wx=0; cam.gyro.wy=0; cam.gyro.wz=0; cam.gyro.omni=0;
   } else {
@@ -5954,7 +6154,7 @@ function drawLatticeFaceDetail(cx,cy,s,t,pv){
 }
 
 function drawDodecaLatticeCage(cx,cy,s,t){
-  /* clientShowOff: lattice cage — φ breath, iridescence, depth sort, sealPulse hubs */
+  /* clientNeonLattice|clientShowOff: Magpie cyan↔magenta neon cage */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
   const pv=[];
@@ -5970,36 +6170,47 @@ function drawDodecaLatticeCage(cx,cy,s,t){
   }).sort((u,v)=>u.md-v.md);
   ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
   const thin=W<=480, mobile=W<=900;
-  const lw=thin?1.85:(mobile?2.75:3.55); /* clientThickSkeleton */
-  const iriShift=14*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.5);
+  const lw=thin?2.05:(mobile?3.05:3.85); /* clientNeonLattice|clientThickSkeleton */
+  const iriShift=18*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.55);
   for(const ed of edged){
     const near=Math.max(0,Math.min(1,(ed.md+0.55)/1.1));
     const pulse=(0.72+0.28*Math.sin(t*TEMPO.base*(TEMPO.lattice||1/PHI)+ed.ei*0.4))*(1+0.22*sealP);
-    const aEdge=Math.min(0.95, (0.34+near*0.42)*pulse);
+    const aEdge=Math.min(0.98, (0.42+near*0.48)*pulse);
     const g=ctx.createLinearGradient(ed.a.x,ed.a.y,ed.b.x,ed.b.y);
-    g.addColorStop(0,hsl(270+iriShift*0.35,95,54,aEdge));
-    g.addColorStop(0.5,hsl(310+iriShift*0.15,100,64,Math.min(0.98,aEdge+0.08)));
-    g.addColorStop(1,hsl(280-iriShift*0.2,92,52,aEdge));
-    ctx.strokeStyle=g; ctx.lineWidth=lw*(0.52+near*0.88);
+    g.addColorStop(0,hsl(186+iriShift*0.35,100,58,aEdge));
+    g.addColorStop(0.5,hsl(ed.ei%2?312:198,100,70,Math.min(0.99,aEdge+0.10)));
+    g.addColorStop(1,hsl(312-iriShift*0.2,100,62,aEdge));
+    ctx.strokeStyle=hsl(ed.ei%2?300:186,100,50,Math.min(0.35,0.14*near*pulse));
+    ctx.lineWidth=lw*(1.15+near*1.05);
+    ctx.lineCap="round";
     ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
-    /* hairline cool rim on near edges */
-    if(!thin && near>0.6){
-      ctx.strokeStyle=hsl(198,90,70,Math.min(0.18,0.08*near*pulse));
-      ctx.lineWidth=lw*0.22;
+    ctx.strokeStyle=g; ctx.lineWidth=lw*(0.55+near*0.95);
+    ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
+    if(!thin && near>0.55){
+      ctx.strokeStyle=hsl(ed.ei%2?318:186,100,88,Math.min(0.42,0.16*near*pulse));
+      ctx.lineWidth=lw*0.28;
       ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
     }
     if(!thin && ed.ei%2===0){
       const mx=(ed.a.x+ed.b.x)*0.5, my=(ed.a.y+ed.b.y)*0.5;
-      ctx.fillStyle=`rgba(240,171,252,${Math.min(0.72,0.48*near*(1+0.3*sealP))})`;
-      ctx.beginPath(); ctx.arc(mx,my,1.15,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=hsl(198,100,78,Math.min(0.82,0.55*near*(1+0.3*sealP)));
+      ctx.beginPath(); ctx.arc(mx,my,1.35,0,Math.PI*2); ctx.fill();
     }
   }
   for(let i=0;i<pv.length;i++){
     const v=pv[i];
     const near=Math.max(0.2,Math.min(1,(v.d+0.5)/1));
     const hub=0.75+0.25*Math.sin(t*TEMPO.base*TEMPO.jewel+i)+0.4*sealP;
-    ctx.fillStyle=`rgba(232,121,249,${Math.min(0.92,0.68*near*hub)})`;
-    ctx.beginPath(); ctx.arc(v.x,v.y,(thin?1.35:2.15)*(0.92+0.12*hub),0,Math.PI*2); ctx.fill();
+    const hue=i%2?312:186;
+    const rad=(thin?1.85:2.75)*(0.92+0.16*hub);
+    const rg=ctx.createRadialGradient(v.x,v.y,0,v.x,v.y,rad*2.4);
+    rg.addColorStop(0,hsl(hue,100,88,Math.min(0.95,0.78*near*hub)));
+    rg.addColorStop(0.45,hsl(hue,100,62,Math.min(0.55,0.35*near*hub)));
+    rg.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=rg;
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad*2.4,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=hsl(hue,100,80,Math.min(0.95,0.72*near*hub));
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad*0.5,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 
@@ -6272,13 +6483,13 @@ function drawCyberNatureField(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){ /* clientThickSkeleton|clientStillEngine: heavy mid-ground bone */
+function drawDodecaFrame(cx,cy,s,t){ /* clientNeonLattice|clientThickSkeleton: Magpie cyan↔magenta neon lattice wireframe */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
   const thin=W<=480;
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
   const breath=0.55+0.45*Math.sin(t*TEMPO.base*(TEMPO.rings||1/(PHI*PHI)))+0.28*sealP;
-  const iri=8*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.45);
+  const iri=18*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.55);
   const edged=DODECA.edges.map(([i,j],ei)=>{
     const a=pv[i], b=pv[j];
     return {a,b,ei,md:((a&&a.d)||0)+((b&&b.d)||0)};
@@ -6287,23 +6498,46 @@ function drawDodecaFrame(cx,cy,s,t){ /* clientThickSkeleton|clientStillEngine: h
   for(const ed of edged){
     const {a,b,ei,md}=ed;
     const near=Math.max(0.18, Math.min(1, 0.48+md*0.22));
-    const a0=Math.min(0.52, 0.22*near*(0.75+0.25*breath));
-    const hue=(ei%2?305:195)+ei*0.6+iri*0.5;
-    /* soft under-glow pass then core stroke — readable bone */
-    ctx.strokeStyle=hsl(hue,88,48,a0*0.45);
-    ctx.lineWidth=(thin?3.2:4.6)*near;
+    const pulse=0.78+0.22*Math.sin(t*TEMPO.base*2.1+ei*0.37)+0.18*sealP;
+    const hueC=186+iri*0.35+ei*0.4;
+    const hueM=312-iri*0.25+ei*0.55;
+    const aGlow=Math.min(0.55, 0.22*near*pulse*(0.7+0.3*breath));
+    const aCore=Math.min(0.92, 0.48*near*pulse*(0.75+0.25*breath));
+    const g0=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+    g0.addColorStop(0,hsl(hueC,100,55,aGlow*0.55));
+    g0.addColorStop(0.5,hsl((hueC+hueM)*0.5,100,62,aGlow*0.75));
+    g0.addColorStop(1,hsl(hueM,100,58,aGlow*0.55));
+    ctx.strokeStyle=g0;
+    ctx.lineWidth=(thin?4.2:6.2)*near;
     ctx.lineCap="round";
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-    ctx.strokeStyle=hsl(hue,94,66,a0);
-    ctx.lineWidth=(thin?1.55:2.35)*near;
+    const g1=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+    g1.addColorStop(0,hsl(hueC,100,68,aCore));
+    g1.addColorStop(0.5,hsl(ei%2?300:198,100,74,Math.min(0.98,aCore+0.12)));
+    g1.addColorStop(1,hsl(hueM,100,70,aCore));
+    ctx.strokeStyle=g1;
+    ctx.lineWidth=(thin?1.7:2.55)*near*(0.85+0.15*pulse);
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    if(!thin && near>0.45){
+      ctx.strokeStyle=hsl(ei%2?318:186,100,88,Math.min(0.55,0.22*near*pulse));
+      ctx.lineWidth=(thin?0.55:0.85)*near;
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
   }
   for(let i=0;i<pv.length;i++){
     const v=pv[i];
     const near=Math.max(0.2, Math.min(1, 0.5+(v.d||0)*0.35));
-    const hub=0.75+0.25*breath+0.3*sealP;
-    ctx.fillStyle=hsl(205+i%3*40,90,68,Math.min(0.48,0.20*near*hub));
-    ctx.beginPath(); ctx.arc(v.x,v.y,(thin?1.45:2.05)*(0.9+0.12*hub),0,Math.PI*2); ctx.fill();
+    const hub=0.75+0.25*breath+0.35*sealP+0.2*Math.sin(t*TEMPO.base*TEMPO.jewel+i);
+    const hue=i%2?312:186;
+    const rad=(thin?2.1:3.15)*(0.88+0.18*hub)*near;
+    const g=ctx.createRadialGradient(v.x,v.y,0,v.x,v.y,rad*2.6);
+    g.addColorStop(0,hsl(hue,100,88,Math.min(0.95,0.72*near*hub)));
+    g.addColorStop(0.4,hsl(hue,100,62,Math.min(0.55,0.38*near*hub)));
+    g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g;
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad*2.6,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=hsl(hue,100,78,Math.min(0.95,0.55*near*hub));
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad*0.55,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 }
@@ -8902,7 +9136,7 @@ function frame(now){
   syncSpinPhase(t);
   drawDodecaFaceFills(cx,cy,s,t); /* clientFaceFillOmni: textured faces under bone */
   drawCoreSeed(cx,cy,s,t); /* clientCoreSeed: glowing mesh core at hub */
-  drawHexFrame(cx,cy,s,t); /* clientThickSkeleton on top of face fills */
+  drawHexFrame(cx,cy,s,t); /* clientNeonLattice|clientThickSkeleton neon lattice on face fills */
   if(!reduceMotion && !skipHeavy) drawDodecaLatticeCage(cx,cy,s,t);
   if(!reduceMotion && !skipHeavy) drawHexCoreWires(cx,cy,s,t);
   if(glCanvas) glCanvas.style.display="none";
