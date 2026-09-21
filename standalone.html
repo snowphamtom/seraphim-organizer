@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -328,29 +328,36 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   mix-blend-mode:screen;
 }
 
-/* fallingCodeDepth|hybridEngineTrio|masterpieceFlow — φ-synced whisper organism under seal
-   TEMPO family (CSS mirror of JS TEMPO.base≈0.68): T≈9.2s · φT≈15s · φ²T≈24s · φ³T≈39s */
+/* fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock
+   φ-synced whisper under seal. Live origin via --seal-x/--seal-y (set every frame).
+   TEMPO: T≈9.2s · φT≈15s · φ²T≈24s · φ³T≈39s
+   Shared vanishing: perspective 900px · rotateX 55° · ±6° rotateY mirror
+   Opacity ladder: codeRain < beamWhisper ≤ coreWhisper << canvas seal */
+#bgField{
+  --seal-x:50%;
+  --seal-y:42%;
+}
 #bgField .codeRain{
   position:absolute;inset:0;
-  perspective:920px;
-  perspective-origin:46% 40%;
+  perspective:900px;
+  perspective-origin:var(--seal-x) var(--seal-y);
   overflow:hidden;
   z-index:0;
 }
 #bgField .codeRain .plane{
   position:absolute;
-  left:50%; top:36%;
-  width:155%; height:175%;
-  transform:translate(-52%,-40%) rotateX(58deg) rotateY(-7deg) scale(1.38);
-  transform-origin:50% 72%;
+  left:var(--seal-x); top:var(--seal-y);
+  width:150%; height:170%;
+  transform:translate(-50%,-50%) rotateX(55deg) rotateY(-6deg) scale(1.32);
+  transform-origin:50% 50%;
   transform-style:preserve-3d;
-  opacity:0.28;
+  opacity:0.14;
   mix-blend-mode:screen;
-  filter:saturate(1.08) brightness(0.78) contrast(1.04);
-  -webkit-mask-image:radial-gradient(ellipse 68% 62% at 46% 44%,
-    rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.32) 28%, rgba(0,0,0,0.72) 52%, #000 78%);
-  mask-image:radial-gradient(ellipse 68% 62% at 46% 44%,
-    rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.32) 28%, rgba(0,0,0,0.72) 52%, #000 78%);
+  filter:saturate(1.02) brightness(0.72) contrast(1.02);
+  -webkit-mask-image:radial-gradient(ellipse 64% 58% at 50% 50%,
+    rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.22) 26%, rgba(0,0,0,0.68) 50%, #000 76%);
+  mask-image:radial-gradient(ellipse 64% 58% at 50% 50%,
+    rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.22) 26%, rgba(0,0,0,0.68) 50%, #000 76%);
   will-change:transform;
 }
 #bgField .codeRain .drift{
@@ -361,69 +368,71 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .codeRain img{
   display:block;width:100%;height:100%;
   object-fit:cover;
-  object-position:38% 22%; /* side-bias — keep hot columns off seal center */
+  object-position:50% 50%; /* bgSealCenterLock: image center = seal */
 }
 #bgField .codeRain::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 48% 42% at 50% 42%, rgba(0,0,0,0.66) 0%, rgba(0,0,0,0.30) 42%, transparent 72%),
-    linear-gradient(180deg, rgba(0,0,0,0.48) 0%, transparent 28%, transparent 68%, rgba(0,0,0,0.58) 100%),
-    linear-gradient(90deg, rgba(0,0,0,0.28) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.32) 100%);
+    radial-gradient(ellipse 52% 46% at var(--seal-x) var(--seal-y), rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.36) 40%, transparent 70%),
+    linear-gradient(180deg, rgba(0,0,0,0.52) 0%, transparent 26%, transparent 66%, rgba(0,0,0,0.62) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.34) 0%, transparent 24%, transparent 76%, rgba(0,0,0,0.34) 100%);
 }
 @keyframes codeRainFall{
   from{transform:translate3d(0,-5%,0)}
   to{transform:translate3d(0,7%,0)}
 }
 
-/* hybridEngineTrio: core plasma whisper — centered under seal, heavy radial mask */
+/* core plasma whisper — plate centered on --seal-x/--seal-y (not viewport flex) */
 #bgField .coreWhisper{
   position:absolute;inset:0;z-index:1;pointer-events:none;
-  display:flex;align-items:center;justify-content:center;
   mix-blend-mode:screen;
 }
 #bgField .coreWhisper .plate{
-  width:min(52vmin, 420px); height:min(52vmin, 420px);
-  opacity:0.16;
-  filter:saturate(1.15) brightness(0.85) contrast(1.05) blur(0.4px);
-  -webkit-mask-image:radial-gradient(circle at 50% 48%,
-    #000 0%, #000 28%, rgba(0,0,0,0.55) 48%, transparent 72%);
-  mask-image:radial-gradient(circle at 50% 48%,
-    #000 0%, #000 28%, rgba(0,0,0,0.55) 48%, transparent 72%);
+  position:absolute;
+  left:var(--seal-x); top:var(--seal-y);
+  width:min(48vmin, 380px); height:min(48vmin, 380px);
+  translate:-50% -50%; /* compose with scale pulse — never fight seal lock */
+  opacity:0.15;
+  filter:saturate(1.05) brightness(0.78) contrast(1.02) blur(0.5px);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 22%, rgba(0,0,0,0.45) 44%, transparent 68%);
+  mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 22%, rgba(0,0,0,0.45) 44%, transparent 68%);
   animation:coreWhisperPulse 15s ease-in-out infinite; /* φT */
-  will-change:opacity,transform;
+  will-change:opacity,scale;
 }
 #bgField .coreWhisper picture,
 #bgField .coreWhisper img,
 #bgField .coreWhisper video{
   display:block;width:100%;height:100%;
-  object-fit:cover;border-radius:50%;
+  object-fit:cover;object-position:50% 50%;border-radius:50%;
 }
 @keyframes coreWhisperPulse{
-  0%,100%{opacity:0.12; transform:scale(0.96)}
-  50%{opacity:0.20; transform:scale(1.03)}
+  0%,100%{opacity:0.11; scale:0.97}
+  50%{opacity:0.17; scale:1.02}
 }
 
-/* hybridEngineTrio: beam-rain corridor whisper — angled like codeRain, side-bias */
+/* beam corridor — SAME rotateX family, mirrored rotateY; plane at seal */
 #bgField .beamWhisper{
   position:absolute;inset:0;z-index:0;
-  perspective:880px;
-  perspective-origin:54% 38%;
+  perspective:900px;
+  perspective-origin:var(--seal-x) var(--seal-y);
   overflow:hidden;pointer-events:none;
 }
 #bgField .beamWhisper .plane{
   position:absolute;
-  left:58%; top:28%;
-  width:120%; height:150%;
-  transform:translate(-48%,-36%) rotateX(52deg) rotateY(9deg) scale(1.22);
-  transform-origin:50% 70%;
+  left:var(--seal-x); top:var(--seal-y);
+  width:118%; height:148%;
+  transform:translate(-50%,-50%) rotateX(55deg) rotateY(6deg) scale(1.18);
+  transform-origin:50% 50%;
   transform-style:preserve-3d;
-  opacity:0.18;
+  opacity:0.16;
   mix-blend-mode:screen;
-  filter:saturate(1.2) brightness(0.75) hue-rotate(-8deg) contrast(1.06);
-  -webkit-mask-image:radial-gradient(ellipse 60% 58% at 55% 40%,
-    rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.28) 30%, rgba(0,0,0,0.7) 55%, #000 80%);
-  mask-image:radial-gradient(ellipse 60% 58% at 55% 40%,
-    rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.28) 30%, rgba(0,0,0,0.7) 55%, #000 80%);
+  filter:saturate(1.05) brightness(0.70) contrast(1.03);
+  -webkit-mask-image:radial-gradient(ellipse 58% 54% at 50% 50%,
+    rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.24) 28%, rgba(0,0,0,0.72) 54%, #000 78%);
+  mask-image:radial-gradient(ellipse 58% 54% at 50% 50%,
+    rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.24) 28%, rgba(0,0,0,0.72) 54%, #000 78%);
   will-change:transform;
 }
 #bgField .beamWhisper .drift{
@@ -435,13 +444,14 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .beamWhisper video{
   display:block;width:100%;height:100%;
   object-fit:cover;
-  object-position:62% 18%;
+  object-position:50% 50%;
 }
 #bgField .beamWhisper::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 42% 38% at 50% 42%, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 45%, transparent 70%),
-    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 30%, transparent 65%, rgba(0,0,0,0.55) 100%);
+    radial-gradient(ellipse 48% 42% at var(--seal-x) var(--seal-y), rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.30) 42%, transparent 68%),
+    linear-gradient(180deg, rgba(0,0,0,0.54) 0%, transparent 28%, transparent 64%, rgba(0,0,0,0.58) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.30) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.30) 100%);
 }
 @keyframes beamWhisperFall{
   from{transform:translate3d(0,-6%,0)}
@@ -449,22 +459,21 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 
 @media (max-width:900px){
-  #bgField .codeRain .plane{opacity:0.14; width:170%; height:190%;
-    transform:translate(-50%,-38%) rotateX(54deg) rotateY(-5deg) scale(1.28)}
-  #bgField .coreWhisper .plate{opacity:0.10; width:min(44vmin,300px); height:min(44vmin,300px);
+  #bgField .codeRain .plane{opacity:0.09; width:165%; height:185%;
+    transform:translate(-50%,-50%) rotateX(50deg) rotateY(-4deg) scale(1.24)}
+  #bgField .coreWhisper .plate{opacity:0.09; width:min(40vmin,280px); height:min(40vmin,280px);
     animation-duration:15s}
-  #bgField .beamWhisper .plane{opacity:0.10;
-    transform:translate(-46%,-34%) rotateX(50deg) rotateY(6deg) scale(1.15)}
+  #bgField .beamWhisper .plane{opacity:0.10; width:125%; height:155%;
+    transform:translate(-50%,-50%) rotateX(50deg) rotateY(4deg) scale(1.12)}
 }
 @media (prefers-reduced-motion:reduce){
   #bgField .codeRain .drift,
   #bgField .beamWhisper .drift,
   #bgField .coreWhisper .plate{animation:none}
-  #bgField .coreWhisper .plate{opacity:0.10}
+  #bgField .codeRain .plane{opacity:0.10; transform:translate(-50%,-50%) rotateX(55deg) rotateY(-6deg) scale(1.28)}
+  #bgField .beamWhisper .plane{opacity:0.11; transform:translate(-50%,-50%) rotateX(55deg) rotateY(6deg) scale(1.14)}
+  #bgField .coreWhisper .plate{opacity:0.10; scale:1}
 }
-
-
-
 
 
 
@@ -667,7 +676,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth|hybridEngineTrio|masterpieceFlow -->
+<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock -->
   <div class="codeRain" aria-hidden="true">
     <div class="plane">
       <div class="drift">
@@ -1265,7 +1274,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1276,6 +1285,8 @@ const STORIES = {
    - fallingCodeDepth: angled neon code corridor under #bgField (atmosphere only)
    - hybridEngineTrio: core plasma + beam-rain + code floor (procedural primary, media whisper)
    - masterpieceFlow: one φ TEMPO organism — desk→seal→trays continuous path
+   - balancePolish: shared seal origin; codeRain/beamWhisper same rotateX family; cyan↔magenta L/R weight; opacity ladder; bloom clamp
+   - bgSealCenterLock: --seal-x/--seal-y track live canvas cx,cy (mobile raised seal + pan/parallax); DOM whispers locked to dodeca hub
    - starfield dust: dump particles awaiting lock
    - funnels: intake mouths at dodeca faces (cool cyan admit path)
    - organize lattice: visible tether field→dodeca / admit→cube
@@ -2245,7 +2256,7 @@ function drawInnerCubeWire(cx,cy,s,t){
 const inkDrops=[];
 
 /* lock ink wire GIF behind dodeca seal center (matches raised mobile cy) */
-let _clusterEl=null;
+let _clusterEl=null, _bgFieldEl=null;
 
 let _neonEl=null,_sculptEl=null;
 let _cityEl=null,_glintEl=null,_inkEl=null;
@@ -2291,7 +2302,7 @@ function drawChimeraTerrain(cx,cy,s,t){
       if(pit>0.08){
         const dx=cx-x, dy=cy-y, d=Math.hypot(dx,dy)||1;
         const pull=Math.min(1, (s*1.8)/d);
-        const hue=160+pit*80+i*3;
+        const hue=190+pit*35+(i%2?110:0); /* cyan or magenta bias */
         const depth=4+pit*18*pull;
         ctx.strokeStyle=hsl(hue,85,58,0.045+pit*0.08*(0.4+0.6*pull));
         ctx.lineWidth=0.7+pit;
@@ -2344,8 +2355,9 @@ function drawChimeraSculpture(cx,cy,s,t){
     const n=fbm2(Math.cos(a)*2+t*0.05, Math.sin(a)*2-t*0.04);
     const len=s*(0.55+1.35*n + 0.25*Math.sin(t*TEMPO.base+i*0.31));
     const x2=cx+Math.cos(a)*len, y2=cy+Math.sin(a)*len*0.92;
-    const hue=130+u*220 + 30*Math.sin(t*0.4+i*0.05);
-    const alpha=(thin?0.035:0.055)*(0.45+0.55*n);
+    /* balancePolish: Organized cyan / Aside magenta fibers — equal L/R */
+    const hue=(Math.cos(a)>=0)?(300+u*25+12*Math.sin(t*0.4+i*0.05)):(185+u*30+12*Math.cos(t*0.35+i*0.05));
+    const alpha=(thin?0.025:0.04)*(0.4+0.5*n);
     const g=ctx.createLinearGradient(cx,cy,x2,y2);
     g.addColorStop(0,hsl(hue,90,62,alpha*1.2));
     g.addColorStop(0.55,hsl(hue+25,85,55,alpha*0.45));
@@ -2443,7 +2455,7 @@ function drawCorePlasma(cx,cy,s,t){
     /* cyan↔magenta Organized/Aside bias */
     const hue=(i%2===0)?(195+18*Math.sin(t*rate+i)):(300+20*Math.cos(t*rate*PHI+i));
     const R=(mobile?18:28)+12*Math.sin(t*rate+i*0.7);
-    const a=(mobile?0.035:0.055)*boost*(0.55+0.45*Math.sin(t*rate*PHI+i));
+    const a=(mobile?0.028:0.042)*boost*(0.5+0.4*Math.sin(t*rate*PHI+i));
     const g=ctx.createRadialGradient(px,py,0,px,py,R);
     g.addColorStop(0,hsl(hue,92,62,a*1.15));
     g.addColorStop(0.45,hsl(hue+18,85,52,a*0.4));
@@ -2451,7 +2463,7 @@ function drawCorePlasma(cx,cy,s,t){
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(px,py,R,0,Math.PI*2); ctx.fill();
   }
   /* soft inner core glow — clipped under seal radius */
-  const coreA=0.04*boost*(0.7+0.3*Math.sin(t*rate));
+  const coreA=0.028*boost*(0.65+0.25*Math.sin(t*rate));
   const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,s*0.32);
   cg.addColorStop(0,hsl(210,90,60,coreA));
   cg.addColorStop(0.5,hsl(280,80,55,coreA*0.35));
@@ -2464,7 +2476,7 @@ function drawBeamRain(cx,cy,s,t){
   /* segmented equalizer beams from soft ring ABOVE/around seal → curve to desk/trays on sort */
   if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
-  const nBeams=thin?5:(mobile?8:14);
+  const nBeams=thin?4:(mobile?7:12); /* balancePolish: fewer beams on mobile */
   const rate=TEMPO.base*TEMPO.beam;
   const surge=Math.min(1, celebrate*0.9+sealPulse*0.55+(uploadFX&&uploadFX.flash>0.05?uploadFX.flash*0.4:0));
   const deskY=H-Math.min(150, H*0.20);
@@ -2490,8 +2502,8 @@ function drawBeamRain(cx,cy,s,t){
     const fall=((t*rate*0.35 + seed*PHI + i*0.17)%1);
     const segs=thin?4:(mobile?6:9);
     /* Organized cyan / Aside magenta alternating + seed */
-    const admit=seed>0.42;
-    const hue=admit?(185+seed*30):(295+seed*25);
+    const admit=(i%2===0); /* equal Organized/Aside weight */
+    const hue=admit?(188+seed*22):(302+seed*18);
     /* on sort surge: curve toward desk then trays (left=organized, right=aside) */
     const trayX=admit?(W*0.22):(W*0.78);
     const curve=0.18+0.55*surge;
@@ -2521,7 +2533,19 @@ function drawBeamRain(cx,cy,s,t){
   ctx.restore();
 }
 
-function syncGyroSharedCenter(cx,cy,s,t){ /* DOM GIF plates retired — motion lives in drawChimera* */ }
+function syncGyroSharedCenter(cx,cy,s,t){
+  /* bgSealCenterLock|balancePolish: live seal cx,cy → CSS --seal-x/--seal-y (px)
+     coreWhisper plate, codeRain/beamWhisper planes + perspective-origin, masks/vignettes
+     all resolve against the same vars — tracks mobile raised cy + pan/parallax. */
+  if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
+  if(!_bgFieldEl || !(W>0 && H>0)) return;
+  const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
+  if(_bgFieldEl._sealX!==sx || _bgFieldEl._sealY!==sy){
+    _bgFieldEl._sealX=sx; _bgFieldEl._sealY=sy;
+    _bgFieldEl.style.setProperty("--seal-x", sx);
+    _bgFieldEl.style.setProperty("--seal-y", sy);
+  }
+}
 
 
 function syncClusterBehindSeal(cx,cy){
@@ -2669,30 +2693,42 @@ function drawFunnelsAndBeams(cx,cy,s,t){
   const mouths=[]; ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.55:0.72); ctx.globalCompositeOperation="lighter";
   const fcs=DODECA._faceCenters2d;
   let tips;
+  /* balancePolish: lock ≤3 mouths to clean 120° triad (or nearest face centers) */
+  const triad=[-Math.PI*2/3, 0, Math.PI*2/3]; /* 120° */
+  const sideNames=["tl","tr","bot"];
   if(fcs&&fcs.length>=12){
-    const ranked=fcs.map((fc,fi)=>{
-      const dx=fc[0]-cx, dy=fc[1]-cy;
-      return {fi,x:fc[0],y:fc[1],d:fc[2],r2:dx*dx+dy*dy};
-    }).sort((a,b)=>b.r2-a.r2);
-    const sides=["tl","tr","ml","mr","bl","br"];
-    tips=ranked.slice(0,6).map((fc,k)=>({x:fc.x,y:fc.y,label:"",side:sides[k],fi:fc.fi}));
+    const used=new Set();
+    tips=triad.map((ang,k)=>{
+      let best=null, bestScore=1e9;
+      for(let fi=0;fi<fcs.length;fi++){
+        if(used.has(fi)) continue;
+        const fc=fcs[fi];
+        const dx=fc[0]-cx, dy=fc[1]-cy;
+        const a=Math.atan2(dy,dx);
+        let da=Math.abs(((a-ang+Math.PI*3)%(Math.PI*2))-Math.PI);
+        const r2=dx*dx+dy*dy;
+        const score=da*1.8 - Math.sqrt(r2)*0.002; /* prefer angle lock, then outer */
+        if(score<bestScore){bestScore=score; best={fi,x:fc[0],y:fc[1],d:fc[2]};}
+      }
+      if(best) used.add(best.fi);
+      return {x:best?best.x:cx+Math.cos(ang)*s, y:best?best.y:cy+Math.sin(ang)*s*0.92, label:"", side:sideNames[k], fi:best?best.fi:-1};
+    });
   }else{
-    tips=[{ang:-Math.PI*0.72,len:1.04,label:"",side:"tl"},{ang:-Math.PI*0.28,len:1.04,label:"",side:"tr"},{ang:Math.PI*0.5,len:1.08,label:"",side:"bot"}].map(tip=>{
-      const ox=Math.cos(tip.ang)*tip.len, oy=Math.sin(tip.ang)*tip.len*0.92;
+    tips=triad.map((ang,k)=>{
+      const ox=Math.cos(ang)*1.06, oy=Math.sin(ang)*1.06*0.92;
       const [tx,ty]=project(ox,oy,0,cx,cy,s);
-      return {x:tx,y:ty,label:tip.label,side:tip.side};
+      return {x:tx,y:ty,label:"",side:sideNames[k]};
     });
   }
-  /* always ≤3 primary mouths — readable intake, not light show */
-  const primary=tips.filter((_,i)=>i%2===0).slice(0,3);
+  const primary=tips.slice(0,3);
   const thin=W<=480;
   primary.forEach((tip,fi)=>{
     const tx=tip.x, ty=tip.y;
     const [bx,by]=project(0,0,0,cx,cy,s);
     const dx=bx-tx, dy=by-ty, beamAng=Math.atan2(dy,dx);
     const rings=thin?8:12, ribs=thin?0:8;
-    /* hybridEngineTrio: mouth 0/2 cyan Organized bias, mouth 1 magenta Aside bias */
-    const baseHue=(fi===1)?(300+fi*6):(190+fi*12);
+    /* balancePolish: mouth 0 cyan L, mouth 1 magenta R, mouth 2 cyan — equal weight */
+    const baseHue=(fi===1)?305:(188+fi*4);
     for(let i=0;i<=rings;i++){
       const u=i/rings, along=u*0.62;
       const x=tx+dx*along, y=ty+dy*along;
@@ -2725,7 +2761,8 @@ function drawFunnelsAndBeams(cx,cy,s,t){
       const beamStops=[];
       for(let k=0;k<=6;k++){
         const kk=k/6, mid=Math.abs(kk-0.5)<0.14;
-        beamStops.push([kk,hsl(baseHue+k*8,95,mid?58:46, mid?baseA*1.25:baseA)]);
+        /* hue climb capped — no yellow/orange prism */
+        beamStops.push([kk,hsl(baseHue+k*4,88,mid?54:44, mid?baseA*1.15:baseA)]);
       }
       addStops(beamGrad, beamStops);
       ctx.lineWidth=lw; ctx.strokeStyle=beamGrad; ctx.lineCap="round";
@@ -2739,12 +2776,12 @@ function drawFunnelsAndBeams(cx,cy,s,t){
     cg.addColorStop(0.5,hsl(baseHue+20,90,52,0.08));
     cg.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=cg; ctx.beginPath();ctx.arc(cxp,cyp,12,0,Math.PI*2);ctx.fill();
-    /* faint rainbow funnel accent (low α — seal stays boss) */
+    /* balancePolish: cool/neutral mouth accent — cyan or magenta only, no rainbow */
     if(!thin){
-      const accent=0.035+0.04*Math.min(1,sealPulse+celebrate*0.5);
-      ctx.strokeStyle=hsl(baseHue,95,62,accent);
-      ctx.lineWidth=1.2;
-      ctx.beginPath();ctx.ellipse(tx,ty,10,4.2,beamAng,0,Math.PI*2);ctx.stroke();
+      const accent=0.028+0.032*Math.min(1,sealPulse+celebrate*0.5);
+      ctx.strokeStyle=hsl(baseHue,82,56,accent);
+      ctx.lineWidth=1.05;
+      ctx.beginPath();ctx.ellipse(tx,ty,9.5,3.8,beamAng,0,Math.PI*2);ctx.stroke();
     }
     mouths.push({x:tx,y:ty,label:tip.label||"",side:tip.side});
   });
@@ -2975,9 +3012,9 @@ function drawSealContrastVeil(cx,cy,s){
   const R=Math.max(W,H)*0.72;
   const g=ctx.createRadialGradient(cx,cy,s*0.22,cx,cy,R);
   g.addColorStop(0,"rgba(0,0,0,0)");
-  g.addColorStop(0.4,"rgba(0,0,0,0.08)");
-  g.addColorStop(0.75,"rgba(0,0,0,0.20)");
-  g.addColorStop(1,"rgba(0,0,0,0.36)");
+  g.addColorStop(0.35,"rgba(0,0,0,0.10)");
+  g.addColorStop(0.7,"rgba(0,0,0,0.22)");
+  g.addColorStop(1,"rgba(0,0,0,0.38)");
   ctx.globalCompositeOperation="source-over";
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
   /* bright core kiss — lift seal plate slightly */
@@ -3008,8 +3045,12 @@ function drawHybridBridgeRays(cx,cy,s,t){
       const jitter=0.04*Math.sin(t*TEMPO.base*PHI+i*PHI+sh);
       const len=baseLen*(1+0.22*Math.sin(t*TEMPO.base/PHI+i)+jitter);
       const x2=cx+Math.cos(a+jitter)*len, y2=cy+Math.sin(a+jitter)*len*0.92;
-      const hue=125 + i*(230/n) + sh*18 + 25*Math.sin(t*0.45+i*0.3);
-      const a0=(0.11-sh*0.02)*(0.5+0.4*Math.sin(t*TEMPO.base+i)); /* chimera: mid bridge */
+      /* balancePolish: cyan L ↔ magenta R equal weight; no yellow/orange */
+      const side=Math.cos(a+jitter); /* -1 left … +1 right */
+      const hue=(side<0)
+        ?(185+((-side)*40)+8*Math.sin(t*0.45+i)+sh*6)
+        :(295+(side*28)+8*Math.cos(t*0.4+i)+sh*6);
+      const a0=(0.085-sh*0.015)*(0.45+0.35*Math.sin(t*TEMPO.base+i))*(W<=900?0.7:1); /* balancePolish quieter */
       const g=ctx.createLinearGradient(cx,cy,x2,y2);
       g.addColorStop(0,hsl(hue,96,64,a0));
       g.addColorStop(0.35,hsl(hue+28,90,56,a0*0.45));
@@ -3042,8 +3083,8 @@ function drawGyroOrbitRings(cx,cy,s,t){
   for(let r=0;r<rings;r++){
     const rad=s*(0.42+r*(0.22+0.04/PHI));
     const spin=t*TEMPO.base*TEMPO.rings*(r%2?1:-1)/Math.pow(PHI,r*0.5)+(cam.roll)*0.5;
-    const hue=160+r*28+30*Math.sin(t*0.3+r);
-    const alpha=(0.07-r*0.01)*(0.55+0.35*Math.sin(t*TEMPO.base/PHI+r));
+    const hue=(r%2===0)?(195+r*8+10*Math.sin(t*0.3+r)):(305+r*6+10*Math.cos(t*0.3+r));
+    const alpha=(0.055-r*0.008)*(0.5+0.3*Math.sin(t*TEMPO.base/PHI+r));
     ctx.strokeStyle=hsl(hue,88,58,Math.max(0.02,alpha));
     ctx.lineWidth=mobile?0.55:0.75;
     ctx.setLineDash([3+r, 5+r*PHI]);
@@ -3538,8 +3579,24 @@ function drawFogShards(cx,cy,s,t,orbitSpeed){
   ctx.restore();
 }
 function drawBloomClamp(cx,cy,s){
-  /* no black plate — chromatic metaball GIF is the background */
-  return;
+  /* balancePolish: soft anti-blotch under dodeca — kill hybrid glare hotspot; seal stays boss */
+  if(reduceMotion && W<=900) return;
+  ctx.save();
+  const R=s*(W<=900?0.55:0.62);
+  const g=ctx.createRadialGradient(cx,cy,s*0.08,cx,cy,R);
+  g.addColorStop(0,"rgba(0,0,0,0.22)");
+  g.addColorStop(0.35,"rgba(0,0,0,0.10)");
+  g.addColorStop(0.7,"rgba(0,0,0,0.03)");
+  g.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.globalCompositeOperation="source-over";
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fill();
+  /* cool neutral rim — no yellow/orange kiss */
+  const g2=ctx.createRadialGradient(cx,cy,s*0.28,cx,cy,s*0.72);
+  g2.addColorStop(0,"rgba(0,0,0,0)");
+  g2.addColorStop(0.55,"rgba(20,28,48,0.04)");
+  g2.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(cx,cy,s*0.72,0,Math.PI*2); ctx.fill();
+  ctx.restore();
 }
 function neonLabel(text,x,y,color,font){
   ctx.font=font||"600 10px ui-monospace, Menlo, monospace";
