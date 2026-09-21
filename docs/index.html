@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2704,15 +2704,51 @@ html{ touch-action:manipulation; }
   }
 }
 
+
+/* clientZero — black void + sorter desk only; kill prism/engine chrome */
+html,body{ background:#000!important; }
+#fx,#fxgl,#dataRail,#specBar{
+  display:none!important; opacity:0!important; visibility:hidden!important;
+  pointer-events:none!important; z-index:-1!important;
+}
+#bgField{
+  position:fixed!important; inset:0!important; width:100vw!important; height:100dvh!important;
+  z-index:0!important; pointer-events:none!important; overflow:hidden!important;
+  background:#000!important; display:block!important;
+}
+#bgField > .residualPrism,
+#bgField > .blueStack,
+#bgField > .duoField,
+#bgField > .uniStack,
+#bgField > .trioStack,
+#bgField > .mathField,
+#bgField > .nodeField,
+#bgField img,
+#bgField picture,
+#bgField .assetLayer{
+  display:none!important; visibility:hidden!important; opacity:0!important;
+  pointer-events:none!important;
+}
+#top .whisper, #top .chip.law{ display:none!important; }
+#intake, #log, #sub, #moreWrap, #morePanel, #introChip, #phaseWhisper, #navhint, #cheat{
+  display:none!important;
+}
+
+/* clientZero kills hybrid media re-show of #fx */
+@media (max-width:480px), (pointer:coarse) and (max-width:820px){
+  #fx,#fxgl,#dataRail,#specBar{
+    display:none!important; opacity:0!important; visibility:hidden!important;
+    pointer-events:none!important; z-index:-1!important;
+  }
+  #bgField > .residualPrism, #bgField img{
+    display:none!important; visibility:hidden!important; opacity:0!important;
+  }
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientResidualPrism + clientBlankFix -->
-  <div class="residualPrism" aria-hidden="true">
-    <img class="anim" src="media/residual-prism.gif" alt="" width="592" height="592" decoding="async" fetchpriority="high">
-    <img class="still" src="media/residual-prism.png" alt="" width="592" height="592" decoding="async">
-  </div>
-</div>
+<div id="bgField" aria-hidden="true"><!-- clientZero: empty field --></div>
 <div id="dataRail" aria-hidden="true"></div>
 <canvas id="fx" role="img" aria-label="Seraphim Magpie work instrument — seal, residual rings, sort streams"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas><!-- dodeca3DSphere: Three underlay optional; canvas seal carries alone -->
@@ -7210,24 +7246,11 @@ function frame(now){
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
-  ctx.clearRect(0,0,W,H); /* clientEnginePrismHybrid: engine face on whisper prism */
-  const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom;
-  const cx=W*0.5, cy=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY;
-  projectDodecaSeal(cx,cy,s);
-  projectInnerCube(cx,cy,s);
-  syncGyroSharedCenter(cx,cy,s,t);
-  syncSpinPhase(t);
-  if(!reduceMotion) drawUploadStream(cx,cy,s,t);
-  drawSortShockwave(cx,cy,s);
-  drawSoftCrossVeil();
-  drawHexFrame(cx,cy,s,t); /* dodeca edges — un-stubbed */
-  if(!reduceMotion && !skipHeavy) drawDodecaLatticeCage(cx,cy,s,t);
-  if(!reduceMotion && !skipHeavy) drawBoxSphereVents(cx,cy,s,t);
-  if(!reduceMotion && !skipHeavy) drawHexCoreWires(cx,cy,s,t);
+  ctx.clearRect(0,0,W,H); /* clientZero: clearRect-only — no dodeca/lattice/vents/streams */
   if(glCanvas) glCanvas.style.display="none";
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame); /* clientEnginePrismHybrid: seeds stay off */
+requestAnimationFrame(frame); /* clientZero: desk sorter only */
 /* cyberNatureFormat — left data rail + spectrum bars */
 (function bootCyberNatureChrome(){ /* clientBgClean skip rail/spec */ return;
   /* magpieImpressSupersede L12 — dataRail scroll + hard-driving specBar energy */
