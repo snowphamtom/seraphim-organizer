@@ -2472,134 +2472,9 @@ function drawBoxSphereVents(cx,cy,s,t){
 }
 
 function drawDodecaFrame(cx,cy,s,t){
-  /* dodeca3DSphere: regular dodecahedron seal organism — 20v/30e/12 pent faces through project() YPR gyro.
-     Returns 12 projected face-center points [[x,y,d],…] for funnels / labels / silhouette. */
-  const aHex=layerAlpha("hex");
-  const thin=W<=480;
-  const mobile=W<=900;
-  const pv=[];
-  for(let i=0;i<DODECA.verts.length;i++){
-    const v=DODECA.verts[i];
-    const pr=project(v.x,v.y,v.z,cx,cy,s);
-    pv.push({x:pr[0],y:pr[1],d:pr[2],i});
-  }
-  DODECA._projVerts=pv;
-  /* luminous pentagon fills — depth-sorted; richer on desktop, skip ≤480 */
-  if(!thin){
-    const faceDraw=DODECA.faces.map((f,fi)=>{
-      const pts=f.map(i=>pv[i]);
-      const meanD=pts.reduce((a,p)=>a+p.d,0)/pts.length;
-      return {fi,pts,meanD,f};
-    }).sort((a,b)=>a.meanD-b.meanD);
-    ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
-    for(const fd of faceDraw){
-      const nearBoost=Math.max(0, Math.min(1, (fd.meanD+0.25)/0.85));
-      if(nearBoost<0.18) continue;
-      /* soft radial glow from face center */
-      const cxF=fd.pts.reduce((a,p)=>a+p.x,0)/5, cyF=fd.pts.reduce((a,p)=>a+p.y,0)/5;
-      const g=ctx.createRadialGradient(cxF,cyF,0,cxF,cyF, Math.hypot(fd.pts[0].x-cxF,fd.pts[0].y-cyF)*1.15);
-      const hue=200+fd.fi*12+t*16;
-      const aFill=mobile?(0.025+nearBoost*0.045):(0.045+nearBoost*0.09);
-      addStops(g,[
-        [0,hsl(hue+40,85,58,aFill*1.4)],
-        [0.55,hsl(hue,75,45,aFill)],
-        [1,hsl(hue,70,40,0)]
-      ]);
-      ctx.fillStyle=g;
-      ctx.beginPath();
-      fd.pts.forEach((p,k)=>k?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
-      ctx.closePath(); ctx.fill();
-      /* pentagon rim whisper */
-      if(!mobile){
-        ctx.strokeStyle=hsl(hue+20,95,62,0.14+nearBoost*0.22);
-        ctx.lineWidth=1.15; ctx.stroke();
-      }
-    }
-    ctx.restore();
-  }
-  /* beyondAIMaster: depth-sorted edges — rim light + holographic iridescence + specular ticks */
-  const edged=DODECA.edges.map(([i,j],ei)=>{
-    const a=pv[i], b=pv[j];
-    return {a,b,ei,md:(a.d+b.d)*0.5};
-  }).sort((u,v)=>u.md-v.md);
-  ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
-  const lwBase=thin?1.25:(mobile?1.95:2.85);
-  const iriRate=TEMPO.base*(TEMPO.iri||PHI);
-  for(const ed of edged){
-    const {a,b,ei,md}=ed;
-    const near=Math.max(0, Math.min(1, (md+0.55)/1.1));
-    const spark=(t*0.42+ei/30)%1;
-    const iri=12*Math.sin(t*iriRate+ei*0.55);
-    /* keep cyan→orchid; never yellow (cap hue band) */
-    let hue=185+((ei*11+t*28+spark*35+iri)%130);
-    if(hue>320) hue=185+(hue-320);
-    const g=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
-    addStops(g,[
-      [0,hsl(hue,100,54,0.40+near*0.44)],
-      [0.28,hsl(hue+iri*0.4,100,58,0.50+near*0.40)],
-      [0.5,hsl(hue+48+iri*0.3,100,70,0.62+near*0.36)],
-      [0.72,hsl(hue+iri*0.2,100,58,0.50+near*0.40)],
-      [1,hsl(hue+14,100,54,0.40+near*0.44)]
-    ]);
-    ctx.strokeStyle=g; ctx.lineWidth=lwBase*(0.58+near*0.74);
-    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-    if(!thin){
-      /* rim light halo — cooler, tighter */
-      ctx.lineWidth=lwBase*2.85; ctx.strokeStyle=hsl(hue,100,48,0.050+near*0.055);
-      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-      /* traveling specular tick */
-      const sparkPos=(t*0.58+(ei+0.5)/30)%1;
-      const sx=a.x+(b.x-a.x)*sparkPos, sy=a.y+(b.y-a.y)*sparkPos;
-      ctx.fillStyle=hsl(hue+42,100,72,0.36+near*0.28);
-      ctx.beginPath();ctx.arc(sx,sy,mobile?1.2:1.65,0,Math.PI*2);ctx.fill();
-      if(!mobile){
-        ctx.fillStyle=`rgba(255,255,255,${0.18+near*0.22})`;
-        ctx.beginPath();ctx.arc(sx-0.35,sy-0.35,0.55,0,Math.PI*2);ctx.fill();
-      }
-    }
-  }
-  /* vertex jewels — pulse + micro rim */
-  const step=mobile?2:1;
-  for(let i=0;i<pv.length;i+=step){
-    const v=pv[i];
-    const pulse=0.55+0.45*Math.sin(t*TEMPO.base*(TEMPO.jewel||1)*2.2+i);
-    const near=Math.max(0.25, Math.min(1, (v.d+0.55)/1.0));
-    const vh=185+(i*14+t*32+8*Math.sin(t*iriRate+i))%130;
-    ctx.fillStyle=hsl(vh,100,64,0.58*pulse*near);
-    ctx.beginPath();ctx.arc(v.x,v.y,thin?1.65:2.75,0,Math.PI*2);ctx.fill();
-    if(!thin){
-      ctx.strokeStyle=hsl(vh+30,95,70,0.22*pulse*near);
-      ctx.lineWidth=0.7;
-      ctx.beginPath();ctx.arc(v.x,v.y,thin?2.2:3.4,0,Math.PI*2);ctx.stroke();
-    }
-    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*0.36*pulse*near;
-    ctx.beginPath();ctx.arc(v.x,v.y,0.9,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=aHex;
-  }
-  if(!mobile && !thin){
-    /* sacred vertex star — chords across near-facing verts */
-    ctx.lineWidth=0.55;
-    for(let i=0;i<pv.length;i++){
-      for(let j=i+1;j<pv.length;j++){
-        const a=pv[i], b=pv[j];
-        if(a.d<-0.05||b.d<-0.05) continue;
-        const d3=Math.hypot(DODECA.verts[i].x-DODECA.verts[j].x,DODECA.verts[i].y-DODECA.verts[j].y,DODECA.verts[i].z-DODECA.verts[j].z);
-        if(d3>1.35||d3<0.85) continue; /* skip edges (already drawn) & far diagonals */
-        const near=Math.max(0, Math.min(1, ((a.d+b.d)*0.5+0.4)/0.9));
-        ctx.strokeStyle=hsl(200+t*20+(i+j)*3,80,55,0.04+near*0.08);
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-      }
-    }
-  }
-  ctx.restore();
-  /* return 12 face-center projections (stable funnel / label anchors) */
-  const faceCenters=[];
-  for(const fc of DODECA.faceCenters){
-    const pr=project(fc.x,fc.y,fc.z,cx,cy,s);
-    faceCenters.push([pr[0],pr[1],pr[2]]);
-  }
-  DODECA._faceCenters2d=faceCenters;
-  return faceCenters;
+  /* boxSphereVents|blackRedOnly: centerpiece is box+sphere+3 vents */
+  drawBoxSphereVents(cx,cy,s,t);
+  return;
 }
 const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
 
@@ -3385,7 +3260,8 @@ function drawFunnelsAndBeams(cx,cy,s,t){
   ctx.restore(); return mouths;
 }
 
-function drawSphereWire(cx,cy,s,t){
+function drawSphereWire(cx,cy,s,t){ /* box owns sphere */ return;
+
   /* dodeca3DSphere: sphere at dodeca origin — soft glow core + lat/lon wire via project() YPR */
   const aHex=layerAlpha("hex");
   const R=0.36; /* clearly inside dodeca radius ~1.05 */
