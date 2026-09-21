@@ -2700,7 +2700,7 @@ html,body{
   --trio-z-b:0px;
   --trio-z-c:28px;
 }
-#bgField > .trioField{
+#bgField > .trioStack,#bgField > .trioField{
   --hub-x:50%!important;
   --hub-y:50%!important;
   --fill-w:max(100vw,100vh)!important;
@@ -2711,7 +2711,7 @@ html,body{
   perspective-origin:50% 50%!important;
   transform-style:preserve-3d!important;
 }
-#bgField > .trioField > img{
+#bgField > .trioStack > img,#bgField > .trioField > img{
   position:absolute!important;
   left:var(--hub-x)!important;
   top:var(--hub-y)!important;
@@ -2732,9 +2732,9 @@ html,body{
   -webkit-mask-image:none!important;
           mask-image:none!important;
 }
-#bgField > .trioField > img.still{ display:none!important; }
+#bgField > .trioStack > img.still,#bgField > .trioField > img.still{ display:none!important; }
 /* A field — slowest underlay */
-#bgField > .trioField > img.trioField{
+#bgField > .trioStack > img.trioField,#bgField > .trioField > img.trioField{
   opacity:.86!important; z-index:1!important;
   filter:contrast(1.5) brightness(1.05) saturate(1.15) hue-rotate(8deg)!important;
   transform:translate3d(-50%,-50%,var(--trio-z-a,-36px))
@@ -2742,7 +2742,7 @@ html,body{
             rotateZ(var(--trio-a,0deg))!important;
 }
 /* B grid — mid nest */
-#bgField > .trioField > img.trioGrid{
+#bgField > .trioStack > img.trioGrid,#bgField > .trioField > img.trioGrid{
   opacity:.92!important; z-index:2!important;
   filter:contrast(1.45) brightness(1.15) saturate(1.2)!important;
   transform:translate3d(-50%,-50%,var(--trio-z-b,0px))
@@ -2750,14 +2750,14 @@ html,body{
             rotateZ(var(--trio-b,0deg))!important;
 }
 /* C core — fastest nest */
-#bgField > .trioField > img.trioCore{
+#bgField > .trioStack > img.trioCore,#bgField > .trioField > img.trioCore{
   opacity:1!important; z-index:3!important;
   filter:contrast(1.55) brightness(1.18) saturate(1.35)!important;
   transform:translate3d(-50%,-50%,var(--trio-z-c,28px))
             rotateX(var(--trio-tilt,5deg))
             rotateZ(var(--trio-c,0deg))!important;
 }
-#bgField > .trioField::after{
+#bgField > .trioStack::after,#bgField > .trioField::after{
   content:""!important;
   position:absolute!important; inset:0!important; z-index:5!important;
   pointer-events:none!important;
@@ -2770,19 +2770,19 @@ html,body{
 #bgField .hybridA,
 #bgField .hybridB{ display:none!important; }
 @media (prefers-reduced-motion:reduce){
-  #bgField > .trioField{ perspective:none!important; }
+  #bgField > .trioStack,#bgField > .trioStack,#bgField > .trioField{ perspective:none!important; }
   #bgField > .trioField > img.trioField,
   #bgField > .trioField > img.trioGrid,
-  #bgField > .trioField > img.trioCore{
+  #bgField > .trioStack > img.trioCore,#bgField > .trioField > img.trioCore{
     transform:translate(-50%,-50%)!important;
     filter:contrast(1.45) brightness(1.05) saturate(1.15)!important;
   }
-  #bgField > .trioField > img.anim{ display:none!important; }
-  #bgField > .trioField > img.still{ display:block!important; }
-  #bgField > .trioField::after{ opacity:.9!important; }
+  #bgField > .trioStack > img.anim,#bgField > .trioField > img.anim{ display:none!important; }
+  #bgField > .trioStack > img.still,#bgField > .trioField > img.still{ display:block!important; }
+  #bgField > .trioStack::after,#bgField > .trioField::after{ opacity:.9!important; }
 }
 @media (max-width:700px){
-  #bgField > .trioField{ --hub-x:50%!important; --hub-y:50%!important; }
+  #bgField > .trioStack,#bgField > .trioField{ --hub-x:50%!important; --hub-y:50%!important; }
 }
 
 
@@ -3080,11 +3080,109 @@ html,body{
   #pasteDesk{ max-height:min(12vh, 96px)!important; min-height:48px!important; }
 }
 
+
+/* clientPerfect — refined final: compact windows, clear type, quiet field */
+:root{
+  --win-gap:8px!important;
+  --win-top:max(56px, calc(var(--safe-t) + 44px))!important;
+  --win-bot:max(8px, calc(var(--safe-b) + 8px))!important;
+  --win-side:max(10px, 2vw)!important;
+  --win-w:min(300px, calc((100vw - 28px) / 2))!important;
+}
+#bgField > .trioStack,
+#bgField > .trioField{
+  overflow:hidden!important;
+}
+#bgField > .trioStack > img.trioField,
+#bgField > .trioField > img.trioField{ opacity:.78!important; }
+#bgField > .trioStack > img.trioGrid,
+#bgField > .trioField > img.trioGrid{ opacity:.84!important; }
+#bgField > .trioStack > img.trioCore,
+#bgField > .trioField > img.trioCore{ opacity:.96!important; }
+#bgField > .trioStack::after,
+#bgField > .trioField::after{
+  background:radial-gradient(ellipse 88% 82% at 50% 48%, transparent 58%, rgba(0,0,0,.22) 100%)!important;
+  opacity:.5!important;
+}
+
+#top{
+  padding:.22rem .7rem!important;
+  max-width:min(380px, calc(100vw - 20px))!important;
+  background:rgba(2,6,14,.88)!important;
+}
+#top .title{
+  font-size:.64rem!important;
+  letter-spacing:.2em!important;
+}
+#top .metrics{ font-size:.52rem!important; }
+
+#uploadBox,
+#trayAdmit,
+#trayRelease{
+  border-radius:14px!important;
+  padding:0!important;
+}
+#uploadBox{
+  max-height:var(--win-h-full)!important;
+}
+#uploadBox .uh,
+#trayAdmit h3,
+#trayRelease h3{
+  font-size:.58rem!important;
+  letter-spacing:.12em!important;
+  padding-left:2.6rem!important;
+}
+#uploadBox .dropHint{
+  font-size:.54rem!important;
+  padding:.35rem .4rem!important;
+  margin:.35rem var(--px-pad-x,12px) .3rem!important;
+}
+#uploadBox .actions{
+  gap:.4rem!important;
+  margin:0 var(--px-pad-x,12px) .25rem!important;
+}
+#uploadBox .actions .filebtn,
+#uploadBox .actions button,
+#uploadBox .actions select,
+.folderExport button{
+  font-size:.52rem!important;
+}
+#uploadBox textarea,
+#pasteDesk{
+  font-size:.56rem!important;
+  min-height:52px!important;
+  max-height:min(16vh,120px)!important;
+  margin:0 var(--px-pad-x,12px) .45rem!important;
+  width:calc(100% - 24px)!important;
+}
+#sortedFigures .chipFig{
+  font-size:.54rem!important;
+  line-height:1.35!important;
+}
+.folderExport{
+  margin:0 10px .2rem!important;
+}
+.folderExport button{
+  padding:.12rem .35rem!important;
+  font-size:.48rem!important;
+}
+#figAdmit, #figRelease, #uploadBox .chips{
+  padding:0 10px 8px!important;
+}
+
+@media (max-width:900px){
+  :root{
+    --win-w:calc(100vw - 14px)!important;
+  }
+  #uploadBox .dropHint{ display:none!important; }
+  #uploadBox textarea, #pasteDesk{ max-height:min(10vh,72px)!important; min-height:40px!important; }
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientWindowsFit|clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
-  <div class="trioField" aria-hidden="true">
+<div id="bgField" aria-hidden="true"><!-- clientPerfect|clientWindowsFit|clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
+  <div class="trioStack" aria-hidden="true">
     <img class="trioField anim" src="media/trio-field-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
     <img class="trioField still" src="media/trio-field-keyed.png" alt="" width="500" height="500" decoding="async">
     <img class="trioGrid anim" src="media/trio-grid-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
