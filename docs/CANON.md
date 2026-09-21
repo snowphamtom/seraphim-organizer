@@ -1,7 +1,7 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=ef6f50c
-- **Commit:** `ef6f50c` (`beyondAIMaster` · `omnidiscipline`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=83c3463
+- **Commit:** `83c3463` (`beyondAIMaster` · `omnidiscipline`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
