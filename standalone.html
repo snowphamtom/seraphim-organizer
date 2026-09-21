@@ -352,7 +352,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </head>
 <body>
 <div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div></div>
-<canvas id="fx" role="img" aria-label="Seraphim orbit — crystallize and release field"></canvas>
+<canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal gyro field"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.55"></canvas>
 <header id="top">
   <div class="title">SERAPHIM</div>
@@ -408,7 +408,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
     <h3>CHEAT SHEET</h3>
     <div><kbd>drag</kbd> orbit · <kbd>shift</kbd>+drag / right-drag pan</div>
     <div><kbd>wheel</kbd> zoom · <kbd>dbl-click</kbd> / RESET recenter</div>
-    <div><kbd>WASD</kbd> / arrows nudge · <kbd>Q</kbd><kbd>E</kbd> roll · <kbd>Space</kbd> pause gyro tumble</div>
+    <div><kbd>WASD</kbd> / arrows nudge · <kbd>Q</kbd><kbd>E</kbd> roll · <kbd>Space</kbd> pause dodeca gyro tumble</div>
     <div><kbd>F</kbd> fullscreen · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> solo layers · blend resumes</div>
     <div><kbd>✦</kbd> constellation · <kbd>◫</kbd> snapshot · <kbd>?</kbd> this sheet</div>
     <div class="legend">
@@ -783,7 +783,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360 */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -852,6 +852,74 @@ function parallaxOff(layer){
 let webglOk=false, webglFail=false, gl=null, glCanvas=null, glProg=null, glBuf=null, glFPSBad=0;
 const WEBGL_MARK="webglCore";
 
+
+
+/* —— regular dodecahedron seal mesh (φ golden; 20 verts / 30 edges / 12 pent faces) —— */
+function buildDodecahedron(){
+  const φ=(1+Math.sqrt(5))/2, inv=1/φ;
+  const raw=[];
+  for(const x of[-1,1]) for(const y of[-1,1]) for(const z of[-1,1]) raw.push({x,y,z});
+  for(let axis=0;axis<3;axis++){
+    for(const s1 of[-1,1]) for(const s2 of[-1,1]){
+      const c=[0,0,0];
+      c[(axis+1)%3]=s1*inv; c[(axis+2)%3]=s2*φ;
+      raw.push({x:c[0],y:c[1],z:c[2]});
+    }
+  }
+  let maxR=0;
+  for(const v of raw){const r=Math.hypot(v.x,v.y,v.z); if(r>maxR)maxR=r;}
+  const scale=1.05/maxR; /* match old hex radial ~1.05 */
+  const verts=raw.map(v=>({x:v.x*scale,y:v.y*scale,z:v.z*scale}));
+  const target=(2/φ)*scale, eps=0.01;
+  const edges=[];
+  for(let i=0;i<verts.length;i++) for(let j=i+1;j<verts.length;j++){
+    const d=Math.hypot(verts[i].x-verts[j].x,verts[i].y-verts[j].y,verts[i].z-verts[j].z);
+    if(Math.abs(d-target)<eps) edges.push([i,j]);
+  }
+  const adj=Array.from({length:verts.length},()=>[]);
+  for(const [i,j] of edges){adj[i].push(j);adj[j].push(i);}
+  const faces=[], seen=new Set();
+  const faceKey=idxs=>[...idxs].sort((a,b)=>a-b).join(",");
+  for(let start=0;start<verts.length;start++){
+    for(const n1 of adj[start]) for(const n2 of adj[n1]){
+      if(n2===start) continue;
+      for(const n3 of adj[n2]){
+        if(n3===start||n3===n1) continue;
+        for(const n4 of adj[n3]){
+          if(n4===start||n4===n1||n4===n2) continue;
+          if(!adj[n4].includes(start)) continue;
+          const face=[start,n1,n2,n3,n4];
+          let ok=true;
+          for(let k=0;k<5;k++) if(!adj[face[k]].includes(face[(k+1)%5])){ok=false;break;}
+          if(!ok) continue;
+          const v0=verts[face[0]];
+          const e1={x:verts[face[1]].x-v0.x,y:verts[face[1]].y-v0.y,z:verts[face[1]].z-v0.z};
+          const e2={x:verts[face[2]].x-v0.x,y:verts[face[2]].y-v0.y,z:verts[face[2]].z-v0.z};
+          let nx=e1.y*e2.z-e1.z*e2.y, ny=e1.z*e2.x-e1.x*e2.z, nz=e1.x*e2.y-e1.y*e2.x;
+          const nn=Math.hypot(nx,ny,nz)||1; nx/=nn; ny/=nn; nz/=nn;
+          let planar=true;
+          for(let k=3;k<5;k++){
+            const d={x:verts[face[k]].x-v0.x,y:verts[face[k]].y-v0.y,z:verts[face[k]].z-v0.z};
+            if(Math.abs(d.x*nx+d.y*ny+d.z*nz)>0.02){planar=false;break;}
+          }
+          if(!planar) continue;
+          const key=faceKey(face); if(seen.has(key)) continue; seen.add(key);
+          const cx=(verts[face[0]].x+verts[face[1]].x+verts[face[2]].x+verts[face[3]].x+verts[face[4]].x)/5;
+          const cy=(verts[face[0]].y+verts[face[1]].y+verts[face[2]].y+verts[face[3]].y+verts[face[4]].y)/5;
+          const cz=(verts[face[0]].z+verts[face[1]].z+verts[face[2]].z+verts[face[3]].z+verts[face[4]].z)/5;
+          if(cx*nx+cy*ny+cz*nz<0) face.reverse();
+          faces.push(face);
+        }
+      }
+    }
+  }
+  const faceCenters=faces.map(f=>{
+    let x=0,y=0,z=0; for(const i of f){x+=verts[i].x;y+=verts[i].y;z+=verts[i].z;}
+    return {x:x/5,y:y/5,z:z/5};
+  });
+  return {verts,edges,faces,faceCenters};
+}
+const DODECA=buildDodecahedron(); /* init once: 20 verts, 30 edges, 12 faces */
 /* —— three.js WebGL orbit (import when holds; silent fallback) —— */
 let threeOk=false, threeRenderer=null, threeScene=null, threeCam=null, threePoints=null, threeHex=null, threeClock=0;
 function bootThreeOrbit(){
@@ -885,19 +953,21 @@ function bootThreeOrbit(){
     geo.setAttribute("color", new THREE.BufferAttribute(col,3));
     threePoints=new THREE.Points(geo, new THREE.PointsMaterial({size:0.018, vertexColors:true, transparent:true, opacity:0.55, depthWrite:false, blending:THREE.AdditiveBlending}));
     threeScene.add(threePoints);
-    const hexGrp=new THREE.Group();
-    [1.15,0.92,0.62].forEach((sc,ri)=>{
-      const pts=[];
-      for(let i=0;i<=6;i++){
-        const a=-Math.PI/2+(i%6)*Math.PI/3;
-        pts.push(new THREE.Vector3(Math.cos(a)*sc, Math.sin(a)*sc*0.92, 0));
+    const sealGrp=new THREE.Group();
+    /* dodeca LineSegments driven by cam yaw/pitch/roll (same as canvas project) */
+    [1.0,0.78].forEach((sc,ri)=>{
+      const pos=[];
+      for(const [i,j] of DODECA.edges){
+        const a=DODECA.verts[i], b=DODECA.verts[j];
+        pos.push(a.x*sc,a.y*sc,a.z*sc, b.x*sc,b.y*sc,b.z*sc);
       }
-      const hg=new THREE.BufferGeometry().setFromPoints(pts);
-      const hue=[0.55,0.45,0.38][ri];
-      const mat=new THREE.LineBasicMaterial({color:new THREE.Color().setHSL(hue,0.85,0.55), transparent:true, opacity:0.35-ri*0.06});
-      hexGrp.add(new THREE.Line(hg,mat));
+      const geo=new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.Float32BufferAttribute(pos,3));
+      const hue=[0.55,0.42][ri];
+      const mat=new THREE.LineBasicMaterial({color:new THREE.Color().setHSL(hue,0.85,0.55), transparent:true, opacity:0.32-ri*0.08});
+      sealGrp.add(new THREE.LineSegments(geo,mat));
     });
-    threeHex=hexGrp; threeScene.add(hexGrp);
+    threeHex=sealGrp; threeScene.add(sealGrp);
     threeOk=true; webglOk=true; return true;
   }catch(e){ threeOk=false; return false; }
 }
@@ -1122,7 +1192,7 @@ function seedField(n){
       phase:Math.random()*10,
       layer:Math.random(),
       sz:Math.random()<0.12?1.6+Math.random()*2.6:0.22+Math.random()*1.35,
-      panel:i%6,
+      panel:i%12,
       streak:Math.random()>0.972
     });
   }
@@ -1155,6 +1225,8 @@ function project(x,y,z,cx,cy,s){
   const persp=1/(1.55+z1*0.35);
   return[cx+x2*persp*s, cy+(-y2*persp)*s*0.92, z1, persp];
 }
+
+
 function layerAlpha(which){
   if(!layerSolo)return 1;
   if(performance.now()>layerSoloUntil){layerSolo=0;return 1;}
@@ -1196,38 +1268,43 @@ function drawAurora(cx,cy,s,t){
   ctx.restore();
 }
 function drawDualHexGhost(cx,cy,s,t){
-  if(reduceMotion||W<=480) return; /* LENS #4: skip dual-hex ghost on ≤480 */
+  if(reduceMotion||W<=480) return; /* skip dual ghost on ≤480 */
   const aHex=layerAlpha("hex");
-  ctx.save(); ctx.globalAlpha=aHex*0.28; ctx.globalCompositeOperation="lighter";
-  // counter-rotate ghost: invert user yaw slightly
+  ctx.save(); ctx.globalAlpha=aHex*0.22; ctx.globalCompositeOperation="lighter";
   const gyaw=-(cam.userYaw)*0.35+t*0.04, gpitch=-(cam.userPitch)*0.25;
   const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
-  const ghost=[];
-  for(let i=0;i<6;i++){
-    const a=-Math.PI/2+i*Math.PI/3;
-    let x=Math.cos(a)*1.22, y=Math.sin(a)*1.12, z=0;
-    let x1=x*cosy-z*siny, z1=x*siny+z*cosy, y1=y*cosp-z1*sinp; z1=y*sinp+z1*cosp;
-    const persp=1/(1.55+z1*0.35);
-    ghost.push([cx+x1*persp*s, cy+(-y1*persp)*s*0.92]);
+  const sc=1.18;
+  ctx.strokeStyle=hsl(200+t*20,90,50,0.20); ctx.lineWidth=1.1;
+  for(const [i,j] of DODECA.edges){
+    const A=DODECA.verts[i], B=DODECA.verts[j];
+    const xf=(x,y,z)=>{
+      let x1=x*cosy-z*siny, z1=x*siny+z*cosy, y1=y*cosp-z1*sinp; z1=y*sinp+z1*cosp;
+      const persp=1/(1.55+z1*0.35);
+      return [cx+x1*persp*s*sc, cy+(-y1*persp)*s*0.92*sc];
+    };
+    const a=xf(A.x,A.y,A.z), b=xf(B.x,B.y,B.z);
+    ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
   }
-  ctx.strokeStyle=hsl(200+t*20,90,50,0.22); ctx.lineWidth=1.4;
-  ctx.beginPath();
-  for(let i=0;i<6;i++){const p=ghost[i]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}
-  ctx.closePath(); ctx.stroke();
   ctx.restore();
 }
 function drawChromaticHexEdges(verts,t){
-  // disable dual-chroma on narrow mobile or reduceMotion
-  if(reduceMotion||W<=480||!verts||verts.length<6) return;
+  /* chromatic fringe on N dodeca edges (from DODECA._projVerts); verts arg kept for call compat */
+  if(reduceMotion||W<=480) return;
+  const pv=DODECA._projVerts; if(!pv||pv.length<3) return;
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  for(let i=0;i<6;i++){
-    const a=verts[i], b=verts[(i+1)%6];
-    const dx=b[0]-a[0], dy=b[1]-a[1], len=Math.hypot(dx,dy)||1;
-    const nx=(-dy/len)*2.2, ny=(dx/len)*2.2;
-    ctx.lineWidth=1.2;
-    ctx.strokeStyle="rgba(255,60,80,0.14)"; ctx.beginPath();ctx.moveTo(a[0]+nx,a[1]+ny);ctx.lineTo(b[0]+nx,b[1]+ny);ctx.stroke();
-    ctx.strokeStyle="rgba(60,255,120,0.12)"; ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
-    ctx.strokeStyle="rgba(60,120,255,0.14)"; ctx.beginPath();ctx.moveTo(a[0]-nx,a[1]-ny);ctx.lineTo(b[0]-nx,b[1]-ny);ctx.stroke();
+  const edged=DODECA.edges.map(([i,j],ei)=>{
+    const a=pv[i], b=pv[j];
+    return {a,b,ei,md:(a.d+b.d)*0.5};
+  }).sort((u,v)=>v.md-u.md); /* near first */
+  const n=Math.min(10, edged.length);
+  for(let k=0;k<n;k++){
+    const {a,b}=edged[k];
+    const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+    const nx=(-dy/len)*2.0, ny=(dx/len)*2.0;
+    ctx.lineWidth=1.05;
+    ctx.strokeStyle="rgba(255,60,80,0.11)"; ctx.beginPath();ctx.moveTo(a.x+nx,a.y+ny);ctx.lineTo(b.x+nx,b.y+ny);ctx.stroke();
+    ctx.strokeStyle="rgba(60,255,120,0.09)"; ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    ctx.strokeStyle="rgba(60,120,255,0.11)"; ctx.beginPath();ctx.moveTo(a.x-nx,a.y-ny);ctx.lineTo(b.x-nx,b.y-ny);ctx.stroke();
   }
   ctx.restore();
 }
@@ -1281,114 +1358,169 @@ function drawSoftCrossVeil(){
   ctx.restore();
 }
 
-function drawHexFrame(cx,cy,s,t){
-  const aHex=layerAlpha("hex"); const verts=[], outer=[];
-  const HZ=0.08; /* axial thickness so edge-on gyro tumble reads as 3D */
-  for(let i=0;i<6;i++){const a=-Math.PI/2+i*Math.PI/3; const [px,py]=project(Math.cos(a)*1.05,Math.sin(a)*0.95,0,cx,cy,s); verts.push([px,py]);
-    const [ox,oy]=project(Math.cos(a)*1.14,Math.sin(a)*1.04,0,cx,cy,s); outer.push([ox,oy]);}
-  /* front/back face rings + struts (depth-sorted); mouths stay on mid-plane z=0 */
-  const faceRings=[];
-  for(const zz of [-HZ,HZ]){
-    const ring=[];
-    for(let i=0;i<6;i++){
-      const a=-Math.PI/2+i*Math.PI/3;
-      const pr=project(Math.cos(a)*1.05,Math.sin(a)*0.95,zz,cx,cy,s);
-      ring.push({x:pr[0],y:pr[1],d:pr[2]});
+function drawDodecaFrame(cx,cy,s,t){
+  /* regular dodecahedron seal organism — 20v/30e/12 pent faces through project() YPR gyro.
+     Returns 12 projected face-center points [[x,y,d],…] for funnels / labels / silhouette. */
+  const aHex=layerAlpha("hex");
+  const thin=W<=480;
+  const mobile=W<=900;
+  const pv=[];
+  for(let i=0;i<DODECA.verts.length;i++){
+    const v=DODECA.verts[i];
+    const pr=project(v.x,v.y,v.z,cx,cy,s);
+    pv.push({x:pr[0],y:pr[1],d:pr[2],i});
+  }
+  DODECA._projVerts=pv;
+  /* luminous pentagon fills — depth-sorted; richer on desktop, skip ≤480 */
+  if(!thin){
+    const faceDraw=DODECA.faces.map((f,fi)=>{
+      const pts=f.map(i=>pv[i]);
+      const meanD=pts.reduce((a,p)=>a+p.d,0)/pts.length;
+      return {fi,pts,meanD,f};
+    }).sort((a,b)=>a.meanD-b.meanD);
+    ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
+    for(const fd of faceDraw){
+      const nearBoost=Math.max(0, Math.min(1, (fd.meanD+0.25)/0.85));
+      if(nearBoost<0.18) continue;
+      /* soft radial glow from face center */
+      const cxF=fd.pts.reduce((a,p)=>a+p.x,0)/5, cyF=fd.pts.reduce((a,p)=>a+p.y,0)/5;
+      const g=ctx.createRadialGradient(cxF,cyF,0,cxF,cyF, Math.hypot(fd.pts[0].x-cxF,fd.pts[0].y-cyF)*1.15);
+      const hue=165+fd.fi*14+t*16;
+      const aFill=mobile?(0.025+nearBoost*0.045):(0.045+nearBoost*0.09);
+      addStops(g,[
+        [0,hsl(hue+40,85,58,aFill*1.4)],
+        [0.55,hsl(hue,75,45,aFill)],
+        [1,hsl(hue,70,40,0)]
+      ]);
+      ctx.fillStyle=g;
+      ctx.beginPath();
+      fd.pts.forEach((p,k)=>k?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+      ctx.closePath(); ctx.fill();
+      /* pentagon rim whisper */
+      if(!mobile){
+        ctx.strokeStyle=hsl(hue+20,90,55,0.08+nearBoost*0.12);
+        ctx.lineWidth=0.8; ctx.stroke();
+      }
     }
-    const meanD=ring.reduce((a,p)=>a+p.d,0)/6;
-    faceRings.push({zz,ring,meanD});
-  }
-  faceRings.sort((a,b)=>a.meanD-b.meanD); /* far first */
-  ctx.save(); ctx.globalAlpha=aHex;
-  ctx.globalCompositeOperation="lighter";
-  faceRings.forEach((fr,fi)=>{
-    const dim=fi===0?0.22:0.38;
-    ctx.strokeStyle=hsl(200+t*18+fi*40,90,52,dim);
-    ctx.lineWidth=fi===0?1.0:1.35;
-    ctx.beginPath();
-    for(let i=0;i<6;i++){const p=fr.ring[i]; i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
-    ctx.closePath(); ctx.stroke();
-  });
-  /* vertical struts between ±HZ (visible when tumbling edge-on) */
-  for(let i=0;i<6;i++){
-    const a=-Math.PI/2+i*Math.PI/3;
-    const [ax,ay,ad]=project(Math.cos(a)*1.05,Math.sin(a)*0.95,-HZ,cx,cy,s);
-    const [bx,by,bd]=project(Math.cos(a)*1.05,Math.sin(a)*0.95,HZ,cx,cy,s);
-    ctx.strokeStyle=hsl(i*60+t*30,100,50,0.18);
-    ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
-  }
-  ctx.globalCompositeOperation="source-over";
-  for(let i=0;i<6;i+=2){
-    const v=verts[i],v2=verts[(i+1)%6],v3=verts[(i+2)%6];
-    const g=ctx.createLinearGradient(cx,cy,v2[0],v2[1]);
-    g.addColorStop(0,"rgba(8,12,24,0.05)"); g.addColorStop(1,hsl(i*40+t*20,80,38,0.07));
-    ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(v[0],v[1]);ctx.lineTo(v2[0],v2[1]);ctx.lineTo(v3[0],v3[1]); ctx.closePath(); ctx.fill();
-    ctx.save(); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(v[0],v[1]);ctx.lineTo(v2[0],v2[1]);ctx.lineTo(v3[0],v3[1]); ctx.closePath(); ctx.clip();
-    ctx.strokeStyle="rgba(100,200,255,0.04)"; ctx.lineWidth=1;
-    for(let y=cy-s;y<cy+s;y+=5){ctx.beginPath();ctx.moveTo(cx-s,y+(t*12)%5);ctx.lineTo(cx+s,y+(t*12)%5);ctx.stroke();}
     ctx.restore();
   }
-  ctx.globalCompositeOperation="lighter";
-  for(let i=0;i<6;i++){const a=outer[i],b=outer[(i+1)%6]; ctx.strokeStyle=hsl(i*60+t*25,100,48,0.20); ctx.lineWidth=1.35; ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();}
-  for(let i=0;i<6;i++){
-    const a=verts[i],b=verts[(i+1)%6];
-    const spark=(t*0.42+i/6)%1;
-    const g=ctx.createLinearGradient(a[0],a[1],b[0],b[1]);
-    // fixed stops only — never dynamic offsets (addColorStop IndexSizeError class)
+  /* depth-sorted edges — far first; neon/hsl sparkle */
+  const edged=DODECA.edges.map(([i,j],ei)=>{
+    const a=pv[i], b=pv[j];
+    return {a,b,ei,md:(a.d+b.d)*0.5};
+  }).sort((u,v)=>u.md-v.md);
+  ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
+  const lwBase=thin?1.15:(mobile?1.8:2.6);
+  for(const ed of edged){
+    const {a,b,ei,md}=ed;
+    const near=Math.max(0, Math.min(1, (md+0.55)/1.1));
+    const spark=(t*0.42+ei/30)%1;
+    const hue=ei*12+t*35+spark*40;
+    const g=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
     addStops(g,[
-      [0,hsl(i*60+t*35+spark*40,100,52,0.78)],
-      [0.35,hsl(i*60+t*35+spark*40,100,56,0.88)],
-      [0.5,hsl(i*60+50+t*35+spark*60,100,66,0.95)],
-      [0.65,hsl(i*60+t*35+spark*40,100,56,0.88)],
-      [1,hsl((i+1)*60+t*35+spark*40,100,52,0.78)]
+      [0,hsl(hue,100,52,0.35+near*0.40)],
+      [0.35,hsl(hue,100,56,0.45+near*0.40)],
+      [0.5,hsl(hue+50,100,66,0.55+near*0.40)],
+      [0.65,hsl(hue,100,56,0.45+near*0.40)],
+      [1,hsl(hue+12,100,52,0.35+near*0.40)]
     ]);
-    ctx.strokeStyle=g;ctx.lineWidth=4.6; ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
-    const sparkPos=(t*0.55+(i+0.5)/6)%1;
-    const sx=a[0]+(b[0]-a[0])*sparkPos, sy=a[1]+(b[1]-a[1])*sparkPos;
-    ctx.fillStyle=hsl(i*60+40+t*40,100,66,0.55); ctx.beginPath();ctx.arc(sx,sy,2.1,0,Math.PI*2);ctx.fill();
-    ctx.lineWidth=11;ctx.strokeStyle=hsl(i*60+t*35,100,46,0.12); ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
-  }
-  if(W>480){ const spA=W<=900?0.10:0.26, spW=W<=900?0.6:1.2; for(let i=0;i<6;i++){const v=verts[i]; ctx.strokeStyle=hsl(i*60+t*40,100,56,spA); ctx.lineWidth=spW; ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(v[0],v[1]);ctx.stroke();} }
-  for(let i=0;i<6;i++){const v=verts[i]; const pulse=0.55+0.45*Math.sin(t*3+i); ctx.fillStyle=hsl(i*60+t*40,100,64,0.60*pulse); ctx.beginPath();ctx.arc(v[0],v[1],2.55,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*0.30*pulse; ctx.beginPath();ctx.arc(v[0],v[1],0.9,0,Math.PI*2);ctx.fill(); ctx.globalAlpha=aHex;}
-  ctx.restore(); return verts;
-}
-function drawStarfieldInPanels(cx,cy,s,t,verts){
-  if(!verts||verts.length<6)return; const aHex=layerAlpha("hex");
-  ctx.save(); ctx.globalAlpha=aHex;
-  for(let i=0;i<6;i++){
-    const v=verts[i], v2=verts[(i+1)%6];
-    ctx.save(); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(v[0],v[1]);ctx.lineTo(v2[0],v2[1]); ctx.closePath(); ctx.clip();
-    ctx.globalCompositeOperation="source-over"; ctx.fillStyle="rgba(0,0,0,0.10)"; ctx.fill();
-    ctx.globalCompositeOperation="lighter";
-    const count=Math.floor(field.length/6), off=i*count;
-    const ang0=Math.atan2(v[1]-cy,v[0]-cx), ang1=Math.atan2(v2[1]-cy,v2[0]-cx);
-    let span=ang1-ang0; while(span<=0)span+=Math.PI*2;
-    for(let k=0;k<count;k++){
-      const p=field[off+k]; if(!p)continue;
-      const u=(k/count + p.phase*0.01 + t*0.006)%1;
-      const ru=0.56+0.42*Math.pow(Math.max(0,(p.r-0.5)/0.7),0.85);
-      const ang=ang0+span*(0.06+u*0.88);
-      const rr=s*Math.max(0.56, Math.min(0.98, ru));
-      const px=cx+Math.cos(ang)*rr+(p.layer-0.5)*3.5, py=cy+Math.sin(ang)*rr+(p.layer-0.5)*2.8;
-      const tw=0.30+0.55*Math.abs(Math.sin(t*p.tws+p.tw));
-      const sz=(p.sz||1)*(0.45+0.85*p.layer*tw);
-      const coolA=0.10+0.22*tw*(0.35+p.layer*0.4);
-      if(p.streak&&W>480){ctx.strokeStyle=`rgba(190,220,255,${0.12+0.22*tw})`; ctx.lineWidth=0.65; ctx.beginPath();ctx.moveTo(px-sz*3.2,py);ctx.lineTo(px+sz*3.2,py);ctx.stroke();} /* LENS #4: skip streaks ≤480 */
-      ctx.fillStyle=`rgba(195,220,255,${coolA})`; ctx.fillRect(px,py,sz,sz);
-      if(tw>0.88&&p.layer>0.75&&sz>1.2){ctx.fillStyle=`rgba(230,240,255,${0.16*tw})`; ctx.fillRect(px,py,Math.max(1,sz*0.4),Math.max(1,sz*0.4));}
+    ctx.strokeStyle=g; ctx.lineWidth=lwBase*(0.55+near*0.75);
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    if(!thin){
+      ctx.lineWidth=lwBase*3.4; ctx.strokeStyle=hsl(hue,100,46,0.07+near*0.07);
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      const sparkPos=(t*0.55+(ei+0.5)/30)%1;
+      const sx=a.x+(b.x-a.x)*sparkPos, sy=a.y+(b.y-a.y)*sparkPos;
+      ctx.fillStyle=hsl(hue+40,100,66,0.38+near*0.28); ctx.beginPath();ctx.arc(sx,sy,mobile?1.3:1.8,0,Math.PI*2);ctx.fill();
     }
-    ctx.restore();
+  }
+  /* vertex constellation — pulse nodes; desktop draws faint chords between near verts */
+  const step=mobile?2:1;
+  for(let i=0;i<pv.length;i+=step){
+    const v=pv[i];
+    const pulse=0.55+0.45*Math.sin(t*3+i);
+    const near=Math.max(0.25, Math.min(1, (v.d+0.55)/1.0));
+    ctx.fillStyle=hsl(i*18+t*40,100,64,0.55*pulse*near);
+    ctx.beginPath();ctx.arc(v.x,v.y,thin?1.6:2.6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*0.32*pulse*near;
+    ctx.beginPath();ctx.arc(v.x,v.y,0.85,0,Math.PI*2);ctx.fill();
+    ctx.globalAlpha=aHex;
+  }
+  if(!mobile && !thin){
+    /* sacred vertex star — chords across near-facing verts */
+    ctx.lineWidth=0.55;
+    for(let i=0;i<pv.length;i++){
+      for(let j=i+1;j<pv.length;j++){
+        const a=pv[i], b=pv[j];
+        if(a.d<-0.05||b.d<-0.05) continue;
+        const d3=Math.hypot(DODECA.verts[i].x-DODECA.verts[j].x,DODECA.verts[i].y-DODECA.verts[j].y,DODECA.verts[i].z-DODECA.verts[j].z);
+        if(d3>1.35||d3<0.85) continue; /* skip edges (already drawn) & far diagonals */
+        const near=Math.max(0, Math.min(1, ((a.d+b.d)*0.5+0.4)/0.9));
+        ctx.strokeStyle=hsl(200+t*20+(i+j)*3,80,55,0.04+near*0.08);
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+    }
+  }
+  ctx.restore();
+  /* return 12 face-center projections (stable funnel / label anchors) */
+  const faceCenters=[];
+  for(const fc of DODECA.faceCenters){
+    const pr=project(fc.x,fc.y,fc.z,cx,cy,s);
+    faceCenters.push([pr[0],pr[1],pr[2]]);
+  }
+  DODECA._faceCenters2d=faceCenters;
+  return faceCenters;
+}
+const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
+
+
+function drawStarfieldInPanels(cx,cy,s,t,verts){
+  /* dodeca: skip 6-wedge clip (broken on 12-face mesh); soft global cool field instead */
+  if(reduceMotion) return;
+  const aHex=layerAlpha("hex");
+  ctx.save(); ctx.globalAlpha=aHex*0.55; ctx.globalCompositeOperation="lighter";
+  const n=Math.min(field.length, W<=480?400:900);
+  for(let k=0;k<n;k++){
+    const p=field[k]; if(!p) continue;
+    const u=(k/n + p.phase*0.01 + t*0.004)%1;
+    const ang=p.a + t*0.02*(0.3+p.layer*0.4);
+    const rr=s*(0.42+0.55*((p.r-0.5)/0.7+0.5)*0.9);
+    const px=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
+    const py=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
+    const tw=0.28+0.5*Math.abs(Math.sin(t*p.tws+p.tw));
+    const sz=(p.sz||1)*(0.35+0.7*p.layer*tw);
+    ctx.fillStyle=`rgba(195,220,255,${0.08+0.16*tw*(0.3+p.layer*0.4)})`;
+    ctx.fillRect(px,py,sz,sz);
   }
   ctx.restore();
 }
+
 function drawFunnelsAndBeams(cx,cy,s,t){
+  /* sacred 12-face crystal: funnel mouths at dodeca face centers (6 stable / 3 primary) */
   const aHex=layerAlpha("hex");
-  const tips=[{ang:-Math.PI*0.72,len:1.04,label:"",side:"tl"},{ang:-Math.PI*0.28,len:1.04,label:"",side:"tr"},{ang:Math.PI*0.5,len:1.08,label:"",side:"bot"}];
   const mouths=[]; ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
-  tips.forEach((tip,fi)=>{
-    const ox=Math.cos(tip.ang)*tip.len, oy=Math.sin(tip.ang)*tip.len*0.92;
-    const [tx,ty]=project(ox,oy,0,cx,cy,s), [bx,by]=project(0,0,0,cx,cy,s);
+  const fcs=DODECA._faceCenters2d;
+  let tips;
+  if(fcs&&fcs.length>=12){
+    /* rank faces by radial distance from seal center in screen space — pick outer 6 */
+    const ranked=fcs.map((fc,fi)=>{
+      const dx=fc[0]-cx, dy=fc[1]-cy;
+      return {fi,x:fc[0],y:fc[1],d:fc[2],r2:dx*dx+dy*dy};
+    }).sort((a,b)=>b.r2-a.r2);
+    const sides=["tl","tr","ml","mr","bl","br"];
+    tips=ranked.slice(0,6).map((fc,k)=>({x:fc.x,y:fc.y,label:"",side:sides[k],fi:fc.fi}));
+  }else{
+    tips=[{ang:-Math.PI*0.72,len:1.04,label:"",side:"tl"},{ang:-Math.PI*0.28,len:1.04,label:"",side:"tr"},{ang:Math.PI*0.5,len:1.08,label:"",side:"bot"}].map(tip=>{
+      const ox=Math.cos(tip.ang)*tip.len, oy=Math.sin(tip.ang)*tip.len*0.92;
+      const [tx,ty]=project(ox,oy,0,cx,cy,s);
+      return {x:tx,y:ty,label:tip.label,side:tip.side};
+    });
+  }
+  /* beyondHuman quiet — empty labels; 3 primary mouths (desktop can draw all 6 softly) */
+  const primary=W>900?tips.slice(0,Math.min(6,tips.length)):tips.filter((_,i)=>i%2===0).slice(0,3);
+  primary.forEach((tip,fi)=>{
+    const tx=tip.x, ty=tip.y;
+    const [bx,by]=project(0,0,0,cx,cy,s);
     const dx=bx-tx, dy=by-ty, beamAng=Math.atan2(dy,dx);
     const rings=28, ribs=20;
     for(let i=0;i<=rings;i++){
@@ -1434,10 +1566,11 @@ function drawFunnelsAndBeams(cx,cy,s,t){
     ctx.fillStyle=cg; ctx.beginPath();ctx.arc(cxp,cyp,18,0,Math.PI*2);ctx.fill();
     ctx.lineWidth=1.4; ctx.strokeStyle=hsl(fi*120+t*40,100,62,0.28+0.08*Math.sin(t*4+fi));
     ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
-    mouths.push({x:tx,y:ty,label:tip.label,side:tip.side});
+    mouths.push({x:tx,y:ty,label:tip.label||"",side:tip.side});
   });
   ctx.restore(); return mouths;
 }
+
 function drawSphereWire(cx,cy,s,t){
   const aHex=layerAlpha("hex"), R=0.62;
   const wireMul=W<=900?0.5:1; /* LENS #4: sphere wire α×0.5 on mobile */
@@ -1463,7 +1596,7 @@ function buildVoxels(admits){
     const gx=(i%grid)-(grid-1)/2, gy=(Math.floor(i/grid)%grid)-(grid-1)/2, gz=Math.floor(i/(grid*grid))-(grid-1)/2;
     const v=admits[i%Math.max(1,admits.length)]||null;
     const stagger=(i%3===0)?0.014:0;
-    // centered on seal axis (hex origin) — cube aligns with frame
+    // centered on seal axis (dodeca origin) — cube aligns with frame
     voxels.push({bx:gx*0.042,by:gy*0.042+stagger*0.5,bz:gz*0.042,
       jx:Math.random()*Math.PI*2,jy:Math.random()*Math.PI*2,jz:Math.random()*Math.PI*2,js:8+Math.random()*14,
       hue:hueForVerdict(v,i,"admit"),size:0.015+Math.random()*0.008,
@@ -1627,11 +1760,10 @@ function drawTrailsAndGlow(cx,cy,s,t){
   ctx.restore();
 }
 function drawNestedSeals(cx,cy,s,t){
-  /* nested seals: outer=measure, mid=project, inner=admit — 2 rings on mobile */
+  /* nested seals: concentric dodeca wireframes at 0.72 / 0.88 (circles on mobile ≤480) */
   const aHex=layerAlpha("hex");
   const rings=W<=900?2:3;
-  const scales=rings===2?[1.28,0.72]:[1.32,1.0,0.68];
-  const roles=rings===2?["measure","admit"]:["measure","project","admit"];
+  const scales=rings===2?[0.88,0.72]:[1.0,0.88,0.72];
   const pulse=0.08*sealPulse+0.05*celebrate;
   const po=parallaxOff("seal");
   ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex;
@@ -1639,40 +1771,36 @@ function drawNestedSeals(cx,cy,s,t){
     const sc=scales[r]*(1+pulse*(r===rings-1?1.2:0.6));
     const hue=r===0?200:r===1?160:130;
     const alpha=(0.10+0.06*Math.sin(t*1.1+r))*(0.7+0.3*sealPulse)+(celebrate>0?0.04*celebrate:0);
-    const verts=[];
-    for(let i=0;i<6;i++){
-      const a=-Math.PI/2+i*Math.PI/3;
-      const zz=(r-(rings-1)*0.5)*0.05; /* slight axial stack for 3D tumble */
-      const [px,py]=project(Math.cos(a)*sc,Math.sin(a)*sc*0.92,zz,cx+po.ox,cy+po.oy,s);
-      verts.push([px,py]);
+    if(W<=480){
+      /* mobile: circles — dodeca-in-dodeca too heavy */
+      const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
+      ctx.strokeStyle=hsl(hue+t*12,90,52,alpha);
+      ctx.lineWidth=r===0?1.0:0.85;
+      ctx.beginPath(); ctx.arc(ex,ey,s*sc*0.55,0,Math.PI*2); ctx.stroke();
+      continue;
     }
+    const edged=DODECA.edges.map(([i,j])=>{
+      const a=DODECA.verts[i], b=DODECA.verts[j];
+      const pa=project(a.x*sc,a.y*sc,a.z*sc,cx+po.ox,cy+po.oy,s);
+      const pb=project(b.x*sc,b.y*sc,b.z*sc,cx+po.ox,cy+po.oy,s);
+      return {pa,pb,md:(pa[2]+pb[2])*0.5};
+    }).sort((u,v)=>u.md-v.md);
     ctx.strokeStyle=hsl(hue+t*12,90,52,alpha);
-    ctx.lineWidth=r===0?1.1:(r===1?0.9:1.35);
-    ctx.beginPath();
-    for(let i=0;i<6;i++){const p=verts[i]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}
-    ctx.closePath(); ctx.stroke();
-    // residual circle between rings (subtle)
-    if(r<rings-1 && W>480){
+    ctx.lineWidth=r===0?1.0:(r===1?0.85:1.15);
+    for(const ed of edged){
+      ctx.beginPath(); ctx.moveTo(ed.pa[0],ed.pa[1]); ctx.lineTo(ed.pb[0],ed.pb[1]); ctx.stroke();
+    }
+    if(r<rings-1){
       const midR=s*((scales[r]+scales[r+1])*0.5)*0.55*(1+0.015*Math.sin(t*1.6+r));
+      const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
       ctx.strokeStyle=hsl(hue+30,80,50,alpha*0.35);
       ctx.lineWidth=0.6;
-      ctx.beginPath(); ctx.arc(cx+po.ox,cy+po.oy,midR,0,Math.PI*2); ctx.stroke();
-    }
-    // soft pulse tick on celebrate/sealPulse
-    if((sealPulse>0.15||celebrate>0.15) && verts.length>=6){
-      const tick=((t*0.8+r*0.33)%1+1)%1;
-      const i0=Math.floor(tick*6)%6, i1=(i0+1)%6;
-      const u=tick*6-Math.floor(tick*6);
-      const A=verts[i0], B=verts[i1];
-      if(A&&B){
-        const sx=A[0]+(B[0]-A[0])*u, sy=A[1]+(B[1]-A[1])*u;
-        ctx.fillStyle=hsl(hue+40,100,62,(sealPulse*0.45+celebrate*0.25));
-        ctx.beginPath(); ctx.arc(sx,sy,1.6+sealPulse,0,Math.PI*2); ctx.fill();
-      }
+      ctx.beginPath(); ctx.arc(ex,ey,midR,0,Math.PI*2); ctx.stroke();
     }
   }
   ctx.restore();
 }
+
 function pushGhostOrbit(verdicts,ciPct){
   /* ghost orbits: linger prior sorts as faint shells */
   const cap=W<=900?2:3;
@@ -1692,8 +1820,7 @@ function pushGhostOrbit(verdicts,ciPct){
 }
 function drawGhostOrbits(cx,cy,s,t){
   if(!ghostOrbits.length||reduceMotion) return;
-  // skip drawing current (index 0 is most recent live — ghosts are prior)
-  const start=1; // index 0 is current organize; shells = prior
+  const start=1; /* index 0 = current organize; shells = prior */
   const maxG=W<=900?1:2;
   let drawn=0;
   ctx.save(); ctx.globalCompositeOperation="lighter";
@@ -1706,28 +1833,28 @@ function drawGhostOrbits(cx,cy,s,t){
     const sc=1.08+gi*0.06+0.02*Math.sin(slow);
     const gyaw=g.spin*0.15+slow*0.4, gpitch=g.pitch*0.1;
     const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
-    const verts=[];
-    for(let i=0;i<6;i++){
-      const a=-Math.PI/2+i*Math.PI/3;
-      let x=Math.cos(a)*sc, y=Math.sin(a)*sc*0.92, z=0;
-      let x1=x*cosy-z*siny, z1=x*siny+z*cosy, y1=y*cosp-z1*sinp; z1=y*sinp+z1*cosp;
+    const xf=(x,y,z)=>{
+      let x1=x*cosy-z*siny, z1=x*siny+z*cosy;
+      let y1=y*cosp-z1*sinp; z1=y*sinp+z1*cosp;
       const persp=1/(1.55+z1*0.35);
-      verts.push([cx+x1*persp*s, cy+(-y1*persp)*s*0.92]);
-    }
+      return [cx+x1*persp*s*sc, cy+(-y1*persp)*s*0.92*sc, z1];
+    };
+    /* dodeca ghost shell — true 30-edge wire, not leftover hex */
+    const edged=DODECA.edges.map(([i,j])=>{
+      const A=DODECA.verts[i], B=DODECA.verts[j];
+      const a=xf(A.x,A.y,A.z), b=xf(B.x,B.y,B.z);
+      return {a,b,md:(a[2]+b[2])*0.5};
+    }).sort((u,v)=>u.md-v.md);
     ctx.strokeStyle=hsl(190+gi*25+g.ci*0.4,70,48,fade);
-    ctx.lineWidth=0.7;
-    ctx.beginPath();
-    for(let i=0;i<6;i++){const p=verts[i]; i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);}
-    ctx.closePath(); ctx.stroke();
-    // faint fill hint
-    if(W>480){
-      ctx.fillStyle=hsl(200+gi*20,60,40,fade*0.08);
-      ctx.fill();
+    ctx.lineWidth=0.65;
+    for(const ed of edged){
+      ctx.beginPath(); ctx.moveTo(ed.a[0],ed.a[1]); ctx.lineTo(ed.b[0],ed.b[1]); ctx.stroke();
     }
     drawn++;
   }
   ctx.restore();
 }
+
 function drawProveBreak(cx,cy,s,t){
   /* prove-or-break: geometric residual readout around focus — LIGHT not HTML form */
   if(focusId==null) return;
@@ -1909,7 +2036,7 @@ function frame(now){
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
   ctx.clearRect(0,0,W,H); /* GIF #bgField is the background — no black plate */
-  // mobile: raise cy bias so hex owns mid (≥55% of viewport above dock)
+  // mobile: raise cy bias so seal owns mid (≥55% of viewport above dock)
   const s=Math.min(W,H)*(W<=900?0.70:0.66)*cam.zoom;
   const cx0=W*0.50+cam.panX, cy0=(W<=900?H*0.30:H*0.50)+cam.panY;
   // true parallax: per-layer offsets from mouse.tx/ty (+ DeviceOrientation)
