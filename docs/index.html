@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -462,6 +462,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 
 
+
 /* hexCoreGyroSeal — replace wire dodeca with keyed hex-core GIF; omni gyro from seal center */
 #bgField .hexCore{
   position:absolute;inset:0;z-index:3;overflow:visible;
@@ -517,6 +518,11 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 @media (prefers-reduced-motion:reduce){
   #bgField .hexCore .gyroRig{ animation:none; transform:translate(-50%,-50%) rotateX(12deg); }
 }
+
+/* dodeca3DSphere override — GIF off; no CSS gyro (canvas cam.gyro owns tumble) */
+#bgField .hexCore .plane.coreMain{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+#bgField .hexCore .gyroRig{animation:none!important}
+
 
 /* —— uploadSortedDesk: obvious upload + sorted figures trays —— */
 
@@ -782,7 +788,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   </div>
 </div>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
-<canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas><!-- tunnelAsSent: WebGL underlay off — muddy vs GIF -->
+<canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas><!-- dodeca3DSphere: Three underlay optional; canvas seal carries alone -->
 <header id="top">
   <div class="title">SERAPHIM</div>
   <span class="whisper" title="Wizard turns fumbled speech into seal">fumble → seal</span>
@@ -1400,14 +1406,15 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort */
+/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
    Palette (holoPalette): cyan↔indigo↔magenta↔orchid diagonal iridescence on void #000.
      admit/crystallize = cool cyan-indigo; release = magenta/orchid; prism accents = pale yellow/peach/lime.
    SURVIVING layers (why they stay):
-   - fourAssetCanon: tunnel-grid + iso-tunnel + beam-rain + hex-core only (as-sent)
+   - dodeca3DSphere: TRUE 3D dodeca + center sphere (canvas project/YPR gyro); hex-core GIF hidden; tunnel/beams/voxel kept
+   - fourAssetCanon: tunnel-grid + iso-tunnel + beam-rain (+ hex-core asset kept, visually off)
    - tunnelAsSent|tunnelGridBg: Taylor tunnel-dots GIF AS SENT (light bg, black dots, α≈0.95); NO invert/screen/vignette/warp; VP locked to seal via translate+cover
    - hybridEngineTrio: quieted under tunnelAsSent (beams/plasma no-op — muddy light GIF); seal+organize story remain
    - masterpieceFlow: one φ TEMPO organism — desk→seal→trays continuous path
@@ -1681,13 +1688,25 @@ function bootThreeOrbit(){
       const mat=new THREE.LineBasicMaterial({color:new THREE.Color().setHSL(hue,0.85,0.55), transparent:true, opacity:0.32-ri*0.08});
       sealGrp.add(new THREE.LineSegments(geo,mat));
     });
+    /* dodeca3DSphere: wire + soft glow sphere at origin */
+    try{
+      const sphWire=new THREE.WireframeGeometry(new THREE.SphereGeometry(0.36,18,12));
+      sealGrp.add(new THREE.LineSegments(sphWire, new THREE.LineBasicMaterial({
+        color:new THREE.Color().setHSL(0.55,0.9,0.6), transparent:true, opacity:0.42, depthWrite:false
+      })));
+      const glowMat=new THREE.MeshBasicMaterial({color:0x48c8e8, transparent:true, opacity:0.16, depthWrite:false, blending:THREE.AdditiveBlending});
+      sealGrp.add(new THREE.Mesh(new THREE.SphereGeometry(0.30,20,14), glowMat));
+      const coreMat=new THREE.MeshBasicMaterial({color:0xe8f8ff, transparent:true, opacity:0.28, depthWrite:false, blending:THREE.AdditiveBlending});
+      sealGrp.add(new THREE.Mesh(new THREE.SphereGeometry(0.10,12,8), coreMat));
+    }catch(_){ /* sphere optional — lines still carry */ }
     threeHex=sealGrp; threeScene.add(sealGrp);
+    const cEl=document.getElementById("fxgl");
+    if(cEl){ cEl.style.display="block"; cEl.style.opacity="0.85"; cEl.style.zIndex="0"; }
     threeOk=true; webglOk=true; return true;
   }catch(e){ threeOk=false; return false; }
 }
 function drawThreeOrbit(cx,cy,s,t){
-  /* stripToBones: cut — fights seal/desk clarity */
-  return;
+  /* dodeca3DSphere: optional Three underlay — canvas path carries alone if this fails */
   if(!threeOk||!threeRenderer) return;
   try{
     threeClock=t;
@@ -2247,8 +2266,8 @@ function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){ /* hexCoreGyroSeal */ return;
-  /* regular dodecahedron seal organism — 20v/30e/12 pent faces through project() YPR gyro.
+function drawDodecaFrame(cx,cy,s,t){
+  /* dodeca3DSphere: regular dodecahedron seal organism — 20v/30e/12 pent faces through project() YPR gyro.
      Returns 12 projected face-center points [[x,y,d],…] for funnels / labels / silhouette. */
   const aHex=layerAlpha("hex");
   const thin=W<=480;
@@ -3140,72 +3159,58 @@ function drawFunnelsAndBeams(cx,cy,s,t){
   ctx.restore(); return mouths;
 }
 
-function drawSphereWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawSphereWire */ if(true) return;
-  /* excessPrune: Ylm/Hopf sphere fought dodeca — no-op */
-  return;
-  /* omnidiscipline: spherical-harmonics shimmer + Hopf/torus whisper — skip ≤900; α quiet */
-  if(reduceMotion||W<=900) return;
-  const aHex=layerAlpha("hex"), R=0.62;
-  const wireMul=0.26;
-  const shim=TEMPO.base*TEMPO.plasma;
-  const hopf=TEMPO.base*(TEMPO.hopf||0.236);
-  ctx.save(); ctx.globalAlpha=aHex*wireMul; ctx.globalCompositeOperation="lighter";
-  /* Ylm-ish latitude modulation: Y20 ~ (3sin²θ-1), Y22 whisper */
-  for(let i=0;i<18;i++){
-    const lat=(i/17-0.5)*Math.PI*0.95;
-    const y20=0.5*(3*Math.sin(lat)*Math.sin(lat)-1);
-    const shimmer=(0.07+0.055*Math.sin(t*shim*PHI+i*0.4))*(0.85+0.2*y20);
-    ctx.strokeStyle=hsl(198+i*2.2+6*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)),72,52,shimmer*wireMul); ctx.lineWidth=0.5; ctx.beginPath();
+function drawSphereWire(cx,cy,s,t){
+  /* dodeca3DSphere: sphere at dodeca origin — soft glow core + lat/lon wire via project() YPR */
+  const aHex=layerAlpha("hex");
+  const R=0.36; /* clearly inside dodeca radius ~1.05 */
+  const thin=W<=480, mobile=W<=900;
+  const pulse=0.88+0.12*Math.sin(t*TEMPO.base*(TEMPO.plasma||0.382)*2.1);
+  ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex;
+  const [ex,ey]=project(0,0,0,cx,cy,s);
+  /* soft filled glow ball */
+  const gR=s*R*(thin?1.05:1.25);
+  const g=ctx.createRadialGradient(ex,ey,0,ex,ey,gR);
+  g.addColorStop(0,hsl(198,100,72,0.62*pulse));
+  g.addColorStop(0.22,hsl(210,95,58,0.34*pulse));
+  g.addColorStop(0.48,hsl(285,85,52,0.16*pulse));
+  g.addColorStop(0.78,hsl(310,80,48,0.055*pulse));
+  g.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(ex,ey,gR,0,Math.PI*2); ctx.fill();
+  /* hot white core */
+  ctx.fillStyle=`rgba(230,248,255,${0.42*pulse})`;
+  ctx.beginPath(); ctx.arc(ex,ey,s*R*0.16,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=hsl(195,100,78,0.28*pulse);
+  ctx.beginPath(); ctx.arc(ex,ey,s*R*0.28,0,Math.PI*2); ctx.fill();
+  /* lat/lon wireframe */
+  const nLat=thin?7:(mobile?11:16);
+  const nLon=thin?6:(mobile?9:12);
+  const segs=thin?28:(mobile?40:52);
+  for(let i=0;i<nLat;i++){
+    const lat=(i/(nLat-1)-0.5)*Math.PI*0.92;
+    const near=0.55+0.45*Math.cos(lat);
+    ctx.strokeStyle=hsl(198+i*3+8*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)),85,58,(0.14+0.12*near)*pulse);
+    ctx.lineWidth=thin?0.55:0.85; ctx.beginPath();
     let first=true;
-    for(let j=0;j<=52;j++){
-      const u=j/52*Math.PI*2+t*TEMPO.base*0.18;
-      const y22=0.08*Math.cos(2*u)*Math.cos(lat)*Math.cos(lat);
-      const rr=R*(1+0.035*y20+y22);
-      const x=Math.cos(lat)*Math.cos(u)*rr,y=Math.sin(lat)*rr,z=Math.cos(lat)*Math.sin(u)*rr;
+    for(let j=0;j<=segs;j++){
+      const u=j/segs*Math.PI*2;
+      const x=Math.cos(lat)*Math.cos(u)*R, y=Math.sin(lat)*R, z=Math.cos(lat)*Math.sin(u)*R;
       const [px,py,d]=project(x,y,z,cx,cy,s);
-      if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+      if(d<-0.55){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
     } ctx.stroke();
   }
-  for(let i=0;i<14;i++){
-    const lon=i/14*Math.PI;
-    const shimmer=0.065+0.05*Math.cos(t*shim+i*0.5);
-    ctx.strokeStyle=hsl(208+i*3,68,50,shimmer); ctx.lineWidth=0.45; ctx.beginPath();
+  for(let i=0;i<nLon;i++){
+    const lon=i/nLon*Math.PI;
+    ctx.strokeStyle=hsl(300-i*4+6*Math.cos(t*TEMPO.base*(TEMPO.iri||PHI)),80,56,0.12*pulse);
+    ctx.lineWidth=thin?0.5:0.75; ctx.beginPath();
     let first=true;
-    for(let j=0;j<=44;j++){
-      const lat=-Math.PI/2+j/44*Math.PI;
-      const x=Math.cos(lat)*Math.cos(lon+t*TEMPO.base*0.15)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(lon+t*TEMPO.base*0.15)*R;
+    for(let j=0;j<=segs;j++){
+      const lat=-Math.PI/2+j/segs*Math.PI;
+      const x=Math.cos(lat)*Math.cos(lon)*R, y=Math.sin(lat)*R, z=Math.cos(lat)*Math.sin(lon)*R;
       const [px,py,d]=project(x,y,z,cx,cy,s);
-      if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+      if(d<-0.55){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
     } ctx.stroke();
   }
-  /* Hopf/torus fiber hint — two linked φ-tilted rings, whisper only */
-  if(!(frameN&1)){
-    const spin=t*hopf;
-    for(let ring=0;ring<2;ring++){
-      const tilt=ring?Math.PI/PHI: -Math.PI/(PHI*PHI);
-      const hue=ring?195:305;
-      ctx.strokeStyle=hsl(hue,80,58,0.045);
-      ctx.lineWidth=0.55;
-      ctx.beginPath();
-      let first=true;
-      for(let j=0;j<=56;j++){
-        const u=j/56*Math.PI*2+spin*(ring?-1:1);
-        const rr=R*0.72;
-        let x=Math.cos(u)*rr, y=Math.sin(u)*rr*0.35, z=Math.sin(u)*rr*0.15;
-        /* tilt */
-        const cy_=y*Math.cos(tilt)-z*Math.sin(tilt), cz=y*Math.sin(tilt)+z*Math.cos(tilt);
-        y=cy_; z=cz;
-        if(ring){ const cx_=x; x=z; z=-cx_; }
-        const [px,py,d]=project(x,y,z,cx,cy,s);
-        if(d<-0.35){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
-      }
-      ctx.stroke();
-    }
-  }
-  const [ex,ey]=project(0,0,0,cx,cy,s); const g=ctx.createRadialGradient(ex,ey,s*R*0.15,ex,ey,s*R*1.05);
-  /* 1/r²-ish hub falloff */
-  g.addColorStop(0,"rgba(40,180,220,0.012)"); g.addColorStop(0.35,"rgba(40,140,180,0.007)"); g.addColorStop(0.7,"rgba(160,70,180,0.004)"); g.addColorStop(1,"rgba(0,0,0,0)");
-  ctx.fillStyle=g;ctx.beginPath();ctx.arc(ex,ey,s*R*1.05,0,Math.PI*2);ctx.fill(); ctx.restore();
+  ctx.restore();
 }
 function hueClampAdmit(h){return 140+((h%50+50)%50);} // 140–190 (legacy fallback)
 function hueClampRelease(h){const x=((h%90)+90)%90; return x<60?(300+x):(x-60);} // 300–30 wrap
@@ -4293,9 +4298,11 @@ function frame(now){
   drawSortShockwave(cx,cy,s);
   drawBloomClamp(cx0,cy0,s); /* clear light/shadow anti-blotch */
   drawSoftCrossVeil();
-  // SEAL AUTHORITY — dodeca boss
-  drawSealContrastVeil(cx,cy,s);
-  drawHexFrame(cxH,cyH,s,t);
+  // SEAL AUTHORITY — dodeca3DSphere boss (canvas primary; Three soft underlay)
+  if(!reduceMotion) drawThreeOrbit(cxH,cyH,s,t);
+  drawSealContrastVeil(cx,cy,s); /* stays no-op — no black plate behind seal */
+  drawSphereWire(cxH,cyH,s,t); /* soft sphere core at origin */
+  drawHexFrame(cxH,cyH,s,t); /* projected dodeca edges + face whisper */
   drawInnerCubeWire(cxH,cyH,s,t);
   drawSealBreath(cx,cy,s,t);
   drawCanvasLabels(cxL,cyL,s,mouths,verts);
