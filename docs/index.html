@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientGemFix|clientNeonSeedHub|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2723,12 +2723,11 @@ html,body{ background:#000!important; }
 #bgField > .trioStack,
 #bgField > .mathField,
 #bgField > .nodeField,
-#bgField img,
-#bgField picture,
 #bgField .assetLayer{
   display:none!important; visibility:hidden!important; opacity:0!important;
   pointer-events:none!important;
 }
+/* clientGemFix: removed blanket #bgField img/picture{display:none} — engine layers use img */
 #top .whisper, #top .chip.law{ display:none!important; }
 #intake, #log, #sub, #moreWrap, #morePanel, #introChip, #phaseWhisper, #navhint, #cheat{
   display:none!important;
@@ -2740,9 +2739,10 @@ html,body{ background:#000!important; }
     display:none!important; opacity:0!important; visibility:hidden!important;
     pointer-events:none!important; z-index:-1!important;
   }
-  #bgField > .residualPrism, #bgField img{
+  #bgField > .residualPrism{
     display:none!important; visibility:hidden!important; opacity:0!important;
   }
+  /* clientGemFix: do NOT blanket-hide #bgField img — neonLattice/coreSeedHub/engineGem must show */
 }
 
 
@@ -2769,14 +2769,13 @@ html,body{ background:#000!important; }
 #bgField > .trioStack,
 #bgField > .mathField,
 #bgField > .nodeField,
-#bgField img,
-#bgField picture,
 #bgField .assetLayer,
 #bgField::before,
 #bgField::after{
   display:none!important; visibility:hidden!important; opacity:0!important;
   pointer-events:none!important; content:none!important;
 }
+/* clientGemFix: removed blanket #bgField img/picture{display:none} */
 /* quiet SERAPHIM header — no chrome clutter */
 #top{
   display:flex!important; visibility:visible!important; opacity:1!important;
@@ -3071,14 +3070,13 @@ body::after{
 #bgField > .trioStack,
 #bgField > .mathField,
 #bgField > .nodeField,
-#bgField img,
-#bgField picture,
 #bgField .assetLayer,
 #bgField::before,
 #bgField::after{
   display:none!important; visibility:hidden!important; opacity:0!important;
   pointer-events:none!important; content:none!important;
 }
+/* clientGemFix: removed blanket #bgField img/picture{display:none} */
 /* quieter header — refined tracking */
 #top{
   display:flex!important; visibility:visible!important; opacity:1!important;
@@ -3580,12 +3578,11 @@ body::after{
 #bgField > .trioStack,
 #bgField > .mathField,
 #bgField > .nodeField,
-#bgField img,
-#bgField picture,
 #bgField .assetLayer{
   display:none!important; visibility:hidden!important; opacity:0!important;
   pointer-events:none!important;
 }
+/* clientGemFix: removed blanket #bgField img/picture{display:none} — engine layers use img */
 @media (prefers-reduced-motion:reduce){
   /* axis room stays static via JS reduceMotion path */
 }
@@ -4661,10 +4658,188 @@ html,body{
 /* end clientMobilePerf */
 
 
+
+/* ========== clientGemFix|clientNeonSeedHub — neon lattice + seed hub MUST show ========== */
+/* Defeat older #bgField img/picture{display:none} wars (clientZero/OptimalZero/AxisRoom/mobile). */
+#bgField > .neonLattice,
+#bgField > .coreSeedHub,
+#bgField > .engineGem{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  pointer-events:none !important; overflow:visible !important;
+  -webkit-mask-image:none !important; mask-image:none !important;
+}
+#bgField > .neonLattice{
+  z-index:5 !important; /* omni rotating centerpiece above fields + under-glass gem */
+  opacity:1 !important;
+}
+#bgField > .coreSeedHub{
+  z-index:6 !important; /* seed welded on hub above lattice */
+  opacity:1 !important;
+}
+#bgField > .engineGem{
+  z-index:3 !important; /* optional gem under-glass beneath neon lattice */
+  opacity:0.42 !important;
+}
+#bgField > .neonLattice .plane,
+#bgField > .coreSeedHub .plane,
+#bgField > .engineGem .plane{
+  position:absolute !important;
+  left:var(--seal-x,50%) !important;
+  top:var(--seal-y,50%) !important;
+  transform:translate(-50%,-50%) scale(var(--gif-breath,1)) !important;
+  transform-origin:50% 50% !important;
+}
+#bgField > .neonLattice .plane{
+  width:min(58vmin,420px) !important;
+  height:min(58vmin,420px) !important;
+}
+#bgField > .coreSeedHub .plane{
+  width:min(28vmin,210px) !important;
+  height:min(28vmin,210px) !important;
+}
+#bgField > .engineGem .plane{
+  width:min(44vmin,320px) !important;
+  height:min(44vmin,320px) !important;
+}
+#bgField > .neonLattice picture,
+#bgField > .neonLattice img,
+#bgField > .coreSeedHub picture,
+#bgField > .coreSeedHub img,
+#bgField > .engineGem picture,
+#bgField > .engineGem img{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  width:100% !important; height:100% !important;
+  object-fit:contain !important; object-position:50% 50% !important;
+  pointer-events:none !important;
+}
+#bgField > .neonLattice picture,
+#bgField > .neonLattice img{
+  mix-blend-mode:screen !important;
+  filter:
+    drop-shadow(0 0 10px rgba(80,200,255,.45))
+    drop-shadow(0 0 28px rgba(34,211,238,.28))
+    saturate(1.15) contrast(1.08) brightness(1.05) !important;
+}
+#bgField > .coreSeedHub picture,
+#bgField > .coreSeedHub img{
+  mix-blend-mode:screen !important;
+  filter:
+    drop-shadow(0 0 12px rgba(232,121,249,.40))
+    drop-shadow(0 0 22px rgba(250,204,21,.35))
+    saturate(1.18) contrast(1.06) !important;
+}
+#bgField > .engineGem picture,
+#bgField > .engineGem img{
+  mix-blend-mode:screen !important;
+  filter:
+    drop-shadow(0 0 10px rgba(212,175,55,.28))
+    drop-shadow(0 0 18px rgba(46,180,110,.18))
+    saturate(1.05) contrast(1.02) brightness(0.92) !important;
+}
+#bgField > .neonLattice img.still,
+#bgField > .coreSeedHub img.still,
+#bgField > .engineGem img.still{ display:none !important; }
+#bgField > .neonLattice img.anim,
+#bgField > .coreSeedHub img.anim,
+#bgField > .engineGem img.anim{ display:block !important; }
+
+/* depth story refresh: hex/gold → lattice field → gem under-glass → neon lattice → seed */
+#bgField > .hexVoid{ opacity:1 !important; z-index:-3 !important; }
+#bgField > .honeyBack{ opacity:0.85 !important; z-index:-2 !important; }
+#bgField > .crystalWash{ opacity:0.14 !important; z-index:-1 !important; }
+#bgField > .latticeDepth{ opacity:0.28 !important; z-index:0 !important; }
+#bgField > .giftStack{ opacity:1 !important; z-index:1 !important; }
+
+@keyframes seedHubPulse{
+  0%,100%{ transform:translate(-50%,-50%) scale(calc(var(--gif-breath,1)*0.98)); opacity:0.92; }
+  50%{ transform:translate(-50%,-50%) scale(calc(var(--gif-breath,1)*1.06)); opacity:1; }
+}
+#bgField > .coreSeedHub .plane{
+  animation:seedHubPulse var(--field-T2,var(--Tphi2,4.77s)) ease-in-out infinite !important;
+}
+@keyframes neonLatticeDrift{
+  0%{ transform:translate(-50%,-50%) scale(var(--gif-breath,1)) rotate(0deg); }
+  100%{ transform:translate(-50%,-50%) scale(var(--gif-breath,1)) rotate(360deg); }
+}
+/* GIF already spins; keep CSS rotate very slow as omni assist (disabled if reduce-motion) */
+#bgField > .neonLattice .plane{
+  animation:none !important; /* GIF carries rotation */
+}
+
+/* Mobile: KEEP neon lattice + seed + gem anim (webp OK). Stills only for reduced-motion. */
+@media (max-width:900px), (pointer:coarse){
+  #bgField > .neonLattice,
+  #bgField > .coreSeedHub,
+  #bgField > .engineGem,
+  #bgField > .neonLattice picture,
+  #bgField > .neonLattice img.anim,
+  #bgField > .coreSeedHub picture,
+  #bgField > .coreSeedHub img.anim,
+  #bgField > .engineGem picture,
+  #bgField > .engineGem img.anim{
+    display:block !important; visibility:visible !important; opacity:1 !important;
+  }
+  #bgField > .neonLattice img.still,
+  #bgField > .coreSeedHub img.still,
+  #bgField > .engineGem img.still{ display:none !important; }
+  #bgField > .neonLattice .plane{
+    width:min(68vmin,340px) !important;
+    height:min(68vmin,340px) !important;
+  }
+  #bgField > .coreSeedHub .plane{
+    width:min(34vmin,170px) !important;
+    height:min(34vmin,170px) !important;
+  }
+  #bgField > .engineGem{
+    opacity:0.36 !important;
+  }
+  #bgField > .engineGem .plane{
+    width:min(50vmin,260px) !important;
+    height:min(50vmin,260px) !important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField > .neonLattice img.anim,
+  #bgField > .neonLattice picture,
+  #bgField > .coreSeedHub img.anim,
+  #bgField > .coreSeedHub picture,
+  #bgField > .engineGem img.anim,
+  #bgField > .engineGem picture{
+    display:none !important;
+  }
+  #bgField > .neonLattice img.still,
+  #bgField > .coreSeedHub img.still,
+  #bgField > .engineGem img.still{
+    display:block !important; visibility:visible !important; opacity:1 !important;
+  }
+  #bgField > .coreSeedHub .plane,
+  #bgField > .neonLattice .plane,
+  #bgField > .engineGem .plane{
+    animation:none !important;
+    transform:translate(-50%,-50%) !important;
+  }
+}
+/* gemAck also kisses neon lattice + seed */
+@keyframes neonAckKiss{
+  0%{ transform:translate(-50%,-50%) scale(var(--gif-breath,1)); filter:brightness(1); }
+  40%{ transform:translate(-50%,-50%) scale(calc(var(--gif-breath,1)*1.08)); filter:brightness(1.25) saturate(1.2); }
+  100%{ transform:translate(-50%,-50%) scale(var(--gif-breath,1)); filter:brightness(1); }
+}
+#bgField > .neonLattice.gemAck .plane,
+#bgField > .coreSeedHub.gemAck .plane{
+  animation:neonAckKiss .85s ease-out 1 !important;
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField > .neonLattice.gemAck .plane,
+  #bgField > .coreSeedHub.gemAck .plane{ animation:none !important; }
+}
+/* end clientGemFix|clientNeonSeedHub */
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientEngineGem|clientHexVoid|clientHoneyBack|clientGoldHoneyFill|clientCrystalWash|clientFaceFillOmni -->
+<div id="bgField" aria-hidden="true"><!-- clientGemFix|clientNeonSeedHub|clientEngineGem|clientHexVoid|clientHoneyBack|clientGoldHoneyFill|clientCrystalWash|clientFaceFillOmni -->
   <div class="hexVoid" aria-hidden="true"><!-- clientHexVoid|clientGoldHoneyFill: cyan→purple 3D hex + gold cell under-plate -->
     <div class="goldFill" role="presentation"></div><!-- clientGoldHoneyFill -->
     <div class="plane" role="presentation"></div>
@@ -4740,13 +4915,31 @@ html,body{
       </div>
     </div>
   </div>
-  <div class="engineGem" aria-hidden="true"><!-- clientEngineGem: white-keyed rotating gem = Seraphim engine -->
+  <div class="engineGem" aria-hidden="true"><!-- clientEngineGem|clientGemFix: optional gem under-glass -->
     <div class="plane">
       <picture>
         <source srcset="media/engine-gem.webp" type="image/webp"/>
-        <img class="anim" src="media/engine-gem.gif" alt="" decoding="async" fetchpriority="high" width="200" height="200"/>
+        <img class="anim" src="media/engine-gem.gif" alt="" decoding="async" fetchpriority="low" width="200" height="200"/>
       </picture>
       <img class="still" src="media/engine-gem-still.webp" alt="" decoding="async" width="200" height="200"/>
+    </div>
+  </div>
+  <div class="neonLattice" aria-hidden="true"><!-- clientNeonSeedHub|clientNeonLattice: rotating neon wireframe centerpiece -->
+    <div class="plane">
+      <picture>
+        <source srcset="media/neon-lattice.webp" type="image/webp"/>
+        <img class="anim" src="media/neon-lattice.gif" alt="" decoding="async" fetchpriority="high" width="400" height="281"/>
+      </picture>
+      <img class="still" src="media/neon-lattice-still.webp" alt="" decoding="async" width="400" height="281"/>
+    </div>
+  </div>
+  <div class="coreSeedHub" aria-hidden="true"><!-- clientNeonSeedHub|clientCoreSeed: seed-of-life glow at hub -->
+    <div class="plane">
+      <picture>
+        <source srcset="media/seed-hub.webp" type="image/webp"/>
+        <img class="anim" src="media/seed-hub.png" alt="" decoding="async" fetchpriority="high" width="736" height="736"/>
+      </picture>
+      <img class="still" src="media/seed-hub.webp" alt="" decoding="async" width="736" height="736"/>
     </div>
   </div>
 </div>
@@ -5332,10 +5525,14 @@ function acknowledgeSortInstrument(){
   try{
     const desk=document.getElementById("sortDesk");
     const gem=document.querySelector("#bgField > .engineGem");
+    const neon=document.querySelector("#bgField > .neonLattice");
+    const seed=document.querySelector("#bgField > .coreSeedHub");
     if(desk){ desk.classList.remove("deskPulse"); void desk.offsetWidth; desk.classList.add("deskPulse");
       clearTimeout(desk._pulseT); desk._pulseT=setTimeout(()=>desk.classList.remove("deskPulse"), 1000); }
     if(gem){ gem.classList.remove("gemAck"); void gem.offsetWidth; gem.classList.add("gemAck");
       clearTimeout(gem._ackT); gem._ackT=setTimeout(()=>gem.classList.remove("gemAck"), 1000); }
+    [neon,seed].forEach(el=>{ if(!el) return; el.classList.remove("gemAck"); void el.offsetWidth; el.classList.add("gemAck");
+      clearTimeout(el._ackT); el._ackT=setTimeout(()=>el.classList.remove("gemAck"), 1000); });
   }catch(_){}
 }
 function armIdleDemoGem(){
@@ -5412,7 +5609,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
