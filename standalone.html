@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -3955,6 +3955,30 @@ html,body{
   pointer-events:none !important;
   overflow:hidden !important;
 }
+
+
+/* clientOmniMid — dodeca mid-ground omni gyro; dots FG→BG depth */
+#bgField{
+  --seal-x:50% !important;
+  --seal-y:50% !important;
+  background:#ffffff !important;
+}
+#bgField > .giftStack .gift .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  /* gifts sit as soft mid/back wash under engine */
+  width:min(118vmin,860px) !important;
+  height:min(118vmin,860px) !important;
+}
+#bgField > .giftStack .gift.hex{ opacity:0.22 !important; }
+#bgField > .giftStack .gift.iris{ opacity:0.18 !important; }
+#bgField > .giftStack .gift.mandala{ opacity:0.24 !important; }
+#bgField > .giftStack .gift.star{ opacity:0.20 !important; }
+#bgField > .giftStack .gift.scribble{ opacity:0.12 !important; }
+#fx{
+  z-index:3 !important;
+}
+
 </style>
 </head>
 <body>
@@ -4727,7 +4751,7 @@ const cam={
   // targets — pointer/wheel/auto write here; render uses lerped values
   tYaw:0.48,tPitch:0.38,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
   // living gyro — TEMPO φ family (tempoHarmonic)
-  gyro:{wx:TEMPO.base*(PHI*0.85), wy:TEMPO.base*0.85, wz:TEMPO.base*(0.85/PHI)} /* clientOmniGyroTree: φ-rational ω */
+  gyro:{wx:TEMPO.base*(1/PHI), wy:TEMPO.base*(1/(PHI*PHI)), wz:TEMPO.base*(1/(PHI*PHI*PHI)), omni:1} /* clientOmniMid */
 };
 
 function syncTempoClock(){
@@ -4750,6 +4774,7 @@ function syncTempoClock(){
   cam.gyro.wx=b*(1/PHI);
   cam.gyro.wy=b*(1/(PHI*PHI));
   cam.gyro.wz=b*(1/(PHI*PHI*PHI));
+  cam.gyro.omni=1;
 }
 syncTempoClock();
 
@@ -6706,7 +6731,7 @@ function syncGyroSharedCenter(cx,cy,s,t){
   /* clientSameCenterFill: duo GIFs lock to viewport center; ignore cam pan for hub */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
-  cx=W*0.5; cy=H*0.5; /* same center point for both images */
+  cx=W*0.5; cy=H*0.5; /* clientOmniMid: gifts + engine share true center */
   _sealHub.cx=cx; _sealHub.cy=cy; _sealHub.s=s;
   _sealHub.corridor=(typeof cam!=="undefined"?(cam.roll||0)*0.35:0);
   const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
@@ -8567,6 +8592,62 @@ function drawFieldWhisper(cx,cy,s,t){
 
 
 function drawAxisRoomGrid(cx,cy,s,t){ return; }
+
+function drawPerspectiveDotField(cx,cy,s,t){
+  /* clientOmniMid: FG→BG dots — large at rim (near), tiny at hub (far) */
+  if(reduceMotion){
+    ctx.save();
+    ctx.fillStyle="rgba(20,24,32,0.06)";
+    for(let i=0;i<48;i++){
+      const a=i*PHI*Math.PI*2, r=s*(0.2+0.7*((i%7)/7));
+      const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r*0.62;
+      const u=r/(s*0.95);
+      const rad=Math.max(0.4, 2.8*(1-u*0.85));
+      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+    return;
+  }
+  ctx.save();
+  ctx.globalCompositeOperation="source-over";
+  const thin=W<=480, mobile=W<=900;
+  const rings=thin?7:(mobile?9:12);
+  const spokes=thin?18:(mobile?24:32);
+  const spin=t*TEMPO.base*(TEMPO.city||1/(PHI*PHI));
+  const breath=0.97+0.03*Math.sin(t*TEMPO.base*(TEMPO.nest||1/PHI));
+  for(let ri=0;ri<rings;ri++){
+    const u=(ri+0.5)/rings; /* 0 near hub (BG), 1 near rim (FG) */
+    const R=s*(0.12+0.92*u*u)*breath; /* quadratic: denser small near center */
+    const n=Math.max(8, Math.floor(spokes*(0.45+0.7*u)));
+    const a0=spin*(0.35+0.25*(1-u))+ri*0.11;
+    /* FG large dark dots, BG tiny */
+    const rad=Math.max(0.35, (thin?1.1:1.6)*(0.25+0.95*u*u));
+    const alpha=0.10+0.38*u*u;
+    ctx.fillStyle=`rgba(12,16,28,${alpha})`;
+    for(let k=0;k<n;k++){
+      const a=a0+k*(Math.PI*2/n);
+      const x=cx+Math.cos(a)*R;
+      const y=cy+Math.sin(a)*R*(0.58+0.08*u);
+      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill();
+    }
+  }
+  /* radial spoke dust — reinforces vanishing point at seal */
+  const spokeN=thin?10:(mobile?14:18);
+  for(let k=0;k<spokeN;k++){
+    const a=spin*0.2+k*(Math.PI*2/spokeN);
+    for(let j=1;j<=10;j++){
+      const u=j/10;
+      const R=s*(0.14+0.88*u*u);
+      const rad=Math.max(0.3,(thin?0.9:1.25)*u*u);
+      const x=cx+Math.cos(a)*R;
+      const y=cy+Math.sin(a)*R*(0.58+0.08*u);
+      ctx.fillStyle=`rgba(12,16,28,${0.06+0.28*u*u})`;
+      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
 function frame(now){
   const dt=now-lastFrameTs; lastFrameTs=now;
   skipHeavy=dt>32 || reduceMotion; /* speedDetail: keep densify draws */
@@ -8580,7 +8661,7 @@ function frame(now){
     const ck=Math.max(0, Math.min(1, (cinemaUntil-now)/3800));
     sealPulse=Math.max(sealPulse, 0.42+0.28*ck);
   }
-  if(!nav.down && !cam.auto && now-nav.idleAt>2200 && !GEO.lockCam) cam.auto=true;
+  if(!nav.down && !cam.auto && now-nav.idleAt>900 && !GEO.lockCam) cam.auto=true; /* clientOmniMid: quick return to omni */
   if(cam.auto){
     /* continuous gyroscopic tumble — integrate angular rates (omni 360°) */
     const dts=Math.min(0.05, Math.max(0, dt)*0.001);
@@ -8591,7 +8672,7 @@ function frame(now){
     const wx=cam.gyro.wx*(1+0.16*Math.sin(t*TEMPO.base*0.28))*cinemaSpin; /* φ-tree axis 1 */
     const wy=cam.gyro.wy*(1+0.14*Math.cos(t*(TEMPO.base*0.28/PHI)))*cinemaSpin; /* axis 1/φ */
     const wz=cam.gyro.wz*(1+0.11*Math.sin(t*(TEMPO.base*0.28/(PHI*PHI))))*cinemaSpin; /* axis 1/φ² */
-    cam.tYaw+=wx*dts*m; cam.tPitch+=wy*dts*m; cam.tRoll+=wz*dts*m;
+    cam.tYaw+=wx*dts*m*1.15; cam.tPitch+=wy*dts*m*1.15; cam.tRoll+=wz*dts*m*1.25; /* omni roll emphasized */
   }
   const nudge=0.042;
   if(keys.KeyA||keys.ArrowLeft){cam.tUserYaw-=nudge;cam.auto=false;nav.idleAt=now;}
@@ -8606,14 +8687,15 @@ function frame(now){
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
-  ctx.clearRect(0,0,W,H); /* clientGiftEngine: gifts under; dodeca = Seraphim engine */
-  const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom;
-  const cx=W*0.5, cy=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY;
+  ctx.clearRect(0,0,W,H); /* clientOmniMid: dots FG→BG; dodeca mid-ground omni engine */
+  const s=Math.min(W,H)*(W<=900?0.62:0.58)*cam.zoom; /* mid-ground scale — not full-bleed hero */
+  const cx=W*0.5, cy=H*0.50+cam.panY*0.35; /* true center mid-ground */
+  drawPerspectiveDotField(cx,cy,s,t);
   projectDodecaSeal(cx,cy,s);
   projectInnerCube(cx,cy,s);
   syncGyroSharedCenter(cx,cy,s,t);
   syncSpinPhase(t);
-  drawHexFrame(cx,cy,s,t); /* Seraphim engine silhouette */
+  drawHexFrame(cx,cy,s,t); /* Seraphim engine — omni gyro via cam */
   if(!reduceMotion && !skipHeavy) drawDodecaLatticeCage(cx,cy,s,t);
   if(!reduceMotion && !skipHeavy) drawHexCoreWires(cx,cy,s,t);
   if(glCanvas) glCanvas.style.display="none";
