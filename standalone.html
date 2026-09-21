@@ -7567,8 +7567,7 @@ function projectDodecaSeal(cx,cy,s){
 
 /* clientFaceFillOmni — textured pentagon faces on omni-rotating dodeca */
 const FACE_FILL={
-  mosaic:null, dodeca:null, ready:false,
-  patM:null, patD:null
+  skin:null, ready:false
 };
 (function bootFaceFillTextures(){
   const base='media/';
@@ -7579,11 +7578,10 @@ const FACE_FILL={
     img.onerror=()=>resolve(null);
     img.src=base+name;
   });
-  Promise.all([load('face-mosaic.webp'), load('face-dodeca.webp')]).then(async ([m,d])=>{
+  load('face-mosaic.webp').then(async (m)=>{
     if(!m) m=await load('face-mosaic.png');
-    if(!d) d=await load('face-dodeca.png');
-    FACE_FILL.mosaic=m; FACE_FILL.dodeca=d;
-    FACE_FILL.ready=!!(m||d);
+    FACE_FILL.skin=m;
+    FACE_FILL.ready=!!m;
   });
 })();
 
@@ -7613,9 +7611,8 @@ function drawDodecaFaceFills(cx,cy,s,t){
   const pv=DODECA._projVerts;
   const fcs=DODECA._faceCenters2d;
   if(!fcs || fcs.length<DODECA.faces.length) return;
-  const mosaic=FACE_FILL.mosaic, dodeca=FACE_FILL.dodeca;
-  const mw=(mosaic&&mosaic.naturalWidth)||512, mh=(mosaic&&mosaic.naturalHeight)||512;
-  const dw=(dodeca&&dodeca.naturalWidth)||512, dh=(dodeca&&dodeca.naturalHeight)||512;
+  const skin=FACE_FILL.skin;
+  const sw=(skin&&skin.naturalWidth)||512, sh=(skin&&skin.naturalHeight)||512;
   /* regular-ish UV pentagon inscribed in unit square */
   const uvPent=(W,H)=>{
     const cx=W*0.5, cy=H*0.5, R=Math.min(W,H)*0.46;
@@ -7626,7 +7623,7 @@ function drawDodecaFaceFills(cx,cy,s,t){
     }
     return pts;
   };
-  const uvM=uvPent(mw,mh), uvD=uvPent(dw,dh);
+  const uv=uvPent(sw,sh);
   const items=[];
   for(let fi=0;fi<DODECA.faces.length;fi++){
     const face=DODECA.faces[fi];
@@ -7653,14 +7650,12 @@ function drawDodecaFaceFills(cx,cy,s,t){
   for(const it of items){
     if(!it.front && it.md > -0.05) continue; /* skip strong backfaces */
     const near=Math.max(0.15, Math.min(1, 0.42+it.md*0.28));
-    const useDodeca=(it.fi%2===1) && dodeca;
-    const img=useDodeca ? dodeca : (mosaic||dodeca);
+    const img=skin;
     if(!img) continue;
-    const uv=useDodeca ? uvD : uvM;
-    const alpha=useDodeca ? (0.55+0.30*near) : (0.42+0.38*near);
+    const alpha=0.42+0.38*near;
     /* soft underplate so void gaps don't flash */
     ctx.globalAlpha=Math.min(0.55, 0.18+0.28*near);
-    ctx.fillStyle=useDodeca ? 'rgba(8,14,22,0.55)' : 'rgba(12,10,18,0.40)';
+    ctx.fillStyle='rgba(12,10,18,0.40)';
     ctx.beginPath();
     ctx.moveTo(it.pts[0].x,it.pts[0].y);
     for(let i=1;i<5;i++) ctx.lineTo(it.pts[i].x,it.pts[i].y);
