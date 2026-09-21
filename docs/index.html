@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -328,7 +328,8 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   mix-blend-mode:screen;
 }
 
-/* fallingCodeDepth — angled synthwave code corridor (whisper under seal) */
+/* fallingCodeDepth|hybridEngineTrio|masterpieceFlow — φ-synced whisper organism under seal
+   TEMPO family (CSS mirror of JS TEMPO.base≈0.68): T≈9.2s · φT≈15s · φ²T≈24s · φ³T≈39s */
 #bgField .codeRain{
   position:absolute;inset:0;
   perspective:920px;
@@ -343,18 +344,18 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   transform:translate(-52%,-40%) rotateX(58deg) rotateY(-7deg) scale(1.38);
   transform-origin:50% 72%;
   transform-style:preserve-3d;
-  opacity:0.30;
+  opacity:0.28;
   mix-blend-mode:screen;
-  filter:saturate(1.12) brightness(0.82) contrast(1.05);
+  filter:saturate(1.08) brightness(0.78) contrast(1.04);
   -webkit-mask-image:radial-gradient(ellipse 68% 62% at 46% 44%,
-    rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 28%, rgba(0,0,0,0.75) 52%, #000 78%);
+    rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.32) 28%, rgba(0,0,0,0.72) 52%, #000 78%);
   mask-image:radial-gradient(ellipse 68% 62% at 46% 44%,
-    rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.35) 28%, rgba(0,0,0,0.75) 52%, #000 78%);
+    rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.32) 28%, rgba(0,0,0,0.72) 52%, #000 78%);
   will-change:transform;
 }
 #bgField .codeRain .drift{
   width:100%; height:118%;
-  animation:codeRainFall 32s linear infinite;
+  animation:codeRainFall 39s linear infinite; /* φ³T */
 }
 #bgField .codeRain picture,
 #bgField .codeRain img{
@@ -365,20 +366,101 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .codeRain::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse 48% 42% at 50% 42%, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.28) 42%, transparent 72%),
-    linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 28%, transparent 68%, rgba(0,0,0,0.55) 100%),
-    linear-gradient(90deg, rgba(0,0,0,0.25) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.3) 100%);
+    radial-gradient(ellipse 48% 42% at 50% 42%, rgba(0,0,0,0.66) 0%, rgba(0,0,0,0.30) 42%, transparent 72%),
+    linear-gradient(180deg, rgba(0,0,0,0.48) 0%, transparent 28%, transparent 68%, rgba(0,0,0,0.58) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.28) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.32) 100%);
 }
 @keyframes codeRainFall{
   from{transform:translate3d(0,-5%,0)}
   to{transform:translate3d(0,7%,0)}
 }
+
+/* hybridEngineTrio: core plasma whisper — centered under seal, heavy radial mask */
+#bgField .coreWhisper{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  mix-blend-mode:screen;
+}
+#bgField .coreWhisper .plate{
+  width:min(52vmin, 420px); height:min(52vmin, 420px);
+  opacity:0.16;
+  filter:saturate(1.15) brightness(0.85) contrast(1.05) blur(0.4px);
+  -webkit-mask-image:radial-gradient(circle at 50% 48%,
+    #000 0%, #000 28%, rgba(0,0,0,0.55) 48%, transparent 72%);
+  mask-image:radial-gradient(circle at 50% 48%,
+    #000 0%, #000 28%, rgba(0,0,0,0.55) 48%, transparent 72%);
+  animation:coreWhisperPulse 15s ease-in-out infinite; /* φT */
+  will-change:opacity,transform;
+}
+#bgField .coreWhisper picture,
+#bgField .coreWhisper img,
+#bgField .coreWhisper video{
+  display:block;width:100%;height:100%;
+  object-fit:cover;border-radius:50%;
+}
+@keyframes coreWhisperPulse{
+  0%,100%{opacity:0.12; transform:scale(0.96)}
+  50%{opacity:0.20; transform:scale(1.03)}
+}
+
+/* hybridEngineTrio: beam-rain corridor whisper — angled like codeRain, side-bias */
+#bgField .beamWhisper{
+  position:absolute;inset:0;z-index:0;
+  perspective:880px;
+  perspective-origin:54% 38%;
+  overflow:hidden;pointer-events:none;
+}
+#bgField .beamWhisper .plane{
+  position:absolute;
+  left:58%; top:28%;
+  width:120%; height:150%;
+  transform:translate(-48%,-36%) rotateX(52deg) rotateY(9deg) scale(1.22);
+  transform-origin:50% 70%;
+  transform-style:preserve-3d;
+  opacity:0.18;
+  mix-blend-mode:screen;
+  filter:saturate(1.2) brightness(0.75) hue-rotate(-8deg) contrast(1.06);
+  -webkit-mask-image:radial-gradient(ellipse 60% 58% at 55% 40%,
+    rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.28) 30%, rgba(0,0,0,0.7) 55%, #000 80%);
+  mask-image:radial-gradient(ellipse 60% 58% at 55% 40%,
+    rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.28) 30%, rgba(0,0,0,0.7) 55%, #000 80%);
+  will-change:transform;
+}
+#bgField .beamWhisper .drift{
+  width:100%; height:120%;
+  animation:beamWhisperFall 24s linear infinite; /* φ²T */
+}
+#bgField .beamWhisper picture,
+#bgField .beamWhisper img,
+#bgField .beamWhisper video{
+  display:block;width:100%;height:100%;
+  object-fit:cover;
+  object-position:62% 18%;
+}
+#bgField .beamWhisper::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 42% 38% at 50% 42%, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 45%, transparent 70%),
+    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 30%, transparent 65%, rgba(0,0,0,0.55) 100%);
+}
+@keyframes beamWhisperFall{
+  from{transform:translate3d(0,-6%,0)}
+  to{transform:translate3d(0,8%,0)}
+}
+
 @media (max-width:900px){
-  #bgField .codeRain .plane{opacity:0.16; width:170%; height:190%;
+  #bgField .codeRain .plane{opacity:0.14; width:170%; height:190%;
     transform:translate(-50%,-38%) rotateX(54deg) rotateY(-5deg) scale(1.28)}
+  #bgField .coreWhisper .plate{opacity:0.10; width:min(44vmin,300px); height:min(44vmin,300px);
+    animation-duration:15s}
+  #bgField .beamWhisper .plane{opacity:0.10;
+    transform:translate(-46%,-34%) rotateX(50deg) rotateY(6deg) scale(1.15)}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .codeRain .drift{animation:none}
+  #bgField .codeRain .drift,
+  #bgField .beamWhisper .drift,
+  #bgField .coreWhisper .plate{animation:none}
+  #bgField .coreWhisper .plate{opacity:0.10}
 }
 
 
@@ -469,7 +551,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #uploadBox.sorting textarea{border-left-color:rgba(198,120,200,.45)}
 #uploadBox .scanBar{display:none;height:1px;margin:.2rem 0 0;border-radius:0;
   background:linear-gradient(90deg,transparent,rgba(86,212,224,.7),rgba(198,100,192,.6),transparent);background-size:200% 100%}
-#uploadBox.sorting .scanBar{display:block;animation:scanSweep .85s linear infinite}
+#uploadBox.sorting .scanBar{display:block;animation:scanSweep .90s linear infinite} /* φ: ~1/(base·φ) */
 #sortedFigures{
   display:grid;grid-template-columns:1fr 1fr;gap:.55rem 1.4rem;min-height:0;
 }
@@ -499,7 +581,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   font-size:.56rem;line-height:1.32;cursor:pointer;
   border:none;background:transparent;color:rgba(205,222,238,.78);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  animation:mdLineIn .55s cubic-bezier(.2,.8,.2,1) both;
+  animation:mdLineIn .62s cubic-bezier(.2,.8,.2,1) both; /* φ⁻¹ */
 }
 #sortedFigures .chipFig:nth-child(1){animation-delay:.02s}
 #sortedFigures .chipFig:nth-child(2){animation-delay:.05s}
@@ -570,7 +652,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 @media (prefers-reduced-motion:reduce){
   #sortedFigures .chipFig{animation:none}
   #sortedFigures .chipFig.chipFlightAdmit,
-  #sortedFigures .chipFig.chipFlightRelease{animation:mdLineIn .4s ease both}
+  #sortedFigures .chipFig.chipFlightRelease{animation:mdLineIn .48s ease both}
 }
 
 /* uploadSortFX — canvas stream kept; DOM box pulse removed for markdownMaster|motionIntricateFast */
@@ -585,7 +667,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth -->
+<div id="bgField" aria-hidden="true"><!-- fallingCodeDepth|hybridEngineTrio|masterpieceFlow -->
   <div class="codeRain" aria-hidden="true">
     <div class="plane">
       <div class="drift">
@@ -594,6 +676,24 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
           <img src="media/falling-code.jpg" alt="" width="1028" height="1828" decoding="async" fetchpriority="low">
         </picture>
       </div>
+    </div>
+  </div>
+  <div class="beamWhisper" aria-hidden="true">
+    <div class="plane">
+      <div class="drift">
+        <picture>
+          <source srcset="media/beam-rain.webp" type="image/webp">
+          <img src="media/beam-rain.jpg" alt="" width="300" height="300" decoding="async" fetchpriority="low">
+        </picture>
+      </div>
+    </div>
+  </div>
+  <div class="coreWhisper" aria-hidden="true">
+    <div class="plate">
+      <picture>
+        <source srcset="media/core-engine.webp" type="image/webp">
+        <img src="media/core-engine.jpg" alt="" width="384" height="384" decoding="async" fetchpriority="low">
+      </picture>
     </div>
   </div>
 </div>
@@ -1046,7 +1146,7 @@ const IDLE_PUBLIC_PACK = [
 let idlePackIdx = 0;
 let idleDemoTimer = null;
 let deskUserTouchAt = -1e12; /* allow first boot idle before any touch */
-const IDLE_INTERVAL_MS = 20000;
+const IDLE_INTERVAL_MS = 21000; /* masterpieceFlow: ≈φ²·T with T≈8s */
 const IDLE_TOUCH_COOLDOWN_MS = 3000;
 function markDeskUserTouch(){ deskUserTouchAt = performance.now(); }
 function deskIsIdleEmpty(){
@@ -1165,7 +1265,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1174,6 +1274,8 @@ const STORIES = {
    SURVIVING layers (why they stay):
    - bgField GIFs: unsorted chaos under seal (whisper depth only)
    - fallingCodeDepth: angled neon code corridor under #bgField (atmosphere only)
+   - hybridEngineTrio: core plasma + beam-rain + code floor (procedural primary, media whisper)
+   - masterpieceFlow: one φ TEMPO organism — desk→seal→trays continuous path
    - starfield dust: dump particles awaiting lock
    - funnels: intake mouths at dodeca faces (cool cyan admit path)
    - organize lattice: visible tether field→dodeca / admit→cube
@@ -1205,19 +1307,21 @@ const isMobileLayout=()=>W<=900;
 const LERP_BASE=reduceMotion?1:(isTouch?0.11:0.13); // polishPass2: softer settle, damp mobile jitter
 const PHI=1.6180339887;
 const TEMPO={
-  base:0.78,           // rad/s primary yaw — faster organism (motionIntricateFast)
-  // axes: 1 : 1/φ : 1/φ² — keep φ family, raise multipliers
-  neon:1/1.6180339887,
-  sculpt:1/(1.6180339887*1.6180339887),
-  city:0.28,                // quicker field drift
-  rays:0.95,                // faster spokes
-  rings:0.72,               // orbit rings
-  lattice:0.95,
-  terrain:0.62,   // diagonal treadmill
-  undulate:1.15, // vertical warp breathe
-  nest:1.35,     // nested shell pulse
-  dust:1.55,     // fog/shard spin
-  micro:2.1      // fine seal glitter/facet tick
+  /* masterpieceFlow: alive but not frantic — base↓; every layer uses base·φ^k */
+  base:0.68,           // rad/s primary yaw (φ family root)
+  neon:1/PHI,
+  sculpt:1/(PHI*PHI),
+  city:1/(PHI*PHI*PHI),     // ≈0.236 field drift
+  rays:1/PHI,               // spokes
+  rings:1/(PHI*PHI),        // orbit rings
+  lattice:1/PHI,
+  terrain:1/(PHI*PHI),      // diagonal treadmill
+  undulate:1/PHI,           // vertical warp breathe
+  nest:1/PHI,               // nested shell pulse
+  dust:1/PHI,               // fog/shard spin
+  micro:PHI,                // fine seal glitter
+  beam:1/PHI,               // hybridEngineTrio falling beams
+  plasma:1/(PHI*PHI)        // hybridEngineTrio core plasma
 };
 const cam={
   yaw:0.35,pitch:0.18,roll:0,panX:0,panY:0,zoom:1,auto:!reduceMotion,
@@ -2319,6 +2423,104 @@ function drawChimeraCustomField(cx,cy,s,t){
   drawChimeraNeonGhost(cx,cy,s,t);
 }
 
+/* —— hybridEngineTrio|masterpieceFlow: core plasma + beam rain (procedural primary) —— */
+function drawCorePlasma(cx,cy,s,t){
+  /* metaball-ish blobs INSIDE/under dodeca — low α; never compete with seal */
+  if(reduceMotion) return;
+  const thin=W<=480, mobile=W<=900;
+  if(thin) return; /* skip heavy plasma on phone */
+  const n=mobile?5:9;
+  const boost=0.55+0.45*Math.min(1, sealPulse*0.8+celebrate*0.5);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  const rate=TEMPO.base*TEMPO.plasma;
+  for(let i=0;i<n;i++){
+    const u=i/n;
+    const ang=u*Math.PI*2 + t*rate*(0.55+0.2*(i%3)) + (i*PHI);
+    const rad=s*(0.08+0.22*Math.sin(t*rate*PHI+i*1.3)*0.5+0.5*u*0.35);
+    const wob=0.04*s*Math.sin(t*rate*PHI*PHI+i);
+    const px=cx+Math.cos(ang)*rad*0.55 + wob;
+    const py=cy+Math.sin(ang)*rad*0.48 - wob*0.6;
+    /* cyan↔magenta Organized/Aside bias */
+    const hue=(i%2===0)?(195+18*Math.sin(t*rate+i)):(300+20*Math.cos(t*rate*PHI+i));
+    const R=(mobile?18:28)+12*Math.sin(t*rate+i*0.7);
+    const a=(mobile?0.035:0.055)*boost*(0.55+0.45*Math.sin(t*rate*PHI+i));
+    const g=ctx.createRadialGradient(px,py,0,px,py,R);
+    g.addColorStop(0,hsl(hue,92,62,a*1.15));
+    g.addColorStop(0.45,hsl(hue+18,85,52,a*0.4));
+    g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(px,py,R,0,Math.PI*2); ctx.fill();
+  }
+  /* soft inner core glow — clipped under seal radius */
+  const coreA=0.04*boost*(0.7+0.3*Math.sin(t*rate));
+  const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,s*0.32);
+  cg.addColorStop(0,hsl(210,90,60,coreA));
+  cg.addColorStop(0.5,hsl(280,80,55,coreA*0.35));
+  cg.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=cg; ctx.beginPath(); ctx.arc(cx,cy,s*0.32,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+function drawBeamRain(cx,cy,s,t){
+  /* segmented equalizer beams from soft ring ABOVE/around seal → curve to desk/trays on sort */
+  if(reduceMotion) return;
+  const thin=W<=480, mobile=W<=900;
+  const nBeams=thin?5:(mobile?8:14);
+  const rate=TEMPO.base*TEMPO.beam;
+  const surge=Math.min(1, celebrate*0.9+sealPulse*0.55+(uploadFX&&uploadFX.flash>0.05?uploadFX.flash*0.4:0));
+  const deskY=H-Math.min(150, H*0.20);
+  const ringR=s*(0.52+0.04*Math.sin(t*rate));
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  /* soft source ring above/around seal */
+  ctx.strokeStyle=hsl(200,80,70,0.05+0.08*surge);
+  ctx.lineWidth=1.1;
+  ctx.beginPath(); ctx.ellipse(cx, cy-s*0.08, ringR, ringR*0.28, 0, 0, Math.PI*2); ctx.stroke();
+  if(surge>0.15){
+    const rg=ctx.createRadialGradient(cx,cy-s*0.08,0,cx,cy-s*0.08,ringR*1.1);
+    rg.addColorStop(0,hsl(195,95,70,0.06*surge));
+    rg.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=rg; ctx.beginPath(); ctx.ellipse(cx,cy-s*0.08,ringR,ringR*0.3,0,0,Math.PI*2); ctx.fill();
+  }
+  for(let i=0;i<nBeams;i++){
+    const seed=n2(i*2.1, i*5.3);
+    const side=i/nBeams;
+    const ang=-Math.PI*0.15 + side*Math.PI*1.3 + 0.08*Math.sin(t*rate+i);
+    const sx=cx+Math.cos(ang)*ringR*0.95;
+    const sy=cy-s*0.08+Math.sin(ang)*ringR*0.28;
+    /* fall phase — TEMPO φ staggered */
+    const fall=((t*rate*0.35 + seed*PHI + i*0.17)%1);
+    const segs=thin?4:(mobile?6:9);
+    /* Organized cyan / Aside magenta alternating + seed */
+    const admit=seed>0.42;
+    const hue=admit?(185+seed*30):(295+seed*25);
+    /* on sort surge: curve toward desk then trays (left=organized, right=aside) */
+    const trayX=admit?(W*0.22):(W*0.78);
+    const curve=0.18+0.55*surge;
+    for(let k=0;k<segs;k++){
+      const u0=(k/segs + fall)%1;
+      const u1=((k+0.55)/segs + fall)%1;
+      if(u0>0.92) continue;
+      const ease=u0*u0;
+      /* lerp down then bow toward Organized/Aside tray */
+      const bowX=sx + (trayX-sx)*ease*ease*curve + Math.sin(u0*Math.PI)*s*0.02*(admit?-1:1);
+      const bowY=sy + (deskY-sy)*ease;
+      const x1=sx + (trayX-sx)*u1*u1*curve + Math.sin(u1*Math.PI)*s*0.02*(admit?-1:1);
+      const y1=sy + (deskY-sy)*u1;
+      const a=(0.04+0.07*surge)*(1-ease)*(mobile?0.7:1)*(0.5+0.5*Math.sin(t*rate+i+k));
+      if(a<0.012) continue;
+      ctx.strokeStyle=hsl(hue+k*4, 92, 58, a);
+      ctx.lineWidth=(thin?1.0:1.6) * (1-ease*0.5) * (0.7+0.5*surge);
+      ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(bowX, bowY); ctx.lineTo(x1, y1); ctx.stroke();
+      /* segment node — equalizer bead */
+      if(k%2===0 && !thin){
+        ctx.fillStyle=hsl(hue,100,68,a*1.2);
+        ctx.beginPath(); ctx.arc(bowX,bowY,1.1+surge,0,Math.PI*2); ctx.fill();
+      }
+    }
+  }
+  ctx.restore();
+}
+
 function syncGyroSharedCenter(cx,cy,s,t){ /* DOM GIF plates retired — motion lives in drawChimera* */ }
 
 
@@ -2489,8 +2691,8 @@ function drawFunnelsAndBeams(cx,cy,s,t){
     const [bx,by]=project(0,0,0,cx,cy,s);
     const dx=bx-tx, dy=by-ty, beamAng=Math.atan2(dy,dx);
     const rings=thin?8:12, ribs=thin?0:8;
-    /* cool admit grammar: cyan→indigo only (holoPalette) */
-    const baseHue=195+fi*10;
+    /* hybridEngineTrio: mouth 0/2 cyan Organized bias, mouth 1 magenta Aside bias */
+    const baseHue=(fi===1)?(300+fi*6):(190+fi*12);
     for(let i=0;i<=rings;i++){
       const u=i/rings, along=u*0.62;
       const x=tx+dx*along, y=ty+dy*along;
@@ -2529,29 +2731,59 @@ function drawFunnelsAndBeams(cx,cy,s,t){
       ctx.lineWidth=lw; ctx.strokeStyle=beamGrad; ctx.lineCap="round";
       ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
     }
-    /* single cool pulse mote traveling mouth→center */
-    const pulse=(t*0.7+fi*0.31)%1;
+    /* pulse mote — TEMPO φ family */
+    const pulse=(t*TEMPO.base*TEMPO.rays*0.55+fi*0.31)%1;
     const cxp=tx+dx*pulse, cyp=ty+dy*pulse;
     const cg=ctx.createRadialGradient(cxp,cyp,0,cxp,cyp,12);
     cg.addColorStop(0,hsl(baseHue+10,100,60,0.22));
     cg.addColorStop(0.5,hsl(baseHue+20,90,52,0.08));
     cg.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=cg; ctx.beginPath();ctx.arc(cxp,cyp,12,0,Math.PI*2);ctx.fill();
+    /* faint rainbow funnel accent (low α — seal stays boss) */
+    if(!thin){
+      const accent=0.035+0.04*Math.min(1,sealPulse+celebrate*0.5);
+      ctx.strokeStyle=hsl(baseHue,95,62,accent);
+      ctx.lineWidth=1.2;
+      ctx.beginPath();ctx.ellipse(tx,ty,10,4.2,beamAng,0,Math.PI*2);ctx.stroke();
+    }
     mouths.push({x:tx,y:ty,label:tip.label||"",side:tip.side});
   });
   ctx.restore(); return mouths;
 }
 
 function drawSphereWire(cx,cy,s,t){
-  /* polishPass3: globe wire fought dodeca authority — skip ≤900; desktop α×0.35 cool-only */
+  /* polishPass3 + hybridEngineTrio whisper shimmer — skip ≤900; desktop α×0.28 cool-only */
   if(reduceMotion||W<=900) return;
   const aHex=layerAlpha("hex"), R=0.62;
-  const wireMul=0.35;
+  const wireMul=0.28;
+  const shim=TEMPO.base*TEMPO.plasma;
   ctx.save(); ctx.globalAlpha=aHex*wireMul; ctx.globalCompositeOperation="lighter";
-  for(let i=0;i<16;i++){const lat=(i/15-0.5)*Math.PI*0.95; ctx.strokeStyle=hsl(200+i*2,70,50,0.12*wireMul); ctx.lineWidth=0.5; ctx.beginPath(); let first=true; for(let j=0;j<=48;j++){const u=j/48*Math.PI*2+t*0.25; const x=Math.cos(lat)*Math.cos(u)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(u)*R; const [px,py,d]=project(x,y,z,cx,cy,s); if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);} ctx.stroke();}
-  for(let i=0;i<12;i++){const lon=i/12*Math.PI; ctx.strokeStyle=hsl(210+i*3,65,48,0.10); ctx.lineWidth=0.45; ctx.beginPath(); let first=true; for(let j=0;j<=40;j++){const lat=-Math.PI/2+j/40*Math.PI; const x=Math.cos(lat)*Math.cos(lon+t*0.2)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(lon+t*0.2)*R; const [px,py,d]=project(x,y,z,cx,cy,s); if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);} ctx.stroke();}
+  for(let i=0;i<16;i++){
+    const lat=(i/15-0.5)*Math.PI*0.95;
+    const shimmer=0.08+0.06*Math.sin(t*shim*PHI+i*0.4);
+    ctx.strokeStyle=hsl(200+i*2,70,50,shimmer*wireMul); ctx.lineWidth=0.5; ctx.beginPath();
+    let first=true;
+    for(let j=0;j<=48;j++){
+      const u=j/48*Math.PI*2+t*TEMPO.base*0.18;
+      const x=Math.cos(lat)*Math.cos(u)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(u)*R;
+      const [px,py,d]=project(x,y,z,cx,cy,s);
+      if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+    } ctx.stroke();
+  }
+  for(let i=0;i<12;i++){
+    const lon=i/12*Math.PI;
+    const shimmer=0.07+0.05*Math.cos(t*shim+i*0.5);
+    ctx.strokeStyle=hsl(210+i*3,65,48,shimmer); ctx.lineWidth=0.45; ctx.beginPath();
+    let first=true;
+    for(let j=0;j<=40;j++){
+      const lat=-Math.PI/2+j/40*Math.PI;
+      const x=Math.cos(lat)*Math.cos(lon+t*TEMPO.base*0.15)*R,y=Math.sin(lat)*R,z=Math.cos(lat)*Math.sin(lon+t*TEMPO.base*0.15)*R;
+      const [px,py,d]=project(x,y,z,cx,cy,s);
+      if(d<-0.4){first=true;continue;} if(first){ctx.moveTo(px,py);first=false;}else ctx.lineTo(px,py);
+    } ctx.stroke();
+  }
   const [ex,ey]=project(0,0,0,cx,cy,s); const g=ctx.createRadialGradient(ex,ey,s*R*0.15,ex,ey,s*R*1.05);
-  g.addColorStop(0,"rgba(40,180,220,0.012)"); g.addColorStop(0.55,"rgba(40,120,160,0.008)"); g.addColorStop(1,"rgba(0,0,0,0)");
+  g.addColorStop(0,"rgba(40,180,220,0.010)"); g.addColorStop(0.55,"rgba(40,120,160,0.006)"); g.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=g;ctx.beginPath();ctx.arc(ex,ey,s*R*1.05,0,Math.PI*2);ctx.fill(); ctx.restore();
 }
 function hueClampAdmit(h){return 140+((h%50+50)%50);} // 140–190 (legacy fallback)
@@ -2832,7 +3064,7 @@ function drawOrganizeLattice(cx,cy,s,t){
   const step=thin?3:(mobile?2:1);
   /* sortSnap polishPass2: snappy attack (~0.22s) then soft settle (~0.95s) */
   const snapAge=(sortAnimT>0)?(performance.now()-sortAnimT)*0.001:99;
-  const snapAttack=0.22, snapSettle=0.95;
+  const snapAttack=1/(PHI*PHI*PHI), snapSettle=PHI*0.55; /* φ attack / soft settle */
   let snap=0;
   if(snapAge>=0&&snapAge<snapAttack+snapSettle){
     if(snapAge<snapAttack){
@@ -3415,6 +3647,8 @@ function frame(now){
   /* customProcedural underlay — original field before intake/seal */
   syncGyroSharedCenter(cx,cy,s,t);
   if(!reduceMotion) drawChimeraCustomField(cx,cy,s,t);
+  if(!reduceMotion) drawCorePlasma(cx,cy,s,t); /* hybridEngineTrio under seal */
+  if(!reduceMotion) drawBeamRain(cx,cy,s,t);   /* hybridEngineTrio → desk/trays */
   if(!reduceMotion){ drawGyroOrbitRings(cx,cy,s,t); drawHybridBridgeRays(cx,cy,s,t); }
   if(!reduceMotion) drawChimeraInkEcho(cxH,cyH,s,t);
   // 2) mid organize — intake mouths → voxels(admit/cool) + mint(release/warm) → lattice tethers
@@ -3483,7 +3717,7 @@ function flightChipsFromDesk(chips){
   const thin=ww<=480, mobile=ww<=900;
   const cap=thin?6:(mobile?12:28);
   const stagger=thin?0.02:(mobile?0.028:0.038);
-  const dur=thin?0.45:(mobile?0.52:0.62);
+  const dur=thin?(1/PHI*0.75):(mobile?(1/PHI*0.9):(1/PHI)); /* φ chip flight */
   chips.slice(0,cap).forEach((el,i)=>{
     const r=el.getBoundingClientRect();
     if(r.width<1&&r.height<1) return;
