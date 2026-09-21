@@ -2412,10 +2412,27 @@ html,body{ background:#000!important; color:var(--ink)!important; }
 
 
 /* clientResidualPrism — single crystalline Fibonacci admission field */
+
+/* clientBlankFix — field above muted canvas; normal blend; gif-first */
+#fx, #fxgl, #dataRail, #specBar{
+  display:none!important; visibility:hidden!important; opacity:0!important;
+  pointer-events:none!important; z-index:-1!important;
+}
+#bgField{ z-index:2!important; }
+#bgField > .residualPrism{ z-index:3!important; overflow:visible!important; }
+#bgField > .residualPrism img{
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+  filter:
+    contrast(1.28) brightness(1.18) saturate(1.4)
+    drop-shadow(0 0 22px rgba(34,211,238,.4))
+    drop-shadow(0 0 40px rgba(232,121,249,.25))!important;
+}
+
 /* clientScreenFit — bleed past corners so spin never shows empty void */
 #bgField{
   position:fixed!important; inset:0!important; width:100vw!important; height:100dvh!important;
-  overflow:hidden!important; z-index:0!important;
+  overflow:hidden!important; z-index:2!important;
   display:grid!important; place-items:center!important;
   pointer-events:none!important;
   background:#000!important;
@@ -2449,7 +2466,7 @@ html,body{ background:#000!important; color:var(--ink)!important; }
   min-height:max(100vw,100vh)!important;
   object-fit:cover!important;
   object-position:center!important;
-  mix-blend-mode:screen!important;
+  mix-blend-mode:normal!important;
   transform-origin:center center;
   transform:rotateX(var(--field-tilt,5deg));
   opacity:0.98!important;
