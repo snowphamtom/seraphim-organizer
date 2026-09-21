@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -358,10 +358,8 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 /* beam rain moved into hexCore trio */
 /* 4 hex core + tripleBeamInCore */
 #bgField .hexCore{z-index:3}
-#bgField .hexCore .plane.coreMain{
-  width:min(72vmin,640px); height:min(72vmin,640px);
-  opacity:1;
-}
+#bgField .hexCore .plane.coreMain{ position:absolute; inset:0; width:100%; height:100%; opacity:1; }
+
 @media (max-width:900px){
   #bgField .isoTunnel .plane{opacity:0.35; width:min(88vmin,560px); height:min(88vmin,560px)}
   #bgField .hexCore .plane{width:min(64vmin,480px); height:min(64vmin,480px)}
@@ -391,10 +389,10 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .hexCore .plane.coreMain img{
   display:block;width:100%;height:100%;object-fit:contain;object-position:center;
 }
-#bgField .hexCore .beamTrio{
+#bgField .hexCore .gyroRig .beamTrio{
   position:absolute;
-  left:var(--seal-x); top:var(--seal-y);
-  width:min(72vmin,640px); height:min(72vmin,640px);
+  left:50%; top:50%;
+  width:100%; height:100%;
   transform:translate(-50%,-50%);
   pointer-events:none;
   z-index:4;
@@ -429,9 +427,9 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 /* voxelCubeRotate|cutBlackBg — keyed voxel cube, CSS 3D rotate in hex-core center */
-#bgField .hexCore .voxelSpin{
+#bgField .hexCore .gyroRig .voxelSpin{
   position:absolute;
-  left:var(--seal-x); top:var(--seal-y);
+  left:50%; top:50%;
   width:min(28vmin,240px); height:min(26vmin,220px);
   transform:translate(-50%,-50%);
   transform-style:preserve-3d;
@@ -461,6 +459,63 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   #bgField .hexCore .voxelSpin .spin{animation:none}
   #bgField .hexCore .voxelSpin img.anim{display:none}
   #bgField .hexCore .voxelSpin img.still{display:block}
+}
+
+
+/* hexCoreGyroSeal — replace wire dodeca with keyed hex-core GIF; omni gyro from seal center */
+#bgField .hexCore{
+  position:absolute;inset:0;z-index:3;overflow:visible;
+  perspective:900px;
+  perspective-origin:var(--seal-x) var(--seal-y);
+}
+#bgField .hexCore .gyroRig{
+  position:absolute;
+  left:var(--seal-x); top:var(--seal-y);
+  width:min(78vmin,680px); height:min(78vmin,680px);
+  transform:translate(-50%,-50%);
+  transform-style:preserve-3d;
+  transform-origin:50% 50%;
+  animation:hexOmniGyro 18s linear infinite; /* constant ω */
+}
+#bgField .hexCore .plane.coreMain{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  left:auto; top:auto;
+  transform:none;
+  opacity:1;
+}
+#bgField .hexCore .plane.coreMain picture,
+#bgField .hexCore .plane.coreMain img{
+  display:block;width:100%;height:100%;object-fit:contain;object-position:center;
+}
+/* child layers ride the same gyro rig */
+#bgField .hexCore .beamTrio,
+#bgField .hexCore .voxelSpin{
+  left:50%; top:50%;
+  /* override seal var — now relative to gyroRig */
+}
+#bgField .hexCore .gyroRig .beamTrio{
+  position:absolute; left:50%; top:50%;
+  width:100%; height:100%;
+  transform:translate(-50%,-50%);
+  z-index:4;
+}
+#bgField .hexCore .gyroRig .voxelSpin{
+  position:absolute; left:50%; top:50%;
+  width:min(28vmin,240px); height:min(26vmin,220px);
+  transform:translate(-50%,-50%);
+  z-index:5;
+}
+@keyframes hexOmniGyro{
+  /* yaw + pitch + roll family — constant rates (φ-ish ratios) */
+  0%{ transform:translate(-50%,-50%) rotateY(0deg) rotateX(18deg) rotateZ(0deg); }
+  100%{ transform:translate(-50%,-50%) rotateY(360deg) rotateX(378deg) rotateZ(222.5deg); }
+}
+@media (max-width:900px){
+  #bgField .hexCore .gyroRig{ width:min(70vmin,520px); height:min(70vmin,520px); }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .hexCore .gyroRig{ animation:none; transform:translate(-50%,-50%) rotateX(12deg); }
 }
 
 /* —— uploadSortedDesk: obvious upload + sorted figures trays —— */
@@ -691,6 +746,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
     </div>
   </div>
 <div class="assetLayer hexCore" aria-hidden="true">
+    <div class="gyroRig">
     <div class="plane coreMain">
       <picture>
         <source srcset="media/hex-core.webp" type="image/webp">
@@ -720,6 +776,8 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
         </picture>
         <img class="still" src="media/voxel-cube-still.png" alt="" width="360" height="330" decoding="async" style="display:none">
       </div>
+    </div>
+  
     </div>
   </div>
 </div>
@@ -1940,7 +1998,7 @@ function drawDualHexGhost(cx,cy,s,t){
   }
   ctx.restore();
 }
-function drawChromaticHexEdges(verts,t){
+function drawChromaticHexEdges(verts,t){ /* hexCoreGyroSeal: skip drawChromaticHexEdges */ if(true) return;
   /* stripToBones: cut — fights seal/desk clarity */
   return;
   /* omnidiscipline: Fresnel-ish rim + thin-film fringe on near edges; skip ≤900 */
@@ -2130,7 +2188,7 @@ function drawSoftCrossVeil(){
   ctx.restore();
 }
 
-function drawCrtPolish(cx,cy,s,t){
+function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(true) return;
   /* stripToBones: cut — fights seal/desk clarity */
   return;
   /* excessPrune|crtPolish: scanlines cut (mud); hub flares only, quieter; skipHeavy.
@@ -2321,7 +2379,7 @@ function drawDodecaFrame(cx,cy,s,t){
 }
 const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
 
-function drawInnerCubeWire(cx,cy,s,t){
+function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWire */ if(true) return;
   /* crisp luminous cube wireframe — tether hubs; contrast bumped so nodes read as lock-ins */
   const proj=INNER_CUBE._proj;
   if(!proj||!proj.corners||proj.corners.length<8) return;
@@ -3082,7 +3140,7 @@ function drawFunnelsAndBeams(cx,cy,s,t){
   ctx.restore(); return mouths;
 }
 
-function drawSphereWire(cx,cy,s,t){
+function drawSphereWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawSphereWire */ if(true) return;
   /* excessPrune: Ylm/Hopf sphere fought dodeca — no-op */
   return;
   /* omnidiscipline: spherical-harmonics shimmer + Hopf/torus whisper — skip ≤900; α quiet */
@@ -3866,7 +3924,7 @@ function drawGeodesicAccents(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawNestedSeals(cx,cy,s,t){
+function drawNestedSeals(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawNestedSeals */ if(true) return;
   /* stripToBones: cut — fights seal/desk clarity */
   return;
   /* beyondAIMaster|recursiveNest: ≤3 shells + FIG-ish micro-geo under seal; never a second seal */
@@ -3986,7 +4044,7 @@ function drawGhostOrbits(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawProveBreak(cx,cy,s,t){
+function drawProveBreak(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawProveBreak */ if(true) return;
   /* stripToBones: cut — fights seal/desk clarity */
   return;
   /* prove-or-break: geometric residual readout around focus — LIGHT not HTML form */
@@ -4064,7 +4122,7 @@ function drawProveBreak(cx,cy,s,t){
   ctx.beginPath(); ctx.arc(px,py,R0+10+expand*36,0,Math.PI*2); ctx.stroke();
   ctx.restore();
 }
-function drawSealBreath(cx,cy,s,t){
+function drawSealBreath(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawSealBreath */ if(true) return;
   const fill=Math.max(0,Math.min(1,lastCI/100)), breath=0.5+0.5*Math.sin(t*TEMPO.base*PHI*PHI*PHI), R=s*0.48*(1+0.02*breath+0.08*sealPulse);
   ctx.save(); ctx.globalCompositeOperation="lighter";
   ctx.strokeStyle="rgba(86,180,194,0.18)"; ctx.lineWidth=2; ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
