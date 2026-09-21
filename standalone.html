@@ -790,7 +790,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -826,13 +826,19 @@ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isTouch=matchMedia('(pointer:coarse)').matches||('ontouchstart' in window);
 const isMobileLayout=()=>W<=900;
 const LERP_BASE=reduceMotion?1:(isTouch?0.11:0.13); // polishPass2: softer settle, damp mobile jitter
+const PHI=1.6180339887;
+const TEMPO={
+  base:0.34,           // rad/s primary yaw
+  // axes: 1 : 1/φ : 1/φ²
+  // precess freqs (Hz-ish): base*0.55 family
+};
 const cam={
   yaw:0.35,pitch:0.18,roll:0,panX:0,panY:0,zoom:1,auto:!reduceMotion,
   userYaw:0,userPitch:0,userRoll:0,
   // targets — pointer/wheel/auto write here; render uses lerped values
   tYaw:0.35,tPitch:0.18,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
-  // living gyro base rates (rad/s); mild precession modulates in frame()
-  gyro:{wx:0.38,wy:0.52,wz:0.28} /* slightly quieter tumble — purposeful, not jitter */
+  // living gyro — TEMPO φ family (tempoHarmonic)
+  gyro:{wx:TEMPO.base, wy:TEMPO.base/PHI, wz:TEMPO.base/(PHI*PHI)}
 };
 function lerpCam(dtMs){
   /* frame-rate aware exp smooth — snappy enough, settles soft */
@@ -1042,7 +1048,7 @@ function drawThreeOrbit(cx,cy,s,t){
   if(!threeOk||!threeRenderer) return;
   try{
     threeClock=t;
-    if(threePoints) threePoints.rotation.y=t*0.05;
+    if(threePoints) threePoints.rotation.y=t*(TEMPO.base*0.15);
     if(threeHex){ threeHex.rotation.y=cam.yaw+cam.userYaw; threeHex.rotation.x=cam.pitch+cam.userPitch; threeHex.rotation.z=cam.roll+cam.userRoll; }
     const po=parallaxOff("star");
     threeCam.position.x=po.ox*0.002; threeCam.position.y=0.15-po.oy*0.002;
@@ -1102,7 +1108,7 @@ function drawWebGLStars(cx,cy,s,t){
     const po=parallaxOff("star");
     for(let i=0;i<N;i++){
       const p=field[i%Math.max(1,field.length)]; if(!p)continue;
-      const ang=p.a+t*0.015*(0.4+p.layer);
+      const ang=p.a+t*(TEMPO.base*0.045)*(0.4+p.layer);
       const rr=s*(0.55+0.42*((p.r-0.5)/0.7));
       const px=cx+Math.cos(ang)*rr*Math.cos(p.b)*0.85+po.ox;
       const py=cy+Math.sin(ang)*rr*0.55+po.oy;
@@ -1266,7 +1272,7 @@ function seedField(n){
 }
 function seedFog(){
   fogShards.length=0;
-  for(let i=0;i<16;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:0.2+Math.random()*0.8,ph:Math.random()*Math.PI*2});
+  for(let i=0;i<16;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:TEMPO.base*0.7+(Math.random()-0.5)*TEMPO.base*0.35,ph:Math.random()*Math.PI*2});
 }
 /* holoPalette: prefer hues in ~185–325 (cyan→indigo→magenta→orchid); clamp L≤68 */
 function hsl(h,s,l,a=1){const L=Math.min(68,Math.max(0,l)); return`hsla(${((h%360)+360)%360},${s}%,${L}%,${a})`;}
@@ -1327,7 +1333,7 @@ function drawDualHexGhost(cx,cy,s,t){
   if(reduceMotion||W<=900) return;
   const aHex=layerAlpha("hex");
   ctx.save(); ctx.globalAlpha=aHex*0.10; ctx.globalCompositeOperation="lighter";
-  const gyaw=-(cam.userYaw)*0.35+t*0.04, gpitch=-(cam.userPitch)*0.25;
+  const gyaw=-(cam.userYaw)*0.35+t*(TEMPO.base*0.12), gpitch=-(cam.userPitch)*0.25;
   const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
   const sc=1.18;
   ctx.strokeStyle=hsl(200+t*20,90,50,0.20); ctx.lineWidth=1.1;
@@ -1662,7 +1668,7 @@ function drawStarfieldInPanels(cx,cy,s,t,verts){
   for(let k=0;k<n;k++){
     const p=field[k]; if(!p) continue;
     const u=(k/n + p.phase*0.01 + t*0.004)%1;
-    const ang=p.a + t*0.02*(0.3+p.layer*0.4);
+    const ang=p.a + t*(TEMPO.base*0.06)*(0.3+p.layer*0.4);
     const rr=s*(0.42+0.55*((p.r-0.5)/0.7+0.5)*0.9);
     const px=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
     const py=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
@@ -1785,7 +1791,7 @@ function buildVoxels(admits){
     const stagger=(i%3===0)?0.014:0;
     // centered on seal axis (dodeca origin) — cube aligns with frame
     voxels.push({bx:gx*0.042,by:gy*0.042+stagger*0.5,bz:gz*0.042,
-      jx:Math.random()*Math.PI*2,jy:Math.random()*Math.PI*2,jz:Math.random()*Math.PI*2,js:8+Math.random()*14,
+      jx:Math.random()*Math.PI*2,jy:Math.random()*Math.PI*2,jz:Math.random()*Math.PI*2,js:TEMPO.base*24+Math.random()*TEMPO.base*18,
       hue:hueForVerdict(v,i,"admit"),size:0.015+Math.random()*0.008,
       kind:v?v.kind:null, id:v?v.id:null,title:v?v.t:"",toks:v?v.toks:[], decision:"admit",
       S_H:v?v.S_H:null,S_solv:v?v.S_solv:null,R_H:v?v.R_H:null,cause:v?v.cause:null});
@@ -1803,7 +1809,7 @@ function buildMint(refuses){
   for(let i=0;i<pn;i++){
     const v=refuses[i%Math.max(1,refuses.length)]||null;
     mintMesh.parts.push({a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.18+Math.random()*0.42,
-      spin:0.15+Math.random()*0.55,size:1.4+Math.random()*2.6,shard:Math.random()>0.62,
+      spin:TEMPO.base*0.6+(Math.random()-0.5)*0.08,size:1.4+Math.random()*2.6,shard:Math.random()>0.62,
       hue:hueForVerdict(v,i,"refuse"),
       kind:v?v.kind:null, id:v?v.id:null,title:v?v.t:"",ph:Math.random()*10, decision:"refuse",
       S_H:v?v.S_H:null,S_solv:v?v.S_solv:null,R_H:v?v.R_H:null,cause:v?v.cause:null});
@@ -1835,13 +1841,13 @@ function drawVoxels(cx,cy,s,t){
   const aV=layerAlpha("voxel"); if(!voxels.length||aV<0.05)return;
   const dim=focusId!=null?0.22:1;
   const L=kindLightSplit("admit",50);
-  const coa=0.5+0.5*Math.sin(t*0.32);
+  const coa=0.5+0.5*Math.sin(t*TEMPO.base);
   const sorted=voxels.map(v=>{
     const j=0.012;
     const pull=0.012*coa;
     // breathe toward origin (true seal center) — no left drift
     const x=v.bx*(1-pull*0.55)+Math.sin(t*v.js+v.jx)*j;
-    const y=v.by*(1-pull*0.35)+Math.sin(t*v.js*0.9+v.jy)*j+Math.sin(t*0.28+v.jx)*0.008;
+    const y=v.by*(1-pull*0.35)+Math.sin(t*v.js*0.9+v.jy)*j+Math.sin(t*TEMPO.base*0.8+v.jx)*0.008;
     const z=v.bz+Math.sin(t*v.js*1.1+v.jz)*j;
     const pr=project(x,y,z,cx,cy,s);
     return{v,px:pr[0],py:pr[1],d:pr[2],persp:pr[3]};
@@ -1871,18 +1877,18 @@ function drawMintRelease(cx,cy,s,t){
   const aM=layerAlpha("mint"); if(aM<0.05)return; const dim=focusId!=null?0.18:1;
   const Lr=kindLightSplit("refuse",46);
   ctx.save(); ctx.globalAlpha=aM;
-  const pts=mintMesh.verts.map(v=>{const wave=0.03*Math.sin(t*1.2+v.u*6+v.v*4); return project(v.x+wave,v.y+0.02*Math.sin(t*0.8+v.u*4),v.z+0.02*Math.cos(t*0.9+v.v*5),cx,cy,s);});
+  const pts=mintMesh.verts.map(v=>{const wave=0.03*Math.sin(t*TEMPO.base*PHI*PHI+v.u*6+v.v*4); return project(v.x+wave,v.y+0.02*Math.sin(t*TEMPO.base*PHI*1.4+v.u*4),v.z+0.02*Math.cos(t*TEMPO.base*PHI*1.6+v.v*5),cx,cy,s);});
   ctx.globalCompositeOperation="lighter";
   for(const [a,b] of mintMesh.edges){const A=pts[a],B=pts[b]; if(!A||!B)continue; if(A[2]<-0.55&&B[2]<-0.55)continue;
     ctx.strokeStyle=hsl(320+t*20,90,50,0.22*dim); ctx.lineWidth=0.75; ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();}
-  const coa=0.5+0.5*Math.sin(t*0.29+1.2);
+  const coa=0.5+0.5*Math.sin(t*TEMPO.base+1.2);
   const centers=[];
   for(const p of mintMesh.parts){
     p.a+=0.0035*p.spin;
     const focus=focusId!=null&&p.id!=null&&String(p.id)===String(focusId); const alpha=focus?1:(focusId!=null?dim:1);
     const pull=0.014*coa;
     const xx=Math.cos(p.b)*Math.cos(p.a+t*p.spin)*p.r*(1-pull*0.25)+0.40+pull*0.06;
-    const yy=Math.sin(p.b)*p.r*0.85+0.05*Math.sin(t*0.55+p.ph)+Math.sin(t*0.26+p.ph)*0.01;
+    const yy=Math.sin(p.b)*p.r*0.85+0.05*Math.sin(t*TEMPO.base*PHI+p.ph)+Math.sin(t*TEMPO.base*0.75+p.ph)*0.01;
     const zz=Math.cos(p.b)*Math.sin(p.a+t*p.spin)*p.r;
     const [px,py,d]=project(xx,yy,zz,cx,cy,s); if(d<-0.5){p._px=null;continue;}
     const hue=p.hue!=null?p.hue:320;
@@ -1972,11 +1978,11 @@ function drawOrganizeLattice(cx,cy,s,t){
   const maxSegBase=s*(thin?0.34:mobile?0.40:0.44);
   const maxSeg=maxSegBase*(1-0.48*snap); /* stronger contract during snap */
   const shOn=sealLockFlash>0.04||sealPulse>0.08||(typeof lastCI==="number"&&lastCI>0&&prevSH);
-  const breathe=0.5+0.5*Math.sin(t*1.25);
-  const pulse=shOn?(0.78+0.22*Math.sin(t*4.2)):(0.52+0.18*breathe);
+  const breathe=0.5+0.5*Math.sin(t*TEMPO.base*0.5);
+  const pulse=shOn?(0.78+0.22*Math.sin(t*TEMPO.base*PHI*PHI*PHI*PHI*PHI)):(0.52+0.18*breathe);
   const sealPop=Math.min(1, sealPulse*0.55+sealLockFlash*0.85+(shOn?0.12:0)+0.35*snap);
-  const hueDrift=8*Math.sin(t*0.48);
-  const brightBreathe=0.93+0.07*Math.sin(t*1.55);
+  const hueDrift=8*Math.sin(t*TEMPO.base*PHI);
+  const brightBreathe=0.93+0.07*Math.sin(t*TEMPO.base*PHI*PHI*PHI);
   let linkBudget=thin?48:(mobile?90:160); /* perf: hard cap lattice strokes */
   /* cube anchors (admit voxels) */
   const cubeAnchors=(cubeProj&&cubeProj.anchors&&cubeProj.anchors.length)?cubeProj.anchors.slice():[];
@@ -1997,7 +2003,7 @@ function drawOrganizeLattice(cx,cy,s,t){
   for(const p of nodes){ if(p._px!=null) fallback.push({x:p._px,y:p._py,d:0}); }
   if(!cubeAnchors.length && !dodecaAnchors.length && !fallback.length) return;
   const lwBase=thin?0.62:(mobile?0.88:1.25); /* polishPass2: thinner phone tethers */
-  const crawl=(performance.now()*0.001)*1.8;
+  const crawl=(performance.now()*0.001)*(TEMPO.base*PHI);
   ctx.save(); ctx.globalCompositeOperation="lighter";
   /* A) mid dodeca scaffold — quieter so foreground seal wins hierarchy */
   if(pv&&pv.length>=3){
@@ -2185,7 +2191,7 @@ function drawOrganizeLattice(cx,cy,s,t){
   const nField=Math.min(field.length, thin?180:mobile?400:900);
   for(let k=0;k<nField;k+=fStep){
     const p=field[k]; if(!p) continue;
-    const ang=p.a+t*0.02*(0.3+p.layer*0.4);
+    const ang=p.a+t*(TEMPO.base*0.06)*(0.3+p.layer*0.4);
     const rr=s*(0.42+0.55*((p.r-0.5)/0.7+0.5)*0.9);
     let fpx=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
     let fpy=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
@@ -2249,14 +2255,14 @@ function drawNestedSeals(cx,cy,s,t){
   const rings=thin?1:(mobile?1:2);
   const baseScales=rings===1?[0.88]:[0.92,0.74];
   const pulse=0.06*sealPulse+0.03*celebrate;
-  const breathe=reduceMotion?0:(0.010*Math.sin(t*0.42));
+  const breathe=reduceMotion?0:(0.010*Math.sin(t*TEMPO.base*0.5));
   const po=parallaxOff("seal");
   ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex*0.55;
   for(let r=0;r<rings;r++){
     const depthFrac=rings===1?0:r/(rings-1);
     const sc=baseScales[r]*(1+pulse*(r===0?1.0:0.4))*(1+breathe*(1-depthFrac*0.5));
     const hue=r===0?215:195;
-    const alpha=(0.045+0.025*Math.sin(t*1.05+r*0.9))*(0.65+0.35*sealPulse);
+    const alpha=(0.045+0.025*Math.sin(t*TEMPO.base*PHI*PHI+r*0.9))*(0.65+0.35*sealPulse);
     if(thin||mobile){
       const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
       ctx.strokeStyle=hsl(hue+t*8,80,50,alpha);
@@ -2308,7 +2314,7 @@ function drawGhostOrbits(cx,cy,s,t){
     const age=(performance.now()-g.t0)*0.001;
     const fade=Math.max(0.04, Math.min(0.12, 0.12-age*0.006));
     if(fade<0.05 && age>16) continue;
-    const slow=t*0.08*(0.55+gi*0.12);
+    const slow=t*(TEMPO.base*0.22)*(0.55+gi*0.12);
     const sc=1.08+gi*0.06+0.02*Math.sin(slow);
     const gyaw=g.spin*0.15+slow*0.4, gpitch=g.pitch*0.1;
     const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
@@ -2411,7 +2417,7 @@ function drawProveBreak(cx,cy,s,t){
   ctx.restore();
 }
 function drawSealBreath(cx,cy,s,t){
-  const fill=Math.max(0,Math.min(1,lastCI/100)), breath=0.5+0.5*Math.sin(t*1.4), R=s*0.48*(1+0.02*breath+0.08*sealPulse);
+  const fill=Math.max(0,Math.min(1,lastCI/100)), breath=0.5+0.5*Math.sin(t*TEMPO.base*PHI*PHI*PHI), R=s*0.48*(1+0.02*breath+0.08*sealPulse);
   ctx.save(); ctx.globalCompositeOperation="lighter";
   ctx.strokeStyle="rgba(86,180,194,0.18)"; ctx.lineWidth=2; ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
   ctx.strokeStyle=hsl(195+fill*55,90,58,0.45+0.15*breath); ctx.lineWidth=2.4; ctx.beginPath();ctx.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+Math.PI*2*fill);ctx.stroke();
@@ -2468,7 +2474,7 @@ function ingestVerdicts(verdicts){
   const nField=W<=900?3500:Math.max(8000,Math.min(11000,verdicts.length*90+8000));
   seedField(nField);
   nodes.length=0; const show=verdicts.length>100?verdicts.slice(0,100):verdicts;
-  show.forEach((v,i)=>{const admit=v.decision==="admit"; nodes.push({v,id:v.id,decision:v.decision,a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.12+Math.random()*0.32,spin:0.2+Math.random()*0.55,hue:hueForVerdict(v,i,v.decision),size:2.8+Math.random()*3,funnel:i%3,delay:Math.random()*0.65,_px:null,_py:null,kind:v.kind||null});});
+  show.forEach((v,i)=>{const admit=v.decision==="admit"; nodes.push({v,id:v.id,decision:v.decision,a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.12+Math.random()*0.32,spin:TEMPO.base*0.6+(Math.random()-0.5)*0.1,hue:hueForVerdict(v,i,v.decision),size:2.8+Math.random()*3,funnel:i%3,delay:Math.random()*0.65,_px:null,_py:null,kind:v.kind||null});});
   const admits=verdicts.filter(v=>v.decision==="admit"), refuses=verdicts.filter(v=>v.decision==="refuse");
   buildVoxels(admits); buildMint(refuses); sealPulse=1; celebrate=1;
   pushGhostOrbit(verdicts, lastCI);
@@ -2496,9 +2502,9 @@ function frame(now){
     /* continuous gyroscopic tumble — integrate angular rates (omni 360°) */
     const dts=Math.min(0.05, Math.max(0, dt)*0.001);
     const m=(W<=480)?0.48:(W<=900)?0.58:1; /* polishPass2: damp mobile gyro jitter */
-    const wx=cam.gyro.wx*(1+0.08*Math.sin(t*0.27));
-    const wy=cam.gyro.wy*(1+0.07*Math.cos(t*0.23));
-    const wz=cam.gyro.wz*(1+0.05*Math.sin(t*0.17));
+    const wx=cam.gyro.wx*(1+0.08*Math.sin(t*0.21));
+    const wy=cam.gyro.wy*(1+0.07*Math.cos(t*(0.21/PHI)));
+    const wz=cam.gyro.wz*(1+0.05*Math.sin(t*(0.21/(PHI*PHI))));
     cam.tYaw+=wx*dts*m; cam.tPitch+=wy*dts*m; cam.tRoll+=wz*dts*m;
   }
   const nudge=0.018;
