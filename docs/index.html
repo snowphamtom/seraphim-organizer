@@ -237,14 +237,92 @@ select{appearance:none;background:rgba(6,12,22,0.5);border:1px solid rgba(120,22
 @media (prefers-reduced-motion:reduce){
   #introChip{transition:none}
 }
+
+/* —— beyondHuman: dissolve form chrome; pure orbit first paint —— */
+#introChip{display:none !important} /* kill help-desk toast */
+#top .whisper{font-size:.42rem;letter-spacing:.22em;font-weight:400;color:rgba(160,200,220,.38);
+  text-transform:lowercase;margin-left:.15rem;pointer-events:none}
+#top .chip:not(.law){opacity:.35}
+#top .metrics{opacity:.42}
+#navhint,#sub{opacity:0;pointer-events:none;transition:opacity .6s ease}
+body.reveal-chrome #navhint,body.reveal-chrome #sub{opacity:.7;pointer-events:auto}
+#log{opacity:.28;transition:opacity .5s ease}
+body.reveal-chrome #log, #log:hover{opacity:.85}
+/* intake: collapsed to a single glyph — no Drop/Sort/Clear/Demo/textarea until revealed */
+#intake{
+  background:transparent !important;border:none !important;box-shadow:none !important;
+  backdrop-filter:none !important;-webkit-backdrop-filter:none !important;
+  padding:.1rem !important;width:auto !important;gap:0 !important;
+}
+#intake .sec-h{margin:0;opacity:.35;letter-spacing:.2em}
+#intake .sec-h > span{display:none !important} /* never show INTAKE word */
+#intake #btnMore{
+  min-width:36px;min-height:36px;padding:.2rem .35rem;font-size:.7rem;letter-spacing:.3em;
+  border-color:rgba(120,220,255,.12);color:rgba(180,220,240,.35);background:rgba(0,0,0,.15);
+  border-radius:999px;
+}
+#intake #btnMore:hover{color:rgba(200,240,255,.7);border-color:rgba(120,220,255,.35)}
+#intake .row, #intake select, #intake textarea, #intake .filebtn, #intake button.primary,
+#intake button.ghost.mob-hide-clear, #intake #clear, #intake #demoStory, #intake .ghost-chip{
+  display:none !important;
+}
+#intake.revealed{
+  background:rgba(4,10,18,0.42) !important;border:1px solid rgba(64,240,255,0.14) !important;
+  box-shadow:0 0 16px rgba(64,240,255,0.04) !important;
+  backdrop-filter:blur(14px) !important;-webkit-backdrop-filter:blur(14px) !important;
+  padding:.32rem .38rem !important;width:min(240px,36vw) !important;gap:.22rem !important;
+}
+#intake.revealed .row, #intake.revealed select, #intake.revealed textarea,
+#intake.revealed .filebtn, #intake.revealed button.primary, #intake.revealed #clear,
+#intake.revealed #demoStory, #intake.revealed .ghost-chip{display:initial !important}
+#intake.revealed .row{display:flex !important}
+#intake.revealed .sec-h > span{display:none !important}
+#morePanel{display:none}
+#intake.revealed #morePanel.open{display:flex}
+@media (max-width:900px){
+  #intake{left:auto;right:10px;bottom:calc(var(--safe-b) + 10px) !important;top:auto !important;
+    max-height:none;width:auto !important;padding:.1rem !important}
+  #intake.revealed{left:8px;right:8px;width:auto !important;max-height:42vh;overflow:auto;
+    padding:.28rem .34rem !important}
+  #intake.revealed .row{display:flex !important;flex-wrap:wrap}
+  #intake.revealed textarea{display:block !important}
+  #intake.revealed .mob-hide-clear{display:none !important}
+  #log{opacity:.22;max-height:9vh !important}
+  #top .whisper{font-size:.34rem;letter-spacing:.16em}
+  #top .metrics span:nth-child(n+2){display:none}
+  .chip:not(.law){display:none}
+}
+@media (max-width:480px){
+  #top .whisper{display:inline}
+  #intake #btnMore{min-width:40px;min-height:40px;opacity:.45}
+}
+
+
+/* beyondHuman LOCK — last word over media queries */
+#introChip{display:none!important}
+#intake:not(.revealed) .row,
+#intake:not(.revealed) select,
+#intake:not(.revealed) textarea,
+#intake:not(.revealed) .filebtn,
+#intake:not(.revealed) button.primary,
+#intake:not(.revealed) #clear,
+#intake:not(.revealed) #demoStory,
+#intake:not(.revealed) .ghost-chip,
+#intake:not(.revealed) .mob-hide-clear{display:none!important;height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
+#intake:not(.revealed){width:auto!important;max-width:52px!important;min-height:0!important;max-height:52px!important;
+  background:transparent!important;border:none!important;box-shadow:none!important;padding:.08rem!important}
+#intake:not(.revealed) .sec-h{justify-content:center}
+#navhint{display:none!important}
+body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
+
 </style>
 </head>
 <body>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — crystallize and release field"></canvas>
 <header id="top">
   <div class="title">SERAPHIM</div>
-  <span class="chip">OFFLINE</span>
-  <span class="chip law" title="Fail-closed gate">S<sub>H</sub>=S<sub>solv</sub>·R<sub>H</sub></span>
+  <span class="whisper" title="Wizard turns fumbled speech into seal">fumble → seal</span>
+  <span class="chip law" title="Fail-closed gate">S<sub>H</sub></span>
   <div class="metrics mono" id="topMetrics">
     <span title="Items sorted this run">n <b id="mN">0</b></span>
     <span class="a" title="Admit — formed inside the seal">crystallized <b id="mA">0</b></span>
@@ -252,13 +330,10 @@ select{appearance:none;background:rgba(6,12,22,0.5);border:1px solid rgba(120,22
     <span id="mSHWrap" class="off" title="S_H = S_solv · R_H — fail-closed gate">S<sub>H</sub> <b id="mSH">OFF</b></span>
   </div>
 </header>
-<div id="introChip" role="status">
-  <span><b class="c">Crystallize</b> = kept · <b class="r">Release</b> = outside seal</span>
-  <button type="button" id="introOk" aria-label="Dismiss">Got it</button>
-</div>
-<aside id="intake">
+<div id="introChip" role="status" hidden aria-hidden="true"></div>
+<aside id="intake" title="long-press or press I to reveal instrument">
   <div class="sec-h"><span>INTAKE</span>
-    <button type="button" class="ghost" id="btnMore" title="More tools" aria-label="More tools" aria-expanded="false">···</button>
+    <button type="button" class="ghost" id="btnMore" title="Reveal instrument (I)" aria-label="Reveal instrument" aria-expanded="false">···</button>
   </div>
   <div class="row" id="dropzone">
     <label class="filebtn" title="Drop a dump or choose a file">Drop<input type="file" id="file" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson"/></label>
@@ -673,7 +748,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:false,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -1052,7 +1127,7 @@ function drawStarfieldInPanels(cx,cy,s,t,verts){
 }
 function drawFunnelsAndBeams(cx,cy,s,t){
   const aHex=layerAlpha("hex");
-  const tips=[{ang:-Math.PI*0.72,len:1.04,label:"INTAKE · DOCS",side:"tl"},{ang:-Math.PI*0.28,len:1.04,label:"INTAKE · CODE/DATA",side:"tr"},{ang:Math.PI*0.5,len:1.08,label:"RELEASE PATH",side:"bot"}];
+  const tips=[{ang:-Math.PI*0.72,len:1.04,label:"",side:"tl"},{ang:-Math.PI*0.28,len:1.04,label:"",side:"tr"},{ang:Math.PI*0.5,len:1.08,label:"",side:"bot"}];
   const mouths=[]; ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
   tips.forEach((tip,fi)=>{
     const ox=Math.cos(tip.ang)*tip.len, oy=Math.sin(tip.ang)*tip.len*0.92;
@@ -1328,43 +1403,23 @@ function neonLabel(text,x,y,color,font){
   const m=ctx.measureText(text); const tw=m.width, th=parseInt(ctx.font,10)||10;
   // 2–3px black plate + soft halo ABOVE bloom
   ctx.save();
-  ctx.fillStyle="rgba(0,0,0,0.72)";
-  ctx.fillRect(x-tw*0.5-5, y-th*0.55-3, tw+10, th+6);
-  ctx.lineWidth=5; ctx.strokeStyle="rgba(0,0,0,0.9)"; ctx.lineJoin="round"; ctx.strokeText(text,x,y);
-  ctx.lineWidth=2.5; ctx.strokeStyle="rgba(0,0,0,0.55)"; ctx.strokeText(text,x,y);
+  ctx.fillStyle="rgba(0,0,0,0.38)";
+  ctx.fillRect(x-tw*0.5-4, y-th*0.5-2, tw+8, th+4);
+  ctx.lineWidth=3; ctx.strokeStyle="rgba(0,0,0,0.55)"; ctx.lineJoin="round"; ctx.strokeText(text,x,y);
+  ctx.lineWidth=1.2; ctx.strokeStyle="rgba(0,0,0,0.28)"; ctx.strokeText(text,x,y);
   ctx.fillStyle=color; ctx.fillText(text,x,y);
   ctx.restore();
 }
 function drawCanvasLabels(cx,cy,s,mouths,verts){
+  /* beyondHuman: no funnel callouts (INTAKE·DOCS / RELEASE PATH) — phenomena only */
   ctx.save(); ctx.globalCompositeOperation="source-over";
-  const narrow=W<=900, phone=W<=480;
-  // LENS #2: W≤480 drop funnel tip neonLabels + hide RELEASE PATH; keep only side verbs
-  if(!phone){
-    for(const m of mouths){
-      if(m.side==="bot" && narrow) continue; // hide RELEASE PATH on ≤900
-      const dx=m.x-cx, dy=m.y-cy, len=Math.hypot(dx,dy)||1;
-      const out=narrow?14:11;
-      const lx=m.x+(dx/len)*out, ly=m.y+(dy/len)*out;
-      ctx.globalAlpha=narrow?0.35:0.85;
-      const prevAlign=ctx.textAlign;
-      if(m.side==="tl") ctx.textAlign="right";
-      else if(m.side==="tr") ctx.textAlign="left";
-      else ctx.textAlign="center";
-      neonLabel(m.label,lx,ly,m.side==="bot"?"#ff9ed8":"#9ef0ff","500 7px ui-monospace, Menlo, monospace");
-      ctx.textAlign=prevAlign||"center";
-    }
-  }
-  // primary verbs softer — keep inward cx±s*0.42 on mobile
-  ctx.globalAlpha=1;
+  const narrow=W<=900;
+  // CRYSTALLIZE / RELEASE as quiet field phenomena — not UI buttons
   const side=narrow?0.42:0.68;
-  const fsz=narrow?Math.min(9,Math.max(7,s*0.032)):Math.min(11,Math.max(9,s*0.028));
-  neonLabel("CRYSTALLIZE",cx-s*side,cy-s*0.02,"#7dffb0",`500 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
-  neonLabel("RELEASE",cx+s*side,cy+s*0.02,"#ff6ec7",`500 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
-  // secondary neonLabel density — desktop only
-  if(!narrow){
-    neonLabel("UNSORTED / INTAKE",cx,cy-s*0.95,"#c8e0ff","500 7px ui-monospace, Menlo, monospace");
-    neonLabel(`C/I · ${Math.round(lastCI)}%`,cx,cy-s*0.78,lastCI<70?"#c8ff9a":"#ffb84d","500 7px ui-monospace, Menlo, monospace");
-  }
+  const fsz=narrow?Math.min(8,Math.max(6,s*0.028)):Math.min(10,Math.max(8,s*0.024));
+  ctx.globalAlpha=narrow?0.55:0.72;
+  neonLabel("CRYSTALLIZE",cx-s*side,cy-s*0.02,"#7dffb0",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
+  neonLabel("RELEASE",cx+s*side,cy+s*0.02,"#ff6ec7",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
   ctx.restore();
 }
 function ingestVerdicts(verdicts){
@@ -1527,36 +1582,38 @@ document.addEventListener("keydown",e=>{
 });
 $("cheatClose").onclick=()=>$("cheat").classList.remove("open");
 $("cheat").onclick=e=>{if(e.target===e.currentTarget)$("cheat").classList.remove("open");};
-/* intro chip — ghost refine: auto-hide after 4s; dismiss forever */
-(function(){
-  const chip=$("introChip");
-  function dismiss(){chip.classList.remove("show","ghost"); chip.classList.add("fadeout");
-    setTimeout(()=>{chip.style.display="none"; chip.classList.remove("fadeout");},500);
-    try{localStorage.setItem("seraphim_toast_v1","1");}catch(_){}}
-  try{if(!localStorage.getItem("seraphim_toast_v1")) setTimeout(()=>{
-    chip.classList.add("show");
-    setTimeout(()=>{ if(chip.classList.contains("show")){ chip.classList.add("ghost");
-      setTimeout(()=>{ if(chip.classList.contains("show")) dismiss(); }, 1200);
-    }}, 4000);
-  },500);}catch(_){setTimeout(()=>chip.classList.add("show"),500);}
-  $("introOk").onclick=dismiss;
-})();
-/* overflow tools — LENS #3: ··· expands intake (textarea) + Clear under panel */
+/* beyondHuman: no help-desk intro — whisper lives in #top .whisper */
+/* reveal instrument: ··· / I / long-press glyph — first paint = pure orbit */
 const morePanel=$("morePanel"), btnMore=$("btnMore"), intakeEl=$("intake");
-btnMore.onclick=e=>{e.stopPropagation();
-  const open=!morePanel.classList.contains("open");
-  morePanel.classList.toggle("open",open);
-  intakeEl.classList.toggle("expanded",open);
+function revealInstrument(on){
+  const open=on==null?!intakeEl.classList.contains("revealed"):!!on;
+  intakeEl.classList.toggle("revealed",open);
+  document.body.classList.toggle("reveal-chrome",open);
+  if(open){ morePanel.classList.add("open"); intakeEl.classList.add("expanded"); }
+  else { morePanel.classList.remove("open"); intakeEl.classList.remove("expanded"); }
   btnMore.setAttribute("aria-expanded",open?"true":"false");
-};
+}
+btnMore.onclick=e=>{e.stopPropagation(); revealInstrument();};
+/* long-press glyph (~450ms) also reveals */
+(function(){
+  let t=null;
+  const start=e=>{t=setTimeout(()=>revealInstrument(true),450);};
+  const cancel=()=>{if(t){clearTimeout(t);t=null;}};
+  btnMore.addEventListener("pointerdown",start); btnMore.addEventListener("pointerup",cancel);
+  btnMore.addEventListener("pointerleave",cancel); btnMore.addEventListener("pointercancel",cancel);
+})();
 document.addEventListener("click",e=>{
-  if(!morePanel.contains(e.target)&&e.target!==btnMore&&!intakeEl.contains(e.target)){
-    morePanel.classList.remove("open"); intakeEl.classList.remove("expanded");
-    btnMore.setAttribute("aria-expanded","false");
+  if(intakeEl.classList.contains("revealed")&&!intakeEl.contains(e.target)&&e.target!==btnMore){
+    revealInstrument(false);
   }
 });
-$("btnCheat").onclick=()=>{$("cheat").classList.add("open"); morePanel.classList.remove("open"); intakeEl.classList.remove("expanded");};
-if($("clearMobile")) $("clearMobile").onclick=()=>{ $("clear").click(); morePanel.classList.remove("open"); intakeEl.classList.remove("expanded"); };
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="TEXTAREA"||e.target.tagName==="INPUT"||e.target.tagName==="SELECT") return;
+  if(e.key==="i"||e.key==="I"){ e.preventDefault(); revealInstrument(); }
+});
+$("btnCheat").onclick=()=>{$("cheat").classList.add("open");};
+if($("clearMobile")) $("clearMobile").onclick=()=>{ $("clear").click(); };
+/* living proof — auto nonsense, no Demo menu required */
 startConstantExample();
 </script>
 </body>
