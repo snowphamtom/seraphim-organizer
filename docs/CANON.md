@@ -1,14 +1,21 @@
 # Seraphim Organizer — canon
 
-- **Centerpiece (mid/fore):** earlier SERAPHIM format restored (`seraphimFormatRestore|clearForeMidReplace`) — outer neon dodeca wireframe + INNER glowing prism/cube core with triangle/particle energy; seed-of-life may sit as interior core; field labels **ORGANIZED** (left) / **ASIDE** (right). Canvas owns mid/fore.
-- **Vesica mesh (mid/bg):** `vesicaPiscisMeshLattice` — overlapping-circle almond grid (vesica piscis lattice) as symbiotic field under heroes; purple/black/white; φ-synced with sphere master clock / gyro hub (breathe + drift; no stagnant lines). Not a hero; not flower-of-life.
+- **THE GEM (derived):** `deriveTheGem|masterpieceTopologyGem` — crystalline compression of the Seraphim node topology into one living seal-core.
+  - Outer facets = Tier-1 pillars as dodeca faces / rivets (N1 Visual Field · N2 Seal Hub Sync · N3 Sort Desk · N4 Aesthetic Law · N5 Ship Continuity)
+  - Inner fire = Seed-of-Life core (nested inside neon dodeca)
+  - Lattice veins = vesica piscis mesh feeding the gem (symbiotic mid/bg)
+  - Desk cuts = **ORGANIZED** | **ASIDE** as labeled output facets (CRYSTALLIZE|VAPORIZE mapped)
+  - Motion = inverse-omni dual as the gem’s twin refraction
+- **Centerpiece (mid/fore):** neon dodeca reads as **cut gem** with seed fire inside; canvas owns mid/fore. Field labels ORGANIZED (left) / ASIDE (right).
+- **Vesica mesh (mid/bg):** `vesicaPiscisMeshLattice` — overlapping-circle almond grid as refractive veins under the gem; purple/black/white; φ-synced breathe + drift; no stagnant lines. Not a hero; not flower-of-life.
 - **NO flower-of-life** (`removeFlowerOfLife`) — FoL lattice culled; seed ≠ flower; vesica mesh ≠ FoL.
-- **Dual dodeca:** `inverseOmniMirrorDodeca|clientDualDodecaTether` — still_ypr = −tumble_ypr on shared φ axes; purple vertex tethers; one hub. OK if it fits the format.
-- **Bg:** dark void + quiet vesica mesh whisper — excess fore/mid DOM clutter stripped (hex-iridescent / gold-dotfield / gift-stack / crystal / honey / keyed-star / cyber-nature / gold-network / keyed-wire DOM demoted/hidden). Canvas heroes carry.
-- **Palette law:** purple + black + white neon reinterpretation of the ref (Taylor triad). Soft lilac/violet shades; black void; white speculars. NO gold, cyan, hot-magenta, orange, green chrome.
-- **Light + shadow:** `lightShadowDepth|angledLightDepth` — upper-left + hub-key lights; soft purple cast shadows; white speculars.
-- **No stagnant lines:** `noStagnantLines|allLinesInMotion` — every line moves with φ/gyro, is curved, or is hidden; harmonious motion.
+- **Dual dodeca:** `inverseOmniMirrorDodeca|clientDualDodecaTether` — still_ypr = −tumble_ypr on shared φ axes; purple vertex tethers; twin refraction of the gem.
+- **Bg:** dark void + quiet vesica whisper — excess fore/mid DOM clutter stripped. Canvas heroes carry.
+- **Palette law:** purple + black + white only. Soft lilac/violet; black void; white speculars. NO gold, cyan, hot-magenta, orange, green chrome.
+- **Light + shadow:** `lightShadowDepth|angledLightDepth` — upper-left + hub-key lights; soft purple cast shadows; white speculars on gem facets.
+- **No stagnant lines:** `noStagnantLines|allLinesInMotion` — every line moves with φ/gyro, is curved, or is hidden.
 - **Chrome:** quiet SERAPHIM title (top); markdown **## Disorganized** desk (csv·tsv·json·txt·md, choose/sort/clear/demo, paste) at bottom; Organized / Aside trays.
-- **Depth ladder (back→front):** dark void → vesica piscis mesh lattice (mid/bg whisper) → soft perspective dots → still dodeca (+ still seed) → tethers → tumbling dodeca back edges → seed-of-life core → glowing prism/cube + triangle energy → tumbling front edges → ORGANIZED|ASIDE labels → desk (front).
+- **Depth ladder (back→front):** dark void → vesica veins → soft dots → still dodeca (twin refraction) → tethers → gem facets + pillar rivets → tumbling dodeca bones → seed-of-life fire → prism energy → ORGANIZED|ASIDE cuts → desk (front).
+- **Topology encode:** in-page `<!-- THE GEM topology -->` + `#seraphimTopologyGem` JSON (N1…N5).
 - **Fences:** no crystallize / release / dump / S_H in user-visible strings; no XYZ room grid; no white-paper void; no flower-of-life; no lattice-as-hero; no stationary straight field lines; no gold/cyan/hot-pink/orange/green chrome.
-- **Live tip:** `?v=<shortsha>` — tip: `vesicaPiscisMeshLattice` (overlapping-circle almond grid mid/bg; φ/gyro-synced breathe+drift; purple/black/white; symbiotic under dodeca+seed; SERAPHIM format kept; no FoL; ORGANIZED|ASIDE + Disorganized desk)
+- **Live tip:** `?v=<shortsha>` — tip: `deriveTheGem|masterpieceTopologyGem` (neon dodeca = cut gem; seed fire; vesica veins; ORGANIZED|ASIDE cuts; inverse-omni twin refraction; purple/black/white; desk usable; reduced-motion stills)
