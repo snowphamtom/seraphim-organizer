@@ -2149,7 +2149,8 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 
 
 
-/* clientTwoOnly — field is only hybrid-a (tunnel dots) + hybrid-b (hex-core family) */
+
+/* clientTwoOnly + clientForcePerspective — viewport-sized, no enlarge; forced 3D VP */
 #bgField .spiralField,
 #bgField .beamRainWhisper,
 #bgField .tunnelWindowsKeyed,
@@ -2161,23 +2162,28 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 
 #bgField .duoField{
   position:fixed; inset:0; z-index:1; pointer-events:none;
-  /* one shared hub = true viewport center */
+  overflow:hidden;
   --hub-x:50%;
   --hub-y:50%;
-  /* cover full screen even while rotating (√2 diagonal) */
-  --fill:max(145vw,145vh);
+  /* exact viewport — do NOT enlarge past screen */
+  --fill-w:100vw;
+  --fill-h:100vh;
+  perspective:min(100vw,100vh);
+  perspective-origin:50% 50%;
+  transform-style:preserve-3d;
 }
 #bgField .duoField img{
   position:absolute;
   left:var(--hub-x); top:var(--hub-y);
-  width:var(--fill); height:var(--fill);
-  max-width:none; max-height:none;
+  width:var(--fill-w); height:var(--fill-h);
+  max-width:100vw; max-height:100vh;
   margin:0; padding:0;
   display:block;
   object-fit:cover;
   object-position:center center;
   mix-blend-mode:screen;
   transform-origin:center center;
+  transform-style:preserve-3d;
   will-change:transform;
   -webkit-mask-image:none;
           mask-image:none;
@@ -2186,18 +2192,24 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 #bgField .duoField .hybridA{
   opacity:.92; z-index:1;
   filter:contrast(1.4) brightness(1.15) saturate(1.1);
-  /* spin driven by syncSpinPhase — one φ clock */
-  transform:translate(-50%,-50%) rotate(var(--duo-a, 0deg)) scale(var(--duo-breath, 1));
+  /* translate -50/-50, force perspective tilt, spin; NO scale enlarge */
+  transform:translate3d(-50%,-50%,var(--duo-z-a,-120px))
+            rotateX(var(--duo-tilt,18deg))
+            rotateZ(var(--duo-a,0deg));
 }
 #bgField .duoField .hybridB{
   opacity:.98; z-index:2;
   filter:contrast(1.45) brightness(1.2) saturate(1.25);
-  transform:translate(-50%,-50%) rotate(var(--duo-b, 0deg)) scale(var(--duo-breath, 1));
+  transform:translate3d(-50%,-50%,var(--duo-z-b,40px))
+            rotateX(var(--duo-tilt,18deg))
+            rotateZ(var(--duo-b,0deg));
 }
 @media (prefers-reduced-motion:reduce){
+  #bgField .duoField{
+    perspective:none;
+  }
   #bgField .duoField .hybridA,
   #bgField .duoField .hybridB{
-    animation:none!important;
     transform:translate(-50%,-50%)!important;
   }
   #bgField .duoField img.anim{ display:none!important; }
@@ -5719,30 +5731,32 @@ function drawDeskSealWiring(cx,cy,s,t){ return;
 }
 
 function syncSpinPhase(t){
-  /* clientDuoHarmony — one φ clock wires both GIFs; same direction, nested rates */
+  /* clientForcePerspective|clientDuoHarmony — φ spin + fixed tilt; no size enlarge */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
   if(typeof reduceMotion!=="undefined" && reduceMotion){
     _bgFieldEl.style.setProperty("--duo-a","0deg");
     _bgFieldEl.style.setProperty("--duo-b","0deg");
-    _bgFieldEl.style.setProperty("--duo-breath","1");
+    _bgFieldEl.style.setProperty("--duo-tilt","0deg");
     return;
   }
   const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
   const phi=(typeof PHI==="number")?PHI:1.6180339887;
-  /* slow field turn ~89s; B nests at 1/φ so they lock as one organism */
-  const omega=base*(1/(phi*phi*phi))*0.085; /* rad/s — harmonious crawl */
+  const omega=base*(1/(phi*phi*phi))*0.085;
   const theta=t*omega;
   const degA=(theta*180/Math.PI);
-  const degB=(theta/phi*180/Math.PI); /* same sign, φ-slower nest */
-  const breath=(1+0.012*Math.sin(t*base*(1/phi))).toFixed(4);
-  const a=(degA).toFixed(3)+"deg";
-  const b=(degB).toFixed(3)+"deg";
-  if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoBr!==breath){
-    _bgFieldEl._duoA=a; _bgFieldEl._duoB=b; _bgFieldEl._duoBr=breath;
+  const degB=(theta/phi*180/Math.PI);
+  /* gentle tilt breathe — perspective force, not scale */
+  const tilt=(18+2.2*Math.sin(t*base*(1/phi))).toFixed(2)+"deg";
+  const a=degA.toFixed(3)+"deg";
+  const b=degB.toFixed(3)+"deg";
+  if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoTilt!==tilt){
+    _bgFieldEl._duoA=a; _bgFieldEl._duoB=b; _bgFieldEl._duoTilt=tilt;
     _bgFieldEl.style.setProperty("--duo-a", a);
     _bgFieldEl.style.setProperty("--duo-b", b);
-    _bgFieldEl.style.setProperty("--duo-breath", breath);
+    _bgFieldEl.style.setProperty("--duo-tilt", tilt);
+    _bgFieldEl.style.setProperty("--duo-z-a", "-120px");
+    _bgFieldEl.style.setProperty("--duo-z-b", "40px");
   }
 }
 
