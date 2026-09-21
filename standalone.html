@@ -756,6 +756,91 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 
 
+
+/* clientClearFolders — clear upload window + sorted folders for clients */
+#uploadBox{
+  border:1.5px dashed rgba(34,211,238,.42)!important;
+  border-radius:12px!important;
+  background:rgba(4,10,22,.62)!important;
+  backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important;
+  box-shadow:0 0 0 1px rgba(34,211,238,.12), 0 12px 40px rgba(0,0,0,.45)!important;
+  padding:.7rem .8rem .65rem!important;
+  outline:none;
+}
+#uploadBox.drag,#uploadBox:focus-within,#uploadBox.receiving{
+  border-color:rgba(94,234,212,.85)!important;
+  background:rgba(8,28,40,.72)!important;
+  box-shadow:0 0 0 1px rgba(94,234,212,.35), 0 0 28px rgba(34,211,238,.28)!important;
+}
+#uploadBox.sorting{
+  border-style:solid!important;
+  border-color:rgba(232,121,249,.55)!important;
+}
+#uploadBox .uh b{font-size:.78rem!important;letter-spacing:.06em!important}
+#uploadBox .uh b::before{content:"## "!important}
+#uploadBox .dropHint{
+  text-align:center!important;
+  padding:.35rem .2rem .45rem!important;
+  color:rgba(190,220,240,.72)!important;
+  font-size:.62rem!important;
+  border:1px dashed rgba(86,180,194,.22);
+  border-radius:8px;
+  margin-bottom:.35rem;
+  background:rgba(0,20,36,.35);
+}
+#uploadBox .dropHint em{color:rgba(125,240,255,.95)!important;font-weight:700}
+#uploadBox textarea{
+  border:1px solid rgba(34,211,238,.22)!important;
+  border-left:3px solid rgba(34,211,238,.55)!important;
+  border-radius:8px!important;
+  background:rgba(0,8,18,.45)!important;
+  min-height:64px!important;
+  padding:.4rem .55rem!important;
+}
+#sortedFigures{gap:.65rem .85rem!important}
+#sortedFigures .tray{
+  border:1.5px solid rgba(120,160,200,.22)!important;
+  border-radius:12px!important;
+  padding:.55rem .6rem .5rem!important;
+  background:rgba(4,10,22,.55)!important;
+  backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.4)!important;
+  max-height:22vh!important;
+}
+#sortedFigures .tray.admit{
+  border-color:rgba(34,211,238,.45)!important;
+  box-shadow:0 0 0 1px rgba(34,211,238,.12), 0 8px 28px rgba(0,0,0,.4)!important;
+}
+#sortedFigures .tray.release{
+  border-color:rgba(232,121,249,.4)!important;
+  box-shadow:0 0 0 1px rgba(232,121,249,.1), 0 8px 28px rgba(0,0,0,.4)!important;
+}
+#sortedFigures .tray h3{
+  display:flex!important;align-items:center;gap:.35rem;
+  font-size:.72rem!important;margin-bottom:.35rem!important;
+  padding-bottom:.28rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+#sortedFigures .tray.admit h3::before{content:"📁 "!important;opacity:1!important;font-size:.85em}
+#sortedFigures .tray.release h3::before{content:"📁 "!important;opacity:1!important;font-size:.85em}
+#sortedFigures .tray .folderTag{
+  display:block;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(150,180,200,.45);margin:-.15rem 0 .35rem;font-weight:500;
+}
+#sortedFigures .empty{
+  border:1px dashed rgba(130,160,180,.2);
+  border-radius:8px;padding:.45rem .4rem!important;
+  text-align:center;color:rgba(150,180,200,.42)!important;font-style:normal!important;
+}
+#sortedFigures .empty::before{content:""!important}
+#sortDesk .flowArrow{
+  text-align:center;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(150,190,210,.4);margin:.05rem 0;
+}
+@media (max-width:480px){
+  #sortedFigures .tray{max-height:16vh!important}
+}
+
 /* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
 #phaseWhisper{
   align-self:center;
@@ -954,11 +1039,11 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
 
 <div id="specBar" aria-hidden="true"></div>
-<section id="sortDesk" aria-label="Disorganized content in, organized and aside out">
+<section id="sortDesk" aria-label="Upload window in, Organized and Aside folders out">
   <div id="phaseWhisper" class="phaseWhisper" role="status" aria-live="polite" aria-hidden="true"></div>
-  <div id="uploadBox" tabindex="0">
-    <div class="uh"><b>Disorganized</b><span>csv · tsv · json · txt · md</span></div>
-    <div class="dropHint">drop or paste disorganized content · <em>choose</em> a file</div>
+  <div id="uploadBox" tabindex="0" role="region" aria-label="Upload window — drop or choose files here">
+    <div class="uh"><b>Upload here</b><span>csv · tsv · json · txt · md</span></div>
+    <div class="dropHint">Drop files in this window · or <em>choose</em> · or paste below</div>
     <div class="actions">
       <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
       <button type="button" id="runSort" class="primary">sort</button>
@@ -971,16 +1056,19 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
         <option value="nonsense">Constant nonsense</option>
       </select>
     </div>
-    <textarea id="pasteDesk" placeholder="- paste disorganized content…" rows="3"></textarea>
+    <textarea id="pasteDesk" placeholder="- paste content to sort…" rows="3"></textarea>
   </div>
-  <div id="sortedFigures" aria-live="polite">
-    <div class="tray admit" id="trayAdmit">
+  <div class="flowArrow" aria-hidden="true">sorts into folders ↓</div>
+  <div id="sortedFigures" aria-live="polite" aria-label="Sorted folders">
+    <div class="tray admit" id="trayAdmit" role="region" aria-label="Organized folder">
       <h3>Organized <span class="count" id="figAdmitN">0</span></h3>
-      <div class="chips" id="figAdmit"><div class="empty">nothing organized yet</div></div>
+      <span class="folderTag">folder · kept</span>
+      <div class="chips" id="figAdmit"><div class="empty">Organized folder is empty</div></div>
     </div>
-    <div class="tray release" id="trayRelease">
+    <div class="tray release" id="trayRelease" role="region" aria-label="Aside folder">
       <h3>Aside <span class="count" id="figReleaseN">0</span></h3>
-      <div class="chips" id="figRelease"><div class="empty">nothing aside yet</div></div>
+      <span class="folderTag">folder · soft out</span>
+      <div class="chips" id="figRelease"><div class="empty">Aside folder is empty</div></div>
     </div>
   </div>
   
@@ -1601,6 +1689,7 @@ const STORIES = {
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
    - tunnelAsSent: show GIF as Taylor sent — light field, black dots, full-bleed; kill invert+screen+vignette+perspective warp; soft desk scrim only.
+   - clientClearFolders: clear upload window + Organized/Aside folder panels for clients
    - gatherThenSort: idle ≈21s cycles gather→sort — fetch media/live-gather.csv (cache-bust ?t=), soft-path organize; fallback IDLE_PUBLIC_PACK; #phaseWhisper gathering…→sorting…→quiet; pause on user type
 */
 const canvas=document.getElementById("fx");
@@ -5097,9 +5186,9 @@ function renderSortedFigures(verdicts){
   };
   a.innerHTML=""; r.innerHTML="";
   const flown=[];
-  if(!admits.length) a.innerHTML="<div class=\"empty\">nothing organized yet</div>";
+  if(!admits.length) a.innerHTML="<div class=\"empty\">Organized folder is empty</div>";
   else admits.slice(-40).reverse().forEach(v=>{ const el=mk(v); a.appendChild(el); flown.push(el); });
-  if(!releases.length) r.innerHTML="<div class=\"empty\">nothing aside yet</div>";
+  if(!releases.length) r.innerHTML="<div class=\"empty\">Aside folder is empty</div>";
   else releases.slice(-40).reverse().forEach(v=>{ const el=mk(v); r.appendChild(el); flown.push(el); });
   if(flown.length) requestAnimationFrame(()=>flightChipsFromDesk(flown));
 }
