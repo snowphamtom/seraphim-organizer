@@ -1317,6 +1317,97 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #trayAdmit h3{ color:rgba(94,234,212,.95)!important; }
 #trayRelease h3{ color:rgba(240,171,252,.95)!important; }
 
+
+/* clientEdgeBleed — field images reach viewport edges where possible */
+#bgField .spiralField{
+  left:var(--seal-x, 50%)!important;
+  top:var(--seal-y, 40%)!important;
+  width:var(--seal-spiral, max(100vw, 100vh))!important;
+  height:var(--seal-spiral, max(100vw, 100vh))!important;
+  min-width:100vw!important;
+  min-height:100vh!important;
+  transform:translate(-50%, -50%)!important;
+}
+#bgField .spiralField img{
+  object-fit:cover!important;
+  object-position:50% 50%!important;
+  width:100%!important;
+  height:100%!important;
+}
+#bgField .tunnelWindowsKeyed,
+#bgField .hexCoreKeyed{
+  left:var(--seal-x, 50%)!important;
+  top:var(--seal-y, 40%)!important;
+  width:var(--seal-s, max(100vw, 100vh))!important;
+  height:var(--seal-s, max(100vw, 100vh))!important;
+  min-width:100vw!important;
+  min-height:100vh!important;
+  transform:translate(-50%, -50%)!important;
+}
+#bgField .tunnelWindowsKeyed img,
+#bgField .hexCoreKeyed img{
+  object-fit:cover!important;
+  object-position:center!important;
+  width:100%!important;
+  height:100%!important;
+}
+/* fade only at the very rim — content reaches near screen edge */
+#bgField .spiralField{
+  -webkit-mask-image:radial-gradient(ellipse 78% 78% at 50% 50%,
+    #000 0%, #000 72%, rgba(0,0,0,.7) 88%, transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 78% 78% at 50% 50%,
+    #000 0%, #000 72%, rgba(0,0,0,.7) 88%, transparent 100%)!important;
+}
+#bgField .tunnelWindowsKeyed{
+  -webkit-mask-image:radial-gradient(ellipse 82% 82% at 50% 50%,
+    #000 0%, #000 68%, rgba(0,0,0,.75) 90%, transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 82% 82% at 50% 50%,
+    #000 0%, #000 68%, rgba(0,0,0,.75) 90%, transparent 100%)!important;
+}
+#bgField .hexCoreKeyed{
+  -webkit-mask-image:radial-gradient(ellipse 84% 84% at 50% 50%,
+    #000 0%, #000 64%, rgba(0,0,0,.8) 88%, transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 84% 84% at 50% 50%,
+    #000 0%, #000 64%, rgba(0,0,0,.8) 88%, transparent 100%)!important;
+}
+/* keep breath scales from clipping edges — animate filter/opacity more than shrink */
+@keyframes spiralDyn{
+  0%{ transform:translate(-50%,-50%) scale(1.05); opacity:0.50; }
+  100%{ transform:translate(-50%,-50%) scale(1.14); opacity:0.64; }
+}
+@keyframes tunnelDyn{
+  0%{
+    transform:translate(-50%,-50%) scale(1.04);
+    filter:saturate(1.2) brightness(1.02) contrast(1.04) hue-rotate(8deg) blur(0.9px)
+      drop-shadow(0 0 18px rgba(34,211,238,.12))!important;
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1.12);
+    filter:saturate(1.4) brightness(1.08) contrast(1.08) hue-rotate(8deg) blur(0.15px)
+      drop-shadow(0 0 28px rgba(232,121,249,.14))!important;
+  }
+}
+@keyframes hexDyn{
+  0%{
+    transform:translate(-50%,-50%) scale(1.05);
+    filter:saturate(1.25) brightness(1.02) contrast(1.05) hue-rotate(8deg) blur(0.55px)
+      drop-shadow(0 0 24px rgba(34,211,238,.18))
+      drop-shadow(0 0 40px rgba(232,121,249,.1))!important;
+  }
+  50%{
+    transform:translate(-50%,-50%) scale(1.10);
+    filter:saturate(1.45) brightness(1.1) contrast(1.1) hue-rotate(8deg) blur(0px)
+      drop-shadow(0 0 36px rgba(34,211,238,.28))
+      drop-shadow(0 0 56px rgba(232,121,249,.16))!important;
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1.15);
+    filter:saturate(1.35) brightness(1.06) contrast(1.08) hue-rotate(8deg) blur(0.25px)
+      drop-shadow(0 0 30px rgba(232,121,249,.22))
+      drop-shadow(0 0 48px rgba(34,211,238,.14))!important;
+  }
+}
+
 /* clientFlawless — aesthetic final pass: opacity ladder, glass, type, composition */
 html,body{
   background:#000!important;
@@ -5137,12 +5228,13 @@ function syncHexCoreToDodeca(cx,cy,s){
   const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
   if(_bgFieldEl._sealX!==sx){ _bgFieldEl._sealX=sx; _bgFieldEl.style.setProperty("--seal-x", sx); }
   if(_bgFieldEl._sealY!==sy){ _bgFieldEl._sealY=sy; _bgFieldEl.style.setProperty("--seal-y", sy); }
-  /* clientCenterDyn: live size breath — center feels alive, edges still masked */
-  const breath=reduceMotion?1:(1+0.04*Math.sin((performance.now()*0.001)*TEMPO.base*1.15));
-  const ss=Math.round(maxR*2*GEO.fit*breath)+"px";
+  /* clientEdgeBleed: size to viewport so figures reach screen edges; slight breath */
+  const breath=reduceMotion?1:(1+0.03*Math.sin((performance.now()*0.001)*TEMPO.base*1.15));
+  const edge=Math.ceil(Math.max(W,H)*1.08*breath);
+  const ss=edge+"px";
   if(_bgFieldEl._sealS!==ss){ _bgFieldEl._sealS=ss; _bgFieldEl.style.setProperty("--seal-s", ss); }
   if(_bgFieldEl._sealTun!==ss){ _bgFieldEl._sealTun=ss; _bgFieldEl.style.setProperty("--seal-tunnel", ss); }
-  const sp=Math.round(maxR*2*GEO.spiralFit)+"px";
+  const sp=Math.ceil(Math.max(W,H)*1.25*breath)+"px";
   if(_bgFieldEl._sealSp!==sp){ _bgFieldEl._sealSp=sp; _bgFieldEl.style.setProperty("--seal-spiral", sp); }
   /* hold camera on GIF-matched isometric so angles/vectors stay registered */
   if(GEO.lockCam && !nav.down && !reduceMotion){
