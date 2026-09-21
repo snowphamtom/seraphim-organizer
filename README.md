@@ -6,6 +6,12 @@ maps each item → resource vector + Howard affinity pairs, then runs
 
 **Law:** `S_H = S_solv · R_H` (fail-closed; φ observes only).
 
+## Live
+
+https://snowphamtom.github.io/seraphim-organizer/
+
+Offline Pages build: `docs/index.html` (≡ `standalone.html`).
+
 ## Run
 
 ```bash
