@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
 <meta name="description" content="Offline Headroom×Seraphim dump organizer. Sort through S_H = S_solv · R_H — crystallize inside the seal, release outside. Fail-closed. Soft."/>
-<meta name="theme-color" content="#000000"/>
+<meta name="theme-color" content="#e8ecf4"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -20,14 +20,14 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgHoloCluster|bgHoloClusterWire: cyan↔indigo↔magenta↔orchid on void (Taylor ref) */
-  --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
-  --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
-  --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
-  --glass:rgba(6,4,18,0.42);--line:rgba(86,180,194,0.28);
+  /* holoPalette|bgHoloCluster|bgHoloClusterWire|bgInvertInkDrops: inverted light field + black ink wire */
+  --void:#e8ecf4;--ink:#14161f;--mute:#5a6280;
+  --admit:#2a8a96;--release:#9a3a96;--mint:#6a9030;
+  --cyan:#2a8a96;--mag:#8e2a9e;--warn:#b8860b;
+  --glass:rgba(255,255,255,0.55);--line:rgba(42,138,150,0.35);
   --blur:18px;--safe-b:env(safe-area-inset-bottom,0px);
   --safe-t:env(safe-area-inset-top,0px);
-  --holo-wash:linear-gradient(135deg,rgba(86,180,194,0.07),rgba(56,38,184,0.05),rgba(174,61,191,0.07));
+  --holo-wash:linear-gradient(135deg,rgba(42,138,150,0.08),rgba(86,60,180,0.05),rgba(158,42,158,0.07));
 }
 html,body{height:100%;height:100dvh;background:var(--void);color:var(--ink);
   font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden;
@@ -57,7 +57,7 @@ button,input,textarea,select{font:inherit;color:inherit}
 /* one-shot intro chip under header — never covers hex */
 #introChip{position:fixed;top:46px;left:50%;transform:translateX(-50%);z-index:12;
   display:none;align-items:center;gap:.4rem;padding:.16rem .48rem;
-  background:rgba(8,4,20,.55);border:1px solid rgba(86,180,194,.22);border-radius:999px;
+  background:rgba(255,255,255,.65);border:1px solid rgba(42,138,150,.28);border-radius:999px;
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   font-size:.5rem;color:rgba(216,236,224,.78);box-shadow:0 4px 16px rgba(0,0,0,.3);
   white-space:nowrap;max-width:calc(100vw - 24px);opacity:0;transition:opacity .5s ease}
@@ -72,13 +72,13 @@ button,input,textarea,select{font:inherit;color:inherit}
 /* collapsed intake */
 #intake{position:fixed;left:12px;top:max(52px,calc(var(--safe-t) + 42px));z-index:10;width:min(220px,32vw);
   display:flex;flex-direction:column;gap:.22rem;padding:.32rem .38rem;
-  background:rgba(6,4,18,0.28);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(255,255,255,0.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:1px solid rgba(86,212,224,0.14);border-radius:10px;
   box-shadow:0 0 16px rgba(86,212,224,0.03),inset 0 1px 0 rgba(255,255,255,0.02)}
 #intake .sec-h{font-size:.48rem;letter-spacing:.14em;font-weight:700;color:#a8c8e8;margin-bottom:.1rem;
   display:flex;align-items:center;justify-content:space-between}
 .row{display:flex;flex-wrap:wrap;gap:.22rem;align-items:center}
-button,.filebtn{appearance:none;background:rgba(8,6,22,0.42);border:1px solid rgba(120,220,255,.22);
+button,.filebtn{appearance:none;background:rgba(255,255,255,0.55);border:1px solid rgba(42,138,150,.28);
   color:rgba(220,240,255,.85);padding:.22rem .38rem;border-radius:6px;cursor:pointer;font-size:.5rem;letter-spacing:.02em}
 button:hover,.filebtn:hover{border-color:#9ff;box-shadow:0 0 10px rgba(100,220,255,.22)}
 button.primary{border-color:rgba(86,180,194,.55);color:#e0f8fc;box-shadow:0 0 12px rgba(86,180,194,.12)}
@@ -90,7 +90,7 @@ button:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
 input[type=file]{display:none}
 .filebtn{display:inline-flex;align-items:center}
 textarea{width:100%;min-height:3.6em;max-height:3.6em;height:3.6em;overflow:auto;resize:none;
-  background:rgba(0,0,0,0.45);border:1px solid rgba(80,140,200,0.28);color:#eef;border-radius:6px;
+  background:rgba(255,255,255,0.7);border:1px solid rgba(42,138,150,0.3);color:#14161f;border-radius:6px;
   padding:.28rem .34rem;font:0.52rem/1.35 ui-monospace,Menlo,monospace}
 textarea:focus{outline:none;border-color:rgba(86,180,194,.5)}
 select{appearance:none;background:rgba(8,6,22,0.5);border:1px solid rgba(120,220,255,.32);
@@ -100,7 +100,7 @@ select{appearance:none;background:rgba(8,6,22,0.5);border:1px solid rgba(120,220
 #moreWrap{position:relative}
 #morePanel{display:none;position:absolute;left:0;top:calc(100% + 4px);z-index:20;
   min-width:160px;padding:.35rem;border-radius:8px;
-  background:rgba(6,4,18,.94);border:1px solid rgba(100,200,255,.28);
+  background:rgba(255,255,255,.92);border:1px solid rgba(42,138,150,.28);
   box-shadow:0 10px 28px rgba(0,0,0,.55);flex-direction:column;gap:.22rem}
 #morePanel.open{display:flex}
 #morePanel button,#morePanel .filebtn{width:100%;justify-content:flex-start;text-align:left}
@@ -114,7 +114,7 @@ select{appearance:none;background:rgba(8,6,22,0.5);border:1px solid rgba(120,220
 #log{position:fixed;left:14px;bottom:max(18px,calc(var(--safe-b) + 14px));z-index:10;
   width:min(300px,30vw);max-height:min(15vh,150px);
   overflow:auto;font-family:ui-monospace,Menlo,monospace;font-size:.56rem;line-height:1.55;
-  padding:.42rem .5rem .5rem;border-radius:12px;background:rgba(6,4,18,0.72);
+  padding:.42rem .5rem .5rem;border-radius:12px;background:rgba(255,255,255,0.72);
   border:1px solid rgba(100,200,255,0.22);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
   box-shadow:0 0 28px rgba(86,212,224,0.05),inset 0 1px 0 rgba(255,255,255,0.04);
   mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 100%);
@@ -122,15 +122,15 @@ select{appearance:none;background:rgba(8,6,22,0.5);border:1px solid rgba(120,220
   scrollbar-width:thin;scrollbar-color:rgba(86,212,224,.28) transparent;opacity:.95}
 #log::-webkit-scrollbar{width:4px}#log::-webkit-scrollbar-thumb{background:rgba(86,212,224,.28);border-radius:4px}
 #log .ev{display:grid;grid-template-columns:48px 88px 1fr;gap:.26rem;padding:.1rem .14rem;
-  border-radius:5px;cursor:pointer;color:rgba(232,238,248,.72);transition:background .15s,color .15s}
-#log .ev:hover,#log .ev.focus{background:rgba(86,212,224,.1);color:#e8e6f8;
+  border-radius:5px;cursor:pointer;color:rgba(30,36,55,.78);transition:background .15s,color .15s}
+#log .ev:hover,#log .ev.focus{background:rgba(42,138,150,.12);color:#14161f;
   box-shadow:inset 2px 0 0 rgba(86,212,224,.5)}
 #log .ev .t{color:rgba(122,154,176,.45);font-size:.9em}#log .ev .d.a{color:#56d4e0;font-weight:700;letter-spacing:.03em}
 #log .ev .d.r{color:#c664c0;font-weight:700;letter-spacing:.03em}
-#log .ev .title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e8e6f8}
+#log .ev .title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#14161f}
 
 #tip{position:fixed;z-index:30;pointer-events:none;display:none;max-width:280px;
-  background:rgba(6,4,18,.9);border:1px solid rgba(86,180,194,.42);border-radius:10px;
+  background:rgba(255,255,255,.9);border:1px solid rgba(42,138,150,.42);border-radius:10px;
   padding:.48rem .58rem;font-size:.58rem;line-height:1.4;
   box-shadow:0 10px 36px rgba(0,0,0,.62),0 0 24px rgba(86,180,194,.08);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -144,7 +144,7 @@ select{appearance:none;background:rgba(8,6,22,0.5);border:1px solid rgba(120,220
   background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}
 #cheat.open{display:flex}
 #cheat .card{width:min(540px,92vw);padding:1.35rem 1.45rem;border-radius:16px;
-  background:rgba(8,4,20,.96);border:1px solid rgba(86,212,224,.4);
+  background:rgba(255,255,255,.96);border:1px solid rgba(42,138,150,.4);
   font-size:.78rem;line-height:1.7;color:#e0e6f6;
   box-shadow:0 16px 48px rgba(0,0,0,.55),0 0 32px rgba(86,212,224,.1)}
 #cheat h3{font-size:.88rem;letter-spacing:.16em;margin-bottom:.75rem;color:var(--cyan)}
@@ -318,8 +318,8 @@ body.reveal-chrome #log, #log:hover{opacity:.85}
 body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
-/* B&W hybrid layered field behind seal (plexus + grid + soft metaballs) */
-#bgField{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#000}
+/* inverted light field — ink wire cluster + morphing drop nodes (canvas) */
+#bgField{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--void)}
 #bgField .meta{
   position:absolute;inset:0;
   background-position:center center;
@@ -329,19 +329,19 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 #bgField .meta.plexus{
   background-image:url(bg-plexus.gif);
-  opacity:0.10; /* polishPass3: unsorted field whisper — seal owns contrast */
+  opacity:0; /* polishPass3: unsorted field whisper — seal owns contrast */
   filter:grayscale(1) brightness(0.78);
 }
 #bgField .meta.grid{
   background-image:url(bg-grid.gif);
-  opacity:0.06;
+  opacity:0;
   filter:grayscale(1) brightness(0.74);
   transform:scale(1.06);
   transform-origin:center center;
 }
 #bgField .meta.blobs{
   background-image:url(bg-metaballs.gif);
-  opacity:0.05; /* soft depth only — no mud */
+  opacity:0; /* soft depth only — no mud */
   filter:invert(1) grayscale(1) brightness(0.65);
 }
 @media (max-width:900px){
@@ -356,25 +356,25 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 
 #bgField .meta.cluster{
-  /* holographic wire cluster — lines+nodes only, 1.5× viewport, centered under seal */
+  /* inverted ink wire — black lines+nodes, 150vmin centered; multiply on light void */
   inset:auto;
   width:150vmin;height:150vmin;
   top:50%;left:50%;
   transform:translate(-50%,-50%);
-  background-image:url(bg-holo-cluster-wire.gif);
+  background-image:url(bg-holo-cluster-ink.gif);
   background-size:contain;
   background-position:center;
   background-repeat:no-repeat;
-  opacity:0.42;
-  mix-blend-mode:screen;
-  filter:saturate(1.25) brightness(1.05) contrast(1.08);
+  opacity:0.55;
+  mix-blend-mode:multiply;
+  filter:contrast(1.15) brightness(0.92);
   pointer-events:none;
 }
 @media (max-width:900px){
-  #bgField .meta.cluster{width:140vmin;height:140vmin;opacity:0.32;filter:saturate(1.1) brightness(1.0) contrast(1.05)}
+  #bgField .meta.cluster{width:140vmin;height:140vmin;opacity:0.42;filter:contrast(1.08) brightness(0.95)}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .meta.cluster{opacity:0.16;filter:saturate(0.8) brightness(0.9)}
+  #bgField .meta.cluster{opacity:0.22;filter:contrast(1.0) brightness(1.0)}
 }
 
 
@@ -836,7 +836,7 @@ const STORIES = {
    - fogShards: skip ≤900; α×0.5
    - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
    - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
-   - bg holo cluster: wireframe lines+nodes, 150vmin centered — mass stripped; seal still leads
+   - bg inverted light field + black ink wire (150vmin) — falling ink drops morph into nodes tethered to the shifting cluster
    - chromatic edges: skip ≤900; α×0.5 (magenta/cyan/indigo fringe)
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
@@ -1400,10 +1400,10 @@ function drawDepthFogVignette(cx,cy,s){
   ctx.save();
   const g=ctx.createRadialGradient(cx,cy,s*0.2,cx,cy,Math.max(W,H)*0.78);
   addStops(g,[
-    [0,"rgba(39,92,182,0.02)"],
-    [0.4,"rgba(0,0,0,0)"],
-    [0.78,"rgba(0,0,0,0.08)"],
-    [1,"rgba(0,0,0,0.22)"]
+    [0,"rgba(42,138,150,0.03)"],
+    [0.4,"rgba(232,236,244,0)"],
+    [0.78,"rgba(180,188,210,0.12)"],
+    [1,"rgba(160,170,195,0.28)"]
   ]);
   ctx.globalCompositeOperation="source-over";
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
@@ -1440,7 +1440,7 @@ function drawSoftCrossVeil(){
   softCross*=0.90;
   ctx.save();
   ctx.globalCompositeOperation="source-over";
-  ctx.fillStyle=`rgba(4,0,14,${softCross*0.22})`;
+  ctx.fillStyle=`rgba(232,236,244,${softCross*0.55})`;
   ctx.fillRect(0,0,W,H);
   ctx.restore();
 }
@@ -1683,11 +1683,124 @@ function drawInnerCubeWire(cx,cy,s,t){
 }
 
 
+
+/* —— inverted field: falling black drops → morphing nodes tethered to ink cluster —— */
+const inkDrops=[];
+function seedInkDrops(){
+  inkDrops.length=0;
+  const n=W<=480?48:W<=900?80:120;
+  for(let i=0;i<n;i++){
+    inkDrops.push({
+      x:Math.random()*Math.max(W,1),
+      y:Math.random()*-Math.max(H,1)*1.2,
+      vy:55+Math.random()*110,
+      phase:Math.random()*Math.PI*2,
+      morph:0,
+      size:2.2+Math.random()*3.8,
+      aid:Math.floor(Math.random()*36)
+    });
+  }
+}
+function inkClusterAnchors(t,cx,cy){
+  /* synthetic rotating lattice matching ~150vmin ink wire mass */
+  const R=Math.min(W,H)*0.58;
+  const spin=t*TEMPO.base*0.22;
+  const out=[];
+  const N=28;
+  for(let i=0;i<N;i++){
+    const a=spin+i/N*Math.PI*2;
+    const wob=0.1*Math.sin(t*TEMPO.base*PHI+i*0.7);
+    const r=R*(0.42+0.48*((i%7)/7)+wob);
+    out.push({x:cx+Math.cos(a)*r, y:cy+Math.sin(a)*r*0.9});
+  }
+  for(let i=0;i<14;i++){
+    const a=-spin*1.35+i/14*Math.PI*2;
+    out.push({x:cx+Math.cos(a)*R*0.26, y:cy+Math.sin(a)*R*0.24});
+  }
+  return out;
+}
+function drawInkMorphDrops(dtSec,t,cx,cy){
+  if(reduceMotion) return;
+  if(!inkDrops.length) seedInkDrops();
+  const anchors=inkClusterAnchors(t,cx,cy);
+  const clusterR=Math.min(W,H)*0.62;
+  const dt=Math.min(0.05, Math.max(0.008, dtSec||0.016));
+  ctx.save();
+  ctx.globalCompositeOperation="source-over";
+  /* plexus among near morphing nodes */
+  const near=[];
+  for(let i=0;i<inkDrops.length;i++){
+    const d=inkDrops[i];
+    d.y+=d.vy*dt;
+    d.x+=Math.sin(t*TEMPO.base*0.9+d.phase)*18*dt;
+    let best=anchors[d.aid%anchors.length], bd=1e9;
+    for(let k=0;k<anchors.length;k++){
+      const a=anchors[k], dd=Math.hypot(d.x-a.x,d.y-a.y);
+      if(dd<bd){bd=dd;best=a;d.aid=k;}
+    }
+    const distC=Math.hypot(d.x-cx,d.y-cy);
+    const target=distC<clusterR*1.2?Math.min(1,1.05-distC/(clusterR*1.2)):0;
+    d.morph+=(target-d.morph)*Math.min(1,dt*2.8);
+    if(d.morph>0.12){
+      d.x+=(best.x-d.x)*d.morph*dt*1.35;
+      d.y+=(best.y-d.y)*d.morph*dt*1.35;
+      d.vy*=(1-0.35*d.morph*dt*4);
+    }
+    const m=d.morph;
+    if(m>0.18){
+      near.push(d);
+      ctx.strokeStyle=`rgba(10,12,20,${0.10+0.32*m})`;
+      ctx.lineWidth=0.55+m*0.95;
+      ctx.beginPath();
+      const mx=(d.x+best.x)*0.5+Math.sin(t*1.1+d.phase)*16*(1-m);
+      const my=(d.y+best.y)*0.5+Math.cos(t*0.9+d.phase)*10*(1-m);
+      ctx.moveTo(d.x,d.y);
+      ctx.quadraticCurveTo(mx,my,best.x,best.y);
+      ctx.stroke();
+      /* tiny node at anchor hitch */
+      ctx.fillStyle=`rgba(8,10,16,${0.25+0.4*m})`;
+      ctx.beginPath(); ctx.arc(best.x,best.y,1.1+m*1.4,0,Math.PI*2); ctx.fill();
+    }
+    ctx.fillStyle=`rgba(8,10,18,${0.28+0.5*m})`;
+    ctx.beginPath();
+    if(m<0.5){
+      const sz=d.size*(1-m*0.25);
+      const tip=sz*(1.75-m*0.6);
+      ctx.moveTo(d.x,d.y+tip);
+      ctx.bezierCurveTo(d.x+sz,d.y+sz*0.15,d.x+sz*0.9,d.y-sz,d.x,d.y-sz*0.95);
+      ctx.bezierCurveTo(d.x-sz*0.9,d.y-sz,d.x-sz,d.y+sz*0.15,d.x,d.y+tip);
+    }else{
+      ctx.arc(d.x,d.y,d.size*(0.75+0.85*m),0,Math.PI*2);
+    }
+    ctx.fill();
+    if(d.y>H+50 && m<0.35){
+      d.y=-20-Math.random()*H*0.35; d.x=Math.random()*W; d.morph=0; d.vy=55+Math.random()*110;
+    }else if(m>0.88 && bd<16){
+      d.y=-40-Math.random()*100; d.x=Math.random()*W; d.morph=0; d.vy=55+Math.random()*110;
+    }
+  }
+  /* connect nearby morphing drops to each other (node lattice) */
+  const linkMax=W<=900?55:78;
+  for(let i=0;i<near.length;i++){
+    for(let j=i+1;j<near.length;j++){
+      const a=near[i], b=near[j];
+      const dd=Math.hypot(a.x-b.x,a.y-b.y);
+      if(dd>linkMax||dd<4) continue;
+      const alpha=0.08*((a.morph+b.morph)*0.5)*(1-dd/linkMax);
+      if(alpha<0.02) continue;
+      ctx.strokeStyle=`rgba(10,12,20,${alpha})`;
+      ctx.lineWidth=0.5;
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
 function drawStarfieldInPanels(cx,cy,s,t,verts){
   /* polishPass3: dump dust awaiting lock — cool field only; quieter so lattice/seal win */
   if(reduceMotion) return;
   const aHex=layerAlpha("hex");
-  ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.22:0.28); ctx.globalCompositeOperation="lighter";
+  ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.14:0.18); ctx.globalCompositeOperation="multiply";
   const n=Math.min(field.length, W<=480?220:W<=900?400:700);
   for(let k=0;k<n;k++){
     const p=field[k]; if(!p) continue;
@@ -1698,7 +1811,7 @@ function drawStarfieldInPanels(cx,cy,s,t,verts){
     const py=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
     const tw=0.28+0.5*Math.abs(Math.sin(t*p.tws+p.tw));
     const sz=(p.sz||1)*(0.35+0.7*p.layer*tw);
-    ctx.fillStyle=`rgba(180,200,255,${0.04+0.08*tw*(0.3+p.layer*0.4)})`; /* polishPass3 dust α×0.5 holo */
+    ctx.fillStyle=`rgba(30,40,70,${0.03+0.06*tw*(0.3+p.layer*0.4)})`; /* inverted field dust */
     ctx.fillRect(px,py,sz,sz);
   }
   ctx.restore();
@@ -2567,6 +2680,7 @@ function frame(now){
   drawDualHexGhost(cxH,cyH,s,t);
   const verts=projectDodecaSeal(cxH,cyH,s);
   projectInnerCube(cxH,cyH,s);
+  if(!reduceMotion) drawInkMorphDrops(dt/1000,t,cxS,cyS);
   if(!reduceMotion) drawStarfieldInPanels(cxS,cyS,s,t,verts);
   // 2) mid organize — intake mouths → voxels(admit/cool) + mint(release/warm) → lattice tethers
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
@@ -2594,7 +2708,7 @@ function frame(now){
   else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog();
+requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDrops();
 /* ========== UI ========== */
 const $=id=>document.getElementById(id);
 const tip=$("tip");
