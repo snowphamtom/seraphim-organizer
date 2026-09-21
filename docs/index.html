@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
 <meta name="description" content="Offline Headroom×Seraphim dump organizer. Sort through S_H = S_solv · R_H — crystallize inside the seal, release outside. Fail-closed. Soft."/>
-<meta name="theme-color" content="#000000"/>
+<meta name="theme-color" content="#f5f7fa"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --void:#000;--ink:#e8eef8;--mute:#8aa8c0;
+  --void:#f5f7fa;--ink:#e8eef8;--mute:#8aa8c0;
   --admit:#7dffb0;--release:#ff6ec7;--mint:#9ef0c8;
   --cyan:#40f0ff;--mag:#ff4ec8;--warn:#ffb84d;
   --glass:rgba(4,10,18,0.38);--line:rgba(100,200,255,0.22);
@@ -32,7 +32,7 @@ html,body{height:100%;height:100dvh;background:var(--void);color:var(--ink);
   overscroll-behavior:none;-webkit-text-size-adjust:100%}
 button,input,textarea,select{font:inherit;color:inherit}
 #fx{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;display:block;z-index:1;
-  cursor:grab;touch-action:none;background:#000;-webkit-user-select:none;user-select:none}
+  cursor:grab;touch-action:none;background:transparent;-webkit-user-select:none;user-select:none}
 #fx.grabbing{cursor:grabbing}
 
 /* —— sparse floating instruments —— */
@@ -317,17 +317,16 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 /* chromatic metaball field behind seal (Taylor ref gif) */
-#bgField{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#000}
+#bgField{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#fff}
 #bgField .meta{
-  position:absolute;inset:-8%;
+  position:absolute;inset:0;
   background:url(bg-metaballs.gif) center center / cover no-repeat;
-  filter:invert(1) contrast(1.15) saturate(1.35);
-  opacity:0.38;
-  transform:scale(1.05);
-  mix-blend-mode:screen;
+  opacity:1;
+  filter:none;
+  mix-blend-mode:normal;
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .meta{opacity:0.12;animation:none;background-attachment:fixed}
+  #bgField .meta{opacity:0.55;filter:grayscale(0.15)}
 }
 
 </style>
@@ -765,7 +764,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -1763,24 +1762,12 @@ function drawFogShards(cx,cy,s,t,orbitSpeed){
     ctx.fillStyle=`rgba(140,200,180,${fog*0.14})`; ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz,py+sz*0.5);ctx.lineTo(px-sz,py+sz*0.5);ctx.fill();
   }
   const g=ctx.createRadialGradient(cx,cy,s*0.2,cx,cy,s*1.6);
-  g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(0.7,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,0.55)");
-  ctx.globalCompositeOperation="source-over"; ctx.fillStyle=g; ctx.fillRect(0,0,W,H); ctx.restore();
+  /* vignette skipped — bgField GIF replaces black void */
+  ctx.restore();
 }
 function drawBloomClamp(cx,cy,s){
-  if(skipHeavy && W<=900) return; // frame-budget skip
-  ctx.save();
-  ctx.globalCompositeOperation="source-over";
-  const mob=W<=480?0.65:1; // LENS bloom −35% on phone
-  const g=ctx.createRadialGradient(cx,cy,s*0.22,cx,cy,s*1.55);
-  addStops(g,[
-    [0,"rgba(0,0,0,0)"],
-    [0.5,`rgba(0,0,0,${0.06*mob})`],
-    [0.78,`rgba(0,0,0,${0.22*mob})`],
-    [1,`rgba(0,0,0,${0.48*mob})`]
-  ]);
-  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  ctx.fillStyle=`rgba(0,0,0,${0.10*mob})`; ctx.fillRect(0,0,W,H);
-  ctx.restore();
+  /* no black plate — chromatic metaball GIF is the background */
+  return;
 }
 function neonLabel(text,x,y,color,font){
   ctx.font=font||"600 10px ui-monospace, Menlo, monospace";
@@ -1853,7 +1840,7 @@ function frame(now){
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
-  ctx.fillStyle="rgba(0,0,0,0.72)"; ctx.fillRect(0,0,W,H); /* let #bgField metaballs breathe */
+  ctx.clearRect(0,0,W,H); /* GIF #bgField is the background — no black plate */
   // mobile: raise cy bias so hex owns mid (≥55% of viewport above dock)
   const s=Math.min(W,H)*(W<=900?0.70:0.66)*cam.zoom;
   const cx0=W*0.50+cam.panX, cy0=(W<=900?H*0.30:H*0.50)+cam.panY;
