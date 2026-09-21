@@ -2225,6 +2225,154 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 .spiralField, .tunnelWindowsKeyed, .hexCoreKeyed, .hexCore, .tunnelGrid{ display:none!important; }
 body{ background:#000!important; }
 
+
+/* clientMasterpieceDuo — cinematic polish on the two-GIF field + glass desk */
+:root{
+  --mp-cyan: #5eead4;
+  --mp-mag: #e879f9;
+  --mp-ink: rgba(236,244,255,.96);
+  --mp-glass: rgba(6,10,20,.48);
+  --mp-line: rgba(255,255,255,.08);
+}
+body{
+  background:#000!important;
+  color:var(--mp-ink)!important;
+}
+#bgField .duoField::after{
+  content:"";
+  position:absolute; inset:0; z-index:5; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 62% at 50% 48%, transparent 35%, rgba(0,0,0,.55) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.35) 0%, transparent 18%, transparent 72%, rgba(0,0,0,.55) 100%);
+}
+#bgField .duoField{
+  perspective:min(110vw,110vh)!important;
+  perspective-origin:50% 48%!important;
+}
+#bgField .duoField .hybridA{
+  opacity:.78!important;
+  filter:contrast(1.5) brightness(1.08) saturate(1.05) hue-rotate(8deg)!important;
+}
+#bgField .duoField .hybridB{
+  opacity:1!important;
+  filter:contrast(1.55) brightness(1.22) saturate(1.35)!important;
+}
+#top{
+  top:max(14px, calc(var(--safe-t) + 6px))!important;
+  width:auto!important;
+  max-width:min(420px, calc(100vw - 28px))!important;
+  padding:.28rem .85rem!important;
+  gap:.55rem!important;
+  background:rgba(4,8,16,.42)!important;
+  border:1px solid var(--mp-line)!important;
+  box-shadow:0 8px 32px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06)!important;
+  backdrop-filter:blur(16px) saturate(1.2)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(1.2)!important;
+}
+#top .title{
+  font-size:.62rem!important;
+  letter-spacing:.28em!important;
+  font-weight:650!important;
+  color:rgba(240,250,255,.92)!important;
+  text-shadow:0 0 18px rgba(94,234,212,.25)!important;
+}
+#top .metrics{
+  opacity:.55!important;
+  font-size:.52rem!important;
+  letter-spacing:.04em!important;
+}
+#top .metrics .a b{ color:var(--mp-cyan)!important; }
+#top .metrics .r b{ color:var(--mp-mag)!important; }
+#uploadBox,
+#sortedFigures .tray{
+  background:linear-gradient(165deg, rgba(12,18,32,.55) 0%, rgba(4,8,16,.62) 100%)!important;
+  border:1px solid var(--mp-line)!important;
+  border-radius:16px!important;
+  backdrop-filter:blur(18px) saturate(1.25)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.25)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04),
+    0 20px 56px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+#uploadBox{
+  border-color:rgba(94,234,212,.38)!important;
+  box-shadow:
+    0 0 0 1px rgba(94,234,212,.12),
+    0 0 40px rgba(34,211,238,.08),
+    0 20px 56px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+#sortedFigures .tray.admit{ border-color:rgba(94,234,212,.42)!important; }
+#sortedFigures .tray.release{ border-color:rgba(232,121,249,.4)!important; }
+#uploadBox::before,
+#sortedFigures .tray::before{
+  height:26px!important;
+  margin:-.55rem -.55rem .6rem!important;
+  border-radius:16px 16px 0 0!important;
+  background:linear-gradient(180deg, rgba(32,40,58,.88) 0%, rgba(10,14,24,.9) 100%)!important;
+  border-bottom:1px solid rgba(255,255,255,.07)!important;
+}
+#uploadBox::after{ color:rgba(94,234,212,.45)!important; }
+#sortedFigures .tray.admit::after{ color:rgba(94,234,212,.45)!important; }
+#sortedFigures .tray.release::after{ color:rgba(232,121,249,.5)!important; }
+#uploadBox .uh b,
+#sortedFigures .tray h3{
+  letter-spacing:.18em!important;
+  font-weight:600!important;
+  font-size:.58rem!important;
+}
+#sortedFigures .tray.admit h3{
+  color:rgba(165,243,252,.95)!important;
+  text-shadow:0 0 14px rgba(34,211,238,.35)!important;
+}
+#sortedFigures .tray.release h3{
+  color:rgba(240,171,252,.95)!important;
+  text-shadow:0 0 14px rgba(232,121,249,.3)!important;
+}
+#uploadBox .dropHint{
+  border-radius:10px!important;
+  border:1px dashed rgba(94,234,212,.32)!important;
+  background:rgba(0,20,32,.4)!important;
+}
+#uploadBox textarea{
+  border-radius:10px!important;
+  background:rgba(0,6,14,.55)!important;
+  border:1px solid rgba(94,234,212,.22)!important;
+  color:rgba(230,242,255,.92)!important;
+}
+#uploadBox .actions #runSort{
+  color:rgba(165,243,252,.95)!important;
+  letter-spacing:.08em!important;
+}
+#sortedFigures .chipFig{
+  font-size:.54rem!important;
+  letter-spacing:.02em!important;
+  transition:color .18s ease, transform .18s ease!important;
+}
+#sortedFigures .chipFig:hover{ transform:translateX(2px); }
+#sortedFigures .tray.admit .chipFig:hover{ color:var(--mp-cyan)!important; }
+#sortedFigures .tray.release .chipFig:hover{ color:var(--mp-mag)!important; }
+#intake, #log, #sub, #moreWrap, #morePanel, #cheat, #navhint, #phaseWhisper{
+  display:none!important;
+}
+#tip{
+  background:rgba(4,10,18,.72)!important;
+  border:1px solid rgba(94,234,212,.25)!important;
+  border-radius:10px!important;
+  backdrop-filter:blur(12px)!important;
+  box-shadow:0 12px 40px rgba(0,0,0,.5)!important;
+  font-size:.58rem!important;
+  letter-spacing:.03em!important;
+}
+@media (max-width:900px){
+  #top{ padding:.22rem .65rem!important; }
+  #top .title{ letter-spacing:.2em!important; font-size:.52rem!important; }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .duoField::after{ opacity:.85; }
+}
+
 </style>
 </head>
 <body>
@@ -5731,23 +5879,22 @@ function drawDeskSealWiring(cx,cy,s,t){ return;
 }
 
 function syncSpinPhase(t){
-  /* clientForcePerspective|clientDuoHarmony — φ spin + fixed tilt; no size enlarge */
+  /* clientMasterpieceDuo — slower cinematic φ nest + soft perspective tilt */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
   if(typeof reduceMotion!=="undefined" && reduceMotion){
     _bgFieldEl.style.setProperty("--duo-a","0deg");
     _bgFieldEl.style.setProperty("--duo-b","0deg");
-    _bgFieldEl.style.setProperty("--duo-tilt","0deg");
+    _bgFieldEl.style.setProperty("--duo-tilt","12deg");
     return;
   }
   const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
   const phi=(typeof PHI==="number")?PHI:1.6180339887;
-  const omega=base*(1/(phi*phi*phi))*0.085;
+  const omega=base*(1/(phi*phi*phi))*0.055;
   const theta=t*omega;
   const degA=(theta*180/Math.PI);
   const degB=(theta/phi*180/Math.PI);
-  /* gentle tilt breathe — perspective force, not scale */
-  const tilt=(18+2.2*Math.sin(t*base*(1/phi))).toFixed(2)+"deg";
+  const tilt=(14+1.6*Math.sin(t*base*(1/phi)*0.35)).toFixed(2)+"deg";
   const a=degA.toFixed(3)+"deg";
   const b=degB.toFixed(3)+"deg";
   if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoTilt!==tilt){
@@ -5755,8 +5902,8 @@ function syncSpinPhase(t){
     _bgFieldEl.style.setProperty("--duo-a", a);
     _bgFieldEl.style.setProperty("--duo-b", b);
     _bgFieldEl.style.setProperty("--duo-tilt", tilt);
-    _bgFieldEl.style.setProperty("--duo-z-a", "-120px");
-    _bgFieldEl.style.setProperty("--duo-z-b", "40px");
+    _bgFieldEl.style.setProperty("--duo-z-a", "-90px");
+    _bgFieldEl.style.setProperty("--duo-z-b", "28px");
   }
 }
 
