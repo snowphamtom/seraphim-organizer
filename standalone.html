@@ -3631,8 +3631,16 @@ function drawUploadStream(cx,cy,s,t){
   if(!uploadFX||uploadFX.flash<0.02 && !uploadFX.sparks.length) return;
   const age=(performance.now()-uploadFX.t0)*0.001;
   uploadFX.flash*=0.94;
-  /* origin: upload desk center (bottom) */
-  const ox=W*0.5, oy=H-Math.min(160, H*0.22);
+  /* clientAllWired: origin = live Upload window facing seal */
+  let ox=W*0.5, oy=H-Math.min(160, H*0.22);
+  const ub=document.getElementById("uploadBox");
+  if(ub){
+    const br=ub.getBoundingClientRect();
+    if(br.width>8&&br.height>8){
+      ox=br.left+br.width*0.5;
+      oy=br.top+br.height*0.35;
+    }
+  }
   ctx.save(); ctx.globalCompositeOperation="lighter";
   /* intake bloom at desk */
   if(uploadFX.flash>0.05){
@@ -4835,6 +4843,7 @@ function syncGyroSharedCenter(cx,cy,s,t){
   lockSealTriad(cx,cy);
   syncBeamTrioRays();
   syncHexCoreToDodeca(cx,cy,s); /* clientHexCoreMatch */
+  if(typeof syncSpinPhase==="function") syncSpinPhase(t||0);
   /* φ nest breath — iso recessed, beams/voxel mid-depth; scale-only (no second axis) */
   const nest=Math.sin((t||0)*TEMPO.base*(TEMPO.nest||1/PHI));
   const isoSc=(0.84+0.045*nest).toFixed(4);
@@ -5595,6 +5604,88 @@ function drawHexCoreWires(cx,cy,s,t){
 }
 
 
+
+
+function drawDeskSealWiring(cx,cy,s,t){
+  /* clientAllWired — continuous spines: Upload / Organized / Aside ↔ seal rim ↔ hub */
+  if(reduceMotion) return;
+  const thin=W<=480, mobile=W<=900;
+  const maxR=_sealHub.hexR || s*0.55;
+  const links=[
+    {id:"uploadBox", hue:195},
+    {id:"trayAdmit", hue:192},
+    {id:"trayRelease", hue:305}
+  ];
+  const breath=0.55+0.45*Math.sin(t*TEMPO.base*2.2);
+  const boost=0.25*sealPulse+0.4*celebrate+0.3*sealLockFlash;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  for(let i=0;i<links.length;i++){
+    const L=links[i];
+    const el=document.getElementById(L.id);
+    if(!el||el.offsetParent===null) continue;
+    const r=el.getBoundingClientRect();
+    if(r.width<8||r.height<8) continue;
+    const wx=r.left+r.width*0.5, wy=r.top+r.height*0.5;
+    const dx=cx-wx, dy=cy-wy, dist=Math.hypot(dx,dy)||1;
+    const ux=dx/dist, uy=dy/dist;
+    const ox=wx+ux*Math.min(r.width,r.height)*0.35;
+    const oy=wy+uy*Math.min(r.width,r.height)*0.35;
+    const ang=Math.atan2(oy-cy, ox-cx);
+    const [rx,ry]=sealRayAt(cx,cy,ang,maxR*0.92);
+    const a0=(0.10+0.08*breath+boost*0.2)*(mobile?0.75:1);
+    /* spine window → rim */
+    const g1=ctx.createLinearGradient(ox,oy,rx,ry);
+    g1.addColorStop(0,hsl(L.hue,95,60,a0*0.15));
+    g1.addColorStop(0.55,hsl(L.hue+20,95,62,a0*0.55));
+    g1.addColorStop(1,hsl(L.hue+35,90,65,a0*0.35));
+    ctx.strokeStyle=g1;
+    ctx.lineWidth=thin?1.0:1.45;
+    ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(rx,ry); ctx.stroke();
+    /* rim → hub */
+    const g2=ctx.createLinearGradient(rx,ry,cx,cy);
+    g2.addColorStop(0,hsl(L.hue+20,95,62,a0*0.4));
+    g2.addColorStop(1,hsl(L.hue,90,55,0));
+    ctx.strokeStyle=g2;
+    ctx.lineWidth=thin?0.7:1.0;
+    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(cx,cy); ctx.stroke();
+    /* node kisses */
+    ctx.fillStyle=hsl(L.hue,100,68,a0*0.7);
+    ctx.beginPath(); ctx.arc(ox,oy,thin?1.3:1.7,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(rx,ry,thin?1.5:2.0,0,Math.PI*2); ctx.fill();
+  }
+  /* mote traveling desk→seal on each spine */
+  if(!thin){
+    for(let i=0;i<links.length;i++){
+      const L=links[i];
+      const el=document.getElementById(L.id);
+      if(!el||el.offsetParent===null) continue;
+      const r=el.getBoundingClientRect();
+      if(r.width<8) continue;
+      const wx=r.left+r.width*0.5, wy=r.top+r.height*0.5;
+      const ang=Math.atan2(wy-cy, wx-cx);
+      const [rx,ry]=sealRayAt(cx,cy,ang,maxR*0.92);
+      const ox=wx+(cx-wx)*0.15, oy=wy+(cy-wy)*0.15;
+      const u=(t*TEMPO.base*0.35+i*0.33)%1;
+      const mx=ox+(rx-ox)*u, my=oy+(ry-oy)*u;
+      ctx.fillStyle=hsl(L.hue,100,70,0.35*(1-u));
+      ctx.beginPath(); ctx.arc(mx,my,1.6,0,Math.PI*2); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+function syncSpinPhase(t){
+  /* clientAllWired — shared spin clock so layers stay phase-locked */
+  if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
+  if(!_bgFieldEl) return;
+  /* negative delay locks all animations to one timeline */
+  const ph=(-t*0.15).toFixed(3)+"s";
+  if(_bgFieldEl._spinPh!==ph){
+    _bgFieldEl._spinPh=ph;
+    _bgFieldEl.style.setProperty("--spin-phase", ph);
+  }
+}
 
 function drawUltimateHybrid(cx,cy,s,t){
   /* clientHybridRefine — quieter Magpie rings/plexus; hex GIFs own the read */
@@ -6588,9 +6679,12 @@ function frame(now){
   if(!reduceMotion) drawUploadStream(cx,cy,s,t);
   drawSortShockwave(cx,cy,s);
   drawSoftCrossVeil();
-  if(!reduceMotion && !skipHeavy) drawUltimateHybrid(cxH,cyH,s,t); /* clientUltimateHybrid */
-  drawHexFrame(cxH,cyH,s,t); /* quiet dodeca edges */
-  if(!reduceMotion && !skipHeavy) drawWindowLightnings(cxH,cyH,s,t); /* Magpie bolts */
+  syncSpinPhase(t); /* clientAllWired shared spin clock */
+  if(!reduceMotion && !skipHeavy) drawUltimateHybrid(cxH,cyH,s,t); /* rings+plexus */
+  drawHexFrame(cxH,cyH,s,t); /* dodeca edges */
+  if(!reduceMotion && !skipHeavy) drawHexCoreWires(cxH,cyH,s,t); /* hex rim ↔ dodeca sides */
+  if(!reduceMotion && !skipHeavy) drawDeskSealWiring(cxH,cyH,s,t); /* windows ↔ seal spines */
+  if(!reduceMotion && !skipHeavy) drawWindowLightnings(cxH,cyH,s,t); /* jagged bolts on spines */
   // FPS guard: drop WebGL if frames tank on mobile
   if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
   else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
