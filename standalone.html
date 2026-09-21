@@ -1263,10 +1263,11 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
 }
 
 
+
 /* clientHexCoreKeyed — black keyed out; locked to dodeca hub via --seal-x/y/s */
-/* clientHexCoreMatch — CSS YPR = canvas project(); size = projected vert ring */
+/* clientHexCore3D — GIF is pre-rendered 3D billboard; canvas project() owns tumble */
 #bgField{
-  perspective: 1100px;
+  perspective: none;
   perspective-origin: var(--seal-x, 50%) var(--seal-y, 40%);
 }
 #bgField .hexCoreKeyed{
@@ -1275,15 +1276,12 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
   top:var(--seal-y, 40%);
   width:var(--seal-s, min(78vmin, 560px));
   height:var(--seal-s, min(78vmin, 560px));
-  transform:translate(-50%, -50%) rotateY(var(--seal-yaw, 0deg)) rotateX(var(--seal-pitch, 0deg)) rotateZ(var(--seal-roll, 0deg));
-  transform-style:preserve-3d;
-  will-change:transform;
+  transform:translate(-50%, -50%);
   display:block !important;
-  opacity:0.96;
+  opacity:0.82;
   pointer-events:none;
   mix-blend-mode:screen;
-  filter:saturate(1.1) contrast(1.06) brightness(1.04);
-  backface-visibility:hidden;
+  filter:saturate(1.12) contrast(1.06) brightness(1.05);
 }
 #bgField .hexCoreKeyed picture,
 #bgField .hexCoreKeyed img{
@@ -1294,9 +1292,6 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
 @media (prefers-reduced-motion:reduce){
   #bgField .hexCoreKeyed img.anim{ display:none !important; }
   #bgField .hexCoreKeyed img.still{ display:block !important; }
-  #bgField .hexCoreKeyed{
-    transform:translate(-50%, -50%) !important;
-  }
 }
 
 /* clientTrioAssets — spiral + tunnel-windows + hex-core (black keyed) */
@@ -1306,15 +1301,12 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
   top:var(--seal-y, 40%);
   width:var(--seal-tunnel, min(120vmin, 900px));
   height:var(--seal-tunnel, min(120vmin, 900px));
-  transform:translate(-50%, -50%) rotateY(var(--seal-yaw, 0deg)) rotateX(var(--seal-pitch, 0deg)) rotateZ(var(--seal-roll, 0deg));
-  transform-style:preserve-3d;
-  will-change:transform;
+  transform:translate(-50%, -50%);
   display:block !important;
-  opacity:0.88;
+  opacity:0.72;
   pointer-events:none;
   mix-blend-mode:screen;
-  filter:saturate(1.15) contrast(1.08) brightness(1.05);
-  backface-visibility:hidden;
+  filter:saturate(1.12) contrast(1.06) brightness(1.04);
 }
 #bgField .tunnelWindowsKeyed img{
   display:block; width:100%; height:100%;
@@ -1324,8 +1316,8 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
 @media (prefers-reduced-motion:reduce){
   #bgField .tunnelWindowsKeyed img.anim{ display:none !important; }
   #bgField .tunnelWindowsKeyed img.still{ display:block !important; }
-  #bgField .tunnelWindowsKeyed{ transform:translate(-50%, -50%) !important; }
 }
+
 
 
 
@@ -4735,8 +4727,9 @@ function drawSealContrastVeil(cx,cy,s){ /* hexCoreGyroSeal */ return;
 
 
 
+
 function syncHexCoreToDodeca(cx,cy,s){
-  /* clientHexCoreMatch — size to projected vert ring; YPR = canvas project() */
+  /* clientHexCore3D — billboard size only; no CSS YPR (GIF is already 3D art) */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_hexCoreEl) _hexCoreEl=document.querySelector("#bgField .hexCoreKeyed");
   if(!_bgFieldEl) return;
@@ -4751,23 +4744,184 @@ function syncHexCoreToDodeca(cx,cy,s){
     }
   }
   _sealHub.hexR=maxR;
-  const ss=Math.round(maxR*2*1.04)+"px";
+  const ss=Math.round(maxR*2*1.06)+"px";
   if(_bgFieldEl._sealS!==ss){ _bgFieldEl._sealS=ss; _bgFieldEl.style.setProperty("--seal-s", ss); }
+  const tun=Math.round(maxR*2*1.85)+"px";
+  if(_bgFieldEl._sealTun!==tun){ _bgFieldEl._sealTun=tun; _bgFieldEl.style.setProperty("--seal-tunnel", tun); }
+}
+
+function drawHexCore3D(cx,cy,s,t){
+  /* clientHexCore3D — true projected sphere + triad funnels + hex cage (matches GIF structure) */
   if(reduceMotion) return;
-  const yaw=cam.yaw+cam.userYaw;
-  const pitch=cam.pitch+cam.userPitch;
-  const roll=cam.roll+cam.userRoll;
-  /* match project(): yaw(Y) → pitch(X) → roll(Z); negate pitch for screen-Y flip */
-  const yD=(yaw*180/Math.PI).toFixed(2)+"deg";
-  const pD=((-pitch)*180/Math.PI).toFixed(2)+"deg";
-  const rD=(roll*180/Math.PI).toFixed(2)+"deg";
-  if(_bgFieldEl._syaw!==yD){ _bgFieldEl._syaw=yD; _bgFieldEl.style.setProperty("--seal-yaw", yD); }
-  if(_bgFieldEl._spit!==pD){ _bgFieldEl._spit=pD; _bgFieldEl.style.setProperty("--seal-pitch", pD); }
-  if(_bgFieldEl._srol!==rD){ _bgFieldEl._srol=rD; _bgFieldEl.style.setProperty("--seal-roll", rD); }
+  const thin=W<=480, mobile=W<=900;
+  const pulse=0.55+0.45*Math.sin(t*TEMPO.base*2.8);
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+
+  /* --- central sphere wire (lat/lon) via project() --- */
+  const Rs=0.38;
+  const mer=thin?8:(mobile?10:14);
+  const par=thin?5:(mobile?6:8);
+  for(let m=0;m<mer;m++){
+    const lon=m/mer*Math.PI*2;
+    ctx.beginPath();
+    let first=true;
+    for(let k=0;k<=24;k++){
+      const lat=-Math.PI/2+k/24*Math.PI;
+      const x=Rs*Math.cos(lat)*Math.cos(lon);
+      const y=Rs*Math.sin(lat);
+      const z=Rs*Math.cos(lat)*Math.sin(lon);
+      const [px,py,d]=project(x,y,z,cx,cy,s);
+      const near=Math.max(0.25, Math.min(1, 0.55+d*0.4));
+      if(first){ ctx.moveTo(px,py); first=false; }
+      else ctx.lineTo(px,py);
+      if(k===12){
+        ctx.strokeStyle=hsl(280+m*18+t*40,95,60,(0.12+0.1*pulse)*near*(mobile?0.7:1));
+        ctx.lineWidth=thin?0.55:0.85;
+        ctx.stroke(); ctx.beginPath(); ctx.moveTo(px,py);
+      }
+    }
+    ctx.strokeStyle=hsl(200+m*12+t*30,95,58,(0.10+0.08*pulse)*(mobile?0.65:1));
+    ctx.lineWidth=thin?0.5:0.75;
+    ctx.stroke();
+  }
+  for(let p=1;p<par;p++){
+    const lat=-Math.PI/2+p/par*Math.PI;
+    const rr=Rs*Math.cos(lat), yy=Rs*Math.sin(lat);
+    ctx.beginPath();
+    for(let k=0;k<=36;k++){
+      const lon=k/36*Math.PI*2;
+      const [px,py]=project(rr*Math.cos(lon), yy, rr*Math.sin(lon), cx,cy,s);
+      k?ctx.lineTo(px,py):ctx.moveTo(px,py);
+    }
+    ctx.closePath();
+    ctx.strokeStyle=hsl(320+p*15+t*25,90,58,0.10+0.08*pulse);
+    ctx.lineWidth=thin?0.45:0.7;
+    ctx.stroke();
+  }
+  /* lava metaballs — soft projected blobs inside sphere */
+  if(!thin){
+    for(let i=0;i<5;i++){
+      const a=t*TEMPO.base*(0.35+i*0.07)+i*1.7;
+      const bx=Math.cos(a)*0.14*(0.6+0.4*Math.sin(t+i));
+      const by=Math.sin(a*1.3)*0.12;
+      const bz=Math.sin(a*0.9)*0.14;
+      const [px,py,d,persp]=project(bx,by,bz,cx,cy,s);
+      const hue=[320,25,95,185,55][i];
+      const rad=(7+i)*persp*(0.85+0.15*pulse);
+      const g=ctx.createRadialGradient(px,py,0,px,py,rad*2.2);
+      g.addColorStop(0,hsl(hue,100,62,0.35*persp));
+      g.addColorStop(0.45,hsl(hue+20,95,55,0.12*persp));
+      g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(px,py,rad*2.2,0,Math.PI*2); ctx.fill();
+    }
+  }
+
+  /* --- triad funnels in local XY (tumble with cam via project) --- */
+  const triad=lockSealTriad(cx,cy);
+  /* map screen triad angles → 3D directions in seal XY before projection:
+     use unit vectors in world that project near those angles — sample face centers */
+  const dirs=[];
+  const fcs=DODECA&&DODECA.faceCenters;
+  if(fcs&&fcs.length>=3){
+    const used=new Set();
+    for(const ang of triad){
+      let best=null, bestScore=1e9;
+      for(let fi=0;fi<fcs.length;fi++){
+        if(used.has(fi)) continue;
+        const fc=fcs[fi];
+        const [px,py]=project(fc.x,fc.y,fc.z,cx,cy,s);
+        const a=Math.atan2(py-cy,px-cx);
+        let da=Math.abs(((a-ang+Math.PI*3)%(Math.PI*2))-Math.PI);
+        if(da<bestScore){bestScore=da; best={fi,x:fc.x,y:fc.y,z:fc.z};}
+      }
+      if(best){ used.add(best.fi); const L=Math.hypot(best.x,best.y,best.z)||1;
+        dirs.push({x:best.x/L,y:best.y/L,z:best.z/L}); }
+    }
+  }
+  while(dirs.length<3){
+    const a=dirs.length*Math.PI*2/3;
+    dirs.push({x:Math.cos(a),y:Math.sin(a),z:0});
+  }
+
+  const rings=thin?5:(mobile?7:9);
+  for(let fi=0;fi<3;fi++){
+    const d=dirs[fi];
+    /* orthonormal basis for funnel rings */
+    let ux=-d.y, uy=d.x, uz=0;
+    let ul=Math.hypot(ux,uy,uz); if(ul<1e-4){ ux=0; uy=-d.z; uz=d.y; ul=Math.hypot(ux,uy,uz); }
+    ux/=ul; uy/=ul; uz/=ul;
+    let vx=d.y*uz-d.z*uy, vy=d.z*ux-d.x*uz, vz=d.x*uy-d.y*ux;
+    const vl=Math.hypot(vx,vy,vz)||1; vx/=vl; vy/=vl; vz/=vl;
+    const hue0=185+fi*55+t*20;
+    for(let i=0;i<=rings;i++){
+      const u=i/rings; /* 0=outer mouth, 1=near sphere */
+      const along=0.95-u*0.52;
+      const ringR=(0.28*(1-u)+0.05)*(0.92+0.08*pulse);
+      const cx3=d.x*along, cy3=d.y*along, cz3=d.z*along;
+      const segs=thin?10:16;
+      ctx.beginPath();
+      for(let k=0;k<=segs;k++){
+        const th=k/segs*Math.PI*2;
+        const ox=cx3+(ux*Math.cos(th)+vx*Math.sin(th))*ringR;
+        const oy=cy3+(uy*Math.cos(th)+vy*Math.sin(th))*ringR;
+        const oz=cz3+(uz*Math.cos(th)+vz*Math.sin(th))*ringR;
+        const [px,py]=project(ox,oy,oz,cx,cy,s);
+        k?ctx.lineTo(px,py):ctx.moveTo(px,py);
+      }
+      ctx.closePath();
+      ctx.strokeStyle=hsl(hue0+u*40,95,58,(0.14+0.1*(1-u))*pulse*(mobile?0.7:1));
+      ctx.lineWidth=thin?0.55:0.85;
+      ctx.stroke();
+    }
+    /* rainbow lightning pill along funnel throat */
+    const p0=0.82, p1=0.48;
+    const [ax,ay]=project(d.x*p0,d.y*p0,d.z*p0,cx,cy,s);
+    const [bx,by]=project(d.x*p1,d.y*p1,d.z*p1,cx,cy,s);
+    const g=ctx.createLinearGradient(ax,ay,bx,by);
+    g.addColorStop(0,hsl(hue0,100,62,0.55));
+    g.addColorStop(0.5,hsl(hue0+60,100,60,0.7));
+    g.addColorStop(1,hsl(hue0+120,100,58,0.45));
+    ctx.strokeStyle=g;
+    ctx.lineWidth=thin?3.2:5.2;
+    ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+    ctx.strokeStyle=hsl(0,0,100,0.35);
+    ctx.lineWidth=thin?1.1:1.8;
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+  }
+
+  /* --- outer hex cage in local XY (6 verts) — tumbles with project --- */
+  const hexR=1.02;
+  const hexPts=[];
+  for(let i=0;i<6;i++){
+    const a=i/6*Math.PI*2+Math.PI/6;
+    hexPts.push(project(Math.cos(a)*hexR, Math.sin(a)*hexR, 0, cx,cy,s));
+  }
+  ctx.beginPath();
+  for(let i=0;i<6;i++){
+    const p=hexPts[i];
+    i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]);
+  }
+  ctx.closePath();
+  ctx.strokeStyle=hsl(200+t*30,95,60,0.35+0.15*pulse);
+  ctx.lineWidth=thin?1.1:1.6;
+  ctx.stroke();
+  /* spokes hub → hex verts */
+  const [hx0,hy0]=project(0,0,0,cx,cy,s);
+  for(let i=0;i<6;i++){
+    const p=hexPts[i];
+    ctx.strokeStyle=hsl(280+i*20,90,58,0.12+0.08*pulse);
+    ctx.lineWidth=0.7;
+    ctx.beginPath(); ctx.moveTo(hx0,hy0); ctx.lineTo(p[0],p[1]); ctx.stroke();
+    ctx.fillStyle=hsl(0,0,100,0.55);
+    ctx.beginPath(); ctx.arc(p[0],p[1],thin?1.3:1.8,0,Math.PI*2); ctx.fill();
+  }
+
+  ctx.restore();
 }
 
 function drawHexCoreWires(cx,cy,s,t){
-  /* clientHexCoreMatch — wire every exact dodeca side (edge) + face rim ties */
+  /* clientHexCore3D — tether billboard GIF to live dodeca edges (exact sides) */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
   if(reduceMotion) return;
@@ -4779,10 +4933,9 @@ function drawHexCoreWires(cx,cy,s,t){
       if(r>maxR) maxR=r;
     }
   }
-  const hexR=maxR*0.70; /* keyed hex body sits inside vert ring */
+  const hexR=maxR*0.72;
   const pulse=0.55+0.45*Math.sin(t*TEMPO.base*3.1);
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  /* 1) exact sides — every projected edge */
   for(let ei=0;ei<DODECA.edges.length;ei++){
     const [i,j]=DODECA.edges[ei];
     const a=pv[i], b=pv[j];
@@ -4790,46 +4943,22 @@ function drawHexCoreWires(cx,cy,s,t){
     const depth=((a.d||0)+(b.d||0))*0.5;
     const near=Math.max(0.2, Math.min(1, 0.5+depth*0.45));
     const hue=188+(ei%5)*24+10*Math.sin(t*0.7+ei);
-    const a0=(0.18+0.14*pulse)*near*(mobile?0.7:1);
-    ctx.strokeStyle=hsl(hue,100,54,a0*0.4);
-    ctx.lineWidth=(thin?1.4:2.2)*near;
+    const a0=(0.14+0.12*pulse)*near*(mobile?0.65:1);
+    ctx.strokeStyle=hsl(hue+18,100,66,a0*0.85);
+    ctx.lineWidth=(thin?0.55:0.8)*near;
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-    ctx.strokeStyle=hsl(hue+18,100,66,a0*0.95);
-    ctx.lineWidth=(thin?0.65:0.95)*near;
-    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-    /* rim hitch at edge mid → ties hex body to this side */
     const mx=(a.x+b.x)*0.5, my=(a.y+b.y)*0.5;
     const ang=Math.atan2(my-cy, mx-cx);
     const hx=cx+Math.cos(ang)*hexR, hy=cy+Math.sin(ang)*hexR;
-    ctx.strokeStyle=hsl(hue+8,95,60,a0*0.55);
-    ctx.lineWidth=thin?0.55:0.8;
+    ctx.strokeStyle=hsl(hue+8,95,60,a0*0.4);
+    ctx.lineWidth=thin?0.45:0.65;
     ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(mx,my); ctx.stroke();
-    if(!thin && near>0.45){
-      ctx.fillStyle=hsl(hue,100,68,a0*0.65);
-      ctx.beginPath(); ctx.arc(mx,my,1.35,0,Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(hx,hy,1.1,0,Math.PI*2); ctx.fill();
-    }
   }
-  /* 2) vert nodes — exact corners */
   for(let i=0;i<pv.length;i++){
     const v=pv[i];
     const near=Math.max(0.25, Math.min(1, 0.55+(v.d||0)*0.4));
-    const hue=200+i*7+t*18;
-    ctx.fillStyle=hsl(hue,100,66,(0.35+0.25*pulse)*near);
-    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.2:1.7,0,Math.PI*2); ctx.fill();
-  }
-  /* 3) face outline whisper — soft face-center spokes */
-  const fcs=DODECA._faceCenters2d;
-  if(fcs&&!thin){
-    for(let fi=0;fi<fcs.length;fi++){
-      const fc=fcs[fi];
-      const ang=Math.atan2(fc[1]-cy, fc[0]-cx);
-      const hx=cx+Math.cos(ang)*hexR*0.82, hy=cy+Math.sin(ang)*hexR*0.82;
-      const a0=0.08+0.06*pulse;
-      ctx.strokeStyle=hsl(280+fi*8,90,60,a0);
-      ctx.lineWidth=0.55;
-      ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(fc[0],fc[1]); ctx.stroke();
-    }
+    ctx.fillStyle=hsl(200+i*7+t*18,100,66,(0.3+0.2*pulse)*near);
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.1:1.5,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 }
@@ -5782,7 +5911,8 @@ function frame(now){
   drawSealContrastVeil(cx,cy,s); /* stays no-op — no black plate behind seal */
   drawSphereWire(cxH,cyH,s,t); /* soft sphere core at origin */
   drawHexFrame(cxH,cyH,s,t); /* projected dodeca edges + face whisper */
-  if(!reduceMotion && !skipHeavy) drawHexCoreWires(cxH,cyH,s,t); /* clientHexCoreKeyed */
+  if(!reduceMotion && !skipHeavy) drawHexCore3D(cxH,cyH,s,t); /* clientHexCore3D */
+  if(!reduceMotion && !skipHeavy) drawHexCoreWires(cxH,cyH,s,t); /* clientHexCore3D tether */
   if(!reduceMotion && !skipHeavy) drawWindowLightnings(cxH,cyH,s,t); /* clientWinLightning */
   drawInnerCubeWire(cxH,cyH,s,t);
   drawSealBreath(cx,cy,s,t);
