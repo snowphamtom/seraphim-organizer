@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -495,7 +495,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   #sortedFigures .chipFig{animation:none}
 }
 
-/* uploadSortFX — canvas stream kept; DOM box pulse removed for markdownMaster */
+/* uploadSortFX — canvas stream kept; DOM box pulse removed for markdownMaster|motionIntricateFast */
 @keyframes scanSweep{
   0%{background-position:100% 0}
   100%{background-position:-100% 0}
@@ -1013,17 +1013,19 @@ const isMobileLayout=()=>W<=900;
 const LERP_BASE=reduceMotion?1:(isTouch?0.11:0.13); // polishPass2: softer settle, damp mobile jitter
 const PHI=1.6180339887;
 const TEMPO={
-  base:0.34,           // rad/s primary yaw — φ family shared by every figure
-  // axes: 1 : 1/φ : 1/φ²
-  // layer rates (multipliers of base) — one gyroscopic organism
-  neon:1/1.6180339887,      // 1/φ — counter-seal ghost
-  sculpt:1/(1.6180339887*1.6180339887), // 1/φ² — spectrum mass
-  city:0.12,                // slow field drift
-  rays:0.55,                // bridge spokes
-  rings:0.34,               // orbit rings
-  lattice:0.5,
-  terrain:0.28,   // diagonal treadmill
-  undulate:0.55  // vertical warp breathe
+  base:0.78,           // rad/s primary yaw — faster organism (motionIntricateFast)
+  // axes: 1 : 1/φ : 1/φ² — keep φ family, raise multipliers
+  neon:1/1.6180339887,
+  sculpt:1/(1.6180339887*1.6180339887),
+  city:0.28,                // quicker field drift
+  rays:0.95,                // faster spokes
+  rings:0.72,               // orbit rings
+  lattice:0.95,
+  terrain:0.62,   // diagonal treadmill
+  undulate:1.15, // vertical warp breathe
+  nest:1.35,     // nested shell pulse
+  dust:1.55,     // fog/shard spin
+  micro:2.1      // fine seal glitter/facet tick
 };
 const cam={
   yaw:0.35,pitch:0.18,roll:0,panX:0,panY:0,zoom:1,auto:!reduceMotion,
@@ -1465,7 +1467,7 @@ function seedField(n){
 }
 function seedFog(){
   fogShards.length=0;
-  for(let i=0;i<16;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:TEMPO.base*0.7+(Math.random()-0.5)*TEMPO.base*0.35,ph:Math.random()*Math.PI*2});
+  for(let i=0;i<16;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:TEMPO.base*(TEMPO.dust||1.2)*0.85+(Math.random()-0.5)*TEMPO.base*(TEMPO.dust||1.2)*0.45,ph:Math.random()*Math.PI*2});
 }
 /* holoPalette: prefer hues in ~185–325 (cyan→indigo→magenta→orchid); clamp L≤68 */
 function hsl(h,s,l,a=1){const L=Math.min(68,Math.max(0,l)); return`hsla(${((h%360)+360)%360},${s}%,${L}%,${a})`;}
@@ -2153,7 +2155,7 @@ function seedInkDrops(){
 function inkClusterAnchors(t,cx,cy){
   /* synthetic rotating lattice matching ~150vmin ink wire mass */
   const R=Math.min(W,H)*0.58;
-  const spin=t*TEMPO.base*0.22;
+  const spin=t*TEMPO.base*(TEMPO.micro||1.5)*0.28;
   const out=[];
   const N=28;
   for(let i=0;i<N;i++){
@@ -2651,7 +2653,7 @@ function drawOrganizeLattice(cx,cy,s,t){
   const maxSegBase=s*(thin?0.34:mobile?0.40:0.44);
   const maxSeg=maxSegBase*(1-0.48*snap); /* stronger contract during snap */
   const shOn=sealLockFlash>0.04||sealPulse>0.08||(typeof lastCI==="number"&&lastCI>0&&prevSH);
-  const breathe=0.5+0.5*Math.sin(t*TEMPO.base*0.5);
+  const breathe=0.5+0.5*Math.sin(t*TEMPO.base*(TEMPO.nest||1)*0.85);
   const pulse=shOn?(0.78+0.22*Math.sin(t*TEMPO.base*PHI*PHI*PHI*PHI*PHI)):(0.52+0.18*breathe);
   const sealPop=Math.min(1, sealPulse*0.55+sealLockFlash*0.85+(shOn?0.12:0)+0.35*snap);
   const hueDrift=8*Math.sin(t*TEMPO.base*PHI);
@@ -2921,21 +2923,21 @@ function drawTrailsAndGlow(cx,cy,s,t){
   ctx.restore();
 }
 function drawNestedSeals(cx,cy,s,t){
-  /* polishPass3|recursiveNest: depth cue only — ≤2 shells, α×0.5; never a second seal.
+  /* polishPass3|recursiveNest: depth cue only — ≤3 shells, α×0.5; never a second seal.
      Purpose: crystal has thickness. Mobile: one whisper circle. */
   const aHex=layerAlpha("hex");
   const thin=W<=480, mobile=W<=900;
   const rings=thin?1:(mobile?1:2);
   const baseScales=rings===1?[0.88]:[0.92,0.74];
-  const pulse=0.06*sealPulse+0.03*celebrate;
-  const breathe=reduceMotion?0:(0.010*Math.sin(t*TEMPO.base*0.5));
+  const pulse=0.08*sealPulse+0.04*celebrate;
+  const breathe=reduceMotion?0:(0.018*Math.sin(t*TEMPO.base*(TEMPO.nest||1.2)));
   const po=parallaxOff("seal");
   ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.globalAlpha=aHex*0.55;
   for(let r=0;r<rings;r++){
     const depthFrac=rings===1?0:r/(rings-1);
     const sc=baseScales[r]*(1+pulse*(r===0?1.0:0.4))*(1+breathe*(1-depthFrac*0.5));
     const hue=r===0?215:195;
-    const alpha=(0.045+0.025*Math.sin(t*TEMPO.base*PHI*PHI+r*0.9))*(0.65+0.35*sealPulse);
+    const alpha=(0.045+0.025*Math.sin(t*TEMPO.base*(TEMPO.nest||1)*PHI*PHI+r*1.35))*(0.65+0.35*sealPulse);
     if(thin||mobile){
       const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
       ctx.strokeStyle=hsl(hue+t*8,80,50,alpha);
