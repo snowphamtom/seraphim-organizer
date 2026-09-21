@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2664,6 +2664,46 @@ html{ touch-action:manipulation; }
   }
 }
 
+
+/* clientEnginePrismHybrid — dodeca engine hero + Residual Prism whisper underlayer */
+#fx{
+  display:block!important; visibility:visible!important; opacity:1!important;
+  z-index:2!important; pointer-events:auto!important;
+  background:transparent!important; mix-blend-mode:normal!important;
+}
+#fxgl, #dataRail, #specBar{
+  display:none!important; visibility:hidden!important; opacity:0!important;
+  pointer-events:none!important; z-index:-1!important;
+}
+#bgField{ z-index:0!important; }
+#bgField > .residualPrism{ z-index:1!important; }
+#bgField > .residualPrism img{
+  opacity:0.28!important;
+  filter:saturate(0.85) brightness(0.9)!important;
+  animation:prismSpin 28s linear infinite!important;
+  width:min(88vmin,720px)!important;
+  height:min(88vmin,720px)!important;
+  max-width:min(88vmin,720px)!important;
+  max-height:min(88vmin,720px)!important;
+  min-width:0!important;
+  min-height:0!important;
+  object-fit:contain!important;
+  mix-blend-mode:normal!important;
+}
+@media (max-width:480px){
+  #bgField > .residualPrism img{
+    opacity:0.22!important;
+    width:min(64vmin,300px)!important;
+    height:min(64vmin,300px)!important;
+    max-width:min(64vmin,300px)!important;
+    max-height:min(64vmin,300px)!important;
+  }
+  #fx{
+    display:block!important; visibility:visible!important; opacity:1!important;
+    z-index:2!important; pointer-events:auto!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4081,7 +4121,7 @@ function drawFilmGrain(){
   return;
 }
 
-function triggerUploadFX(phase, verdicts){ /* clientNoOtherAesthetics */ return; 
+function triggerUploadFX(phase, verdicts){ /* clientEnginePrismHybrid: live */ 
   /* phase: "receive" | "sort" — visual feedback for dump intake */
   const box=$("uploadBox");
   if(box){
@@ -4119,7 +4159,7 @@ function triggerUploadFX(phase, verdicts){ /* clientNoOtherAesthetics */ return;
     sealPulse=Math.max(sealPulse,0.45);
   }
 }
-function drawUploadStream(cx,cy,s,t){ return; 
+function drawUploadStream(cx,cy,s,t){ /* clientEnginePrismHybrid: live */ 
   if(!uploadFX||uploadFX.flash<0.02 && !uploadFX.sparks.length) return;
   const age=(performance.now()-uploadFX.t0)*0.001;
   uploadFX.flash*=0.94;
@@ -4180,7 +4220,7 @@ function drawUploadStream(cx,cy,s,t){ return;
   ctx.restore();
 }
 
-function drawSortShockwave(cx,cy,s){ return; 
+function drawSortShockwave(cx,cy,s){ /* clientEnginePrismHybrid: live */ 
   /* layerPerspectiveSync|sameVectors: rings from seal VP — ellipse major/minor = depth corridor */
   if(!shockwave) return;
   const age=(performance.now()-shockwave.t0)*0.001;
@@ -4282,8 +4322,7 @@ function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(
 
 
 function drawBoxSphereVents(cx,cy,s,t){
-  /* cyberNatureFormat: purple cube/vents retired — ripples+pillars own the field */
-  return;
+  /* clientEnginePrismHybrid: engine core vents live */
   /* boxSphereVents|evenBox|impressShowpiece: even cube + sphere + 3 vents + god-rays; iridescent edges */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
@@ -4471,8 +4510,7 @@ function drawLatticeFaceDetail(cx,cy,s,t,pv){
 }
 
 function drawDodecaLatticeCage(cx,cy,s,t){
-  /* cyberNatureFormat: lattice cage retired */
-  return;
+  /* clientEnginePrismHybrid: lattice cage live */
   /* latticeCage|impressShowpiece — wire dodeca lattice + ghost twin + iridescent edges */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   const pv=[];
@@ -4784,7 +4822,7 @@ function drawCyberNatureField(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){ return; 
+function drawDodecaFrame(cx,cy,s,t){ /* clientEnginePrismHybrid: live */ 
   /* clientFlawless: hairline seal — depth-sorted, soft nodes */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
@@ -6055,7 +6093,7 @@ function drawHexCore3D(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawHexCoreWires(cx,cy,s,t){ return; 
+function drawHexCoreWires(cx,cy,s,t){ /* clientEnginePrismHybrid: live */ 
   /* clientGeoLock — tether every dodeca edge to hex rim on the SAME angle ray */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
@@ -7172,15 +7210,24 @@ function frame(now){
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
-  ctx.clearRect(0,0,W,H); /* clientNoOtherAesthetics: canvas muted — GIFs only */
+  ctx.clearRect(0,0,W,H); /* clientEnginePrismHybrid: engine face on whisper prism */
   const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom;
-  const cx=W*0.5, cy=H*0.5; /* clientSameCenterFill */
-  syncGyroSharedCenter(cx,cy,s,t); /* keep hub vars for blueStack */
+  const cx=W*0.5, cy=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY;
+  projectDodecaSeal(cx,cy,s);
+  projectInnerCube(cx,cy,s);
+  syncGyroSharedCenter(cx,cy,s,t);
   syncSpinPhase(t);
+  if(!reduceMotion) drawUploadStream(cx,cy,s,t);
+  drawSortShockwave(cx,cy,s);
+  drawSoftCrossVeil();
+  drawHexFrame(cx,cy,s,t); /* dodeca edges — un-stubbed */
+  if(!reduceMotion && !skipHeavy) drawDodecaLatticeCage(cx,cy,s,t);
+  if(!reduceMotion && !skipHeavy) drawBoxSphereVents(cx,cy,s,t);
+  if(!reduceMotion && !skipHeavy) drawHexCoreWires(cx,cy,s,t);
   if(glCanvas) glCanvas.style.display="none";
   requestAnimationFrame(frame);
 }
-requestAnimationFrame(frame); /* clientNoOtherAesthetics: no particle seeds */
+requestAnimationFrame(frame); /* clientEnginePrismHybrid: seeds stay off */
 /* cyberNatureFormat — left data rail + spectrum bars */
 (function bootCyberNatureChrome(){ /* clientBgClean skip rail/spec */ return;
   /* magpieImpressSupersede L12 — dataRail scroll + hard-driving specBar energy */
