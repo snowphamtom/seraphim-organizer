@@ -1,7 +1,7 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=TIP
-- **Commit:** `TIP` (`tunnelGridBg` after `stripToBones`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=de11d06
+- **Commit:** `de11d06` (`tunnelGridBg` after `stripToBones`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
