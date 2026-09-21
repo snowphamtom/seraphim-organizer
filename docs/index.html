@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientGemFix|clientNeonSeedHub|clientDodecaSync|clientSeedInDodeca|clientOmniGyroSync|dodecaGyroAgreed|colorHarmonyPass|contrastComplement|goldMovingNodeGif|impressShowpiece|showOffPass|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; cyberNatureFormat restored as centerpiece */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientGemFix|clientNeonSeedHub|clientDodecaSync|clientSeedInDodeca|clientOmniGyroSync|dodecaGyroAgreed|colorHarmonyPass|contrastComplement|goldMovingNodeGif|impressShowpiece|showOffPass|depthPerspectiveHarmony|perspectiveDepthPass|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; cyberNatureFormat restored as centerpiece */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -5931,6 +5931,280 @@ html,body{
 }
 /* end impressShowpiece|showOffPass */
 
+/* ========== depthPerspectiveHarmony|perspectiveDepthPass — FOV depth theater ========== */
+/* ONE hub (--seal-x/--seal-y). Size FG→BG small toward hub; cool far / warm near; harmonious shade */
+#bgField{
+  perspective:min(155vmin,1180px) !important;
+  perspective-origin:var(--seal-x,50%) var(--seal-y,42%) !important;
+  transform-style:preserve-3d !important;
+  /* depth size ladder: far foreshortened → mid → near largest relative */
+  --fig-field:1.42;     /* FAR: smaller field (FOV foreshorten toward hub) */
+  --fig-network:1.20;   /* MID: slightly larger */
+  --fig-wire:1.06;
+  --fig-dodeca:1.08;
+  --fig-seed:0.54;      /* NEAR: largest relative seed */
+}
+
+/* —— FAR: hex-iridescent + gold-dotfield — cooler/dimmer, softer shade, FOV foreshorten —— */
+#bgField > .hexIridescentBg{
+  z-index:1 !important;
+  opacity:0.74 !important;
+  transform-origin:var(--seal-x,50%) var(--seal-y,42%) !important;
+  transform:translateZ(-200px) scale(0.90) !important;
+  filter:none !important;
+}
+#bgField > .hexIridescentBg picture,
+#bgField > .hexIridescentBg img{
+  filter:
+    brightness(0.58) contrast(1.18) saturate(0.72)
+    hue-rotate(-14deg) !important; /* cool/dim far plate */
+}
+
+#bgField > .goldDotfield{
+  z-index:3 !important;
+  opacity:0.72 !important;
+  mix-blend-mode:screen !important;
+  transform-style:preserve-3d !important;
+  /* far plane: recessed Z + slight scale-down foreshortening; keep φ gyro */
+  transform:translate(-50%,-50%)
+    translateZ(-110px)
+    rotateY(var(--gyro-yaw,0deg))
+    rotateX(var(--gyro-pitch,0deg))
+    rotateZ(var(--gyro-roll,0deg))
+    scale(calc(var(--gif-breath,1) * 0.86)) !important;
+}
+#bgField > .goldDotfield picture,
+#bgField > .goldDotfield img{
+  mix-blend-mode:screen !important;
+  filter:
+    drop-shadow(0 0 6px rgba(180,200,220,.18))
+    drop-shadow(0 0 18px rgba(120,160,190,.10))
+    brightness(0.82) contrast(1.12) saturate(0.88)
+    sepia(0.04) hue-rotate(-18deg) !important; /* cooler quieter gold-field */
+}
+
+/* —— MID: gold-network + wire — warmer midtones, medium contrast, mid Z —— */
+#bgField > .omniGyroRig{
+  z-index:7 !important;
+  transform-style:preserve-3d !important;
+  /* mid→near stack sits slightly forward of far field */
+  transform:translate(-50%,-50%)
+    translateZ(12px)
+    rotateY(var(--gyro-yaw,0deg))
+    rotateX(var(--gyro-pitch,0deg))
+    rotateZ(var(--gyro-roll,0deg))
+    scale(calc(var(--gif-breath,1) * 1.04)) !important;
+}
+#bgField > .omniGyroRig .keyedDodecaWire{
+  z-index:2 !important;
+  opacity:0.94 !important;
+  transform:translateZ(-18px) !important;
+  transform-style:preserve-3d !important;
+}
+#bgField > .omniGyroRig .keyedDodecaWire picture,
+#bgField > .omniGyroRig .keyedDodecaWire img{
+  mix-blend-mode:screen !important;
+  filter:
+    drop-shadow(0 0 9px rgba(94,200,212,.42))
+    drop-shadow(0 0 20px rgba(232,200,120,.20))
+    drop-shadow(0 2px 10px rgba(0,0,0,.35))
+    brightness(1.00) contrast(1.18) saturate(1.02)
+    hue-rotate(8deg) !important; /* mid: cyan→gold Magpie balance */
+}
+#bgField > .omniGyroRig .goldNetwork{
+  z-index:3 !important;
+  opacity:1 !important;
+  transform:translateZ(6px) !important;
+  transform-style:preserve-3d !important;
+}
+#bgField > .omniGyroRig .goldNetwork picture,
+#bgField > .omniGyroRig .goldNetwork img{
+  mix-blend-mode:lighter !important;
+  filter:
+    drop-shadow(0 0 11px rgba(232,200,120,.52))
+    drop-shadow(0 0 26px rgba(212,168,74,.28))
+    drop-shadow(0 3px 12px rgba(0,0,0,.28))
+    brightness(1.10) contrast(1.26) saturate(1.14)
+    sepia(0.08) hue-rotate(-4deg) !important; /* warmer mid gold */
+}
+
+/* —— NEAR: seed + seal bones — largest relative, brightest gold/Magpie, stronger shade edges —— */
+#bgField > .omniGyroRig .seedInDodeca{
+  z-index:5 !important;
+  opacity:1 !important;
+  transform:translateZ(36px) !important;
+  transform-style:preserve-3d !important;
+}
+#bgField > .omniGyroRig .seedInDodeca picture,
+#bgField > .omniGyroRig .seedInDodeca img{
+  mix-blend-mode:lighter !important;
+  filter:
+    drop-shadow(0 0 10px rgba(250,204,21,.62))
+    drop-shadow(0 0 22px rgba(196,94,200,.48))
+    drop-shadow(0 0 14px rgba(94,200,212,.28))
+    drop-shadow(0 4px 14px rgba(0,0,0,.42))
+    brightness(1.16) contrast(1.28) saturate(1.16) !important; /* near pop */
+}
+
+/* Depth shading — cool far vignette + warm hub kiss + soft edge falloff (harmonious, no neon clash) */
+#bgField::before{
+  z-index:8 !important;
+  background:
+    radial-gradient(ellipse 22% 17% at var(--seal-x,50%) var(--seal-y,42%),
+      rgba(250,204,21,0.18) 0%,
+      rgba(232,200,120,0.10) 22%,
+      rgba(94,200,212,0.08) 42%,
+      rgba(196,94,200,0.05) 58%,
+      transparent 74%),
+    radial-gradient(ellipse 88% 78% at var(--seal-x,50%) var(--seal-y,42%),
+      transparent 35%,
+      rgba(8,16,36,0.28) 68%,
+      rgba(0,4,14,0.55) 100%),
+    radial-gradient(ellipse 100% 92% at 50% 100%, rgba(0,0,0,0.72) 0%, transparent 56%),
+    radial-gradient(ellipse 96% 72% at 50% 0%, rgba(0,6,18,0.52) 0%, transparent 50%) !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+}
+#bgField::after{
+  z-index:9 !important;
+  opacity:0.20 !important;
+  background:
+    radial-gradient(ellipse 120% 100% at 50% 50%,
+      transparent 42%,
+      rgba(0,0,0,0.45) 100%) !important;
+}
+
+/* Desk in front — readable dark glass over depth theater */
+#sortDesk{
+  z-index:20 !important;
+  color:rgba(242,240,252,.98) !important;
+  background:
+    linear-gradient(180deg,
+      rgba(2,4,12,0.14) 0%,
+      rgba(4,6,14,0.92) 16%,
+      rgba(2,4,10,0.98) 100%) !important;
+  backdrop-filter:blur(15px) saturate(0.94) contrast(1.05) !important;
+  -webkit-backdrop-filter:blur(15px) saturate(0.94) contrast(1.05) !important;
+  border:1px solid rgba(232,200,120,0.18) !important;
+  box-shadow:
+    0 -12px 40px rgba(0,0,0,.68),
+    0 0 0 1px rgba(94,200,212,0.10),
+    inset 0 1px 0 rgba(232,200,120,.12),
+    inset 0 -1px 0 rgba(196,94,200,.07) !important;
+}
+#uploadBox,#pasteDesk{
+  background:rgba(4,6,14,0.86) !important;
+  border-color:rgba(94,200,212,0.24) !important;
+  box-shadow:inset 0 0 0 1px rgba(232,200,120,0.07) !important;
+}
+#pasteDesk{
+  color:rgba(238,236,248,.97) !important;
+  caret-color:#e8c878 !important;
+}
+#sortedFigures .tray.admit h3{
+  color:#6edce4 !important;
+  text-shadow:0 0 14px rgba(94,200,212,0.58), 0 0 4px rgba(232,200,120,0.18) !important;
+}
+#sortedFigures .tray.release h3{
+  color:#dc82d4 !important;
+  text-shadow:0 0 14px rgba(196,94,200,0.54), 0 0 4px rgba(232,200,120,0.14) !important;
+}
+
+/* Coarse: keep depth Z + gyro; far foreshorten preserved */
+@media (pointer:coarse){
+  #bgField > .hexIridescentBg{
+    transform:translateZ(-200px) scale(0.90) !important;
+  }
+  #bgField > .goldDotfield{
+    transform:translate(-50%,-50%)
+      translateZ(-110px)
+      rotateY(var(--gyro-yaw,0deg))
+      rotateX(var(--gyro-pitch,0deg))
+      rotateZ(var(--gyro-roll,0deg))
+      scale(calc(var(--gif-breath,1) * 0.86)) !important;
+  }
+  #bgField > .omniGyroRig{
+    transform:translate(-50%,-50%)
+      translateZ(12px)
+      rotateY(var(--gyro-yaw,0deg))
+      rotateX(var(--gyro-pitch,0deg))
+      rotateZ(var(--gyro-roll,0deg))
+      scale(calc(var(--gif-breath,1) * 1.04)) !important;
+  }
+}
+/* reduced-motion → stills; depth Z/size/shade remain (no tumble) */
+@media (prefers-reduced-motion:reduce){
+  #bgField{
+    --gyro-yaw:0deg !important;
+    --gyro-pitch:0deg !important;
+    --gyro-roll:0deg !important;
+  }
+  #bgField > .hexIridescentBg{
+    transform:translateZ(-200px) scale(0.90) !important;
+  }
+  #bgField > .goldDotfield{
+    transform:translate(-50%,-50%) translateZ(-110px) scale(0.86) !important;
+    animation:none !important;
+  }
+  #bgField > .omniGyroRig{
+    transform:translate(-50%,-50%) translateZ(12px) scale(1.04) !important;
+    animation:none !important;
+  }
+  #bgField > .omniGyroRig .goldNetwork .plane,
+  #bgField > .goldDotfield .plane{
+    animation:none !important;
+  }
+  #bgField > .goldDotfield img.anim,
+  #bgField > .goldDotfield picture,
+  #bgField > .omniGyroRig .goldNetwork img.anim,
+  #bgField > .omniGyroRig .goldNetwork picture,
+  #bgField > .omniGyroRig .keyedDodecaWire img.anim,
+  #bgField > .omniGyroRig .keyedDodecaWire picture,
+  #bgField > .omniGyroRig .seedInDodeca img.anim,
+  #bgField > .omniGyroRig .seedInDodeca picture,
+  #bgField > .hexIridescentBg img.anim,
+  #bgField > .hexIridescentBg picture{ display:none !important; }
+  #bgField > .goldDotfield img.still,
+  #bgField > .omniGyroRig .goldNetwork img.still,
+  #bgField > .omniGyroRig .keyedDodecaWire img.still,
+  #bgField > .omniGyroRig .seedInDodeca img.still,
+  #bgField > .hexIridescentBg img.still{
+    display:block !important; visibility:visible !important;
+  }
+  #bgField > .hexIridescentBg img.still{
+    filter:
+      brightness(0.58) contrast(1.18) saturate(0.72)
+      hue-rotate(-14deg) !important;
+  }
+  #bgField > .goldDotfield img.still{
+    filter:
+      drop-shadow(0 0 6px rgba(180,200,220,.18))
+      brightness(0.82) contrast(1.12) saturate(0.88)
+      hue-rotate(-18deg) !important;
+  }
+  #bgField > .omniGyroRig .goldNetwork img.still{
+    filter:
+      drop-shadow(0 0 11px rgba(232,200,120,.52))
+      brightness(1.10) contrast(1.26) saturate(1.14)
+      sepia(0.08) hue-rotate(-4deg) !important;
+  }
+  #bgField > .omniGyroRig .keyedDodecaWire img.still{
+    filter:
+      drop-shadow(0 0 9px rgba(94,200,212,.42))
+      drop-shadow(0 0 20px rgba(232,200,120,.20))
+      brightness(1.00) contrast(1.18) saturate(1.02)
+      hue-rotate(8deg) !important;
+  }
+  #bgField > .omniGyroRig .seedInDodeca img.still{
+    filter:
+      drop-shadow(0 0 10px rgba(250,204,21,.62))
+      drop-shadow(0 0 22px rgba(196,94,200,.48))
+      brightness(1.16) contrast(1.28) saturate(1.16) !important;
+  }
+}
+/* end depthPerspectiveHarmony|perspectiveDepthPass */
+
+
 /* end goldKeyedOverlays */
 
 /* end keyedDodecaWireOverlay|clientSeedInDodeca|clientDodecaSync|clientOmniGyroSync|dodecaGyroAgreed */
@@ -6775,7 +7049,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:depthPerspectiveHarmony|perspectiveDepthPass|impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -8803,8 +9077,8 @@ function drawBeamRain(cx,cy,s,t){
 }
 
 function syncGyroSharedCenter(cx,cy,s,t){
-  /* clientOmniGyroSync|dodecaGyroAgreed|clientProportionalFigures|sharedSealMetrics|impressShowpiece|showOffPass:
-     ONE hub (--seal-x/--seal-y/--seal-r) + ONE rigid YPR + proportional figure scales — showpiece locked */
+  /* clientOmniGyroSync|dodecaGyroAgreed|clientProportionalFigures|sharedSealMetrics|impressShowpiece|showOffPass|depthPerspectiveHarmony|perspectiveDepthPass:
+     ONE hub (--seal-x/--seal-y/--seal-r) + ONE rigid YPR + proportional depth ladder — perspective theater locked */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
   cx=W*0.5; cy=H*0.5; /* clientOmniMid: gifts + engine share true center */
