@@ -7439,7 +7439,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:purpleOnlySite|allPurpleHues|noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres|depthPerspectiveHarmony|perspectiveDepthPass|impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:clientPurpleReformat|clientDualDodecaTether|purpleOnlySite|allPurpleHues|noStaticStraightLines|allLinesInMotion|purpleMonoRamp|purpleWhiteBlack|motionSyncGoldSpheres|depthPerspectiveHarmony|perspectiveDepthPass|impressShowpiece|showOffPass|goldMovingNodeGif|colorHarmonyPass|contrastComplement|clientProportionalFigures|sharedSealMetrics|goldKeyedOverlays|clientOmniGyroSync|dodecaGyroAgreed|clientDodecaSync|clientSeedInDodeca|keyedDodecaWireOverlay|hexIridescentBg|keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -7821,7 +7821,7 @@ function bootThreeOrbit(){
       }
       const geo=new THREE.BufferGeometry();
       geo.setAttribute("position", new THREE.Float32BufferAttribute(pos,3));
-      const hue=[0.55,0.75][ri]; /* cyan + magenta holo */
+      const hue=[0.75,0.82][ri]; /* clientPurpleReformat: violet + lilac */
       const mat=new THREE.LineBasicMaterial({color:new THREE.Color().setHSL(hue,0.85,0.55), transparent:true, opacity:0.32-ri*0.08});
       sealGrp.add(new THREE.LineSegments(geo,mat));
     });
@@ -7829,11 +7829,11 @@ function bootThreeOrbit(){
     try{
       const sphWire=new THREE.WireframeGeometry(new THREE.SphereGeometry(0.36,18,12));
       sealGrp.add(new THREE.LineSegments(sphWire, new THREE.LineBasicMaterial({
-        color:new THREE.Color().setHSL(0.55,0.9,0.6), transparent:true, opacity:0.42, depthWrite:false
+        color:new THREE.Color().setHSL(0.76,0.85,0.62), transparent:true, opacity:0.42, depthWrite:false
       })));
-      const glowMat=new THREE.MeshBasicMaterial({color:0x48c8e8, transparent:true, opacity:0.16, depthWrite:false, blending:THREE.AdditiveBlending});
+      const glowMat=new THREE.MeshBasicMaterial({color:0xa78bfa, transparent:true, opacity:0.16, depthWrite:false, blending:THREE.AdditiveBlending});
       sealGrp.add(new THREE.Mesh(new THREE.SphereGeometry(0.30,20,14), glowMat));
-      const coreMat=new THREE.MeshBasicMaterial({color:0xe8f8ff, transparent:true, opacity:0.28, depthWrite:false, blending:THREE.AdditiveBlending});
+      const coreMat=new THREE.MeshBasicMaterial({color:0xf3e8ff, transparent:true, opacity:0.28, depthWrite:false, blending:THREE.AdditiveBlending});
       sealGrp.add(new THREE.Mesh(new THREE.SphereGeometry(0.10,12,8), coreMat));
     }catch(_){ /* sphere optional — lines still carry */ }
     threeHex=sealGrp; threeScene.add(sealGrp);
@@ -8099,9 +8099,8 @@ function addStops(g, pairs){
   }
 }
 
-function project(x,y,z,cx,cy,s){
-  /* full YPR around seal center — yaw(Y) → pitch(X) → roll(Z); omni 360° */
-  const yaw=cam.yaw+cam.userYaw, pitch=cam.pitch+cam.userPitch, roll=cam.roll+cam.userRoll;
+function projectYPR(x,y,z,cx,cy,s,yaw,pitch,roll){
+  /* YPR around seal center — yaw(Y) → pitch(X) → roll(Z); shared by still+tumble */
   const cosy=Math.cos(yaw),siny=Math.sin(yaw);
   const cosp=Math.cos(pitch),sinp=Math.sin(pitch);
   const cosr=Math.cos(roll),sinr=Math.sin(roll);
@@ -8110,6 +8109,16 @@ function project(x,y,z,cx,cy,s){
   let x2=x1*cosr-y2*sinr; y2=x1*sinr+y2*cosr;
   const persp=1/(1.55+z1*0.35);
   return[cx+x2*persp*s, cy+(-y2*persp)*s*0.92, z1, persp];
+}
+function project(x,y,z,cx,cy,s){
+  /* tumbling dodeca — full omni φ-gyro cam */
+  const yaw=cam.yaw+cam.userYaw, pitch=cam.pitch+cam.userPitch, roll=cam.roll+cam.userRoll;
+  return projectYPR(x,y,z,cx,cy,s,yaw,pitch,roll);
+}
+/* clientDualDodecaTether: fixed readable pose for STILL dodeca (no cam tumble) */
+const STILL_YPR={yaw:0.42,pitch:0.28,roll:0.11};
+function projectStill(x,y,z,cx,cy,s){
+  return projectYPR(x,y,z,cx,cy,s,STILL_YPR.yaw,STILL_YPR.pitch,STILL_YPR.roll);
 }
 
 
@@ -8904,6 +8913,77 @@ function drawCyberNatureField(cx,cy,s,t){
     }
   }
   ctx.setLineDash([]);
+  ctx.restore();
+}
+
+
+/* ========== clientDualDodecaTether|clientPurpleReformat ==========
+   Dual dodeca: STILL (fixed YPR) + tumbling (omni φ-gyro cam).
+   Purple tethers: every still vertex → matching moving vertex, every frame.
+   One hub (--seal-x/--seal-y via syncGyroSharedCenter); same cx,cy,s; no XYZ grids. */
+function drawStillDodecaWire(cx,cy,s,t){
+  const sv=DODECA._stillVerts;
+  if(!sv||!sv.length||!DODECA.edges) return;
+  const thin=W<=480;
+  const breath=0.70+0.30*Math.sin(t*TEMPO.base*(TEMPO.rings||1/(PHI*PHI)));
+  ctx.save();
+  ctx.globalCompositeOperation="lighter";
+  ctx.globalAlpha=0.55;
+  for(const [i,j] of DODECA.edges){
+    const a=sv[i], b=sv[j]; if(!a||!b) continue;
+    const md=((a.d||0)+(b.d||0))*0.5;
+    const near=Math.max(0.2, Math.min(1, 0.45+md*0.22));
+    const hue=278+i*0.6;
+    ctx.strokeStyle=hsl(hue,90,62,0.28*near*breath);
+    ctx.lineWidth=(thin?1.15:1.75)*near;
+    ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+  }
+  for(let i=0;i<sv.length;i++){
+    const v=sv[i];
+    const near=Math.max(0.2, Math.min(1, 0.5+(v.d||0)*0.35));
+    const rad=(thin?1.6:2.2)*near;
+    ctx.fillStyle=hsl(285,95,78,0.55*near*breath);
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad,0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
+function drawDualDodecaTethers(cx,cy,s,t){
+  /* visible purple corner-to-corner tethers still[i]→moving[i]; stay attached every frame */
+  const sv=DODECA._stillVerts, mv=DODECA._projVerts;
+  if(!sv||!mv||sv.length!==mv.length) return;
+  const thin=W<=480;
+  const sealP=(typeof sealPulse==="number"?sealPulse:0);
+  const pulse=0.78+0.22*Math.sin(t*TEMPO.base*(TEMPO.jewel||PHI))+0.25*sealP;
+  ctx.save();
+  ctx.globalCompositeOperation="lighter";
+  ctx.globalAlpha=0.92;
+  ctx.lineCap="round";
+  for(let i=0;i<sv.length;i++){
+    const a=sv[i], b=mv[i];
+    if(!a||!b) continue;
+    const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+    const nx=-dy/len, ny=dx/len;
+    /* soft bow so tether never reads as a static XYZ axis */
+    const bow=(4+8*Math.min(1,len/Math.max(40,s*0.35)))*Math.sin(t*TEMPO.base*1.7+i*0.55);
+    const mx=(a.x+b.x)*0.5+nx*bow, my=(a.y+b.y)*0.5+ny*bow;
+    const near=Math.max(0.22, Math.min(1, 0.42+((a.d||0)+(b.d||0))*0.18));
+    const hue=270+i*1.2+8*Math.sin(t*TEMPO.base+i);
+    /* glow envelope */
+    ctx.strokeStyle=hsl(hue,100,58,0.22*near*pulse);
+    ctx.lineWidth=(thin?2.4:3.6)*near;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.quadraticCurveTo(mx,my,b.x,b.y); ctx.stroke();
+    /* core filament */
+    ctx.strokeStyle=hsl(hue+8,100,76,0.55*near*pulse);
+    ctx.lineWidth=(thin?0.95:1.45)*near;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.quadraticCurveTo(mx,my,b.x,b.y); ctx.stroke();
+    /* endpoint beads — prove attachment */
+    const br=(thin?1.35:1.85)*near*(0.85+0.2*pulse);
+    ctx.fillStyle=hsl(hue,100,88,0.72*near*pulse);
+    ctx.beginPath(); ctx.arc(a.x,a.y,br*0.85,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=hsl(hue+12,100,90,0.85*near*pulse);
+    ctx.beginPath(); ctx.arc(b.x,b.y,br,0,Math.PI*2); ctx.fill();
+  }
   ctx.restore();
 }
 
@@ -10004,14 +10084,18 @@ function drawMintRelease(cx,cy,s,t){
 }
 
 function projectDodecaSeal(cx,cy,s){
-  /* project verts + face centers for mid-layer lattice / funnels before foreground paint */
-  const pv=[];
+  /* project verts + face centers for mid-layer lattice / funnels before foreground paint
+     clientDualDodecaTether: also project STILL pose into DODECA._stillVerts (same hub/scale) */
+  const pv=[], sv=[];
   for(let i=0;i<DODECA.verts.length;i++){
     const v=DODECA.verts[i];
     const pr=project(v.x,v.y,v.z,cx,cy,s);
     pv.push({x:pr[0],y:pr[1],d:pr[2],i});
+    const sr=projectStill(v.x,v.y,v.z,cx,cy,s);
+    sv.push({x:sr[0],y:sr[1],d:sr[2],i});
   }
   DODECA._projVerts=pv;
+  DODECA._stillVerts=sv;
   const faceCenters=[];
   for(const fc of DODECA.faceCenters){
     const pr=project(fc.x,fc.y,fc.z,cx,cy,s);
@@ -11596,7 +11680,9 @@ function frame(now){
   projectInnerCube(cx,cy,s);
   syncGyroSharedCenter(cx,cy,s,t);
   syncSpinPhase(t);
-  /* masterpieceCanonRestore: canvas ripples+pillars+seal whisper; CSS lattice/gem demoted */
+  /* masterpieceCanonRestore + clientDualDodecaTether: still wire → tethers → tumbling seal */
+  drawStillDodecaWire(cx,cy,s,t);
+  drawDualDodecaTethers(cx,cy,s,t);
   drawHexFrame(cx,cy,s,t);
   if(typeof drawCorePlasma==="function"){ const _gp=ctx.globalAlpha; ctx.globalAlpha=Math.min(1,(_gp||1)*0.18); try{ drawCorePlasma(cx,cy,s,t);} finally{ ctx.globalAlpha=_gp; } }
   if(typeof drawBeamRain==="function"){ const _gp=ctx.globalAlpha; ctx.globalAlpha=Math.min(1,(_gp||1)*0.14); try{ drawBeamRain(cx,cy,s,t);} finally{ ctx.globalAlpha=_gp; } }
@@ -11641,8 +11727,8 @@ requestAnimationFrame(frame); /* clientOptimalZero: engine seal + glass desk */
                +Math.abs(Math.sin(t*TEMPO.base*7.2*drive+i*0.95))*12
                +Math.abs(Math.sin(t*TEMPO.base*2.1+i*0.17))*6;
         els[i].style.height=h.toFixed(1)+"px";
-        const hue=Math.floor(186+((i/els.length)*126)+20*Math.sin(t*TEMPO.base+i));
-        els[i].style.background="linear-gradient(180deg, hsl("+hue+" 95% 62%) 0%, hsl(186 90% 55%) 100%)";
+        const hue=Math.floor(268+((i/els.length)*28)+10*Math.sin(t*TEMPO.base+i)); /* clientPurpleReformat: purple only */
+        els[i].style.background="linear-gradient(180deg, hsl("+hue+" 85% 62%) 0%, hsl(278 80% 48%) 100%)";
       }
       requestAnimationFrame(tickSpec);
     }
