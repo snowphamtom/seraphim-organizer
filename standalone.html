@@ -1056,6 +1056,56 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   #uploadBox[style*="left"], #sortedFigures .tray[style*="left"]{ transform:none!important; }
 }
 
+
+/* clientNoNoise — only upload + Organized + Aside + sort; hide all other site chrome */
+#dataRail,
+#specBar,
+#introChip,
+#phaseWhisper,
+#navhint,
+#log,
+#sub,
+#tip,
+#cheat,
+#intake,
+#top .whisper,
+#top .chip.law,
+#top .metrics,
+#sortDesk .flowArrow,
+#sortedFigures .folderTag,
+#uploadBox .uh span,
+#demoDesk,
+#uploadBox .actions .ghost-chip{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  opacity:0!important;
+}
+#top{
+  background:transparent!important;
+  border:none!important;
+  box-shadow:none!important;
+  padding:.35rem .6rem!important;
+}
+#top .title{
+  font-size:.72rem!important;
+  letter-spacing:.28em!important;
+  opacity:.55!important;
+}
+#uploadBox .dropHint{
+  font-size:.58rem!important;
+  color:rgba(190,220,240,.65)!important;
+}
+#uploadBox .uh b{
+  letter-spacing:.14em!important;
+}
+/* quieter empty states */
+#sortedFigures .empty,
+.tray .empty{
+  font-size:.52rem!important;
+  opacity:.55!important;
+}
+
 /* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
 #phaseWhisper{
   align-self:center;
@@ -1258,7 +1308,7 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
   <div id="phaseWhisper" class="phaseWhisper" role="status" aria-live="polite" aria-hidden="true"></div>
   <div id="uploadBox" tabindex="0" role="region" aria-label="Upload window — drop or choose files here">
     <div class="uh"><b>Upload here</b><span>csv · tsv · json · txt · md</span></div>
-    <div class="dropHint">Drop files in this window · or <em>choose</em> · or paste below</div>
+    <div class="dropHint">Drop files here · or <em>choose</em></div>
     <div class="actions">
       <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
       <button type="button" id="runSort" class="primary">sort</button>
@@ -1273,17 +1323,14 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
     </div>
     <textarea id="pasteDesk" placeholder="- paste content to sort…" rows="3"></textarea>
   </div>
-  <div class="flowArrow" aria-hidden="true">sorts into folders ↓</div>
-  <div id="sortedFigures" aria-live="polite" aria-label="Sorted folders">
+    <div id="sortedFigures" aria-live="polite" aria-label="Sorted folders">
     <div class="tray admit" id="trayAdmit" role="region" aria-label="Organized folder">
       <h3>Organized <span class="count" id="figAdmitN">0</span></h3>
-      <span class="folderTag">folder · kept</span>
-      <div class="chips" id="figAdmit"><div class="empty">Organized folder is empty</div></div>
+            <div class="chips" id="figAdmit"><div class="empty">Empty</div></div>
     </div>
     <div class="tray release" id="trayRelease" role="region" aria-label="Aside folder">
       <h3>Aside <span class="count" id="figReleaseN">0</span></h3>
-      <span class="folderTag">folder · soft out</span>
-      <div class="chips" id="figRelease"><div class="empty">Aside folder is empty</div></div>
+            <div class="chips" id="figRelease"><div class="empty">Empty</div></div>
     </div>
   </div>
   
@@ -1904,6 +1951,7 @@ const STORIES = {
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
    - tunnelAsSent: show GIF as Taylor sent — light field, black dots, full-bleed; kill invert+screen+vignette+perspective warp; soft desk scrim only.
+   - clientNoNoise: hide all non-essential chrome; keep upload + Organized + Aside + sort
    - clientOsWindowsLive: upload/Organized/Aside as free-floating draggable OS windows
    - clientSeparateWindows: upload + Organized/Aside as discrete floating windows
    - clientClearFolders: clear upload window + Organized/Aside folder panels for clients
@@ -5403,9 +5451,9 @@ function renderSortedFigures(verdicts){
   };
   a.innerHTML=""; r.innerHTML="";
   const flown=[];
-  if(!admits.length) a.innerHTML="<div class=\"empty\">Organized folder is empty</div>";
+  if(!admits.length) a.innerHTML="<div class=\"empty\">Empty</div>";
   else admits.slice(-40).reverse().forEach(v=>{ const el=mk(v); a.appendChild(el); flown.push(el); });
-  if(!releases.length) r.innerHTML="<div class=\"empty\">Aside folder is empty</div>";
+  if(!releases.length) r.innerHTML="<div class=\"empty\">Empty</div>";
   else releases.slice(-40).reverse().forEach(v=>{ const el=mk(v); r.appendChild(el); flown.push(el); });
   if(flown.length) requestAnimationFrame(()=>flightChipsFromDesk(flown));
 }
