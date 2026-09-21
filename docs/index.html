@@ -761,7 +761,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #uploadBox{
   border:1.5px dashed rgba(34,211,238,.42)!important;
   border-radius:12px!important;
-  background:rgba(4,10,22,.62)!important;
+  background:rgba(4,10,22,.36)!important;
   backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important;
   box-shadow:0 0 0 1px rgba(34,211,238,.12), 0 12px 40px rgba(0,0,0,.45)!important;
   padding:.7rem .8rem .65rem!important;
@@ -802,7 +802,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   border:1.5px solid rgba(120,160,200,.22)!important;
   border-radius:12px!important;
   padding:.55rem .6rem .5rem!important;
-  background:rgba(4,10,22,.55)!important;
+  background:rgba(4,10,22,.32)!important;
   backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;
   box-shadow:0 8px 28px rgba(0,0,0,.4)!important;
   max-height:22vh!important;
@@ -897,7 +897,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 #uploadBox{
   border:1px solid rgba(34,211,238,.5)!important;
-  background:rgba(6,12,24,.88)!important;
+  background:rgba(6,12,24,.40)!important;
   padding:.55rem .7rem .7rem!important;
   margin-top:0!important;
 }
@@ -945,7 +945,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 #sortedFigures .tray{
   border:1px solid rgba(120,160,200,.35)!important;
-  background:rgba(6,12,24,.88)!important;
+  background:rgba(6,12,24,.40)!important;
   padding:.55rem .65rem .6rem!important;
   max-height:24vh!important;
 }
@@ -1104,6 +1104,61 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 .tray .empty{
   font-size:.52rem!important;
   opacity:.55!important;
+}
+
+
+/* clientBgFirst — translucent windows parked low so seal/background reads */
+#uploadBox,
+#sortedFigures .tray,
+#trayAdmit,
+#trayRelease{
+  background:rgba(6,12,24,.38)!important;
+  backdrop-filter:blur(8px) saturate(1.05)!important;
+  -webkit-backdrop-filter:blur(8px) saturate(1.05)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.05),
+    0 10px 28px rgba(0,0,0,.35)!important;
+  border-width:1px!important;
+}
+#uploadBox::before,
+#trayAdmit::before,
+#trayRelease::before,
+#sortedFigures .tray::before{
+  background:linear-gradient(180deg, rgba(28,36,52,.55) 0%, rgba(12,16,28,.4) 100%)!important;
+  border-bottom-color:rgba(255,255,255,.05)!important;
+  height:20px!important;
+}
+#uploadBox{
+  left:max(12px, 3vw)!important;
+  bottom:max(8px, calc(var(--safe-b) + 6px))!important;
+  top:auto!important;
+  width:min(300px, 88vw)!important;
+  max-height:32vh!important;
+  overflow:auto;
+}
+#uploadBox textarea{
+  background:rgba(0,6,14,.28)!important;
+  min-height:48px!important;
+  max-height:12vh!important;
+}
+#uploadBox .dropHint{
+  background:rgba(0,24,40,.22)!important;
+  border-color:rgba(34,211,238,.22)!important;
+  padding:.35rem .3rem!important;
+}
+#trayAdmit,
+#trayRelease{
+  max-height:22vh!important;
+}
+/* default dock: both folders bottom-right stack, upload bottom-left — low */
+#sortDesk{
+  /* keep full-screen hit layer but don't veil */
+  background:transparent!important;
+}
+/* initial placement hints used before first drag (JS also sets) */
+body.clientBgFirst #uploadBox:not([style*="top"]) {
+  bottom: max(8px, calc(var(--safe-b) + 6px)) !important;
+  top: auto !important;
 }
 
 /* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
@@ -1951,6 +2006,7 @@ const STORIES = {
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
    - tunnelAsSent: show GIF as Taylor sent — light field, black dots, full-bleed; kill invert+screen+vignette+perspective warp; soft desk scrim only.
+   - clientBgFirst: translucent low-docked windows so seal/background stays readable
    - clientNoNoise: hide all non-essential chrome; keep upload + Organized + Aside + sort
    - clientOsWindowsLive: upload/Organized/Aside as free-floating draggable OS windows
    - clientSeparateWindows: upload + Organized/Aside as discrete floating windows
@@ -5639,6 +5695,62 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else setTimeout(boot, 0);
 })();
+
+/* clientBgFirst — dock windows low on boot */
+(function dockWindowsLow(){
+  function place(){
+    const safe = 8;
+    const ub = document.getElementById("uploadBox");
+    const a = document.getElementById("trayAdmit");
+    const r = document.getElementById("trayRelease");
+    const H = window.innerHeight, W = window.innerWidth;
+    document.body.classList.add("clientBgFirst");
+    function dock(el, left, bottom){
+      if(!el) return;
+      // only if user hasn't dragged (no top set by drag) OR always reset on first boot
+      if(el.dataset.userMoved === "1") return;
+      const w = el.offsetWidth || 280;
+      const h = el.offsetHeight || 120;
+      el.style.position = "fixed";
+      el.style.left = left + "px";
+      el.style.top = (H - h - bottom) + "px";
+      el.style.right = "auto";
+      el.style.bottom = "auto";
+      el.style.width = w + "px";
+      el.style.transform = "none";
+    }
+    const gap = 10;
+    const uw = Math.min(300, W * 0.88);
+    dock(ub, Math.max(12, W*0.03), safe + 6);
+    // stack folders on right, low
+    const fw = Math.min(320, W * 0.42);
+    if(r){
+      r.style.width = fw + "px";
+      dock(r, W - fw - Math.max(12, W*0.03), safe + 6);
+    }
+    if(a){
+      a.style.width = fw + "px";
+      const rh = (r && r.offsetHeight) || 140;
+      dock(a, W - fw - Math.max(12, W*0.03), safe + 6 + rh + gap);
+    }
+  }
+  // mark user moves
+  ["uploadBox","trayAdmit","trayRelease"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("mousedown", (e)=>{
+      if(e.target && e.target.closest && e.target.closest(".winBar")) el.dataset.userMoved = "1";
+    }, true);
+    el.addEventListener("touchstart", (e)=>{
+      if(e.target && e.target.closest && e.target.closest(".winBar")) el.dataset.userMoved = "1";
+    }, true);
+  });
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", ()=>setTimeout(place, 50));
+  else setTimeout(place, 80);
+  window.addEventListener("resize", ()=>setTimeout(place, 30));
+})();
+
+
 
 $("dlJson").onclick=()=>{if(!lastResult)return; const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(lastResult,null,2)],{type:"application/json"})); a.download="seraphim-organize.json";a.click();};
 $("dlCsv").onclick=()=>{if(!lastResult)return; const rows=[["id","decision","display","S_H","S_solv","R_H","cause","kind","audit","text"],...lastResult.verdicts.map(v=>[v.id,v.decision,v.decision==="admit"?"organized":"aside",v.S_H,v.S_solv,v.R_H,v.cause||"",v.kind||"",v.audit,JSON.stringify(v.t)])]; const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n"); const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="seraphim-organize.csv";a.click();};
