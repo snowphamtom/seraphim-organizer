@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light dark"/>
 <meta name="description" content="Seraphim organizer: drop disorganized content, get an organized field. Soft."/>
-<meta name="theme-color" content="#000000"/>
+<meta name="theme-color" content="#f2f0ea"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientOmniGyroTree|clientLatticeField|clientAxisRoom|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -3590,10 +3590,81 @@ body::after{
   /* axis room stays static via JS reduceMotion path */
 }
 
+
+
+/* clientLatticeField — Taylor lattice GIF replaces black void (as-sent: light bg, black dots) */
+:root{ --void:#f2f0ea !important; }
+html,body{
+  background:#f2f0ea !important;
+}
+body::after{
+  background:radial-gradient(ellipse 78% 68% at 50% 38%,
+    rgba(242,240,234,0) 0%,
+    rgba(242,240,234,0) 58%,
+    rgba(28,30,40,.16) 100%)!important;
+}
+#bgField{
+  background:#f2f0ea !important;
+  display:block!important;
+}
+#bgField > .latticeField{
+  display:block!important; visibility:visible!important; opacity:1!important;
+  pointer-events:none!important;
+  position:absolute!important; inset:0!important;
+  z-index:0!important; overflow:hidden!important;
+}
+#bgField > .latticeField .plane{
+  position:absolute!important;
+  left:50%!important; top:40%!important;
+  width:max(165vw,165vh)!important; height:max(165vw,165vh)!important;
+  transform:translate(-50%,-50%)!important;
+}
+#bgField > .latticeField img,
+#bgField > .latticeField picture{
+  display:block!important; visibility:visible!important; opacity:1!important;
+  width:100%!important; height:100%!important;
+  object-fit:cover!important; object-position:50% 50%!important;
+  filter:none!important; mix-blend-mode:normal!important;
+  pointer-events:none!important;
+}
+#bgField > .latticeField img.still{ display:none!important; }
+#bgField > .latticeField img.anim{ display:block!important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField > .latticeField img.anim{ display:none!important; }
+  #bgField > .latticeField img.still{ display:block!important; }
+}
+#top .title{
+  color:rgba(20,24,36,.72)!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.55), 0 0 18px rgba(0,0,0,.08)!important;
+}
+
+
+
+/* clientOmniGyroTree — lattice = dead field; dodeca+interior = omni φ-gyro axis tree */
+#bgField, #bgField *{
+  pointer-events:none !important;
+}
+#bgField > .latticeField{
+  display:block!important; visibility:visible!important; opacity:1!important;
+  z-index:0!important;
+}
+#fx{
+  display:block!important; visibility:visible!important; opacity:1!important;
+  z-index:2!important; pointer-events:auto!important;
+  touch-action:none!important; cursor:grab;
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientOptimalZero: black void — procedural field on canvas --></div>
+<div id="bgField" aria-hidden="true"><!-- clientLatticeField: light lattice tunnel replaces black -->
+  <div class="latticeField" aria-hidden="true">
+    <div class="plane">
+      <img class="anim" src="media/lattice-tunnel.gif" alt="" decoding="async" fetchpriority="low"/>
+      <img class="still" src="media/lattice-tunnel-still.jpg" alt="" decoding="async"/>
+    </div>
+  </div>
+</div>
 <div id="dataRail" aria-hidden="true"></div>
 <canvas id="fx" role="img" aria-label="Seraphim Magpie work instrument — seal, residual rings, sort streams"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas><!-- dodeca3DSphere: Three underlay optional; canvas seal carries alone -->
@@ -4314,7 +4385,7 @@ const cam={
   // targets — pointer/wheel/auto write here; render uses lerped values
   tYaw:0.48,tPitch:0.38,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
   // living gyro — TEMPO φ family (tempoHarmonic)
-  gyro:{wx:TEMPO.base*1.35, wy:TEMPO.base*1.05, wz:TEMPO.base*0.72}
+  gyro:{wx:TEMPO.base*(PHI*0.85), wy:TEMPO.base*0.85, wz:TEMPO.base*(0.85/PHI)} /* clientOmniGyroTree: φ-rational ω */
 };
 function lerpCam(dtMs){
   /* frame-rate aware exp smooth — snappy enough, settles soft */
@@ -4734,8 +4805,10 @@ canvas.addEventListener("pointermove",e=>{
       cam.auto=false; nav.idleAt=performance.now();
       if(nav.mode==="pan"){cam.tPanX=nav.ox+dx; cam.tPanY=nav.oy+dy;}
       else{
+        /* clientOmniGyroTree: orbit feeds yaw/pitch; roll from cross-axis for full 3DOF */
         cam.tUserYaw=nav.oyaw+dx*0.005;
         cam.tUserPitch=nav.opitch+dy*0.004;
+        if(nav.oroll!=null) cam.tUserRoll=nav.oroll+(dx*0.0015-dy*0.0012);
       }
       // velocity for inertia
       const now=performance.now(), dt=Math.max(8,now-(nav._lastT||now));
@@ -4755,7 +4828,7 @@ canvas.addEventListener("pointerdown",e=>{
   }
   nav.down=true; nav.dragging=false; nav.moved=0; nav.btn=e.button; nav.shift=e.shiftKey;
   nav.mode=(e.button===2||e.shiftKey||e.button===1)?"pan":"orbit";
-  nav.sx=p.x; nav.sy=p.y; nav.oyaw=cam.tUserYaw; nav.opitch=cam.tUserPitch;
+  nav.sx=p.x; nav.sy=p.y; nav.oyaw=cam.tUserYaw; nav.opitch=cam.tUserPitch; nav.oroll=cam.tUserRoll;
   nav.ox=cam.tPanX; nav.oy=cam.tPanY; cam.auto=false; nav.idleAt=performance.now();
   nav.vx=0; nav.vy=0; nav._lx=p.x; nav._ly=p.y; nav._lastT=performance.now();
   try{canvas.setPointerCapture(e.pointerId);}catch(_){}
@@ -8082,10 +8155,10 @@ function drawFieldWhisper(cx,cy,s,t){
   ctx.save();
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
   const g=ctx.createRadialGradient(cx,cy,0,cx,cy,s*1.32);
-  g.addColorStop(0,"rgba(12,30,52,0.30)");
-  g.addColorStop(0.28,"rgba(8,16,34,0.14)");
-  g.addColorStop(0.62,"rgba(0,0,0,0.03)");
-  g.addColorStop(1,"rgba(0,0,0,0)");
+  g.addColorStop(0,"rgba(242,240,234,0.08)");
+  g.addColorStop(0.28,"rgba(242,240,234,0.02)");
+  g.addColorStop(0.62,"rgba(242,240,234,0)");
+  g.addColorStop(1,"rgba(242,240,234,0)");
   ctx.globalCompositeOperation="source-over";
   ctx.fillStyle=g;
   ctx.beginPath(); ctx.arc(cx,cy,s*1.32,0,Math.PI*2); ctx.fill();
@@ -8136,14 +8209,14 @@ function drawAxisRoomGrid(cx,cy,s,t){
   const step = 0.16;
   const extent = step * n;
   const breath = reduceMotion ? 0 : 0.01*Math.sin(t*TEMPO.base/(PHI*PHI));
-  const damp = reduceMotion ? 0 : 0.10;
+  const damp = 0; /* clientOmniGyroTree: room is background — no user orbit bleed */
   const oYaw=cam.yaw,oPitch=cam.pitch,oRoll=cam.roll;
   const oUY=cam.userYaw,oUP=cam.userPitch,oUR=cam.userRoll;
   /* angled room — look into the corner for clear depth (floor foreshortened) */
   cam.yaw = 0.78 + damp*(oYaw-0.48) + breath;
   cam.pitch = 0.58 + damp*(oPitch-0.38);
   cam.roll = 0.08 + damp*oRoll*0.4;
-  cam.userYaw = oUY*damp; cam.userPitch = oUP*damp; cam.userRoll = oUR*damp*0.4;
+  cam.userYaw = 0; cam.userPitch = 0; cam.userRoll = 0; /* room locked */
 
   const Fx= -extent*0.35, Fy= -1.35, Fz= 0.15;
   const wallBack = Fz + extent;
@@ -8169,7 +8242,7 @@ function drawAxisRoomGrid(cx,cy,s,t){
     const depthFade=Math.max(0.35, Math.min(1.15, 1.1-(depth+0.15)*0.35));
     const alpha = baseA * (0.22 + 0.78*out) * depthFade * (thin?0.85:1);
     if(alpha < 0.02) return;
-    ctx.strokeStyle=`rgba(240,248,255,${Math.min(0.92, alpha*1.85)})`;
+    ctx.strokeStyle=`rgba(18,20,28,${Math.min(0.78, alpha*1.55)})`;
     ctx.lineWidth=lw * (0.75 + 0.55*out);
     ctx.beginPath(); ctx.moveTo(pa[0],pa[1]); ctx.lineTo(pb[0],pb[1]); ctx.stroke();
   }
@@ -8238,7 +8311,7 @@ function drawAxisRoomGrid(cx,cy,s,t){
       const p=project(x,y,z,cx,cy,s);
       const out=edgeBoost(p[0],p[1]);
       if(out<0.15) continue;
-      ctx.fillStyle=`rgba(255,255,255,${0.45+0.45*out})`;
+      ctx.fillStyle=`rgba(18,20,28,${0.40+0.45*out})`;
       ctx.fillText(lab, p[0], p[1]);
     }
   }
@@ -8269,9 +8342,9 @@ function frame(now){
     /* impressShowpiece: slightly faster orbit during cinema open */
     const cinemaSpin=cinemaOn?(2.15+0.45*((cinemaUntil-now)/3800)):1.55; /* magpieImpressSupersede: brisk */
     /* omnidiscipline: conserved angular-momentum family — one φ organism tumble */
-    const wx=cam.gyro.wx*(1+0.16*Math.sin(t*TEMPO.base*0.28))*cinemaSpin;
-    const wy=cam.gyro.wy*(1+0.14*Math.cos(t*(TEMPO.base*0.28/PHI)))*cinemaSpin;
-    const wz=cam.gyro.wz*(1+0.11*Math.sin(t*(TEMPO.base*0.28/(PHI*PHI))))*cinemaSpin;
+    const wx=cam.gyro.wx*(1+0.16*Math.sin(t*TEMPO.base*0.28))*cinemaSpin; /* φ-tree axis 1 */
+    const wy=cam.gyro.wy*(1+0.14*Math.cos(t*(TEMPO.base*0.28/PHI)))*cinemaSpin; /* axis 1/φ */
+    const wz=cam.gyro.wz*(1+0.11*Math.sin(t*(TEMPO.base*0.28/(PHI*PHI))))*cinemaSpin; /* axis 1/φ² */
     cam.tYaw+=wx*dts*m; cam.tPitch+=wy*dts*m; cam.tRoll+=wz*dts*m;
   }
   const nudge=0.042;
@@ -8287,7 +8360,7 @@ function frame(now){
   sealPulse*=0.992; if(sealPulse<0.02)sealPulse=0;
   celebrate*=0.985; if(celebrate<0.02)celebrate=0;
   sealLockFlash*=0.96; if(sealLockFlash<0.02)sealLockFlash=0;
-  ctx.clearRect(0,0,W,H); /* clientOptimalZero: engine seal on black void */
+  ctx.clearRect(0,0,W,H); /* clientLatticeField: seal over light lattice */
   const s=Math.min(W,H)*(W<=900?0.72:0.68)*cam.zoom;
   const cx=W*0.5, cy=(W<=480?H*0.36:(W<=900?H*0.38:H*0.40))+cam.panY;
   drawFieldWhisper(cx,cy,s,t);
