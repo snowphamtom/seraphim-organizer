@@ -783,7 +783,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -1714,16 +1714,147 @@ function drawMintRelease(cx,cy,s,t){
   }
   ctx.restore();
 }
+
+function projectDodecaSeal(cx,cy,s){
+  /* project verts + face centers for mid-layer lattice / funnels before foreground paint */
+  const pv=[];
+  for(let i=0;i<DODECA.verts.length;i++){
+    const v=DODECA.verts[i];
+    const pr=project(v.x,v.y,v.z,cx,cy,s);
+    pv.push({x:pr[0],y:pr[1],d:pr[2],i});
+  }
+  DODECA._projVerts=pv;
+  const faceCenters=[];
+  for(const fc of DODECA.faceCenters){
+    const pr=project(fc.x,fc.y,fc.z,cx,cy,s);
+    faceCenters.push([pr[0],pr[1],pr[2]]);
+  }
+  DODECA._faceCenters2d=faceCenters;
+  return faceCenters;
+}
+function hashFigId(id){
+  let h=2166136261|0; const str=String(id==null?"":id);
+  for(let i=0;i<str.length;i++){h^=str.charCodeAt(i); h=Math.imul(h,16777619);}
+  return h>>>0;
+}
+function drawOrganizeLattice(cx,cy,s,t){
+  /* organizing lattice mesh — figures → seal nodes; node↔node crystalline close.
+     Short structural segments only (not curly threads / trails). */
+  const pv=DODECA._projVerts, fcs=DODECA._faceCenters2d;
+  if(!pv||pv.length<3) return;
+  const mobile=W<=900, thin=W<=480;
+  const step=thin?4:(mobile?3:1);
+  const maxSeg=s*(thin?0.18:mobile?0.22:0.28);
+  const shOn=sealLockFlash>0.04||sealPulse>0.08||(typeof lastCI==="number"&&lastCI>0&&prevSH);
+  const pulse=shOn?(0.62+0.38*Math.sin(t*4.5)):(0.38+0.18*Math.sin(t*1.35));
+  /* structural anchors: dodeca verts + face centers + live node hubs */
+  const anchors=[];
+  for(const v of pv) anchors.push({x:v.x,y:v.y,d:v.d});
+  if(fcs) for(const fc of fcs) anchors.push({x:fc[0],y:fc[1],d:fc[2]});
+  for(const p of nodes){ if(p._px!=null) anchors.push({x:p._px,y:p._py,d:0}); }
+  if(!anchors.length) return;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  /* A) faint dodeca-edge-aligned scaffold (mid) — densifying toward seal; full bright edges paint later in foreground */
+  ctx.lineWidth=thin?0.45:0.55;
+  for(const [i,j] of DODECA.edges){
+    const a=pv[i], b=pv[j]; if(!a||!b) continue;
+    const md=(a.d+b.d)*0.5;
+    const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
+    ctx.strokeStyle=hsl(168+t*16,82,54,(0.035+0.07*depth)*pulse);
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+  }
+  /* B) face-center k-NN (k=2) — closing mesh between mouths */
+  if(fcs&&fcs.length>=3&&!thin){
+    ctx.lineWidth=0.5;
+    for(let i=0;i<fcs.length;i++){
+      const dists=[];
+      for(let j=0;j<fcs.length;j++){
+        if(i===j) continue;
+        dists.push({j,d:Math.hypot(fcs[i][0]-fcs[j][0],fcs[i][1]-fcs[j][1])});
+      }
+      dists.sort((u,v)=>u.d-v.d);
+      for(let k=0;k<2&&k<dists.length;k++){
+        const nb=dists[k]; if(!nb||nb.d>s*0.58||i>nb.j) continue;
+        const md=(fcs[i][2]+fcs[nb.j][2])*0.5;
+        const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
+        ctx.strokeStyle=hsl(195+t*10,78,52,(0.03+0.06*depth)*pulse);
+        ctx.beginPath(); ctx.moveTo(fcs[i][0],fcs[i][1]); ctx.lineTo(fcs[nb.j][0],fcs[nb.j][1]); ctx.stroke();
+      }
+    }
+  }
+  /* C) each visible background figure → assigned/nearest anchor (short segment) */
+  function linkFigure(px,py,id,hue,boost){
+    if(px==null||py==null||!Number.isFinite(px)) return;
+    const prefer=anchors[hashFigId(id)%anchors.length];
+    let best=null, bestD=1e9;
+    if(prefer){
+      const d=Math.hypot(px-prefer.x,py-prefer.y);
+      if(d<maxSeg*1.4){best=prefer;bestD=d;}
+    }
+    if(!best){
+      /* nearest among a small probe set for perf */
+      const nA=anchors.length, stride=nA>48?2:1;
+      for(let ai=0;ai<nA;ai+=stride){
+        const a=anchors[ai];
+        const d=Math.hypot(px-a.x,py-a.y);
+        if(d<bestD){bestD=d;best=a;}
+      }
+    }
+    let x1,y1;
+    if(!best||bestD<0.8){
+      const dx=cx-px, dy=cy-py, len=Math.hypot(dx,dy)||1;
+      const stub=Math.min(maxSeg*0.5, len*0.3);
+      x1=px+dx/len*stub; y1=py+dy/len*stub;
+      ctx.strokeStyle=hsl(hue||162,78,50,0.07*pulse);
+    }else{
+      const u=bestD>maxSeg?(maxSeg/bestD):1;
+      x1=px+(best.x-px)*u; y1=py+(best.y-py)*u;
+      const depth=best.d!=null?Math.max(0.18,Math.min(1,(best.d+0.5)/1.0)):0.65;
+      const a=(0.09+0.11*depth)*pulse*(boost?1.35:1);
+      ctx.strokeStyle=hsl(hue||165,90,54,a);
+    }
+    ctx.lineWidth=0.6;
+    ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(x1,y1); ctx.stroke();
+  }
+  for(let i=0;i<voxels.length;i+=step){
+    const v=voxels[i]; if(v._px==null) continue;
+    linkFigure(v._px,v._py,v.id,v.hue,true);
+  }
+  const parts=mintMesh.parts;
+  for(let i=0;i<parts.length;i+=step){
+    const p=parts[i]; if(p._px==null) continue;
+    linkFigure(p._px,p._py,p.id,p._hue!=null?p._hue:(p.hue||320),false);
+  }
+  /* field dump-dust subsample → nearest seal node */
+  const fStep=thin?56:(mobile?40:26);
+  const nField=Math.min(field.length, thin?280:mobile?420:800);
+  for(let k=0;k<nField;k+=fStep){
+    const p=field[k]; if(!p) continue;
+    const ang=p.a+t*0.02*(0.3+p.layer*0.4);
+    const rr=s*(0.42+0.55*((p.r-0.5)/0.7+0.5)*0.9);
+    const fpx=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
+    const fpy=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
+    if(Math.hypot(fpx-cx,fpy-cy)<s*0.30) continue; /* leave clear core for foreground seal */
+    linkFigure(fpx,fpy,"fld"+k,170+p.layer*36,false);
+  }
+  ctx.restore();
+}
+
 function drawConstellation(cx,cy,s){
+  /* demoted — thread-ish neighbor lines replaced by drawOrganizeLattice.
+     Toggle still exists; when on, draw only ultra-short token stubs (not long trails). */
   if(!constellation||voxels.length<2)return;
-  ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.strokeStyle="rgba(125,255,176,0.22)"; ctx.lineWidth=0.7;
+  const maxL=s*0.14;
+  ctx.save(); ctx.globalCompositeOperation="lighter"; ctx.strokeStyle="rgba(125,255,176,0.14)"; ctx.lineWidth=0.55;
   for(let i=0;i<voxels.length;i++){const a=voxels[i]; if(!a._px||!a.toks||!a.toks.length)continue;
     for(let j=i+1;j<voxels.length;j++){const b=voxels[j]; if(!b._px||!b.toks||!b.toks.length)continue;
-      if(!a.toks.some(t=>b.toks.includes(t)))continue; if(Math.hypot(a._px-b._px,a._py-b._py)>s*0.55)continue;
+      if(!a.toks.some(t=>b.toks.includes(t)))continue;
+      const d=Math.hypot(a._px-b._px,a._py-b._py); if(d>maxL||d<1)continue;
       ctx.beginPath();ctx.moveTo(a._px,a._py);ctx.lineTo(b._px,b._py);ctx.stroke();}}
   ctx.restore();
 }
 function drawTrailsAndGlow(cx,cy,s,t){
+  /* hubs only — long thread/snake trails demoted; lattice carries structure */
   const age=(performance.now()-sortAnimT)*0.001;
   ctx.save(); ctx.globalCompositeOperation="lighter";
   for(const p of nodes){
@@ -1733,26 +1864,17 @@ function drawTrailsAndGlow(cx,cy,s,t){
       const tips=[[-0.88,-0.55],[0.88,-0.55],[0,0.95]], tip=tips[p.funnel];
       const [fx,fy]=project(tip[0],tip[1],0,cx,cy,s*0.95), u=Math.min(1,local/1.25), ease=u*u*(3-2*u);
       const [bx,by]=project(0,0,0,cx,cy,s); px=fx+(bx-fx)*ease; py=fy+(by-fy)*ease;
-      // longer velocity smear trail
-      const steps=W<=480?4:8;
-      for(let k=0;k<steps;k++){
-        const uu=Math.max(0,ease-k*0.035),tx=fx+(bx-fx)*uu,ty=fy+(by-fy)*uu;
-        ctx.fillStyle=hsl(p.hue+k*14,100,56,(0.16-k*0.018)*(W<=900?0.7:1));
-        ctx.beginPath();ctx.arc(tx,ty,2.2-k*0.16,0,Math.PI*2);ctx.fill();
-      }
-      ctx.fillStyle=hsl(p.hue,100,58,0.48); ctx.beginPath();ctx.arc(px,py,2.0,0,Math.PI*2);ctx.fill();
+      /* single soft ghost behind hub — no multi-step snake */
+      ctx.fillStyle=hsl(p.hue,100,56,0.12*(W<=900?0.7:1));
+      ctx.beginPath();ctx.arc(fx+(bx-fx)*Math.max(0,ease-0.08),fy+(by-fy)*Math.max(0,ease-0.08),1.4,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=hsl(p.hue,100,58,0.50); ctx.beginPath();ctx.arc(px,py,2.05,0,Math.PI*2);ctx.fill();
     }else{
       const sideBias=p.decision==="admit"?-0.32:0.36;
       const xx=Math.cos(p.b)*Math.cos(p.a+t*p.spin)*p.r*0.55+sideBias, yy=Math.sin(p.b)*p.r*0.5, zz=Math.cos(p.b)*Math.sin(p.a+t*p.spin)*p.r*0.55;
       const pr=project(xx,yy,zz,cx,cy,s); px=pr[0];py=pr[1];
-      // orbit velocity smear
-      if(p._px!=null&&!skipHeavy){
-        const vx=px-p._px, vy=py-p._py;
-        for(let k=1;k<=3;k++){
-          ctx.fillStyle=hsl(p.hue,100,54,(0.08-k*0.018)*(W<=900?0.65:1));
-          ctx.beginPath();ctx.arc(px-vx*k*0.55,py-vy*k*0.55,1.6-k*0.18,0,Math.PI*2);ctx.fill();
-        }
-      }
+      /* glow hub only — no orbit velocity smear snakes */
+      ctx.fillStyle=hsl(p.hue,100,56,0.28); ctx.beginPath();ctx.arc(px,py,1.7,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=hsl(p.hue,100,64,0.55); ctx.beginPath();ctx.arc(px,py,0.9,0,Math.PI*2);ctx.fill();
     }
     p._px=px;p._py=py;
   }
@@ -2048,31 +2170,37 @@ function frame(now){
   const cxM=cx0+pMint.ox, cyM=cy0+pMint.oy;
   const cxL=cx0+pLab.ox, cyL=cy0+pLab.oy;
   const cx=cx0+pSeal.ox, cy=cy0+pSeal.oy;
-  // WebGL star overlay behind canvas fills (graceful no-op if failed)
+  /* draw order (dodecaForeground): bg → mid organize lattice → overlays → seal absolute front → labels */
+  // 1–2) background under / around seal
   if(threeOk) drawThreeOrbit(cxS,cyS,s,t); else if(webglOk && !skipHeavy) drawWebGLStars(cxS,cyS,s,t);
   if(!skipHeavy) drawAurora(cxS,cyS,s,t);
   if(!skipHeavy) drawFogShards(cxS,cyS,s,t,orbitSpeed);
   drawGhostOrbits(cxH,cyH,s,t);
   drawDualHexGhost(cxH,cyH,s,t);
-  const verts=drawHexFrame(cxH,cyH,s,t);
-  drawNestedSeals(cxH,cyH,s,t);
-  drawChromaticHexEdges(verts,t);
-  if(!reduceMotion && !webglOk) drawStarfieldInPanels(cxS,cyS,s,t,verts);
-  else if(!reduceMotion && webglOk) drawStarfieldInPanels(cxS,cyS,s,t,verts); // keep panel clip stars as soft fill
+  // project seal anchors early (no paint) for funnels / lattice
+  const verts=projectDodecaSeal(cxH,cyH,s);
+  if(!reduceMotion) drawStarfieldInPanels(cxS,cyS,s,t,verts);
+  // 3–4) mid — data organizing into seal (voxels/mint/lattice/funnels/hubs)
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
-  if(!skipHeavy) drawSphereWire(cxH,cyH,s*0.96,t);
-  drawSealBreath(cx,cy,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
-  // skip constellation every other frame on mobile
-  if(!(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
-  drawTrailsAndGlow(cxH,cyH,s,t);
-  drawProveBreak(cx0,cy0,s,t);
+  drawTrailsAndGlow(cxH,cyH,s,t); /* hubs first so lattice can bind node._px */
+  if(!(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t);
+  if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s); /* demoted stubs only */
+  // overlays that would occlude — BEFORE dodeca (clear core left for seal)
   drawSortShockwave(cx,cy,s);
   drawDepthFogVignette(cx0,cy0,s);
   drawBloomClamp(cx0,cy0,s);
-  drawCanvasLabels(cxL,cyL,s,mouths,verts); // AFTER bloom
   drawFilmGrain();
   drawSoftCrossVeil();
+  // 5) dodeca + contents ALWAYS foreground — nothing after paints over the crystal
+  drawHexFrame(cxH,cyH,s,t);
+  drawNestedSeals(cxH,cyH,s,t);
+  drawChromaticHexEdges(verts,t);
+  if(!skipHeavy) drawSphereWire(cxH,cyH,s*0.96,t);
+  drawSealBreath(cx,cy,s,t);
+  drawProveBreak(cx0,cy0,s,t);
+  // 6) seal labels only (UI chrome; tip is HTML)
+  drawCanvasLabels(cxL,cyL,s,mouths,verts);
   // FPS guard: drop WebGL if frames tank on mobile
   if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
   else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
