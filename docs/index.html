@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|blackRedOnly|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|blackRedOnly|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2471,11 +2471,62 @@ function drawBoxSphereVents(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){
-  /* boxSphereVents|blackRedOnly: centerpiece is box+sphere+3 vents */
-  drawBoxSphereVents(cx,cy,s,t);
-  return;
+
+function drawDodecaLatticeCage(cx,cy,s,t){
+  /* latticeCage — wire dodeca as open lattice cage around box+sphere+vents; black/red only */
+  const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
+  const pv=[];
+  for(let i=0;i<DODECA.verts.length;i++){
+    const v=DODECA.verts[i];
+    const pr=project(v.x*1.15,v.y*1.15,v.z*1.15,cx,cy,s); /* cage outside box */
+    pv.push({x:pr[0],y:pr[1],d:pr[2],i});
+  }
+  DODECA._projVerts=pv;
+  const edged=DODECA.edges.map(([i,j],ei)=>{
+    const A=pv[i], B=pv[j];
+    return {a:A,b:B,ei,md:(A.d+B.d)*0.5};
+  }).sort((u,v)=>u.md-v.md);
+  ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
+  const thin=W<=480, mobile=W<=900;
+  const lw=thin?1.1:(mobile?1.6:2.2);
+  for(const ed of edged){
+    const near=Math.max(0,Math.min(1,(ed.md+0.55)/1.1));
+    const pulse=0.75+0.25*Math.sin(t*TEMPO.base+ed.ei*0.4);
+    const g=ctx.createLinearGradient(ed.a.x,ed.a.y,ed.b.x,ed.b.y);
+    g.addColorStop(0,`rgba(255,30,30,${(0.28+near*0.4)*pulse})`);
+    g.addColorStop(0.5,`rgba(255,90,90,${(0.4+near*0.35)*pulse})`);
+    g.addColorStop(1,`rgba(160,0,0,${(0.28+near*0.4)*pulse})`);
+    ctx.strokeStyle=g; ctx.lineWidth=lw*(0.55+near*0.7);
+    ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
+    /* lattice node jewels */
+    if(!thin && ed.ei%2===0){
+      const mx=(ed.a.x+ed.b.x)*0.5, my=(ed.a.y+ed.b.y)*0.5;
+      ctx.fillStyle=`rgba(255,70,70,${0.35*near})`;
+      ctx.beginPath(); ctx.arc(mx,my,1.2,0,Math.PI*2); ctx.fill();
+    }
+  }
+  /* vertex nodes */
+  for(let i=0;i<pv.length;i++){
+    const v=pv[i];
+    const near=Math.max(0.2,Math.min(1,(v.d+0.5)/1));
+    ctx.fillStyle=`rgba(255,50,50,${0.45*near})`;
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.4:2.2,0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+  const faceCenters=[];
+  for(const fc of DODECA.faceCenters){
+    const pr=project(fc.x*1.15,fc.y*1.15,fc.z*1.15,cx,cy,s);
+    faceCenters.push([pr[0],pr[1],pr[2]]);
+  }
+  DODECA._faceCenters2d=faceCenters;
+  return faceCenters;
 }
+function drawDodecaFrame(cx,cy,s,t){
+  /* latticeCage outside + boxSphereVents inside — same gyro/project */
+  drawDodecaLatticeCage(cx,cy,s,t);
+  drawBoxSphereVents(cx,cy,s,t);
+}
+
 const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
 
 function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWire */ if(true) return;
