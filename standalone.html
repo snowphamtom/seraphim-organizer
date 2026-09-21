@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat: dark cyber-nature data-forest — forest bg + iridescent ripples + data pillars */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -773,224 +773,138 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #intake{display:none!important}
 
 
-/* boxSphereVents|purpleOnly — centerpiece box+sphere+3 vents; black/purple */
+/* cyberNatureFormat — void + lilac/cyan/magenta/yellow/orange neon; NO purpleOnly */
 :root{
   --void:#000 !important;
-  --ink:#f5e9ff !important;
-  --mute:#a78bfa !important;
-  --admit:#e879f9 !important;
-  --release:#c026d3 !important;
-  --mint:#f0abfc !important;
-  --cyan:#d946ef !important;
-  --mag:#a855f7 !important;
-  --warn:#fae8ff !important;
-  --glass:rgba(36,0,56,0.48) !important;
-  --line:rgba(232,121,249,0.55) !important;
-  --holo-wash:linear-gradient(135deg,rgba(232,121,249,0.18),rgba(168,85,247,0.10),rgba(192,38,211,0.16)) !important;
+  --ink:#e8f4ff !important;
+  --mute:#7ec8d8 !important;
+  --admit:#5eead4 !important;
+  --release:#f472b6 !important;
+  --mint:#fde047 !important;
+  --cyan:#22d3ee !important;
+  --mag:#e879f9 !important;
+  --warn:#fb923c !important;
+  --glass:rgba(8,12,28,0.55) !important;
+  --line:rgba(34,211,238,0.38) !important;
+  --holo-wash:linear-gradient(135deg,rgba(34,211,238,0.10),rgba(232,121,249,0.06),rgba(251,146,60,0.05)) !important;
 }
-#bgField{ background:#000 !important; }
-#bgField .tunnelGrid .plane{
-  filter:invert(1) sepia(1) saturate(10) hue-rotate(235deg) brightness(1.15) !important;
-  opacity:0.55 !important;
-}
-/* hide competing GIF centerpieces */
-#bgField .hexCore,
-#bgField .isoTunnel,
-#bgField .beamRain,
-#bgField .voxelSpin{ display:none !important; }
-#sortDesk{ color:rgba(250,240,255,.96) !important; }
-#sortDesk .tray.admit h3{ color:rgba(240,171,252,1)!important; text-shadow:0 0 16px rgba(232,121,249,.7),0 0 28px rgba(168,85,247,.35)!important; }
-#sortDesk .tray.release h3{ color:rgba(216,180,254,.98)!important; text-shadow:0 0 14px rgba(192,38,211,.55)!important; }
-#uploadBox .uh b{ color:rgba(255,245,255,.99)!important; }
-#uploadBox .uh b::before{ color:rgba(232,121,249,1)!important; }
-#top .title{ color:#f0abfc!important; text-shadow:0 0 20px rgba(232,121,249,.75),0 0 40px rgba(168,85,247,.42),0 0 64px rgba(192,38,211,.22)!important; }
-
-/* purpleOnly UI chrome — kill leftover cyan hardcodes */
-button,.filebtn{ border-color:rgba(192,132,252,.35)!important; color:rgba(245,230,255,.9)!important; }
-button:hover,.filebtn:hover{ border-color:#e9d5ff!important; box-shadow:0 0 10px rgba(168,85,247,.28)!important; }
-button.primary{ border-color:rgba(232,121,249,.75)!important; color:#fff!important; box-shadow:0 0 16px rgba(232,121,249,.35)!important; }
-button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!important; }
-#log .ev:hover,#log .ev.focus{ background:rgba(168,85,247,.12)!important; box-shadow:inset 2px 0 0 rgba(192,132,252,.6)!important; }
-#log .ev .d.a{ color:#f0abfc!important; }
-#log .ev .d.r{ color:#e879f9!important; }
-.metrics{ color:rgba(180,150,210,.78)!important; }
-#phaseWhisper{ color:rgba(200,160,240,.55)!important; }
-
-
-
-/* purpleParticles — black/purple particle fields feeding box centerpiece */
-#bgField .particleLayer{
-  position:absolute; inset:0; overflow:hidden; pointer-events:none;
-}
-#bgField .particleLayer .plane{
-  position:absolute;
-  left:var(--seal-x); top:var(--seal-y);
-  transform:translate(-50%,-50%);
-}
-#bgField .particleLayer picture,
-#bgField .particleLayer img{
-  display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%;
-}
-#bgField .particleLayer img.still{display:none}
-#bgField .particlesField{ z-index:0; }
-#bgField .particlesField .plane{
-  width:max(180vw,180vh); height:max(180vw,180vh);
-  opacity:1;
-  filter:saturate(1.85) brightness(1.4) contrast(1.12);
-  animation:speedDetailSpin 4.5s linear infinite;
-}
-#bgField .particlesMeta{ z-index:1; }
-#bgField .particlesMeta .plane{
-  width:min(95vmin,760px); height:min(95vmin,760px);
-  opacity:1;
-  mix-blend-mode:screen;
-  filter:saturate(2) brightness(1.5) contrast(1.15);
-  animation:speedDetailSpin 3.2s linear infinite reverse;
-}
-#bgField .tunnelGrid{ z-index:0; opacity:0.25; }
-#bgField .tunnelGrid .plane{ opacity:0.35 !important; }
-@media (prefers-reduced-motion:reduce){
-  #bgField .particleLayer img.anim{display:none}
-  #bgField .particleLayer img.still{display:block}
-}
-
-
-/* holoOpacity3D — all visual layers breathe like a volume hologram */
 #bgField{
-  --holo-field:0.62;
-  --holo-meta:0.88;
-  --holo-tunnel:0.28;
-  --holo-fx:0.96;
-  --holo-desk:0.96;
-  --holo-flicker:1;
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:#000 !important;
 }
-#bgField .particlesField{ opacity:calc(var(--holo-field) * var(--holo-flicker)) !important; }
-#bgField .particlesField .plane{ opacity:1 !important; mix-blend-mode:screen; }
-#bgField .particlesMeta{ opacity:calc(var(--holo-meta) * var(--holo-flicker)) !important; }
-#bgField .particlesMeta .plane{ opacity:1 !important; mix-blend-mode:screen; }
-#bgField .tunnelGrid{ opacity:calc(var(--holo-tunnel) * var(--holo-flicker)) !important; }
-#bgField .tunnelGrid .plane{ opacity:1 !important; mix-blend-mode:screen; }
-#fx{
-  opacity:calc(var(--holo-fx,0.82) * var(--holo-flicker,1)) !important;
-  mix-blend-mode:screen;
+#bgField .cyberNatureWorld{
+  position:absolute;inset:0;z-index:0;
 }
-#sortDesk,#uploadBox,#pasteDesk{
-  opacity:calc(var(--holo-desk,0.88) * (0.96 + 0.04 * var(--holo-flicker,1))) !important;
+#bgField .cyberNatureWorld picture,
+#bgField .cyberNatureWorld img{
+  display:block;width:100%;height:100%;
+  object-fit:cover;object-position:50% 40%;
 }
-/* impressShowpiece — soft purple radial vignette (center stays open) */
-#bgField::before{
-  content:"";
-  position:absolute; inset:0; pointer-events:none; z-index:7;
-  background:radial-gradient(ellipse 78% 72% at 50% 48%,
-    transparent 0%,
-    transparent 40%,
-    rgba(96,24,140,0.14) 68%,
-    rgba(48,0,80,0.36) 100%);
-  opacity:0.9;
-}
-@media (prefers-reduced-motion:reduce){
-  #bgField::before{ opacity:0.55; }
-}
-
-/* volumetric fringe — soft scan + ghost double */
+/* hide ALL old GIF/particle centerpieces — forest photo is the world */
+#bgField .tunnelGrid,
+#bgField .isoTunnel,
+#bgField .hexCore,
+#bgField .beamRain,
+#bgField .voxelSpin,
+#bgField .particleLayer,
+#bgField .particlesField,
+#bgField .particlesMeta{ display:none !important; visibility:hidden !important; opacity:0 !important; pointer-events:none !important; }
+/* soft CRT scanlines — dashed vertical rain feel */
 #bgField::after{
   content:"";
-  position:absolute; inset:0; pointer-events:none; z-index:8;
+  position:absolute; inset:0; pointer-events:none; z-index:6;
   background:
     repeating-linear-gradient(
       0deg,
       transparent 0px,
       transparent 2px,
-      rgba(232,121,249,0.055) 2px,
-      rgba(232,121,249,0.055) 3px
+      rgba(0,0,0,0.18) 2px,
+      rgba(0,0,0,0.18) 3px
     ),
-    linear-gradient(
-      180deg,
-      rgba(232,121,249,0.08) 0%,
-      transparent 28%,
-      transparent 72%,
-      rgba(192,38,211,0.09) 100%
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 11px,
+      rgba(34,211,238,0.035) 11px,
+      rgba(34,211,238,0.035) 12px
     );
-  mix-blend-mode:screen;
-  opacity:calc(0.45 * var(--holo-flicker,1));
-  animation:holoScan 5.5s linear infinite;
+  mix-blend-mode:overlay;
+  opacity:0.55;
+  animation:none;
 }
-@keyframes speedDetailSpin{
-  0%{ transform:translate(-50%,-50%) rotateZ(0deg) scale(1); }
-  100%{ transform:translate(-50%,-50%) rotateZ(360deg) scale(1.06); }
+#bgField::before{ display:none !important; content:none !important; }
+/* desk — dark indigo glass, cyan/magenta accents */
+#sortDesk{
+  color:rgba(230,244,255,.96) !important;
+  background:linear-gradient(180deg, rgba(6,10,28,.12) 0%, rgba(8,14,36,.62) 18%, rgba(6,12,30,.78) 100%) !important;
+}
+#sortDesk .tray.admit h3{ color:rgba(94,234,212,1)!important; text-shadow:0 0 14px rgba(34,211,238,.65),0 0 28px rgba(94,234,212,.28)!important; }
+#sortDesk .tray.release h3{ color:rgba(244,114,182,.98)!important; text-shadow:0 0 14px rgba(232,121,249,.55)!important; }
+#uploadBox .uh b{ color:rgba(240,250,255,.99)!important; }
+#uploadBox .uh b::before{ color:rgba(34,211,238,1)!important; }
+#top .title{ color:#a5f3fc!important; text-shadow:0 0 18px rgba(34,211,238,.7),0 0 36px rgba(196,181,253,.35),0 0 56px rgba(232,121,249,.18)!important; }
+button,.filebtn{ border-color:rgba(34,211,238,.35)!important; color:rgba(220,245,255,.9)!important; }
+button:hover,.filebtn:hover{ border-color:#67e8f9!important; box-shadow:0 0 10px rgba(34,211,238,.28)!important; }
+button.primary{ border-color:rgba(34,211,238,.75)!important; color:#fff!important; box-shadow:0 0 16px rgba(34,211,238,.32)!important; }
+button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!important; }
+#log .ev:hover,#log .ev.focus{ background:rgba(34,211,238,.10)!important; box-shadow:inset 2px 0 0 rgba(34,211,238,.55)!important; }
+#log .ev .d.a{ color:#5eead4!important; }
+#log .ev .d.r{ color:#f472b6!important; }
+.metrics{ color:rgba(140,190,210,.78)!important; }
+#phaseWhisper{ color:rgba(160,210,230,.55)!important; }
+/* kill holoOpacity flicker muddying the photo */
+#fx{ opacity:1 !important; mix-blend-mode:normal; }
+#sortDesk,#uploadBox,#pasteDesk{ opacity:1 !important; }
+/* left data rail — dense monospace glyphs */
+#dataRail{
+  position:fixed; left:0; top:0; bottom:0; width:42px; z-index:3;
+  pointer-events:none; overflow:hidden;
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:7px; line-height:1.35; letter-spacing:0.02em;
+  color:rgba(94,234,212,0.55);
+  background:linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,8,16,0.28) 70%, transparent 100%);
+  opacity:0.72;
+  padding:8px 4px;
+  text-shadow:0 0 6px rgba(34,211,238,0.35);
+}
+#dataRail .row{ white-space:nowrap; opacity:0.85; }
+#dataRail .row.hi{ color:rgba(251,146,60,0.75); }
+#dataRail .row.mag{ color:rgba(244,114,182,0.7); }
+/* bottom spectrum bars above desk */
+#specBar{
+  position:fixed; left:50%; transform:translateX(-50%);
+  bottom:max(148px, calc(var(--safe-b) + 132px));
+  width:min(520px, 88vw); height:28px; z-index:11;
+  display:flex; align-items:flex-end; justify-content:center; gap:2px;
+  pointer-events:none; opacity:0.78;
+}
+#specBar i{
+  display:block; width:3px; min-height:2px; border-radius:1px 1px 0 0;
+  background:linear-gradient(180deg, #fde047 0%, #22d3ee 100%);
+  box-shadow:0 0 6px rgba(34,211,238,0.45);
+  transform-origin:bottom center;
+}
+@media (max-width:900px){
+  #dataRail{ width:28px; font-size:6px; opacity:0.55; }
+  #specBar{ bottom:max(168px, calc(var(--safe-b) + 150px)); height:22px; opacity:0.65; }
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .particlesField .plane,
-  #bgField .particlesMeta .plane{ animation:none !important; }
-}
-@keyframes holoScan{
-  0%{ transform:translateY(-8%); opacity:0.35; }
-  50%{ opacity:0.65; }
-  100%{ transform:translateY(8%); opacity:0.35; }
-}
-@media (prefers-reduced-motion:reduce){
-  #bgField::after{ animation:none; opacity:0.35; }
-  #fx, #bgField .particlesField, #bgField .particlesMeta, #bgField .tunnelGrid{
-    opacity:0.72 !important;
-  }
+  #specBar i{ transition:none; }
 }
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- fourAssetCanon: tunnel + iso + beam + hex only -->
-  <div class="assetLayer tunnelGrid" aria-hidden="true">
-    <div class="plane">
-      <img class="anim" src="media/tunnel-grid.gif" alt="" width="500" height="500" decoding="async" fetchpriority="high">
-      <img class="still" src="media/tunnel-grid-still.jpg" alt="" width="500" height="500" decoding="async" fetchpriority="low">
-    </div>
-  </div>
-    <div class="assetLayer isoTunnel" aria-hidden="true">
-    <div class="plane">
-      <picture>
-        <source srcset="media/iso-tunnel.webp" type="image/webp">
-        <img class="anim" src="media/iso-tunnel.gif" alt="" width="480" height="480" decoding="async" fetchpriority="low">
-      </picture>
-      <img class="still" src="media/iso-tunnel-still.png" alt="" width="480" height="480" decoding="async" style="display:none">
-    </div>
-  </div>
-<div class="assetLayer hexCore" aria-hidden="true">
-    <div class="gyroRig">
-    <div class="plane coreMain">
-      <picture>
-        <source srcset="media/hex-core.webp" type="image/webp">
-        <img class="anim" src="media/hex-core.gif" alt="" width="480" height="480" decoding="async" fetchpriority="low">
-      </picture>
-      <img class="still" src="media/hex-core-still.png" alt="" width="480" height="480" decoding="async" style="display:none">
-    </div>
-    <div class="beamTrio" aria-hidden="true">
-      <div class="b b1">
-        <picture><source srcset="media/beam-rain.webp" type="image/webp"><img class="anim" src="media/beam-rain.gif" alt=""></picture>
-        <img class="still" src="media/beam-rain-still.png" alt="" style="display:none">
-      </div>
-      <div class="b b2">
-        <picture><source srcset="media/beam-rain.webp" type="image/webp"><img class="anim" src="media/beam-rain.gif" alt=""></picture>
-        <img class="still" src="media/beam-rain-still.png" alt="" style="display:none">
-      </div>
-      <div class="b b3">
-        <picture><source srcset="media/beam-rain.webp" type="image/webp"><img class="anim" src="media/beam-rain.gif" alt=""></picture>
-        <img class="still" src="media/beam-rain-still.png" alt="" style="display:none">
-      </div>
-    </div>
-    <div class="voxelSpin" aria-hidden="true">
-      <div class="spin">
-        <picture>
-          <source srcset="media/voxel-cube.webp" type="image/webp">
-          <img class="anim" src="media/voxel-cube-still.png" alt="" width="360" height="330" decoding="async">
-        </picture>
-        <img class="still" src="media/voxel-cube-still.png" alt="" width="360" height="330" decoding="async" style="display:none">
-      </div>
-    </div>
-  
-    </div>
+<div id="bgField" aria-hidden="true"><!-- cyberNatureFormat: forest photo is the world -->
+  <div class="cyberNatureWorld">
+    <picture>
+      <source srcset="media/cyber-nature.webp" type="image/webp">
+      <img src="media/cyber-nature.jpg" alt="" width="1024" height="2048" decoding="async" fetchpriority="high">
+    </picture>
   </div>
 </div>
-<canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
+<div id="dataRail" aria-hidden="true"></div>
+<canvas id="fx" role="img" aria-label="Seraphim data-forest — iridescent ripples and data pillars"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas><!-- dodeca3DSphere: Three underlay optional; canvas seal carries alone -->
 <header id="top">
   <div class="title">SERAPHIM</div>
@@ -1005,6 +919,7 @@ button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!impo
 </header>
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
 
+<div id="specBar" aria-hidden="true"></div>
 <section id="sortDesk" aria-label="Disorganized content in, organized and aside out">
   <div id="phaseWhisper" class="phaseWhisper" role="status" aria-live="polite" aria-hidden="true"></div>
   <div id="uploadBox" tabindex="0">
@@ -1609,7 +1524,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece */
+/* SERAPHIM_MARKERS:cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -2241,23 +2156,12 @@ function holoAlpha(tier, t){
   return Math.max(0.08, Math.min(0.98, base*flicker*breath*scan*pop));
 }
 function syncHoloOpacity(t){
+  /* cyberNatureFormat: no holo flicker — forest photo stays clean */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
-  /* impressShowpiece: cinema open briefly elevates mid/seal hologram; far stays quieter */
-  const cinemaOn=!reduceMotion && typeof cinemaUntil==="number" && performance.now()<cinemaUntil;
-  const cinemaK=cinemaOn?Math.max(0, Math.min(1, (cinemaUntil-performance.now())/3800)):0;
-  const field=holoAlpha(0,t).toFixed(3);
-  const meta=Math.min(0.98, holoAlpha(1,t)*(1+0.10*cinemaK)).toFixed(3);
-  const tunnel=(holoAlpha(0,t)*0.42).toFixed(3);
-  const fx=Math.min(0.99, holoAlpha(2,t)*(1+0.14*cinemaK)).toFixed(3);
-  const desk=holoAlpha(3,t).toFixed(3);
-  const flick=(0.94+0.06*Math.sin((t||0)*11.1)).toFixed(3);
-  if(_bgFieldEl._hf!==field){ _bgFieldEl._hf=field; _bgFieldEl.style.setProperty("--holo-field", field); }
-  if(_bgFieldEl._hm!==meta){ _bgFieldEl._hm=meta; _bgFieldEl.style.setProperty("--holo-meta", meta); }
-  if(_bgFieldEl._ht!==tunnel){ _bgFieldEl._ht=tunnel; _bgFieldEl.style.setProperty("--holo-tunnel", tunnel); }
-  if(_bgFieldEl._hx!==fx){ _bgFieldEl._hx=fx; _bgFieldEl.style.setProperty("--holo-fx", fx); document.documentElement.style.setProperty("--holo-fx", fx); }
-  if(_bgFieldEl._hd!==desk){ _bgFieldEl._hd=desk; _bgFieldEl.style.setProperty("--holo-desk", desk); document.documentElement.style.setProperty("--holo-desk", desk); }
-  if(_bgFieldEl._hk!==flick){ _bgFieldEl._hk=flick; _bgFieldEl.style.setProperty("--holo-flicker", flick); document.documentElement.style.setProperty("--holo-flicker", flick); }
+  if(_bgFieldEl._hk!=="1"){ _bgFieldEl._hk="1"; _bgFieldEl.style.setProperty("--holo-flicker","1"); document.documentElement.style.setProperty("--holo-flicker","1"); }
+  if(_bgFieldEl._hx!=="1"){ _bgFieldEl._hx="1"; _bgFieldEl.style.setProperty("--holo-fx","1"); document.documentElement.style.setProperty("--holo-fx","1"); }
+  if(_bgFieldEl._hd!=="1"){ _bgFieldEl._hd="1"; _bgFieldEl.style.setProperty("--holo-desk","1"); document.documentElement.style.setProperty("--holo-desk","1"); }
 }
 
 function layerAlpha(which){
@@ -2583,6 +2487,8 @@ function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(
 
 
 function drawBoxSphereVents(cx,cy,s,t){
+  /* cyberNatureFormat: purple cube/vents retired — ripples+pillars own the field */
+  return;
   /* boxSphereVents|evenBox|impressShowpiece: even cube + sphere + 3 vents + god-rays; iridescent edges */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
@@ -2770,6 +2676,8 @@ function drawLatticeFaceDetail(cx,cy,s,t,pv){
 }
 
 function drawDodecaLatticeCage(cx,cy,s,t){
+  /* cyberNatureFormat: lattice cage retired */
+  return;
   /* latticeCage|impressShowpiece — wire dodeca lattice + ghost twin + iridescent edges */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   const pv=[];
@@ -2862,10 +2770,75 @@ function drawDodecaLatticeCage(cx,cy,s,t){
   DODECA._faceCenters2d=faceCenters;
   return faceCenters;
 }
+function drawCyberNatureField(cx,cy,s,t){
+  /* cyberNatureFormat — dense concentric iridescent ripples + vertical data-pillars */
+  if(reduceMotion && skipHeavy) return;
+  const thin=W<=480, mobile=W<=900;
+  const nRings=thin?28:(mobile?42:56);
+  const nPillars=thin?9:(mobile?14:18);
+  const hues=[186,312,52,28]; /* cyan→magenta→yellow→orange */
+  ctx.save();
+  ctx.globalCompositeOperation="lighter";
+  /* concentric elliptical ripples — slight noise jitter, many thin strokes */
+  for(let i=0;i<nRings;i++){
+    const u=i/(nRings-1);
+    const baseR=s*(0.08+u*1.55);
+    const jitter=Math.sin(t*TEMPO.base*2.4+i*0.73)*s*0.012 + Math.cos(t*TEMPO.base*1.7+i*1.1)*s*0.008;
+    const rx=(baseR+jitter)*(1.05+0.04*Math.sin(t*TEMPO.base+i*0.2));
+    const ry=rx*(0.38+0.06*Math.sin(t*TEMPO.base*0.9+i*0.15)); /* ground-plane ellipse */
+    const hi=hues[i%hues.length];
+    const hue=hi + 18*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.55+i*0.31) + (t*TEMPO.base*8)%40;
+    const a=0.045 + 0.085*(1-u) + 0.04*Math.sin(t*TEMPO.base*3.1+i);
+    ctx.strokeStyle=hsl(hue,92,62,Math.min(0.55,a));
+    ctx.lineWidth=thin?0.55:(mobile?0.75:0.95);
+    ctx.beginPath();
+    ctx.ellipse(cx, cy+s*0.12, Math.max(2,rx), Math.max(1.2,ry), 0.04*Math.sin(t*TEMPO.base*0.6+i*0.05), 0, Math.PI*2);
+    ctx.stroke();
+    /* secondary hairline for density */
+    if(!thin && i%2===0){
+      ctx.strokeStyle=hsl(hue+40,88,68,a*0.45);
+      ctx.lineWidth=0.45;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy+s*0.12, Math.max(2,rx*0.97), Math.max(1.2,ry*0.97), 0, 0, Math.PI*2);
+      ctx.stroke();
+    }
+  }
+  /* vertical data-pillar clusters — dashed segments rising like trees */
+  for(let p=0;p<nPillars;p++){
+    const ang=(p/nPillars)*Math.PI*2 + t*TEMPO.base*0.08;
+    const rad=s*(0.22 + (p%5)*0.12 + 0.06*Math.sin(t*TEMPO.base+p));
+    const px=cx + Math.cos(ang)*rad*1.15;
+    const py0=cy + s*0.12 + Math.sin(ang)*rad*0.38;
+    const h=s*(0.55 + 0.55*((p*PHI)%1) + 0.12*Math.sin(t*TEMPO.base*1.4+p));
+    const hue=hues[p%hues.length] + 10*Math.sin(t*TEMPO.base+p);
+    const segs=thin?10:(mobile?14:18);
+    ctx.strokeStyle=hsl(hue,90,60,0.22+0.18*((p*0.37)%1));
+    ctx.lineWidth=thin?0.9:(mobile?1.15:1.4);
+    ctx.setLineDash([3+ (p%3), 4+(p%4)]);
+    ctx.lineDashOffset=-(t*TEMPO.base*28 + p*7);
+    ctx.beginPath();
+    ctx.moveTo(px, py0);
+    /* slight sway */
+    const midX=px + Math.sin(t*TEMPO.base*2.2+p)*s*0.02;
+    ctx.quadraticCurveTo(midX, py0-h*0.5, px+Math.sin(t*TEMPO.base+p*0.5)*s*0.015, py0-h);
+    ctx.stroke();
+    /* twin dash for density */
+    if(!thin){
+      ctx.strokeStyle=hsl(hue+50,85,65,0.12);
+      ctx.lineWidth=0.7;
+      ctx.setLineDash([2,5]);
+      ctx.beginPath();
+      ctx.moveTo(px+3, py0);
+      ctx.lineTo(px+2, py0-h*0.85);
+      ctx.stroke();
+    }
+  }
+  ctx.setLineDash([]);
+  ctx.restore();
+}
 function drawDodecaFrame(cx,cy,s,t){
-  /* latticeCage outside + boxSphereVents inside — same gyro/project */
-  drawDodecaLatticeCage(cx,cy,s,t);
-  drawBoxSphereVents(cx,cy,s,t);
+  /* cyberNatureFormat — ripples+pillars replace lattice+purple cube */
+  drawCyberNatureField(cx,cy,s,t);
 }
 
 const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
@@ -4021,7 +3994,7 @@ function drawGyroOrbitRings(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawOrganizeLattice(cx,cy,s,t){
+function drawOrganizeLattice(cx,cy,s,t){ /* cyberNatureFormat: quiet — ripples own mid */ if(true) return; void(cx);void(cy);void(s);void(t);
   /* organizing lattice — polishPass3|bgToDodeca|fateSplit|organizeLattice.
      PURPOSE: visible grammar — field/mint→dodeca lock; admit→cube crystallize. Cool admit / warm release. */
   const pv=DODECA._projVerts, fcs=DODECA._faceCenters2d;
@@ -4824,6 +4797,43 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDrops();
+/* cyberNatureFormat — left data rail + spectrum bars */
+(function bootCyberNatureChrome(){
+  const rail=document.getElementById("dataRail");
+  if(rail && !rail._filled){
+    rail._filled=1;
+    const glyphs=["◈","⬡","▣","◉","◇","¤","‡","†","≈","≡","⌁","⎔","⌬","⬡","∷","∙","◌","◍","◎","⬡"];
+    const n=W<=480?40:56;
+    let out="";
+    for(let i=0;i<n;i++){
+      const hex=(Math.floor(Math.random()*0xffffff)^((i*2654435761)>>>0)).toString(16).padStart(6,"0").slice(0,4);
+      const g=glyphs[i%glyphs.length];
+      const cls=(i%7===0)?" hi":(i%5===0)?" mag":"";
+      out+='<div class="row'+cls+'">'+g+' '+hex+' '+g+'</div>';
+    }
+    rail.innerHTML=out;
+  }
+  const spec=document.getElementById("specBar");
+  if(spec && !spec._filled){
+    spec._filled=1;
+    const bars=W<=480?36:56;
+    let s="";
+    for(let i=0;i<bars;i++) s+='<i style="height:'+(4+((i*37)%22))+'px"></i>';
+    spec.innerHTML=s;
+    const els=spec.children;
+    let t0=performance.now();
+    function tickSpec(now){
+      if(reduceMotion){ requestAnimationFrame(tickSpec); return; }
+      const t=(now-t0)*0.001;
+      for(let i=0;i<els.length;i++){
+        const h=4+Math.abs(Math.sin(t*TEMPO.base*3.2+i*0.45))*18 + Math.abs(Math.sin(t*TEMPO.base*5.1+i*0.9))*8;
+        els[i].style.height=h.toFixed(1)+"px";
+      }
+      requestAnimationFrame(tickSpec);
+    }
+    requestAnimationFrame(tickSpec);
+  }
+})();
 /* ========== UI ========== */
 const $=id=>document.getElementById(id);
 const tip=$("tip");

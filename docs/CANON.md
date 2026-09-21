@@ -1,7 +1,7 @@
 # Seraphim Organizer — canon
 
-- **Centerpiece:** box + inner sphere + 3 intake vents (`boxSphereVents`)
-- **Palette:** black + red only (`blackRedOnly`)
-- **Vectors:** sameVectors triad = vent axes; gather→sort feeds the box
-- **Bg:** inverted tunnel (black field, red-tinted spheres)
+- **Centerpiece:** cyber-nature ripples + data pillars (`cyberNatureFormat`) — NOT purple cube/lattice
+- **Palette:** void black + cyan/magenta/yellow/orange neon (purpleOnly removed)
+- **Bg:** full-bleed `media/cyber-nature` forest photo + CRT scanlines
+- **Chrome:** left `#dataRail`, bottom `#specBar`; desk labels Disorganized/Organized/Aside
 - **Live tip:** `?v=<shortsha>`
