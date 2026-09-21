@@ -1180,6 +1180,21 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
 #trayAdmit .folderExport button:hover,
 #trayRelease .folderExport button:hover{ color:rgba(200,255,250,.95); }
 
+
+/* clientBgDynamic — livelier field behind translucent windows */
+#fx{ opacity:1 !important; }
+#bgField::after{
+  opacity:0.55 !important;
+  animation:scanDrift 9s linear infinite;
+}
+@keyframes scanDrift{
+  0%{ background-position:0 0, 0 0, 50% 50%; }
+  100%{ background-position:0 48px, 0 0, 52% 48%; }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField::after{ animation:none !important; }
+}
+
 /* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
 #phaseWhisper{
   align-self:center;
@@ -1229,9 +1244,19 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
 #bgField .magpieSealWorld{
   position:absolute;inset:0;z-index:0;
   display:block !important; /* magpieImpressSupersede: Magpie seal plate (NO trees) */
-  opacity:0.42;
-  filter:saturate(1.15) contrast(1.05) brightness(0.78);
+  opacity:0.62;
+  filter:saturate(1.35) contrast(1.12) brightness(0.92);
   mix-blend-mode:screen;
+  animation:sealPlateDrift 28s ease-in-out infinite alternate;
+  transform-origin:50% 45%;
+}
+@keyframes sealPlateDrift{
+  0%{ transform:scale(1.02) rotate(-1.2deg); filter:saturate(1.25) contrast(1.08) brightness(0.88); }
+  50%{ transform:scale(1.08) rotate(0.8deg); filter:saturate(1.45) contrast(1.15) brightness(0.96); }
+  100%{ transform:scale(1.04) rotate(1.4deg); filter:saturate(1.35) contrast(1.12) brightness(0.92); }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .magpieSealWorld{ animation:none !important; }
 }
 #bgField .cyberNatureWorld picture,
 #bgField .cyberNatureWorld img,
@@ -2055,7 +2080,7 @@ const LERP_BASE=reduceMotion?1:(isTouch?0.10:0.13); // refinePolish2: softer set
 const PHI=1.6180339887;
 const TEMPO={
   /* magpieImpressSupersede: dense fast work instrument — base≥2.8; every layer uses base·φ^k */
-  base:2.85,           // rad/s primary yaw — impress supersede (was 2.55)
+  base:3.45,           // rad/s primary yaw — clientBgDynamic (was 2.85)
   neon:1/PHI,
   sculpt:1/(PHI*PHI),
   city:1/(PHI*PHI*PHI),     // ≈0.236 field drift
@@ -2081,7 +2106,7 @@ const cam={
   // targets — pointer/wheel/auto write here; render uses lerped values
   tYaw:0.35,tPitch:0.18,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
   // living gyro — TEMPO φ family (tempoHarmonic)
-  gyro:{wx:TEMPO.base*1.15, wy:TEMPO.base*0.85, wz:TEMPO.base*0.55}
+  gyro:{wx:TEMPO.base*1.35, wy:TEMPO.base*1.05, wz:TEMPO.base*0.72}
 };
 function lerpCam(dtMs){
   /* frame-rate aware exp smooth — snappy enough, settles soft */
@@ -5364,9 +5389,9 @@ function frame(now){
     /* impressShowpiece: slightly faster orbit during cinema open */
     const cinemaSpin=cinemaOn?(2.15+0.45*((cinemaUntil-now)/3800)):1.55; /* magpieImpressSupersede: brisk */
     /* omnidiscipline: conserved angular-momentum family — one φ organism tumble */
-    const wx=cam.gyro.wx*(1+0.08*Math.sin(t*TEMPO.base*0.21))*cinemaSpin;
-    const wy=cam.gyro.wy*(1+0.07*Math.cos(t*(TEMPO.base*0.21/PHI)))*cinemaSpin;
-    const wz=cam.gyro.wz*(1+0.05*Math.sin(t*(TEMPO.base*0.21/(PHI*PHI))))*cinemaSpin;
+    const wx=cam.gyro.wx*(1+0.16*Math.sin(t*TEMPO.base*0.28))*cinemaSpin;
+    const wy=cam.gyro.wy*(1+0.14*Math.cos(t*(TEMPO.base*0.28/PHI)))*cinemaSpin;
+    const wz=cam.gyro.wz*(1+0.11*Math.sin(t*(TEMPO.base*0.28/(PHI*PHI))))*cinemaSpin;
     cam.tYaw+=wx*dts*m; cam.tPitch+=wy*dts*m; cam.tRoll+=wz*dts*m;
   }
   const nudge=0.042;
@@ -5406,7 +5431,7 @@ function frame(now){
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
   if(!skipHeavy) drawTrailsAndGlow(cxH,cyH,s,t);
-  if(!skipHeavy && !(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t); /* mergePolish: quieter */
+  if(!skipHeavy) drawOrganizeLattice(cxH,cyH,s,t); /* clientBgDynamic: lattice every frame */
   if(!reduceMotion) drawUploadStream(cx,cy,s,t);
   drawSortShockwave(cx,cy,s);
   drawBloomClamp(cx0,cy0,s); /* clear light/shadow anti-blotch */
