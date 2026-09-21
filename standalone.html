@@ -841,6 +841,151 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   #sortedFigures .tray{max-height:16vh!important}
 }
 
+
+/* clientSeparateWindows — upload + trays as discrete floating windows */
+#sortDesk{
+  background:transparent!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  padding:.35rem .2rem .25rem!important;
+  gap:.7rem!important;
+  width:min(640px,94vw)!important;
+}
+#sortDesk .flowArrow{
+  letter-spacing:.16em!important;
+  color:rgba(180,210,230,.55)!important;
+  text-shadow:0 1px 8px rgba(0,0,0,.9);
+  margin:.15rem 0 .05rem!important;
+}
+#uploadBox,
+#sortedFigures .tray{
+  position:relative;
+  isolation:isolate;
+  border-radius:14px!important;
+  backdrop-filter:blur(14px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.15)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.06),
+    0 18px 50px rgba(0,0,0,.65),
+    0 2px 0 rgba(255,255,255,.04) inset!important;
+}
+/* window title chrome */
+#uploadBox::before,
+#sortedFigures .tray::before{
+  content:"";
+  display:block;
+  height:22px;
+  margin:-.55rem -.55rem .55rem;
+  padding:0 .65rem;
+  border-radius:14px 14px 0 0;
+  background:linear-gradient(180deg, rgba(28,36,52,.95) 0%, rgba(12,16,28,.92) 100%);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset;
+}
+#uploadBox::after,
+#sortedFigures .tray.admit::after,
+#sortedFigures .tray.release::after{
+  content:"● ● ●";
+  position:absolute;
+  top:4px;
+  left:12px;
+  font-size:7px;
+  letter-spacing:.2em;
+  color:rgba(255,255,255,.28);
+  pointer-events:none;
+  z-index:2;
+}
+#uploadBox{
+  border:1px solid rgba(34,211,238,.5)!important;
+  background:rgba(6,12,24,.88)!important;
+  padding:.55rem .7rem .7rem!important;
+  margin-top:0!important;
+}
+#uploadBox.drag,#uploadBox:focus-within,#uploadBox.receiving{
+  border-color:rgba(94,234,212,.9)!important;
+  box-shadow:
+    0 0 0 1px rgba(94,234,212,.4),
+    0 0 40px rgba(34,211,238,.25),
+    0 18px 50px rgba(0,0,0,.7)!important;
+}
+#uploadBox .uh{
+  position:relative;
+  z-index:1;
+  margin-top:-1.55rem!important;
+  margin-bottom:.45rem!important;
+  padding-left:3.2rem;
+  min-height:1.1rem;
+}
+#uploadBox .uh b{
+  font-size:.62rem!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+  color:rgba(220,240,255,.92)!important;
+}
+#uploadBox .uh b::before{content:""!important}
+#uploadBox .uh span{
+  font-size:.48rem!important;
+  color:rgba(140,180,200,.55)!important;
+}
+#uploadBox .dropHint{
+  border:1.5px dashed rgba(34,211,238,.35)!important;
+  background:rgba(0,24,40,.5)!important;
+  padding:.55rem .4rem!important;
+  margin-bottom:.4rem!important;
+  font-size:.64rem!important;
+  color:rgba(200,230,250,.8)!important;
+}
+#uploadBox textarea{
+  background:rgba(0,6,14,.65)!important;
+  border:1px solid rgba(34,211,238,.28)!important;
+  min-height:72px!important;
+}
+#sortedFigures{
+  gap:.75rem!important;
+}
+#sortedFigures .tray{
+  border:1px solid rgba(120,160,200,.35)!important;
+  background:rgba(6,12,24,.88)!important;
+  padding:.55rem .65rem .6rem!important;
+  max-height:24vh!important;
+}
+#sortedFigures .tray.admit{
+  border-color:rgba(34,211,238,.55)!important;
+}
+#sortedFigures .tray.release{
+  border-color:rgba(232,121,249,.5)!important;
+}
+#sortedFigures .tray h3{
+  position:relative;
+  z-index:1;
+  margin-top:-1.55rem!important;
+  margin-bottom:.2rem!important;
+  padding-left:3.2rem!important;
+  padding-bottom:.15rem!important;
+  border-bottom:none!important;
+  min-height:1.1rem;
+  font-size:.62rem!important;
+  letter-spacing:.1em!important;
+  text-transform:uppercase!important;
+}
+#sortedFigures .tray.admit h3::before,
+#sortedFigures .tray.release h3::before{
+  content:""!important;
+}
+#sortedFigures .tray .folderTag{
+  padding-left:.1rem;
+  margin-bottom:.4rem!important;
+  color:rgba(160,190,210,.5)!important;
+}
+#sortedFigures .empty{
+  background:rgba(0,8,18,.35);
+  border-style:dashed!important;
+}
+@media (max-width:480px){
+  #sortedFigures{grid-template-columns:1fr!important}
+  #sortedFigures .tray{max-height:18vh!important}
+}
+
 /* gatherThenSort — quiet phase whisper (public language; no S_H jargon) */
 #phaseWhisper{
   align-self:center;
@@ -1689,6 +1834,7 @@ const STORIES = {
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
    - tunnelAsSent: show GIF as Taylor sent — light field, black dots, full-bleed; kill invert+screen+vignette+perspective warp; soft desk scrim only.
+   - clientSeparateWindows: upload + Organized/Aside as discrete floating windows
    - clientClearFolders: clear upload window + Organized/Aside folder panels for clients
    - gatherThenSort: idle ≈21s cycles gather→sort — fetch media/live-gather.csv (cache-bust ?t=), soft-path organize; fallback IDLE_PUBLIC_PACK; #phaseWhisper gathering…→sorting…→quiet; pause on user type
 */
