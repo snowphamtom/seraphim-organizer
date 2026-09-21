@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<meta name="color-scheme" content="dark"/>
+<meta name="color-scheme" content="light dark"/>
 <meta name="description" content="Seraphim organizer: drop disorganized content, get an organized field. Soft."/>
-<meta name="theme-color" content="#000000"/>
+<meta name="theme-color" content="#e8e8e8"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|gatherThenSort: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -318,62 +318,46 @@ body.reveal-chrome #log, #log:hover{opacity:.55}
 body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
-/* inverted light field — black void only; tunnelGridBg is sole plate */
-#bgField{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#000}
-
-/* tunnelGridBg|bgSealCenterLock|stripToBones
-   Taylor tunnel-dots GIF — ONLY #bgField layer (whispers + retired .meta plates removed).
-   Light-bg source → invert + screen on void = cyan-HUD-friendly light dots.
-   Vanishing point = live seal via --seal-x/--seal-y (syncGyroSharedCenter).
-   Full-bleed cover; quiet α so desk + seal stay boss. */
+/* tunnelAsSent|tunnelGridBg|bgSealCenterLock|stripToBones
+   Taylor tunnel-dots GIF AS SENT — light gray bg + black dots, full-bleed cover.
+   NO invert, NO mix-blend-mode:screen, NO heavy vignette/mask, NO perspective corridor warp.
+   VP = live seal via --seal-x/--seal-y: simple translate center + object-fit cover.
+   Opacity near 1. Soft dark scrim lives on #sortDesk only (not over tunnel). */
 #bgField{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:#e8e8e8; /* match GIF light field */
   --seal-x:50%;
   --seal-y:42%;
 }
 #bgField .tunnelGrid{
   position:absolute;inset:0;
-  perspective:1100px;
-  perspective-origin:var(--seal-x) var(--seal-y);
   overflow:hidden;
   z-index:0;
 }
 #bgField .tunnelGrid .plane{
   position:absolute;
   left:var(--seal-x); top:var(--seal-y);
-  width:155%; height:155%;
-  transform:translate(-50%,-50%) scale(1.08);
+  /* large enough to cover viewport when seal is off-center */
+  width:max(200vw, 200vh); height:max(200vw, 200vh);
+  transform:translate(-50%,-50%);
   transform-origin:50% 50%;
-  opacity:0.32;
-  mix-blend-mode:screen;
-  filter:invert(1) brightness(0.92) contrast(1.08);
-  -webkit-mask-image:radial-gradient(ellipse 72% 68% at 50% 50%,
-    #000 0%, #000 34%, rgba(0,0,0,0.72) 58%, rgba(0,0,0,0.28) 78%, transparent 100%);
-  mask-image:radial-gradient(ellipse 72% 68% at 50% 50%,
-    #000 0%, #000 34%, rgba(0,0,0,0.72) 58%, rgba(0,0,0,0.28) 78%, transparent 100%);
-  will-change:transform;
+  opacity:0.95;
+  /* tunnelAsSent: no filter / blend / mask */
 }
 #bgField .tunnelGrid img{
   display:block;width:100%;height:100%;
   object-fit:cover;
-  object-position:50% 50%; /* bgSealCenterLock: tunnel VP = seal hub */
+  object-position:50% 50%; /* GIF VP at plane center = seal */
 }
 #bgField .tunnelGrid img.still{display:none}
-#bgField .tunnelGrid::after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 48% 42% at var(--seal-x) var(--seal-y), rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 42%, transparent 70%),
-    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 24%, transparent 70%, rgba(0,0,0,0.62) 100%),
-    linear-gradient(90deg, rgba(0,0,0,0.42) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.42) 100%);
-}
 
 @media (max-width:900px){
-  #bgField .tunnelGrid .plane{opacity:0.22; width:170%; height:170%;
-    transform:translate(-50%,-50%) scale(1.04)}
+  #bgField .tunnelGrid .plane{opacity:0.92}
 }
 @media (prefers-reduced-motion:reduce){
   #bgField .tunnelGrid img.anim{display:none}
   #bgField .tunnelGrid img.still{display:block}
-  #bgField .tunnelGrid .plane{opacity:0.26; filter:invert(1) brightness(0.88) contrast(1.05)}
+  #bgField .tunnelGrid .plane{opacity:0.95}
 }
 
 
@@ -406,7 +390,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   /* soft readability veil without a window */
   padding:.55rem .65rem .5rem;
   border-radius:0;
-  background:linear-gradient(180deg, rgba(4,6,14,.0) 0%, rgba(4,6,14,.48) 16%, rgba(4,6,14,.62) 100%);
+  background:linear-gradient(180deg, rgba(4,6,14,.0) 0%, rgba(4,6,14,.55) 18%, rgba(4,6,14,.72) 100%); /* tunnelAsSent: soft scrim under desk only */
   -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
   mask-image:linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
 }
@@ -591,16 +575,16 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- tunnelGridBg|bgSealCenterLock|stripToBones — tunnel-only, no stacked whispers -->
+<div id="bgField" aria-hidden="true"><!-- tunnelAsSent|tunnelGridBg|bgSealCenterLock|stripToBones — GIF as sent, no invert/screen/vignette -->
   <div class="tunnelGrid" aria-hidden="true">
     <div class="plane">
-      <img class="anim" src="media/tunnel-grid.gif" alt="" width="360" height="360" decoding="async" fetchpriority="low">
-      <img class="still" src="media/tunnel-grid-still.jpg" alt="" width="360" height="360" decoding="async" fetchpriority="low">
+      <img class="anim" src="media/tunnel-grid.gif" alt="" width="500" height="500" decoding="async" fetchpriority="low">
+      <img class="still" src="media/tunnel-grid-still.jpg" alt="" width="500" height="500" decoding="async" fetchpriority="low">
     </div>
   </div>
 </div>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
-<canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.14"></canvas><!-- fgContrast: WebGL underlay quieter so seal+HUD win -->
+<canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas><!-- tunnelAsSent: WebGL underlay off — muddy vs GIF -->
 <header id="top">
   <div class="title">SERAPHIM</div>
   <span class="whisper" title="Wizard turns fumbled speech into seal">fumble → seal</span>
@@ -1218,15 +1202,15 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|gatherThenSort */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
    Palette (holoPalette): cyan↔indigo↔magenta↔orchid diagonal iridescence on void #000.
      admit/crystallize = cool cyan-indigo; release = magenta/orchid; prism accents = pale yellow/peach/lime.
    SURVIVING layers (why they stay):
-   - tunnelGridBg: Taylor tunnel-dots GIF sole #bgField plate (invert+screen); VP locked to seal
-   - hybridEngineTrio: procedural seal spine (drawBeamRain + drawCorePlasma); media bg = tunnelGrid only
+   - tunnelAsSent|tunnelGridBg: Taylor tunnel-dots GIF AS SENT (light bg, black dots, α≈0.95); NO invert/screen/vignette/warp; VP locked to seal via translate+cover
+   - hybridEngineTrio: quieted under tunnelAsSent (beams/plasma no-op — muddy light GIF); seal+organize story remain
    - masterpieceFlow: one φ TEMPO organism — desk→seal→trays continuous path
    - balancePolish: shared seal origin; cyan↔magenta L/R weight; bloom clamp
    - bgSealCenterLock: --seal-x/--seal-y track live canvas cx,cy (mobile raised seal + pan/parallax); DOM whispers locked to dodeca hub
@@ -1256,7 +1240,7 @@ const STORIES = {
    - film grain: no-op (OLED blotch); bloomClamp: active anti-blotch under seal + desk
    - excessPrune: subtract until necessary — cut aurora/stipple/quasicrystal/Ylm+Hopf/sphereWire/biomorphic filigree/ink-echo chord web; CRT scanlines off; ink-wash kept quieter; beams↓ mobile; chrome quieter; skipHeavy dt>20; seal + desk story win
    - stripToBones: honest skeleton only — dodeca seal + center lock + Disorganized→Organized/Aside desk + φ TEMPO + clear light/shadow. Kill stacked densify/ornament underlays that fight clarity. No maximalism.
-   - tunnelGridBg: replace whisper stack with single tunnel-dots GIF; black void base; seal VP center.
+   - tunnelAsSent: show GIF as Taylor sent — light field, black dots, full-bleed; kill invert+screen+vignette+perspective warp; soft desk scrim only.
    - gatherThenSort: idle ≈21s cycles gather→sort — fetch media/live-gather.csv (cache-bust ?t=), soft-path organize; fallback IDLE_PUBLIC_PACK; #phaseWhisper gathering…→sorting…→quiet; pause on user type
 */
 const canvas=document.getElementById("fx");
@@ -2588,6 +2572,8 @@ function drawChimeraCustomField(cx,cy,s,t){
 
 /* —— hybridEngineTrio|masterpieceFlow: core plasma + beam rain (procedural primary) —— */
 function drawCorePlasma(cx,cy,s,t){
+  /* tunnelAsSent: quiet — plasma muddies light GIF; seal+organize stay */
+  return;
   /* beyondAIMaster|hybridEngineTrio: φ multi-axis plasma under seal — flows into beam rain; never compete */
   if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
@@ -2635,6 +2621,8 @@ function drawCorePlasma(cx,cy,s,t){
 }
 
 function drawBeamRain(cx,cy,s,t){
+  /* tunnelAsSent: quiet — beams muddy light GIF; seal+organize stay */
+  return;
   /* beyondAIMaster|hybridEngineTrio: φ-synced beams — plasma→corridor→desk/trays as one flow */
   if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
@@ -2698,9 +2686,8 @@ function drawBeamRain(cx,cy,s,t){
 }
 
 function syncGyroSharedCenter(cx,cy,s,t){
-  /* bgSealCenterLock|balancePolish|refinePolish2: live seal cx,cy → CSS --seal-x/--seal-y (px)
-     every frame; tunnelGrid perspective-origin + plane + vignette
-     lock to dodeca hub (mobile raised cy + pan/parallax). */
+  /* bgSealCenterLock|tunnelAsSent: live seal cx,cy → CSS --seal-x/--seal-y (px)
+     every frame; tunnel plane translate-center (no perspective warp / vignette). */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
   const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
@@ -3229,6 +3216,8 @@ function hashFigId(id){
 
 
 function drawSealContrastVeil(cx,cy,s){
+  /* tunnelAsSent: no full-field dark over light GIF — desk owns soft scrim; seal strokes carry */
+  return;
   /* omnidiscipline chiaroscuro: darken field so rim-lit seal reads; ink-wash negative space */
   ctx.save();
   const R=Math.max(W,H)*0.72;
@@ -3959,29 +3948,29 @@ function drawFogShards(cx,cy,s,t,orbitSpeed){
   ctx.restore();
 }
 function drawBloomClamp(cx,cy,s){
-  /* beyondAIMaster|refinePolish2: stronger anti-blotch + soft contact shadow; seal stays boss */
+  /* tunnelAsSent|refinePolish2: soft local plate under seal only — no heavy black punch over GIF */
   if(reduceMotion && W<=900) return;
   ctx.save();
-  const R=s*(W<=900?0.60:0.68);
+  const R=s*(W<=900?0.48:0.55);
   const g=ctx.createRadialGradient(cx,cy,s*0.05,cx,cy,R);
-  g.addColorStop(0,"rgba(0,0,0,0.34)");
-  g.addColorStop(0.28,"rgba(0,0,0,0.16)");
-  g.addColorStop(0.58,"rgba(0,0,0,0.06)");
-  g.addColorStop(0.82,"rgba(0,0,0,0.02)");
+  g.addColorStop(0,"rgba(0,0,0,0.14)");
+  g.addColorStop(0.28,"rgba(0,0,0,0.07)");
+  g.addColorStop(0.58,"rgba(0,0,0,0.03)");
+  g.addColorStop(0.82,"rgba(0,0,0,0.01)");
   g.addColorStop(1,"rgba(0,0,0,0)");
   ctx.globalCompositeOperation="source-over";
   ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fill();
   /* soft contact shadow plate under seal */
   const sh=ctx.createRadialGradient(cx, cy+s*0.38, 0, cx, cy+s*0.38, s*0.52);
-  sh.addColorStop(0,"rgba(0,0,0,0.20)");
-  sh.addColorStop(0.5,"rgba(0,0,0,0.07)");
+  sh.addColorStop(0,"rgba(0,0,0,0.08)");
+  sh.addColorStop(0.5,"rgba(0,0,0,0.03)");
   sh.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=sh; ctx.beginPath();
   ctx.ellipse(cx, cy+s*0.36, s*0.46, s*0.13, 0, 0, Math.PI*2); ctx.fill();
-  /* cool neutral rim — no yellow/orange kiss */
+  /* cool neutral rim — quiet under tunnelAsSent */
   const g2=ctx.createRadialGradient(cx,cy,s*0.26,cx,cy,s*0.76);
   g2.addColorStop(0,"rgba(0,0,0,0)");
-  g2.addColorStop(0.50,"rgba(14,22,40,0.055)");
+  g2.addColorStop(0.50,"rgba(14,22,40,0.025)");
   g2.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(cx,cy,s*0.76,0,Math.PI*2); ctx.fill();
   /* desk veil hotspot clamp — kill screen-blend blotch behind markdown dock */
