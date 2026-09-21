@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -361,7 +361,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   background-image:url(bg-city-glint.gif);
   background-size:cover;background-position:center;background-repeat:no-repeat;
   opacity:0.55;mix-blend-mode:normal;filter:contrast(1.05) saturate(1.05);
-  pointer-events:none;
+  pointer-events:none;transform-origin:center center;will-change:transform,opacity;
 }
 @media (max-width:900px){
   #bgField .meta.cluster{opacity:0.45;filter:contrast(1.02) saturate(1.02)}
@@ -371,43 +371,48 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 
 #bgField .meta.sculpture{
-  /* Refik-style data sculpture — soft spectrum mass bridging city → seal */
-  inset:0;
+  /* spectrum mass — shared seal center; gyro via JS transform */
+  inset:auto;
+  width:min(120vmin, 1100px);
+  height:min(120vmin, 1100px);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  transform-origin:center center;
   background-image:url(bg-data-sculpture.png);
   background-size:contain;
-  background-position:center 42%;
+  background-position:center;
   background-repeat:no-repeat;
-  opacity:0.42;
+  opacity:0.40;
   mix-blend-mode:screen;
-  filter:saturate(1.35) contrast(1.1) brightness(0.95);
-  transform:scale(1.08);
-  transform-origin:center 45%;
+  filter:saturate(1.4) contrast(1.12) brightness(0.92);
   pointer-events:none;
+  will-change:transform,left,top,opacity;
 }
 #bgField .meta.neon{
-  /* neon green dodeca ghost — locked to seal cx/cy (JS), screen-blend connector */
+  /* neon dodeca ghost — same center as seal; gyro counter-rotate */
   inset:auto;
   width:min(72vmin, 640px);
   height:min(72vmin, 640px);
   top:50%;left:50%;
   transform:translate(-50%,-50%);
+  transform-origin:center center;
   background-image:url(bg-dodeca-neon.gif);
   background-size:contain;
   background-position:center;
   background-repeat:no-repeat;
-  opacity:0.38;
+  opacity:0.42;
   mix-blend-mode:screen;
-  filter:saturate(1.2) brightness(1.05) hue-rotate(-8deg);
+  filter:saturate(1.25) brightness(1.08) hue-rotate(-6deg);
   pointer-events:none;
-  will-change:left,top;
+  will-change:transform,left,top,opacity;
 }
 @media (max-width:900px){
-  #bgField .meta.sculpture{opacity:0.28;transform:scale(1.12);background-position:center 28%}
-  #bgField .meta.neon{width:58vmin;height:58vmin;opacity:0.30}
+  #bgField .meta.sculpture{width:130vmin;height:130vmin;opacity:0.30}
+  #bgField .meta.neon{width:58vmin;height:58vmin;opacity:0.34}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .meta.sculpture{opacity:0.22}
-  #bgField .meta.neon{opacity:0.18}
+  #bgField .meta.sculpture{opacity:0.20}
+  #bgField .meta.neon{opacity:0.16}
 }
 
 
@@ -870,7 +875,7 @@ const STORIES = {
    - fogShards: skip ≤900; α×0.5
    - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
    - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
-   - bg hybrid: city-glint → data-sculpture spectrum → neon dodeca ghost locked to seal; lattice bridges field↔dodeca
+   - gyroHarmony: all figures share seal center; φ-family spin/opacity/spacing; city→sculpture→neon→rays→rings→seal
    - chromatic edges: skip ≤900; α×0.5 (magenta/cyan/indigo fringe)
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
@@ -886,9 +891,15 @@ const isMobileLayout=()=>W<=900;
 const LERP_BASE=reduceMotion?1:(isTouch?0.11:0.13); // polishPass2: softer settle, damp mobile jitter
 const PHI=1.6180339887;
 const TEMPO={
-  base:0.34,           // rad/s primary yaw
+  base:0.34,           // rad/s primary yaw — φ family shared by every figure
   // axes: 1 : 1/φ : 1/φ²
-  // precess freqs (Hz-ish): base*0.55 family
+  // layer rates (multipliers of base) — one gyroscopic organism
+  neon:1/1.6180339887,      // 1/φ — counter-seal ghost
+  sculpt:1/(1.6180339887*1.6180339887), // 1/φ² — spectrum mass
+  city:0.12,                // slow field drift
+  rays:0.55,                // bridge spokes
+  rings:0.34,               // orbit rings
+  lattice:0.5
 };
 const cam={
   yaw:0.35,pitch:0.18,roll:0,panX:0,panY:0,zoom:1,auto:!reduceMotion,
@@ -1725,19 +1736,44 @@ const inkDrops=[];
 let _clusterEl=null;
 
 let _neonEl=null,_sculptEl=null;
-function syncNeonBehindSeal(cx,cy,s){
+let _cityEl=null;
+function syncGyroSharedCenter(cx,cy,s,t){
+  /* EVERY bg figure shares seal (cx,cy); φ-family gyro rotations + opacity breathe */
   if(!_neonEl) _neonEl=document.querySelector("#bgField .meta.neon");
   if(!_sculptEl) _sculptEl=document.querySelector("#bgField .meta.sculpture");
+  if(!_cityEl) _cityEl=document.querySelector("#bgField .meta.cluster");
+  const yaw=cam.yaw+cam.userYaw, pitch=cam.pitch+cam.userPitch, roll=cam.roll+cam.userRoll;
+  const breath=0.5+0.5*Math.sin(t*TEMPO.base*PHI);
+  const breath2=0.5+0.5*Math.sin(t*TEMPO.base/PHI+1.2);
+  /* neon: counter-yaw + roll companion — sits in seal's gyro */
   if(_neonEl){
     _neonEl.style.left=cx+"px";
     _neonEl.style.top=cy+"px";
-    const sz=Math.max(180, Math.min(Math.min(W,H)*0.95, s*2.15));
+    const sz=Math.max(160, Math.min(Math.min(W,H)*1.05, s*2.35));
     _neonEl.style.width=sz+"px";
     _neonEl.style.height=sz+"px";
+    const rotDeg=(-yaw*TEMPO.neon*57.3 + roll*40 + t*TEMPO.base*TEMPO.neon*18);
+    const skew=pitch*8;
+    _neonEl.style.transform="translate(-50%,-50%) rotate("+rotDeg+"deg) skewX("+skew+"deg) scale("+(0.92+0.08*breath)+")";
+    _neonEl.style.opacity=String((W<=900?0.28:0.36)+(0.10*breath2));
   }
+  /* sculpture: slower counter-precession around same center */
   if(_sculptEl){
-    /* keep sculpture centered on seal vertically so spikes aim at hub */
-    _sculptEl.style.backgroundPosition="center "+Math.round((cy/Math.max(H,1))*100)+"%";
+    const ssz=Math.max(280, Math.min(Math.min(W,H)*1.55, s*3.6));
+    _sculptEl.style.left=cx+"px";
+    _sculptEl.style.top=cy+"px";
+    _sculptEl.style.width=ssz+"px";
+    _sculptEl.style.height=ssz+"px";
+    const srot=(-yaw*TEMPO.sculpt*57.3 - t*TEMPO.base*TEMPO.sculpt*22 + pitch*12);
+    _sculptEl.style.transform="translate(-50%,-50%) rotate("+srot+"deg) scale("+(1.02+0.06*breath2)+")";
+    _sculptEl.style.opacity=String((W<=900?0.24:0.38)+(0.08*breath));
+  }
+  /* city field: tiny shared-center drift (not full spin — cover stays readable) */
+  if(_cityEl){
+    const crot=t*TEMPO.base*TEMPO.city*12 + yaw*4;
+    _cityEl.style.transformOrigin=(cx/Math.max(W,1)*100)+"% "+(cy/Math.max(H,1)*100)+"%";
+    _cityEl.style.transform="rotate("+crot+"deg) scale(1.08)";
+    _cityEl.style.opacity=String((W<=900?0.40:0.52)+(0.06*breath2));
   }
 }
 
@@ -1867,7 +1903,7 @@ function drawStarfieldInPanels(cx,cy,s,t,verts){
   for(let k=0;k<n;k++){
     const p=field[k]; if(!p) continue;
     const u=(k/n + p.phase*0.01 + t*0.004)%1;
-    const ang=p.a + t*(TEMPO.base*0.06)*(0.3+p.layer*0.4);
+    const ang=p.a + t*(TEMPO.base*0.06)*(0.3+p.layer*0.4)+(cam.yaw+cam.userYaw)*0.25;
     const rr=s*(0.42+0.55*((p.r-0.5)/0.7+0.5)*0.9);
     const px=cx+Math.cos(ang)*rr*(0.7+0.3*Math.cos(p.b))+(p.layer-0.5)*2.5;
     const py=cy+Math.sin(ang)*rr*0.92+(p.layer-0.5)*2.0;
@@ -2156,24 +2192,66 @@ function hashFigId(id){
 }
 
 function drawHybridBridgeRays(cx,cy,s,t){
-  /* spectrum rays: seal hub → field — connects neon ghost + data sculpture to city HUD */
-  if(reduceMotion||W<=480) return;
-  const n=W<=900?7:11;
+  /* intricate spectrum spokes — φ spacing, multi-speed, shared seal center */
+  if(reduceMotion) return;
+  const thin=W<=480, mobile=W<=900;
+  const shells=thin?2:(mobile?3:4);
+  const spokes=thin?8:(mobile?12:18);
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  for(let i=0;i<n;i++){
-    const a=t*TEMPO.base*0.18+i/n*Math.PI*2;
-    const len=s*(1.15+0.55*Math.sin(t*TEMPO.base*PHI+i));
-    const x2=cx+Math.cos(a)*len, y2=cy+Math.sin(a)*len*0.92;
-    const hue=130+i*(220/n)+20*Math.sin(t*0.5+i); /* green→cyan→magenta */
-    const g=ctx.createLinearGradient(cx,cy,x2,y2);
-    g.addColorStop(0,hsl(hue,95,62,0.22));
-    g.addColorStop(0.45,hsl(hue+30,90,55,0.08));
-    g.addColorStop(1,hsl(hue+50,85,50,0));
-    ctx.strokeStyle=g; ctx.lineWidth=0.7+0.5*Math.sin(t+i);
-    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x2,y2); ctx.stroke();
-    /* outer node hitch */
-    ctx.fillStyle=hsl(hue,100,65,0.18+0.12*Math.sin(t*2+i));
-    ctx.beginPath(); ctx.arc(x2,y2,1.4+0.8*Math.sin(t*1.5+i),0,Math.PI*2); ctx.fill();
+  const yawSpin=(cam.yaw+cam.userYaw)*0.35;
+  for(let sh=0;sh<shells;sh++){
+    const rate=TEMPO.base*TEMPO.rays*(1/Math.pow(PHI,sh));
+    const spin=t*rate + yawSpin*(sh%2? -1:1) + sh*0.4;
+    const n=spokes - sh*2;
+    const baseLen=s*(0.85+sh*0.38);
+    for(let i=0;i<n;i++){
+      const a=spin + i/n*Math.PI*2;
+      /* φ-jitter spacing */
+      const jitter=0.04*Math.sin(t*TEMPO.base*PHI+i*PHI+sh);
+      const len=baseLen*(1+0.22*Math.sin(t*TEMPO.base/PHI+i)+jitter);
+      const x2=cx+Math.cos(a+jitter)*len, y2=cy+Math.sin(a+jitter)*len*0.92;
+      const hue=125 + i*(230/n) + sh*18 + 25*Math.sin(t*0.45+i*0.3);
+      const a0=(0.16-sh*0.03)*(0.55+0.45*Math.sin(t*TEMPO.base+i));
+      const g=ctx.createLinearGradient(cx,cy,x2,y2);
+      g.addColorStop(0,hsl(hue,96,64,a0));
+      g.addColorStop(0.35,hsl(hue+28,90,56,a0*0.45));
+      g.addColorStop(0.72,hsl(hue+48,86,52,a0*0.12));
+      g.addColorStop(1,hsl(hue+60,80,48,0));
+      ctx.strokeStyle=g;
+      ctx.lineWidth=(thin?0.45:0.65)+0.35*Math.sin(t+i)+sh*0.12;
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x2,y2); ctx.stroke();
+      /* hitch nodes — denser toward outer */
+      if(!thin || i%2===0){
+        ctx.fillStyle=hsl(hue,100,68,a0*0.9);
+        ctx.beginPath(); ctx.arc(x2,y2,1.1+0.7*Math.sin(t*1.7+i)+sh*0.2,0,Math.PI*2); ctx.fill();
+      }
+      /* mid-bead on odd spokes */
+      if(!mobile && i%3===0){
+        const mx=cx+(x2-cx)*0.55, my=cy+(y2-cy)*0.55;
+        ctx.fillStyle=hsl(hue+40,95,60,a0*0.55);
+        ctx.beginPath(); ctx.arc(mx,my,0.9,0,Math.PI*2); ctx.fill();
+      }
+    }
+  }
+  ctx.restore();
+}
+function drawGyroOrbitRings(cx,cy,s,t){
+  /* concentric φ-spaced rings — shared center, counter-rotating dashes */
+  if(reduceMotion||W<=480) return;
+  const mobile=W<=900;
+  const rings=mobile?4:6;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  for(let r=0;r<rings;r++){
+    const rad=s*(0.42+r*(0.22+0.04/PHI));
+    const spin=t*TEMPO.base*TEMPO.rings*(r%2?1:-1)/Math.pow(PHI,r*0.5)+(cam.roll)*0.5;
+    const hue=160+r*28+30*Math.sin(t*0.3+r);
+    const alpha=(0.10-r*0.012)*(0.6+0.4*Math.sin(t*TEMPO.base/PHI+r));
+    ctx.strokeStyle=hsl(hue,88,58,Math.max(0.02,alpha));
+    ctx.lineWidth=mobile?0.55:0.75;
+    ctx.setLineDash([3+r, 5+r*PHI]);
+    ctx.lineDashOffset=-spin*40;
+    ctx.beginPath(); ctx.ellipse(cx,cy,rad,rad*0.92,spin*0.15,0,Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
   }
   ctx.restore();
 }
@@ -2771,8 +2849,8 @@ function frame(now){
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
   drawTrailsAndGlow(cxH,cyH,s,t);
-  syncNeonBehindSeal(cx,cy,s);
-  if(!reduceMotion) drawHybridBridgeRays(cx,cy,s,t);
+  syncGyroSharedCenter(cx,cy,s,t);
+  if(!reduceMotion){ drawGyroOrbitRings(cx,cy,s,t); drawHybridBridgeRays(cx,cy,s,t); }
   if(!(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t);
   if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
   drawSortShockwave(cx,cy,s);
