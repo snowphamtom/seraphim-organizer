@@ -541,6 +541,17 @@ function seedFog(){
   for(let i=0;i<48;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:0.2+Math.random()*0.8,ph:Math.random()*Math.PI*2});
 }
 function hsl(h,s,l,a=1){const L=Math.min(68,Math.max(0,l)); return`hsla(${((h%360)+360)%360},${s}%,${L}%,${a})`;}
+function addStops(g, pairs){
+  const sorted=pairs.map(([o,c])=>[Math.max(0,Math.min(1,Number(o)||0)),c]).sort((a,b)=>a[0]-b[0]);
+  let last=-1;
+  for(const [o,c] of sorted){
+    let oo=o;
+    if(oo<=last) oo=Math.min(1, last+1e-4);
+    last=oo;
+    try{g.addColorStop(oo,c);}catch(_){ }
+  }
+}
+
 function project(x,y,z,cx,cy,s){
   const yaw=cam.yaw+cam.userYaw, pitch=cam.pitch+cam.userPitch;
   const cosy=Math.cos(yaw),siny=Math.sin(yaw),cosp=Math.cos(pitch),sinp=Math.sin(pitch);
@@ -578,11 +589,13 @@ function drawHexFrame(cx,cy,s,t){
     const a=verts[i],b=verts[(i+1)%6];
     const travel=(t*0.42+i/6)%1;
     const g=ctx.createLinearGradient(a[0],a[1],b[0],b[1]);
-    g.addColorStop(0,hsl(i*60+t*35,100,54,0.82));
-    g.addColorStop(Math.max(0.02,travel-0.10),hsl(i*60+t*35,100,54,0.88));
-    g.addColorStop(travel,hsl(i*60+45+t*35,100,68,1));
-    g.addColorStop(Math.min(0.98,travel+0.10),hsl(i*60+t*35,100,54,0.88));
-    g.addColorStop(1,hsl((i+1)*60+t*35,100,54,0.82));
+    addStops(g,[
+      [0,hsl(i*60+t*35,100,54,0.82)],
+      [travel-0.10,hsl(i*60+t*35,100,54,0.88)],
+      [travel,hsl(i*60+45+t*35,100,68,1)],
+      [travel+0.10,hsl(i*60+t*35,100,54,0.88)],
+      [1,hsl((i+1)*60+t*35,100,54,0.82)]
+    ]);
     ctx.strokeStyle=g;ctx.lineWidth=4.6; ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
     const spark=(t*0.55+(i+0.5)/6)%1;
     const sx=a[0]+(b[0]-a[0])*spark, sy=a[1]+(b[1]-a[1])*spark;
@@ -660,10 +673,9 @@ function drawFunnelsAndBeams(cx,cy,s,t){
       const lw=16-pass*2.4;
       const beamGrad=ctx.createLinearGradient(tx,ty,bx,by);
       const baseA=(0.10+pass*0.04)*(pass<3?0.7:1);
-      for(let k=0;k<=8;k++){
-        const kk=k/8, mid=Math.abs(kk-0.5)<0.12;
-        beamGrad.addColorStop(kk,hsl(fi*120+k*32+t*48,100,mid?62:48, mid?baseA*1.35:baseA));
-      }
+      const beamStops=[];
+      for(let k=0;k<=8;k++){const kk=k/8, mid=Math.abs(kk-0.5)<0.12; beamStops.push([kk,hsl(fi*120+k*32+t*48,100,mid?62:48, mid?baseA*1.35:baseA)]);}
+      addStops(beamGrad, beamStops);
       ctx.lineWidth=lw; ctx.strokeStyle=beamGrad; ctx.lineCap="round";
       ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(bx,by);ctx.stroke();
     }
@@ -726,9 +738,10 @@ function paintMetaballIso(centers, dimAlpha){
   if(!centers.length)return;
   let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
   for(const c of centers){minX=Math.min(minX,c.px);minY=Math.min(minY,c.py);maxX=Math.max(maxX,c.px);maxY=Math.max(maxY,c.py);}
+  if(!Number.isFinite(minX)||!Number.isFinite(maxX)||maxX<=minX||maxY<=minY)return;
   const pad=42; minX-=pad;minY-=pad;maxX+=pad;maxY+=pad;
-  const cell=Math.max(5, Math.min(9, Math.floor((maxX-minX)/48)));
-  const cols=Math.ceil((maxX-minX)/cell)||1, rows=Math.ceil((maxY-minY)/cell)||1;
+  const cell=Math.max(5, Math.min(9, Math.floor((maxX-minX)/48)||5));
+  const cols=Math.max(1,Math.ceil((maxX-minX)/cell)), rows=Math.max(1,Math.ceil((maxY-minY)/cell));
   if(cols*rows>9000)return;
   const grid=new Float32Array(cols*rows);
   const hueAcc=new Float32Array(cols*rows);
