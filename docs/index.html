@@ -1058,6 +1058,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 /* clientNoNoise — only upload + Organized + Aside + sort; hide all other site chrome */
+#top,
 #dataRail,
 #specBar,
 #introChip,
@@ -1105,6 +1106,24 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   font-size:.52rem!important;
   opacity:.55!important;
 }
+
+
+/* clientBgClean — no background wording; strip excess underlays */
+#top,
+#top .title,
+#dataRail,
+#specBar,
+#phaseWhisper,
+.nebulaWhisper,
+#bgField .nebulaWhisper,
+#bgField .magpieSealWorld,
+#bgField .cyberNatureWorld{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
 
 
 /* clientBgFirst — translucent windows parked low so seal/background reads */
@@ -5486,18 +5505,7 @@ function neonLabel(text,x,y,color,font){
   ctx.fillStyle=color; ctx.fillText(text,x,y);
   ctx.restore();
 }
-function drawCanvasLabels(cx,cy,s,mouths,verts){
-  /* beyondHuman: no funnel callouts (INTAKE·DOCS / RELEASE PATH) — phenomena only */
-  ctx.save(); ctx.globalCompositeOperation="source-over";
-  const narrow=W<=900;
-  // CRYSTALLIZE / RELEASE as quiet field phenomena — not UI buttons
-  const side=narrow?0.42:0.68;
-  const fsz=narrow?Math.min(8,Math.max(6,s*0.028)):Math.min(10,Math.max(8,s*0.024));
-  ctx.globalAlpha=narrow?0.55:0.72;
-  neonLabel("ORGANIZED",cx-s*side,cy-s*0.02,"#56b4c2",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
-  neonLabel("ASIDE",cx+s*side,cy+s*0.02,"#c664c0",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
-  ctx.restore();
-}
+function drawCanvasLabels(cx,cy,s,mouths,verts){ /* clientBgClean: no background wording */ return; }
 function ingestVerdicts(verdicts){
   t0=performance.now(); sortAnimT=performance.now();
   // LENS: mobile seedField(3500); desktop 8–11k
@@ -5605,7 +5613,7 @@ function frame(now){
 }
 requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDrops();
 /* cyberNatureFormat — left data rail + spectrum bars */
-(function bootCyberNatureChrome(){
+(function bootCyberNatureChrome(){ /* clientBgClean skip rail/spec */ return;
   /* magpieImpressSupersede L12 — dataRail scroll + hard-driving specBar energy */
   const rail=document.getElementById("dataRail");
   if(rail && !rail._filled){
