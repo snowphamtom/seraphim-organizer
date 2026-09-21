@@ -2391,10 +2391,20 @@ html,body{ background:#000!important; color:var(--ink)!important; }
   #top .title{ letter-spacing:.2em!important; font-size:.52rem!important; }
 }
 
+
+/* clientOnlyThree — aesthetics = uni-a/b/c only */
+#fx,#fxgl,#dataRail,#specBar,#introChip,#phaseWhisper,#navhint,#cheat,#intake,#log,#sub,
+#bgField .duoField,#bgField .hybridA,#bgField .hybridB,
+#bgField .trioStack,#bgField .trioField,#bgField .spiralField,#bgField .beamRainWhisper,
+#bgField .tunnelWindowsKeyed,#bgField .hexCoreKeyed,#bgField .nebulaWhisper,#bgField .magpieSealWorld,
+#bgField .hexCore,#bgField .tunnelGrid,#bgField .isoTunnel,#bgField .particleLayer,
+#bgField .particlesField,#bgField .particlesMeta{display:none!important;opacity:0!important;visibility:hidden!important}
+#bgField > .uniStack{display:block!important;visibility:visible!important;opacity:1!important}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientUniPurple: uni-a + uni-b + uni-c keyed; one θ -->
+<div id="bgField" aria-hidden="true"><!-- clientOnlyThree|clientUniPurple: uni-a + uni-b + uni-c keyed; one θ -->
   <div class="uniStack" aria-hidden="true">
     <img class="uniA anim" src="media/uni-a-keyed.webp" alt="" width="400" height="281" decoding="async" fetchpriority="high">
     <img class="uniA still" src="media/uni-a-keyed.png" alt="" width="400" height="281" decoding="async">
