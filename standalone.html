@@ -622,8 +622,8 @@ function drawHexFrame(cx,cy,s,t){
       [1,hsl((i+1)*60+t*35+spark*40,100,52,0.78)]
     ]);
     ctx.strokeStyle=g;ctx.lineWidth=4.6; ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
-    const spark=(t*0.55+(i+0.5)/6)%1;
-    const sx=a[0]+(b[0]-a[0])*spark, sy=a[1]+(b[1]-a[1])*spark;
+    const sparkPos=(t*0.55+(i+0.5)/6)%1;
+    const sx=a[0]+(b[0]-a[0])*sparkPos, sy=a[1]+(b[1]-a[1])*sparkPos;
     ctx.fillStyle=hsl(i*60+40+t*40,100,66,0.55); ctx.beginPath();ctx.arc(sx,sy,2.1,0,Math.PI*2);ctx.fill();
     ctx.lineWidth=11;ctx.strokeStyle=hsl(i*60+t*35,100,46,0.12); ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
   }
