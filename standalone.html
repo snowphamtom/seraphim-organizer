@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -835,12 +835,12 @@ button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!impo
 #bgField .particlesField{ z-index:0; }
 #bgField .particlesField .plane{
   width:max(180vw,180vh); height:max(180vw,180vh);
-  opacity:0.85;
+  opacity:1;
 }
 #bgField .particlesMeta{ z-index:1; }
 #bgField .particlesMeta .plane{
   width:min(95vmin,760px); height:min(95vmin,760px);
-  opacity:0.55;
+  opacity:1;
   mix-blend-mode:screen;
 }
 #bgField .tunnelGrid{ z-index:0; opacity:0.25; }
@@ -848,6 +848,64 @@ button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!impo
 @media (prefers-reduced-motion:reduce){
   #bgField .particleLayer img.anim{display:none}
   #bgField .particleLayer img.still{display:block}
+}
+
+
+/* holoOpacity3D — all visual layers breathe like a volume hologram */
+#bgField{
+  --holo-field:0.55;
+  --holo-meta:0.48;
+  --holo-tunnel:0.28;
+  --holo-fx:0.82;
+  --holo-desk:0.88;
+  --holo-flicker:1;
+}
+#bgField .particlesField{ opacity:calc(var(--holo-field) * var(--holo-flicker)) !important; }
+#bgField .particlesField .plane{ opacity:1 !important; mix-blend-mode:screen; }
+#bgField .particlesMeta{ opacity:calc(var(--holo-meta) * var(--holo-flicker)) !important; }
+#bgField .particlesMeta .plane{ opacity:1 !important; mix-blend-mode:screen; }
+#bgField .tunnelGrid{ opacity:calc(var(--holo-tunnel) * var(--holo-flicker)) !important; }
+#bgField .tunnelGrid .plane{ opacity:1 !important; mix-blend-mode:screen; }
+#fx{
+  opacity:calc(var(--holo-fx,0.82) * var(--holo-flicker,1)) !important;
+  mix-blend-mode:screen;
+}
+#sortDesk,#uploadBox,#pasteDesk{
+  opacity:calc(var(--holo-desk,0.88) * (0.96 + 0.04 * var(--holo-flicker,1))) !important;
+}
+/* volumetric fringe — soft scan + ghost double */
+#bgField::after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none; z-index:8;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(200,160,255,0.03) 2px,
+      rgba(200,160,255,0.03) 3px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(168,85,247,0.04) 0%,
+      transparent 28%,
+      transparent 72%,
+      rgba(126,34,206,0.05) 100%
+    );
+  mix-blend-mode:screen;
+  opacity:calc(0.55 * var(--holo-flicker,1));
+  animation:holoScan 4.2s linear infinite;
+}
+@keyframes holoScan{
+  0%{ transform:translateY(-8%); opacity:0.35; }
+  50%{ opacity:0.65; }
+  100%{ transform:translateY(8%); opacity:0.35; }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField::after{ animation:none; opacity:0.35; }
+  #fx, #bgField .particlesField, #bgField .particlesMeta, #bgField .tunnelGrid{
+    opacity:0.72 !important;
+  }
 }
 
 </style>
@@ -2137,13 +2195,52 @@ function project(x,y,z,cx,cy,s){
 }
 
 
+
+/* holoOpacity3D — depth-tiered translucent volumes with interference flicker */
+function holoAlpha(tier, t){
+  /* tier 0=far field, 1=mid particles, 2=seal/cage, 3=desk chrome */
+  const bases=[0.48, 0.58, 0.78, 0.90];
+  const base=bases[Math.max(0,Math.min(3,tier|0))]||0.65;
+  if(typeof reduceMotion!=="undefined" && reduceMotion) return base;
+  const tt=(t==null?(performance.now()*0.001):t);
+  /* high-freq interference + slow volume breath + scan phase */
+  const flicker=0.90+0.10*Math.sin(tt*13.7+tier*2.1)*Math.sin(tt*4.3+tier*0.7);
+  const breath=0.93+0.07*Math.sin(tt*(typeof TEMPO!=="undefined"?TEMPO.base*(TEMPO.nest||0.618):0.6)+tier*1.1);
+  const scan=0.92+0.08*Math.sin(tt*1.55+tier*0.85);
+  /* near layers punch slightly on sealPulse */
+  const pulse=(typeof sealPulse==="number"?sealPulse:0);
+  const pop=1+0.08*pulse*(tier>=2?1:0.35);
+  return Math.max(0.12, Math.min(0.96, base*flicker*breath*scan*pop));
+}
+function syncHoloOpacity(t){
+  if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
+  if(!_bgFieldEl) return;
+  const field=holoAlpha(0,t).toFixed(3);
+  const meta=holoAlpha(1,t).toFixed(3);
+  const tunnel=(holoAlpha(0,t)*0.55).toFixed(3);
+  const fx=holoAlpha(2,t).toFixed(3);
+  const desk=holoAlpha(3,t).toFixed(3);
+  const flick=(0.94+0.06*Math.sin((t||0)*11.1)).toFixed(3);
+  if(_bgFieldEl._hf!==field){ _bgFieldEl._hf=field; _bgFieldEl.style.setProperty("--holo-field", field); }
+  if(_bgFieldEl._hm!==meta){ _bgFieldEl._hm=meta; _bgFieldEl.style.setProperty("--holo-meta", meta); }
+  if(_bgFieldEl._ht!==tunnel){ _bgFieldEl._ht=tunnel; _bgFieldEl.style.setProperty("--holo-tunnel", tunnel); }
+  if(_bgFieldEl._hx!==fx){ _bgFieldEl._hx=fx; _bgFieldEl.style.setProperty("--holo-fx", fx); document.documentElement.style.setProperty("--holo-fx", fx); }
+  if(_bgFieldEl._hd!==desk){ _bgFieldEl._hd=desk; _bgFieldEl.style.setProperty("--holo-desk", desk); document.documentElement.style.setProperty("--holo-desk", desk); }
+  if(_bgFieldEl._hk!==flick){ _bgFieldEl._hk=flick; _bgFieldEl.style.setProperty("--holo-flicker", flick); document.documentElement.style.setProperty("--holo-flicker", flick); }
+}
+
 function layerAlpha(which){
-  if(!layerSolo)return 1;
-  if(performance.now()>layerSoloUntil){layerSolo=0;return 1;}
-  if(layerSolo===1)return which==="voxel"?1:0.12;
-  if(layerSolo===2)return which==="mint"?1:0.12;
-  if(layerSolo===3)return which==="hex"?1:0.12;
-  return 1;
+  /* holoOpacity3D: solo focus still works; otherwise every layer is a translucent hologram volume */
+  const t=performance.now()*0.001;
+  const tier=which==="hex"||which==="voxel"||which==="mint"?2:(which==="label"?1:0);
+  let solo=1;
+  if(layerSolo){
+    if(performance.now()>layerSoloUntil){layerSolo=0;solo=1;}
+    else if(layerSolo===1) solo=which==="voxel"?1:0.12;
+    else if(layerSolo===2) solo=which==="mint"?1:0.12;
+    else if(layerSolo===3) solo=which==="hex"?1:0.12;
+  }
+  return solo*holoAlpha(tier,t);
 }
 /* —— HYBRID VISUAL STACK —— */
 function drawAurora(cx,cy,s,t){
@@ -3115,6 +3212,7 @@ function syncGyroSharedCenter(cx,cy,s,t){
     _bgFieldEl.style.setProperty("--voxel-em", voxelEm);
     _bgFieldEl.style.setProperty("--gif-breath", breath);
   }
+  if(typeof syncHoloOpacity==="function") syncHoloOpacity(t);
 }
 
 
