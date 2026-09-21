@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientNodesMath|clientBlueFive|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientResidualPrism|clientBlueFive|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2411,24 +2411,35 @@ html,body{ background:#000!important; color:var(--ink)!important; }
 }
 
 
-/* clientNodesMath — PI-SLICES lattice over quad Fibonacci + legacy math */
-
+/* clientResidualPrism — single crystalline Fibonacci admission field */
 /* clientScreenFit — bleed past corners so spin never shows empty void */
 #bgField{
   position:fixed!important; inset:0!important; width:100vw!important; height:100dvh!important;
   overflow:hidden!important; z-index:0!important;
   display:grid!important; place-items:center!important;
   pointer-events:none!important;
+  background:#000!important;
+  perspective:1200px;
+  --field-tilt:5deg;
 }
+#bgField > .blueStack,
+#bgField > .duoField,
+#bgField > .uniStack,
+#bgField > .trioStack,
 #bgField > .mathField,
 #bgField > .nodeField{
-  position:absolute!important; inset:0!important;
+  display:none!important; visibility:hidden!important; opacity:0!important; pointer-events:none!important;
+}
+#bgField > .residualPrism{
+  position:fixed!important; inset:0!important;
   display:grid!important; place-items:center!important;
   width:100%!important; height:100%!important;
-  overflow:visible!important; margin:0!important; padding:0!important;
+  overflow:hidden!important; margin:0!important; padding:0!important;
+  background:transparent!important;
+  z-index:3!important;
+  pointer-events:none!important;
 }
-#bgField > .mathField img,
-#bgField > .nodeField img{
+#bgField > .residualPrism img{
   /* cover + √2 spin bleed: never leave unused screen */
   width:max(145vw,145vh)!important;
   height:max(145vw,145vh)!important;
@@ -2438,94 +2449,91 @@ html,body{ background:#000!important; color:var(--ink)!important; }
   min-height:max(100vw,100vh)!important;
   object-fit:cover!important;
   object-position:center!important;
-}
-
-#bgField > .blueStack,
-#bgField > .duoField,
-#bgField > .uniStack,
-#bgField > .trioStack{ display:none!important; }
-#bgField{
-  position:fixed!important; inset:0!important; z-index:0!important;
-  pointer-events:none!important; overflow:hidden!important;
-  background:#000!important;
-  perspective:1200px;
-  --field-tilt:6deg;
-}
-#bgField > .mathField,
-#bgField > .nodeField{
-  position:fixed!important; inset:0!important;
-  pointer-events:none!important; overflow:hidden!important;
-  display:grid!important; place-items:center!important;
-  background:transparent!important;
-}
-#bgField > .mathField.legacy{ z-index:1!important; }
-#bgField > .mathField.quad{ z-index:2!important; }
-#bgField > .nodeField{ z-index:3!important; }
-#bgField > .mathField img,
-#bgField > .nodeField img{
-  width:max(145vw,145vh)!important;
-  height:max(145vw,145vh)!important;
-  max-width:none!important; max-height:none!important;
-  object-fit:cover!important;
-  object-position:center!important;
   mix-blend-mode:screen!important;
   transform-origin:center center;
-  transform:rotateX(var(--field-tilt,6deg));
+  transform:rotateX(var(--field-tilt,5deg));
+  opacity:0.98!important;
+  filter:
+    contrast(1.18) brightness(1.10) saturate(1.22)
+    drop-shadow(0 0 28px rgba(34,211,238,.28))
+    drop-shadow(0 0 48px rgba(232,121,249,.18))!important;
+  animation:prismSpin 144s linear infinite;
 }
-#bgField > .mathField.legacy img{
-  opacity:0.30!important;
-  filter:contrast(1.15) brightness(1.05) saturate(1.05)!important;
-  animation:mathSpin 96s linear infinite;
-}
-#bgField > .mathField.quad img{
-  opacity:0.50!important;
-  filter:contrast(1.2) brightness(1.08) saturate(1.15)!important;
-  animation:mathSpin 155s linear infinite; /* φ·96 ≈ 155 */
-}
-#bgField > .nodeField img{
-  opacity:0.95!important;
-  filter:contrast(1.2) brightness(1.12) saturate(1.25)!important;
-  animation:nodeSpin 155s linear infinite; /* slower counter φ to mathSpin */
-}
-@keyframes mathSpin{
-  from{ transform:rotateX(var(--field-tilt,6deg)) rotate(0deg); }
-  to{ transform:rotateX(var(--field-tilt,6deg)) rotate(360deg); }
-}
-@keyframes nodeSpin{
-  from{ transform:rotateX(var(--field-tilt,6deg)) rotate(0deg); }
-  to{ transform:rotateX(var(--field-tilt,6deg)) rotate(-360deg); }
+#bgField > .residualPrism img.still{ display:none; }
+@keyframes prismSpin{
+  from{ transform:rotateX(var(--field-tilt,5deg)) rotate(0deg); }
+  to{ transform:rotateX(var(--field-tilt,5deg)) rotate(360deg); }
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField > .mathField img,
-  #bgField > .nodeField img{
+  #bgField > .residualPrism img{
     animation:none!important;
-    transform:rotateX(var(--field-tilt,6deg))!important;
+    transform:rotateX(var(--field-tilt,5deg))!important;
   }
-  #bgField > .mathField img.anim,
-  #bgField > .nodeField img.anim{ display:none!important; }
-  #bgField > .mathField img.still,
-  #bgField > .nodeField img.still{ display:block!important; }
+  #bgField > .residualPrism img.anim{ display:none!important; }
+  #bgField > .residualPrism img.still{ display:block!important; }
 }
-#bgField > .mathField img.still,
-#bgField > .nodeField img.still{ display:none; }
+/* clientResidualPrism desk — cyan↔magenta edge glow, quieter chrome */
+:root{
+  --glass:rgba(0,10,22,0.42)!important;
+  --mp-glass:rgba(0,10,22,.38)!important;
+  --line:rgba(34,211,238,0.38)!important;
+  --mp-line:rgba(232,121,249,.22)!important;
+  --mp-cyan:#22d3ee!important;
+  --mp-mag:#e879f9!important;
+  --admit:#22d3ee!important;
+  --release:#e879f9!important;
+  --mag:#e879f9!important;
+}
+#sortDesk{
+  background:linear-gradient(180deg, rgba(4,8,18,.0) 0%, rgba(4,8,18,.42) 16%, rgba(4,8,18,.58) 100%)!important;
+  box-shadow:none!important;
+}
+#uploadBox, #sortedFigures .tray.admit, #sortedFigures .tray.release{
+  background:rgba(0,10,22,0.38)!important;
+  backdrop-filter:blur(14px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.15)!important;
+}
+#uploadBox{
+  border:1px solid rgba(34,211,238,.28)!important;
+  box-shadow:0 0 18px rgba(34,211,238,.10), 0 0 28px rgba(232,121,249,.06), inset 0 1px 0 rgba(255,255,255,.04)!important;
+  border-radius:10px!important;
+  padding:.35rem .45rem!important;
+}
+#sortedFigures .tray.admit{
+  border:1px solid rgba(34,211,238,.32)!important;
+  box-shadow:0 0 16px rgba(34,211,238,.12), inset 0 1px 0 rgba(255,255,255,.04)!important;
+  border-radius:10px!important;
+}
+#sortedFigures .tray.release{
+  border:1px solid rgba(232,121,249,.30)!important;
+  box-shadow:0 0 16px rgba(232,121,249,.10), inset 0 1px 0 rgba(255,255,255,.04)!important;
+  border-radius:10px!important;
+}
+#sortedFigures .tray.admit h3{
+  color:rgba(103,232,249,.98)!important;
+  text-shadow:0 0 12px rgba(34,211,238,.45),0 0 22px rgba(34,211,238,.18)!important;
+}
+#sortedFigures .tray.release h3{
+  color:rgba(240,171,252,.98)!important;
+  text-shadow:0 0 12px rgba(232,121,249,.40),0 0 22px rgba(232,121,249,.16)!important;
+}
+#top{
+  border-color:rgba(34,211,238,.28)!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.55), 0 0 18px rgba(34,211,238,.10), 0 0 22px rgba(232,121,249,.06), inset 0 1px 0 rgba(255,255,255,.05)!important;
+  background:linear-gradient(180deg,rgba(0,14,28,.72),rgba(0,8,18,.78))!important;
+}
+#top .metrics .a b{ color:#67e8f9!important; text-shadow:0 0 10px rgba(34,211,238,.4)!important; }
+#top .metrics .r b{ color:#f0abfc!important; text-shadow:0 0 10px rgba(232,121,249,.35)!important; }
 #fx,#fxgl,#dataRail,#specBar{ display:none!important; opacity:0!important; }
 body{ background:#000!important; }
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientNodesMath: PI-SLICES lattice over quad Fibonacci -->
-  <div class="mathField legacy" aria-hidden="true">
-    <img class="anim" src="media/math-seraphim.webp" alt="" width="480" height="480" decoding="async">
-    <img class="still" src="media/math-seraphim.png" alt="" width="480" height="480" decoding="async">
-  </div>
-  <div class="mathField quad" aria-hidden="true">
-    <img class="anim" src="media/math-quad-fib.webp" alt="" width="512" height="512" decoding="async">
-    <img class="still" src="media/math-quad-fib.png" alt="" width="512" height="512" decoding="async">
-  </div>
-  <div class="nodeField" aria-hidden="true">
-    <img class="anim" src="media/nodes-lattice-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
-    <img class="still" src="media/nodes-lattice-keyed.png" alt="" width="500" height="500" decoding="async">
+<div id="bgField" aria-hidden="true"><!-- clientResidualPrism: crystalline Fibonacci admission -->
+  <div class="residualPrism" aria-hidden="true">
+    <img class="anim" src="media/residual-prism.webp" alt="" width="592" height="592" decoding="async" fetchpriority="high">
+    <img class="still" src="media/residual-prism.png" alt="" width="592" height="592" decoding="async">
   </div>
 </div>
 <div id="dataRail" aria-hidden="true"></div>
