@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -518,12 +518,12 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 <header id="top">
   <div class="title">SERAPHIM</div>
   <span class="whisper" title="Wizard turns fumbled speech into seal">fumble → seal</span>
-  <span class="chip law" title="Fail-closed gate">S<sub>H</sub></span>
+  <span class="chip law" title="Fail-closed sort">SORT</span>
   <div class="metrics mono" id="topMetrics">
     <span title="Items sorted this run">n <b id="mN">0</b></span>
-    <span class="a" title="Admit — formed inside the seal">crystallized <b id="mA">0</b></span>
-    <span class="r" title="Refuse — held soft outside S_H">released <b id="mR">0</b></span>
-    <span id="mSHWrap" class="off" title="S_H = S_solv · R_H — fail-closed gate">S<sub>H</sub> <b id="mSH">OFF</b></span>
+    <span class="a" title="Kept in the organized field">organized <b id="mA">0</b></span>
+    <span class="r" title="Soft aside — not kept">aside <b id="mR">0</b></span>
+    <span id="mSHWrap" class="off" title="Sort gate live">gate <b id="mSH">OFF</b></span>
   </div>
 </header>
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
@@ -553,10 +553,10 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
     </div>
     <div class="tray release" id="trayRelease">
       <h3>Aside <span class="count" id="figReleaseN">0</span></h3>
-      <div class="chips" id="figRelease"><div class="empty">Soft outside S<sub>H</sub> appear here</div></div>
+      <div class="chips" id="figRelease"><div class="empty">Soft aside appear here</div></div>
     </div>
   </div>
-  <div class="deskNote">figures = gate verdicts · orbit seal still sorts in motion</div>
+  <div class="deskNote">figures = sort outcomes · orbit seal still sorts in motion</div>
 </section>
 
 <aside id="intake" title="long-press or press I to reveal instrument">
@@ -565,7 +565,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   </div>
   <div class="row" id="dropzone">
     <label class="filebtn" title="Drop content or choose a file">Drop<input type="file" id="file" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson"/></label>
-    <button type="button" class="primary" id="run" title="Sort through S_H (Cmd/Ctrl+Enter)" aria-label="Sort intake">Sort</button>
+    <button type="button" class="primary" id="run" title="Sort content (Cmd/Ctrl+Enter)" aria-label="Sort intake">Sort</button>
     <button type="button" class="ghost mob-hide-clear" id="clear" aria-label="Clear intake">Clear</button>
   </div>
   <select id="demoStory" class="ghost-chip" title="Demo stories" aria-label="Demo stories">
@@ -593,7 +593,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   <button type="button" id="resetView" aria-label="Reset orbit view">RESET</button>
 </div>
 <div id="log"></div>
-<div id="sub"><span class="sw c"></span>crystallize kept &nbsp; <span class="sw r"></span>release outside<br/><span style="opacity:.75;font-size:11px;font-family:ui-monospace,monospace">S<sub>H</sub> = S<sub>solv</sub> · R<sub>H</sub></span></div>
+<div id="sub"><span class="sw c"></span>organized kept &nbsp; <span class="sw r"></span>aside soft<br/><span style="opacity:.75;font-size:11px">disorganized content → organized field</span></div>
 <div id="tip"></div>
 <div id="cheat">
   <div class="card">
@@ -977,7 +977,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -3393,7 +3393,7 @@ dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("drag");}
 dz.addEventListener("dragleave",()=>dz.classList.remove("drag"));
 dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("drag"); const f=e.dataTransfer.files[0]; if(f){$("paste").value=await f.text();organize(parseDump(f.name,$("paste").value));return;} const text=e.dataTransfer.getData("text/plain"); if(text){$("paste").value=text;organize(parseDump("paste.txt",text));}});
 $("dlJson").onclick=()=>{if(!lastResult)return; const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(lastResult,null,2)],{type:"application/json"})); a.download="seraphim-organize.json";a.click();};
-$("dlCsv").onclick=()=>{if(!lastResult)return; const rows=[["id","decision","display","S_H","S_solv","R_H","cause","kind","audit","text"],...lastResult.verdicts.map(v=>[v.id,v.decision,v.decision==="admit"?"crystallize":"release",v.S_H,v.S_solv,v.R_H,v.cause||"",v.kind||"",v.audit,JSON.stringify(v.t)])]; const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n"); const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="seraphim-organize.csv";a.click();};
+$("dlCsv").onclick=()=>{if(!lastResult)return; const rows=[["id","decision","display","S_H","S_solv","R_H","cause","kind","audit","text"],...lastResult.verdicts.map(v=>[v.id,v.decision,v.decision==="admit"?"organized":"aside",v.S_H,v.S_solv,v.R_H,v.cause||"",v.kind||"",v.audit,JSON.stringify(v.t)])]; const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n"); const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="seraphim-organize.csv";a.click();};
 $("btnConst").onclick=()=>{constellation=!constellation; $("btnConst").classList.toggle("on",constellation);};
 $("btnSnap").onclick=()=>{const a=document.createElement("a"); a.href=canvas.toDataURL("image/png"); a.download="seraphim-constellation.png";a.click();};
 $("btnChime").onclick=()=>{chimeOn=!chimeOn; $("btnChime").classList.toggle("on",chimeOn); $("btnChime").title=chimeOn?"Soft chime (on)":"Soft chime (off)"; $("btnChime").setAttribute("aria-pressed",chimeOn?"true":"false");};
