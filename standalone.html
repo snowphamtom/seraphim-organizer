@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light dark"/>
 <meta name="description" content="Seraphim organizer: drop disorganized content, get an organized field. Soft."/>
-<meta name="theme-color" content="#e8e8e8"/>
+<meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|blackRedOnly|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -771,6 +771,39 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 /* hide old collapsed intake glyph — desk replaces it */
 #intake{display:none!important}
+
+
+/* boxSphereVents|blackRedOnly — centerpiece box+sphere+3 vents; black/red only */
+:root{
+  --void:#000 !important;
+  --ink:#ffb0b0 !important;
+  --mute:#8a4040 !important;
+  --admit:#ff2a2a !important;
+  --release:#a01010 !important;
+  --mint:#ff6666 !important;
+  --cyan:#ff3030 !important;
+  --mag:#cc1010 !important;
+  --warn:#ff8888 !important;
+  --glass:rgba(20,0,0,0.45) !important;
+  --line:rgba(255,40,40,0.35) !important;
+  --holo-wash:linear-gradient(135deg,rgba(255,30,30,0.08),rgba(0,0,0,0.05),rgba(160,0,0,0.08)) !important;
+}
+#bgField{ background:#000 !important; }
+#bgField .tunnelGrid .plane{
+  filter:invert(1) sepia(1) saturate(8) hue-rotate(-50deg) brightness(0.85) !important;
+  opacity:0.55 !important;
+}
+/* hide competing GIF centerpieces */
+#bgField .hexCore,
+#bgField .isoTunnel,
+#bgField .beamRain,
+#bgField .voxelSpin{ display:none !important; }
+#sortDesk{ color:rgba(255,200,200,.94) !important; }
+#sortDesk .tray.admit h3{ color:rgba(255,80,80,.95)!important; text-shadow:0 0 12px rgba(255,40,40,.4)!important; }
+#sortDesk .tray.release h3{ color:rgba(180,40,40,.95)!important; text-shadow:0 0 12px rgba(120,0,0,.35)!important; }
+#uploadBox .uh b{ color:rgba(255,220,220,.98)!important; }
+#uploadBox .uh b::before{ color:rgba(255,60,60,.9)!important; }
+#top .title{ color:#ff4444!important; }
 
 </style>
 </head>
@@ -2371,6 +2404,69 @@ function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(
       ctx.fillStyle=hsl(f.hue+40,100,80,a0*0.7);
       ctx.beginPath(); ctx.arc(f.x,f.y,0.7,0,Math.PI*2); ctx.fill();
     }
+  }
+  ctx.restore();
+}
+
+
+function drawBoxSphereVents(cx,cy,s,t){
+  /* boxSphereVents|blackRedOnly: cube box + inner sphere + 3 intake vents; feeds on sealRay triad */
+  const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
+  ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
+  /* 8 cube corners in unit space */
+  const c=0.42;
+  const corners=[[-c,-c,-c],[c,-c,-c],[c,c,-c],[-c,c,-c],[-c,-c,c],[c,-c,c],[c,c,c],[-c,c,c]];
+  const edges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+  const pv=corners.map(([x,y,z])=>{const p=project(x,y,z,cx,cy,s);return {x:p[0],y:p[1],d:p[2]};});
+  /* box edges — red */
+  const edged=edges.map(([i,j])=>({a:pv[i],b:pv[j],md:(pv[i].d+pv[j].d)*0.5})).sort((u,v)=>u.md-v.md);
+  for(const ed of edged){
+    const near=Math.max(0,Math.min(1,(ed.md+0.5)/1.0));
+    const g=ctx.createLinearGradient(ed.a.x,ed.a.y,ed.b.x,ed.b.y);
+    g.addColorStop(0,`rgba(255,40,40,${0.35+near*0.45})`);
+    g.addColorStop(0.5,`rgba(255,90,90,${0.5+near*0.4})`);
+    g.addColorStop(1,`rgba(180,10,10,${0.35+near*0.45})`);
+    ctx.strokeStyle=g; ctx.lineWidth=(W<=480?1.4:2.4)*(0.6+near*0.7);
+    ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
+  }
+  /* inner sphere — red glow + wire */
+  const R=s*0.16;
+  const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.35);
+  grd.addColorStop(0,`rgba(255,120,120,${0.45+0.15*Math.sin(t*TEMPO.base)})`);
+  grd.addColorStop(0.45,`rgba(220,30,30,0.22)`);
+  grd.addColorStop(1,`rgba(80,0,0,0)`);
+  ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(cx,cy,R*1.2,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle=`rgba(255,60,60,0.55)`; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
+  /* lat lines */
+  for(let i=1;i<=3;i++){
+    const ry=R*(i/4);
+    ctx.strokeStyle=`rgba(255,40,40,${0.18})`; ctx.lineWidth=0.8;
+    ctx.beginPath(); ctx.ellipse(cx,cy,R*Math.sqrt(1-(i/4)**2)*0.95||R*0.2, ry*0.35+R*0.15, 0, 0, Math.PI*2); ctx.stroke();
+  }
+  /* 3 intake vents on box faces — along seal triad / 120° */
+  const triad=(typeof lockSealTriad==="function"&&lockSealTriad())||[ -Math.PI/2, -Math.PI/2+2.094, -Math.PI/2+4.189 ];
+  const ventDist=s*0.38;
+  for(let vi=0;vi<3;vi++){
+    const ang=triad[vi];
+    const vx=cx+Math.cos(ang)*ventDist;
+    const vy=cy+Math.sin(ang)*ventDist;
+    /* vent diamond / mouth */
+    const vw=s*0.07, vh=s*0.05;
+    ctx.save();
+    ctx.translate(vx,vy); ctx.rotate(ang+Math.PI/2);
+    ctx.strokeStyle=`rgba(255,50,50,0.85)`; ctx.lineWidth=2;
+    ctx.fillStyle=`rgba(40,0,0,0.55)`;
+    ctx.beginPath();
+    ctx.moveTo(0,-vh); ctx.lineTo(vw,0); ctx.lineTo(0,vh); ctx.lineTo(-vw,0); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    /* intake chevrons feeding inward */
+    ctx.strokeStyle=`rgba(255,80,80,0.5)`; ctx.lineWidth=1.2;
+    for(let k=1;k<=3;k++){
+      const o=k*s*0.028;
+      ctx.beginPath(); ctx.moveTo(-vw*0.5, -vh-o); ctx.lineTo(0, -vh*0.3-o); ctx.lineTo(vw*0.5, -vh-o); ctx.stroke();
+    }
+    ctx.restore();
   }
   ctx.restore();
 }

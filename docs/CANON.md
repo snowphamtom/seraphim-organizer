@@ -1,10 +1,7 @@
-# Seraphim Organizer — saved canon
+# Seraphim Organizer — canon
 
-- **Live tip:** use `?v=<shortsha>`
-- **fourAssetCanon:** only these media — `tunnel-grid.gif`, `iso-tunnel.gif`, `beam-rain.gif`, `hex-core.gif` (as-sent)
-- **gatherThenSort:** `media/live-gather.csv` → Organized / Aside
-- **Center lock:** `--seal-x` / `--seal-y` from live dodeca
-- **Labels:** Disorganized → Organized / Aside
-- **dodeca3DSphere:** canvas TRUE 3D dodeca + center sphere (hex-core GIF hidden); `?v=<shortsha>`
-- **layerPerspectiveSync:** all layers share tunnel VP; emerge from depth corridor; one φ TEMPO clock; GIF ride seal (no ω fight)
-- **sameVectors:** one shared ray field from seal VP (`sealRay` / 120° triad); funnels/beams/lattice/upload/shockwave travel those rays; pan/parallax keep VP fixed at seal
+- **Centerpiece:** box + inner sphere + 3 intake vents (`boxSphereVents`)
+- **Palette:** black + red only (`blackRedOnly`)
+- **Vectors:** sameVectors triad = vent axes; gather→sort feeds the box
+- **Bg:** inverted tunnel (black field, red-tinted spheres)
+- **Live tip:** `?v=<shortsha>`
