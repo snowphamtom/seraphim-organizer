@@ -1128,12 +1128,12 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 
 
 /* clientPolish — kill vignette clutter; quieter trio; cleaner windows */
-#bgField::before,
-#bgField::after{
+#bgField::before{
   display:none!important;
   content:none!important;
   opacity:0!important;
 }
+/* ::after reserved for clientCenterDyn Magpie grade */
 #bgField .spiralField{ opacity:0.78!important; }
 #bgField .tunnelWindowsKeyed{ opacity:0.70!important; }
 #bgField .hexCoreKeyed{ opacity:0.95!important; }
@@ -1163,6 +1163,159 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   100%{ transform:scale(1.04); filter:saturate(1.18) contrast(1.08) brightness(1.02); }
 }
 
+
+
+/* clientCenterDyn — dynamic center, edge fade/blur, unified Magpie cyan↔magenta grade */
+:root{
+  --admit:#5eead4!important;
+  --release:#e879f9!important;
+  --cyan:#22d3ee!important;
+  --mag:#e879f9!important;
+  --mint:#a5f3fc!important;
+  --grade-cyan:rgba(34,211,238,.55);
+  --grade-mag:rgba(232,121,249,.45);
+}
+/* shared color grade on all field layers */
+#bgField .spiralField,
+#bgField .tunnelWindowsKeyed,
+#bgField .hexCoreKeyed{
+  /* unify rainbow/green assets into cyan→magenta Magpie format */
+  filter:
+    saturate(1.25)
+    brightness(1.04)
+    contrast(1.06)
+    hue-rotate(8deg)
+    drop-shadow(0 0 20px rgba(34,211,238,.1))!important;
+}
+#bgField .spiralField{
+  opacity:0.55!important;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 28%, rgba(0,0,0,.75) 48%, rgba(0,0,0,.35) 68%, transparent 88%);
+  mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 28%, rgba(0,0,0,.75) 48%, rgba(0,0,0,.35) 68%, transparent 88%);
+  animation:spiralDyn 14s ease-in-out infinite alternate!important;
+}
+#bgField .spiralField img{
+  animation:none!important; /* parent owns motion */
+  filter:
+    saturate(1.45)
+    hue-rotate(95deg) /* green spiral → cyan-teal family */
+    brightness(1.05)
+    contrast(1.08)!important;
+}
+@keyframes spiralDyn{
+  0%{ transform:translate(-50%,-50%) scale(1.02); opacity:0.48; }
+  100%{ transform:translate(-50%,-50%) scale(1.09); opacity:0.62; }
+}
+#bgField .tunnelWindowsKeyed{
+  opacity:0.72!important;
+  z-index:2;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 32%, rgba(0,0,0,.85) 52%, rgba(0,0,0,.4) 70%, transparent 86%);
+  mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 32%, rgba(0,0,0,.85) 52%, rgba(0,0,0,.4) 70%, transparent 86%);
+  animation:tunnelDyn 9s ease-in-out infinite alternate!important;
+}
+#bgField .tunnelWindowsKeyed img{
+  filter:
+    saturate(1.35)
+    hue-rotate(-12deg)
+    brightness(1.06)
+    contrast(1.05)!important;
+}
+@keyframes tunnelDyn{
+  0%{
+    transform:translate(-50%,-50%) scale(0.98);
+    filter:saturate(1.2) brightness(1.02) contrast(1.04) hue-rotate(8deg) blur(1.2px)
+      drop-shadow(0 0 18px rgba(34,211,238,.12))!important;
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1.07);
+    filter:saturate(1.4) brightness(1.08) contrast(1.08) hue-rotate(8deg) blur(0.2px)
+      drop-shadow(0 0 28px rgba(232,121,249,.14))!important;
+  }
+}
+#bgField .hexCoreKeyed{
+  opacity:1!important;
+  z-index:3;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 38%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.45) 74%, transparent 90%);
+  mask-image:radial-gradient(circle at 50% 50%,
+    #000 0%, #000 38%, rgba(0,0,0,.9) 58%, rgba(0,0,0,.45) 74%, transparent 90%);
+  animation:hexDyn 7s ease-in-out infinite alternate!important;
+}
+#bgField .hexCoreKeyed img{
+  filter:
+    saturate(1.4)
+    hue-rotate(-8deg)
+    brightness(1.08)
+    contrast(1.06)!important;
+}
+@keyframes hexDyn{
+  0%{
+    transform:translate(-50%,-50%) scale(1.00);
+    filter:saturate(1.25) brightness(1.02) contrast(1.05) hue-rotate(8deg) blur(0.8px)
+      drop-shadow(0 0 24px rgba(34,211,238,.18))
+      drop-shadow(0 0 40px rgba(232,121,249,.1))!important;
+  }
+  50%{
+    transform:translate(-50%,-50%) scale(1.045);
+    filter:saturate(1.45) brightness(1.1) contrast(1.1) hue-rotate(8deg) blur(0px)
+      drop-shadow(0 0 36px rgba(34,211,238,.28))
+      drop-shadow(0 0 56px rgba(232,121,249,.16))!important;
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1.08);
+    filter:saturate(1.35) brightness(1.06) contrast(1.08) hue-rotate(8deg) blur(0.35px)
+      drop-shadow(0 0 30px rgba(232,121,249,.22))
+      drop-shadow(0 0 48px rgba(34,211,238,.14))!important;
+  }
+}
+/* unified Magpie color wash over field (soft) */
+#bgField::after{
+  display:block!important;
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:4!important;
+  pointer-events:none!important;
+  opacity:0.38!important;
+  mix-blend-mode:soft-light!important;
+  background:
+    radial-gradient(circle at 50% 38%,
+      rgba(34,211,238,.35) 0%,
+      rgba(167,139,250,.18) 32%,
+      rgba(232,121,249,.28) 55%,
+      transparent 78%),
+    linear-gradient(125deg,
+      rgba(34,211,238,.12) 0%,
+      transparent 40%,
+      rgba(232,121,249,.12) 100%)!important;
+  animation:gradePulse 11s ease-in-out infinite alternate;
+}
+@keyframes gradePulse{
+  0%{ opacity:0.28; }
+  100%{ opacity:0.46; }
+}
+#bgField::before{ display:none!important; content:none!important; }
+@media (prefers-reduced-motion:reduce){
+  #bgField .spiralField,
+  #bgField .tunnelWindowsKeyed,
+  #bgField .hexCoreKeyed,
+  #bgField::after{ animation:none!important; }
+  #bgField .tunnelWindowsKeyed,
+  #bgField .hexCoreKeyed{ filter:saturate(1.25) brightness(1.04) contrast(1.06) hue-rotate(8deg)!important; }
+}
+/* windows follow same cyan/magenta format */
+#trayAdmit{
+  border-color:rgba(94,234,212,.28)!important;
+}
+#trayRelease{
+  border-color:rgba(232,121,249,.26)!important;
+}
+#uploadBox .uh b{ color:rgba(165,243,252,.9)!important; text-shadow:0 0 16px rgba(34,211,238,.3)!important; }
+#trayAdmit h3{ color:rgba(94,234,212,.95)!important; }
+#trayRelease h3{ color:rgba(240,171,252,.95)!important; }
 
 /* clientFlawless — aesthetic final pass: opacity ladder, glass, type, composition */
 html,body{
@@ -3851,7 +4004,7 @@ function drawDodecaFrame(cx,cy,s,t){
     const {a,b,ei,md}=ed;
     const near=Math.max(0.18, Math.min(1, 0.48+md*0.22));
     const a0=0.07*near*(0.7+0.3*breath);
-    ctx.strokeStyle=hsl(198+ei*2,85,60,a0);
+    ctx.strokeStyle=hsl((ei%2?305:195)+ei,90,62,a0); /* clientCenterDyn cyan/mag */
     ctx.lineWidth=(thin?0.45:0.65)*near;
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
   }
@@ -4984,9 +5137,10 @@ function syncHexCoreToDodeca(cx,cy,s){
   const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
   if(_bgFieldEl._sealX!==sx){ _bgFieldEl._sealX=sx; _bgFieldEl.style.setProperty("--seal-x", sx); }
   if(_bgFieldEl._sealY!==sy){ _bgFieldEl._sealY=sy; _bgFieldEl.style.setProperty("--seal-y", sy); }
-  const ss=Math.round(maxR*2*GEO.fit)+"px";
+  /* clientCenterDyn: live size breath — center feels alive, edges still masked */
+  const breath=reduceMotion?1:(1+0.04*Math.sin((performance.now()*0.001)*TEMPO.base*1.15));
+  const ss=Math.round(maxR*2*GEO.fit*breath)+"px";
   if(_bgFieldEl._sealS!==ss){ _bgFieldEl._sealS=ss; _bgFieldEl.style.setProperty("--seal-s", ss); }
-  /* tunnel uses SAME size as hex — exact overlap of centers + box */
   if(_bgFieldEl._sealTun!==ss){ _bgFieldEl._sealTun=ss; _bgFieldEl.style.setProperty("--seal-tunnel", ss); }
   const sp=Math.round(maxR*2*GEO.spiralFit)+"px";
   if(_bgFieldEl._sealSp!==sp){ _bgFieldEl._sealSp=sp; _bgFieldEl.style.setProperty("--seal-spiral", sp); }
