@@ -1262,19 +1262,28 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
   #bgField .spiralField img{ animation:none !important; }
 }
 
+
 /* clientHexCoreKeyed — black keyed out; locked to dodeca hub via --seal-x/y/s */
+/* clientHexCoreMatch — CSS YPR = canvas project(); size = projected vert ring */
+#bgField{
+  perspective: 1100px;
+  perspective-origin: var(--seal-x, 50%) var(--seal-y, 40%);
+}
 #bgField .hexCoreKeyed{
   position:absolute; inset:auto; z-index:3;
   left:var(--seal-x, 50%);
   top:var(--seal-y, 40%);
   width:var(--seal-s, min(78vmin, 560px));
   height:var(--seal-s, min(78vmin, 560px));
-  transform:translate(-50%, -50%);
+  transform:translate(-50%, -50%) rotateY(var(--seal-yaw, 0deg)) rotateX(var(--seal-pitch, 0deg)) rotateZ(var(--seal-roll, 0deg));
+  transform-style:preserve-3d;
+  will-change:transform;
   display:block !important;
-  opacity:0.95;
+  opacity:0.96;
   pointer-events:none;
   mix-blend-mode:screen;
-  filter:saturate(1.12) contrast(1.08) brightness(1.05);
+  filter:saturate(1.1) contrast(1.06) brightness(1.04);
+  backface-visibility:hidden;
 }
 #bgField .hexCoreKeyed picture,
 #bgField .hexCoreKeyed img{
@@ -1285,7 +1294,11 @@ body.clientBgFirst #uploadBox:not([style*="top"]) {
 @media (prefers-reduced-motion:reduce){
   #bgField .hexCoreKeyed img.anim{ display:none !important; }
   #bgField .hexCoreKeyed img.still{ display:block !important; }
+  #bgField .hexCoreKeyed{
+    transform:translate(-50%, -50%) !important;
+  }
 }
+
 
 /* mid-band window defaults (JS also places) */
 #uploadBox{
@@ -3668,7 +3681,7 @@ function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWir
 const inkDrops=[];
 
 /* lock ink wire GIF behind dodeca seal center (matches raised mobile cy) */
-let _clusterEl=null, _bgFieldEl=null;
+let _clusterEl=null, _bgFieldEl=null, _hexCoreEl=null;
 
 let _neonEl=null,_sculptEl=null;
 let _cityEl=null,_glintEl=null,_inkEl=null;
@@ -4123,11 +4136,10 @@ function syncGyroSharedCenter(cx,cy,s,t){
     _bgFieldEl._sealX=sx; _bgFieldEl._sealY=sy;
     _bgFieldEl.style.setProperty("--seal-x", sx);
     _bgFieldEl.style.setProperty("--seal-y", sy);
-    const ss=Math.round(s*1.08)+"px";
-    if(_bgFieldEl._sealS!==ss){ _bgFieldEl._sealS=ss; _bgFieldEl.style.setProperty("--seal-s", ss); }
   }
   lockSealTriad(cx,cy);
   syncBeamTrioRays();
+  syncHexCoreToDodeca(cx,cy,s); /* clientHexCoreMatch */
   /* φ nest breath — iso recessed, beams/voxel mid-depth; scale-only (no second axis) */
   const nest=Math.sin((t||0)*TEMPO.base*(TEMPO.nest||1/PHI));
   const isoSc=(0.84+0.045*nest).toFixed(4);
@@ -4688,40 +4700,102 @@ function drawSealContrastVeil(cx,cy,s){ /* hexCoreGyroSeal */ return;
 
 
 
-function drawHexCoreWires(cx,cy,s,t){
-  /* clientHexCoreKeyed — wire keyed hex asset rim → nearest dodeca verts */
-  const pv=DODECA._projVerts;
-  if(!pv||!pv.length) return;
+
+function syncHexCoreToDodeca(cx,cy,s){
+  /* clientHexCoreMatch — size to projected vert ring; YPR = canvas project() */
+  if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
+  if(!_hexCoreEl) _hexCoreEl=document.querySelector("#bgField .hexCoreKeyed");
+  if(!_bgFieldEl) return;
+  const pv=DODECA&&DODECA._projVerts;
+  let maxR=s*0.55;
+  if(pv&&pv.length){
+    maxR=0;
+    for(let i=0;i<pv.length;i++){
+      const v=pv[i];
+      const r=Math.hypot(v.x-cx,v.y-cy);
+      if(r>maxR) maxR=r;
+    }
+  }
+  _sealHub.hexR=maxR;
+  const ss=Math.round(maxR*2*1.04)+"px";
+  if(_bgFieldEl._sealS!==ss){ _bgFieldEl._sealS=ss; _bgFieldEl.style.setProperty("--seal-s", ss); }
   if(reduceMotion) return;
-  const R=s*0.46;
+  const yaw=cam.yaw+cam.userYaw;
+  const pitch=cam.pitch+cam.userPitch;
+  const roll=cam.roll+cam.userRoll;
+  /* match project(): yaw(Y) → pitch(X) → roll(Z); negate pitch for screen-Y flip */
+  const yD=(yaw*180/Math.PI).toFixed(2)+"deg";
+  const pD=((-pitch)*180/Math.PI).toFixed(2)+"deg";
+  const rD=(roll*180/Math.PI).toFixed(2)+"deg";
+  if(_bgFieldEl._syaw!==yD){ _bgFieldEl._syaw=yD; _bgFieldEl.style.setProperty("--seal-yaw", yD); }
+  if(_bgFieldEl._spit!==pD){ _bgFieldEl._spit=pD; _bgFieldEl.style.setProperty("--seal-pitch", pD); }
+  if(_bgFieldEl._srol!==rD){ _bgFieldEl._srol=rD; _bgFieldEl.style.setProperty("--seal-roll", rD); }
+}
+
+function drawHexCoreWires(cx,cy,s,t){
+  /* clientHexCoreMatch — wire every exact dodeca side (edge) + face rim ties */
+  const pv=DODECA._projVerts;
+  if(!pv||!pv.length||!DODECA.edges) return;
+  if(reduceMotion) return;
   const thin=W<=480, mobile=W<=900;
-  const nPick=thin?6:(mobile?8:12);
-  /* pick outermost verts by distance from hub */
-  const ranked=pv.slice().sort((a,b)=>{
-    const da=(a.x-cx)*(a.x-cx)+(a.y-cy)*(a.y-cy);
-    const db=(b.x-cx)*(b.x-cx)+(b.y-cy)*(b.y-cy);
-    return db-da;
-  }).slice(0,nPick);
+  let maxR=_sealHub.hexR||0;
+  if(!maxR){
+    for(let i=0;i<pv.length;i++){
+      const r=Math.hypot(pv[i].x-cx,pv[i].y-cy);
+      if(r>maxR) maxR=r;
+    }
+  }
+  const hexR=maxR*0.70; /* keyed hex body sits inside vert ring */
+  const pulse=0.55+0.45*Math.sin(t*TEMPO.base*3.1);
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  const pulse=0.55+0.45*Math.sin(t*TEMPO.base*3.2);
-  for(let i=0;i<ranked.length;i++){
-    const v=ranked[i];
-    const ang=Math.atan2(v.y-cy,v.x-cx);
-    const hx=cx+Math.cos(ang)*R, hy=cy+Math.sin(ang)*R;
-    const hue=185+(i%3)*55+12*Math.sin(t+i);
-    const a=(0.22+0.18*pulse)*(mobile?0.75:1);
-    /* glow under */
-    ctx.strokeStyle=hsl(hue,100,55,a*0.35);
-    ctx.lineWidth=thin?1.6:2.4;
-    ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(v.x,v.y); ctx.stroke();
-    /* hot wire */
-    ctx.strokeStyle=hsl(hue+15,100,66,a*0.85);
-    ctx.lineWidth=thin?0.7:1.05;
-    ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(v.x,v.y); ctx.stroke();
-    /* node kisses */
-    ctx.fillStyle=hsl(hue,100,68,a*0.7);
-    ctx.beginPath(); ctx.arc(hx,hy,thin?1.1:1.6,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.3:1.9,0,Math.PI*2); ctx.fill();
+  /* 1) exact sides — every projected edge */
+  for(let ei=0;ei<DODECA.edges.length;ei++){
+    const [i,j]=DODECA.edges[ei];
+    const a=pv[i], b=pv[j];
+    if(!a||!b) continue;
+    const depth=((a.d||0)+(b.d||0))*0.5;
+    const near=Math.max(0.2, Math.min(1, 0.5+depth*0.45));
+    const hue=188+(ei%5)*24+10*Math.sin(t*0.7+ei);
+    const a0=(0.18+0.14*pulse)*near*(mobile?0.7:1);
+    ctx.strokeStyle=hsl(hue,100,54,a0*0.4);
+    ctx.lineWidth=(thin?1.4:2.2)*near;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    ctx.strokeStyle=hsl(hue+18,100,66,a0*0.95);
+    ctx.lineWidth=(thin?0.65:0.95)*near;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    /* rim hitch at edge mid → ties hex body to this side */
+    const mx=(a.x+b.x)*0.5, my=(a.y+b.y)*0.5;
+    const ang=Math.atan2(my-cy, mx-cx);
+    const hx=cx+Math.cos(ang)*hexR, hy=cy+Math.sin(ang)*hexR;
+    ctx.strokeStyle=hsl(hue+8,95,60,a0*0.55);
+    ctx.lineWidth=thin?0.55:0.8;
+    ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(mx,my); ctx.stroke();
+    if(!thin && near>0.45){
+      ctx.fillStyle=hsl(hue,100,68,a0*0.65);
+      ctx.beginPath(); ctx.arc(mx,my,1.35,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(hx,hy,1.1,0,Math.PI*2); ctx.fill();
+    }
+  }
+  /* 2) vert nodes — exact corners */
+  for(let i=0;i<pv.length;i++){
+    const v=pv[i];
+    const near=Math.max(0.25, Math.min(1, 0.55+(v.d||0)*0.4));
+    const hue=200+i*7+t*18;
+    ctx.fillStyle=hsl(hue,100,66,(0.35+0.25*pulse)*near);
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.2:1.7,0,Math.PI*2); ctx.fill();
+  }
+  /* 3) face outline whisper — soft face-center spokes */
+  const fcs=DODECA._faceCenters2d;
+  if(fcs&&!thin){
+    for(let fi=0;fi<fcs.length;fi++){
+      const fc=fcs[fi];
+      const ang=Math.atan2(fc[1]-cy, fc[0]-cx);
+      const hx=cx+Math.cos(ang)*hexR*0.82, hy=cy+Math.sin(ang)*hexR*0.82;
+      const a0=0.08+0.06*pulse;
+      ctx.strokeStyle=hsl(280+fi*8,90,60,a0);
+      ctx.lineWidth=0.55;
+      ctx.beginPath(); ctx.moveTo(hx,hy); ctx.lineTo(fc[0],fc[1]); ctx.stroke();
+    }
   }
   ctx.restore();
 }
