@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientGemFix|clientNeonSeedHub|masterpieceCanonRestore|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; cyberNatureFormat restored as centerpiece */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|clientEngineGem|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientGemFix|clientNeonSeedHub|keyedStarFieldVoid|masterpieceCanonRestore|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; cyberNatureFormat restored as centerpiece */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -5125,17 +5125,136 @@ html,body{
 }
 /* end masterpieceCanonRestore depth ladder */
 
+
+/* ========== keyedStarFieldVoid — perspective black-dot GIF keyed white→α; full-bleed on #000 ========== */
+:root{
+  --void:#000 !important;
+}
+html,body{
+  background:#000 !important;
+  color:var(--ink,#e8f4ff) !important;
+}
+#bgField{
+  background:#000 !important;
+  --seal-x:50% !important;
+  --seal-y:42% !important;
+}
+/* hero layer: hub-centered converging keyed dots */
+#bgField > .keyedStarField{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  z-index:2 !important;
+  opacity:1 !important;
+  pointer-events:none !important; overflow:hidden !important;
+  mix-blend-mode:normal !important; /* NOT multiply */
+}
+#bgField > .keyedStarField .plane{
+  position:absolute !important;
+  left:var(--seal-x,50%) !important;
+  top:var(--seal-y,42%) !important;
+  width:max(170vw,170vh) !important;
+  height:max(170vw,170vh) !important;
+  transform:translate(-50%,-50%) scale(1) !important;
+  transform-origin:50% 50% !important;
+  animation:keyedStarPhiDrift var(--field-T3,var(--Tphi3,7.718s)) linear infinite !important; /* φ TEMPO */
+}
+@keyframes keyedStarPhiDrift{
+  0%{ transform:translate(-50%,-50%) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) scale(1.14); }
+}
+#bgField > .keyedStarField picture,
+#bgField > .keyedStarField img{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  width:100% !important; height:100% !important;
+  object-fit:cover !important; object-position:50% 50% !important;
+  filter:contrast(1.08) brightness(1.12) !important;
+  mix-blend-mode:screen !important; /* NOT multiply — dots read on void */
+  pointer-events:none !important;
+}
+#bgField > .keyedStarField img.still{ display:none !important; }
+@media (prefers-reduced-motion:reduce),(pointer:coarse){
+  #bgField > .keyedStarField .plane{
+    animation:none !important;
+    transform:translate(-50%,-50%) scale(1.05) !important;
+  }
+  #bgField > .keyedStarField img.anim,
+  #bgField > .keyedStarField picture{ display:none !important; }
+  #bgField > .keyedStarField img.still{
+    display:block !important; opacity:1 !important;
+    mix-blend-mode:screen !important;
+  }
+}
+/* demote cyber-nature / lattice / gold / gem so keyed dots dominate */
+#bgField > .cyberNatureWorld{
+  z-index:0 !important;
+  opacity:0.10 !important;
+  filter:saturate(0.55) contrast(0.95) brightness(0.28) !important;
+  transform:none !important;
+}
+#bgField > .hexVoid,
+#bgField > .honeyBack{
+  z-index:-5 !important;
+  opacity:0.04 !important;
+}
+#bgField > .hexVoid .goldFill,
+#bgField > .honeyBack .goldFill{
+  opacity:0.03 !important;
+  display:block !important;
+}
+#bgField > .crystalWash,
+#bgField > .latticeDepth,
+#bgField > .giftStack{
+  z-index:-2 !important;
+  opacity:0.03 !important;
+}
+#bgField > .neonLattice,
+#bgField > .coreSeedHub,
+#bgField > .engineGem{
+  z-index:1 !important;
+  opacity:0.05 !important;
+  mix-blend-mode:screen !important;
+}
+#bgField::before{
+  z-index:3 !important;
+  background:
+    radial-gradient(ellipse 30% 24% at var(--seal-x,50%) var(--seal-y,42%), rgba(34,211,238,0.10) 0%, rgba(232,121,249,0.04) 40%, transparent 72%),
+    radial-gradient(ellipse 100% 90% at 50% 100%, rgba(0,0,0,0.55) 0%, transparent 58%),
+    radial-gradient(ellipse 95% 70% at 50% 0%, rgba(0,0,0,0.35) 0%, transparent 52%) !important;
+}
+#bgField::after{ z-index:4 !important; opacity:0.28 !important; }
+#fx{ z-index:5 !important; }
+/* desk — Disorganized / Organized / Aside stay readable on void */
+#sortDesk{
+  z-index:20 !important;
+  color:rgba(230,244,255,.96) !important;
+  background:
+    linear-gradient(180deg, rgba(4,8,22,0.12) 0%, rgba(6,12,28,0.78) 22%, rgba(4,10,24,0.92) 100%) !important;
+}
+#uploadBox .uh b, #uploadBox b{ color:rgba(240,250,255,0.98) !important; }
+#sortedFigures .tray.admit h3{ color:#5eead4 !important; text-shadow:0 0 16px rgba(34,211,238,0.7) !important; }
+#sortedFigures .tray.release h3{ color:#f472b6 !important; text-shadow:0 0 16px rgba(232,121,249,0.6) !important; }
+/* end keyedStarFieldVoid */
+
 /* end masterpieceCanonRestore */
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- masterpieceCanonRestore|cyberNatureFormat: forest is the world; lattice/gem demoted -->
+<div id="bgField" aria-hidden="true"><!-- keyedStarFieldVoid|masterpieceCanonRestore: keyed dots dominate void; forest/lattice/gold demoted -->
   <div class="cyberNatureWorld" aria-hidden="true">
     <picture>
       <source srcset="media/cyber-nature.webp" type="image/webp"/>
       <img src="media/cyber-nature.jpg" alt="" width="1024" height="2048" decoding="async" fetchpriority="high"/>
     </picture>
+  </div>
+  <div class="keyedStarField" aria-hidden="true"><!-- keyedStarFieldVoid: white-keyed perspective dots full-bleed on void -->
+    <div class="plane">
+      <picture>
+        <source srcset="media/gifts/gift-star-keyed.webp" type="image/webp"/>
+        <img class="anim" src="media/gifts/gift-star-keyed.webp" alt="" decoding="async" fetchpriority="high" width="440" height="440"/>
+      </picture>
+      <img class="still" src="media/gifts/gift-star-keyed-still.webp" alt="" decoding="async" width="440" height="440"/>
+    </div>
   </div>
   <div class="hexVoid" aria-hidden="true"><!-- clientHexVoid|clientGoldHoneyFill: cyan→purple 3D hex + gold cell under-plate -->
     <div class="goldFill" role="presentation"></div><!-- clientGoldHoneyFill -->
@@ -5906,7 +6025,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:keyedStarFieldVoid|masterpieceCanonRestore|clientGemFix|clientNeonSeedHub|clientDepthStory|clientDeskInstrument|clientMobilePerf|clientIdleDemoGem|clientEngineGem|clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
