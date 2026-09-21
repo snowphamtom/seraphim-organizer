@@ -3178,10 +3178,151 @@ html,body{
   #uploadBox textarea, #pasteDesk{ max-height:min(10vh,72px)!important; min-height:40px!important; }
 }
 
+
+/* clientPurpleAll — revert UI + field grade to all-purple hologram */
+:root{
+  --void:#000!important;
+  --ink:#f5e9ff!important;
+  --mute:#a78bfa!important;
+  --admit:#e879f9!important;
+  --release:#c026d3!important;
+  --mint:#f0abfc!important;
+  --cyan:#d946ef!important;
+  --mag:#a855f7!important;
+  --warn:#fae8ff!important;
+  --glass:rgba(36,0,56,0.55)!important;
+  --line:rgba(232,121,249,0.55)!important;
+  --holo-wash:linear-gradient(135deg,rgba(232,121,249,0.18),rgba(168,85,247,0.10),rgba(192,38,211,0.16))!important;
+  --px-cyan:#e879f9!important;
+  --px-mag:#c026d3!important;
+  --opt-cyan:#e879f9!important;
+  --opt-mag:#c026d3!important;
+  --mp-cyan:#e879f9!important;
+  --mp-mag:#c026d3!important;
+}
+html,body{ background:#000!important; color:var(--ink)!important; }
+#bgField{ background:#000!important; }
+
+/* trio → purple hologram grade */
+#bgField > .trioStack > img.trioField,
+#bgField > .trioField > img.trioField{
+  filter:contrast(1.45) brightness(1.08) saturate(1.55) hue-rotate(265deg)!important;
+  opacity:.82!important;
+}
+#bgField > .trioStack > img.trioGrid,
+#bgField > .trioField > img.trioGrid{
+  filter:contrast(1.4) brightness(1.12) saturate(1.45) hue-rotate(280deg)!important;
+  opacity:.88!important;
+}
+#bgField > .trioStack > img.trioCore,
+#bgField > .trioField > img.trioCore{
+  filter:contrast(1.5) brightness(1.15) saturate(1.6) hue-rotate(270deg)!important;
+  opacity:1!important;
+}
+#bgField > .trioStack::after,
+#bgField > .trioField::after{
+  background:
+    radial-gradient(ellipse 85% 80% at 50% 48%, transparent 50%, rgba(40,0,60,.35) 100%),
+    linear-gradient(180deg, rgba(232,121,249,.08) 0%, transparent 30%, transparent 70%, rgba(192,38,211,.1) 100%)!important;
+  opacity:.7!important;
+}
+
+#top{
+  background:linear-gradient(180deg,rgba(40,0,56,.88),rgba(18,0,28,.9))!important;
+  border:1px solid rgba(232,121,249,.4)!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.65), 0 0 24px rgba(168,85,247,.18)!important;
+}
+#top .title{
+  color:#f0abfc!important;
+  text-shadow:0 0 18px rgba(232,121,249,.55),0 0 36px rgba(168,85,247,.25)!important;
+}
+#top .metrics{ color:rgba(220,190,245,.9)!important; }
+#top .metrics b{ color:#fff!important; }
+#top .metrics .a b{ color:#f0abfc!important; text-shadow:0 0 10px rgba(232,121,249,.45)!important; }
+#top .metrics .r b{ color:#e879f9!important; text-shadow:0 0 10px rgba(192,38,211,.4)!important; }
+
+#uploadBox,
+#trayAdmit,
+#trayRelease{
+  background:linear-gradient(165deg, rgba(48,0,72,.9) 0%, rgba(16,0,28,.94) 100%)!important;
+  border:1px solid rgba(232,121,249,.42)!important;
+  box-shadow:
+    0 0 0 1px rgba(168,85,247,.15),
+    0 0 40px rgba(192,38,211,.12),
+    0 18px 48px rgba(0,0,0,.7)!important;
+}
+#uploadBox{ border-color:rgba(232,121,249,.55)!important; }
+#trayAdmit{ border-color:rgba(240,171,252,.5)!important; }
+#trayRelease{ border-color:rgba(192,38,211,.5)!important; }
+#uploadBox::before,
+#trayAdmit::before,
+#trayRelease::before,
+#sortedFigures .tray::before{
+  background:linear-gradient(180deg, rgba(72,20,96,.98) 0%, rgba(28,0,44,.98) 100%)!important;
+  border-bottom:1px solid rgba(232,121,249,.25)!important;
+}
+#uploadBox::after,
+#trayAdmit::after{ color:rgba(240,171,252,.65)!important; text-shadow:0 0 8px rgba(232,121,249,.4)!important; }
+#trayRelease::after{ color:rgba(232,121,249,.7)!important; }
+
+#uploadBox .uh b,
+#trayAdmit h3,
+#trayRelease h3,
+#sortedFigures .tray h3{
+  color:#fae8ff!important;
+  text-shadow:0 1px 3px rgba(0,0,0,.95), 0 0 14px rgba(232,121,249,.35)!important;
+}
+#trayAdmit h3,
+#sortedFigures .tray.admit h3{
+  color:#f0abfc!important;
+  text-shadow:0 0 16px rgba(232,121,249,.7)!important;
+}
+#trayRelease h3,
+#sortedFigures .tray.release h3{
+  color:#e9d5ff!important;
+  text-shadow:0 0 14px rgba(192,38,211,.55)!important;
+}
+#uploadBox .uh span{ color:rgba(220,190,245,.75)!important; }
+#uploadBox .dropHint{
+  color:rgba(245,230,255,.9)!important;
+  background:rgba(40,0,60,.75)!important;
+  border:1px dashed rgba(232,121,249,.45)!important;
+}
+#uploadBox .dropHint em{ color:#f0abfc!important; }
+#uploadBox textarea,
+#pasteDesk{
+  color:#fae8ff!important;
+  background:rgba(20,0,32,.88)!important;
+  border:1px solid rgba(232,121,249,.4)!important;
+  caret-color:#f0abfc!important;
+}
+#uploadBox .actions #runSort{ color:#f0abfc!important; }
+#uploadBox .actions .filebtn,
+#uploadBox .actions button,
+#uploadBox .actions select,
+.folderExport button{
+  color:rgba(245,230,255,.92)!important;
+  border-color:rgba(192,132,252,.35)!important;
+}
+.folderExport button{
+  background:rgba(40,0,60,.65)!important;
+  border:1px solid rgba(232,121,249,.35)!important;
+}
+#sortedFigures .chipFig{ color:rgba(250,240,255,.94)!important; }
+#sortedFigures .tray.admit .chipFig{ color:rgba(250,220,255,.96)!important; }
+#sortedFigures .tray.release .chipFig{ color:rgba(240,200,255,.96)!important; }
+#sortedFigures .empty{ color:rgba(200,170,230,.65)!important; }
+#tip{
+  background:rgba(28,0,44,.94)!important;
+  border:1px solid rgba(232,121,249,.45)!important;
+  color:#fae8ff!important;
+}
+#tip b{ color:#f0abfc!important; }
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientPerfect|clientWindowsFit|clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
+<div id="bgField" aria-hidden="true"><!-- clientPurpleAll|clientPurpleAll|clientPerfect|clientWindowsFit|clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
   <div class="trioStack" aria-hidden="true">
     <img class="trioField anim" src="media/trio-field-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
     <img class="trioField still" src="media/trio-field-keyed.png" alt="" width="500" height="500" decoding="async">
