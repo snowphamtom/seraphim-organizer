@@ -8169,15 +8169,15 @@ function drawAxisRoomGrid(cx,cy,s,t){
     const depthFade=Math.max(0.35, Math.min(1.15, 1.1-(depth+0.15)*0.35));
     const alpha = baseA * (0.22 + 0.78*out) * depthFade * (thin?0.85:1);
     if(alpha < 0.02) return;
-    ctx.strokeStyle=hsl(hue, 92, 62, Math.min(0.55, alpha));
+    ctx.strokeStyle=`rgba(240,248,255,${Math.min(0.92, alpha*1.85)})`;
     ctx.lineWidth=lw * (0.75 + 0.55*out);
     ctx.beginPath(); ctx.moveTo(pa[0],pa[1]); ctx.lineTo(pb[0],pb[1]); ctx.stroke();
   }
 
-  ctx.globalCompositeOperation="lighter";
-  const lw=thin?0.55:(mobile?0.7:0.85);
-  const aFloor=reduceMotion?0.14:0.20;
-  const aWall=reduceMotion?0.12:0.17;
+  ctx.globalCompositeOperation="source-over";
+  const lw=thin?0.85:(mobile?1.05:1.25);
+  const aFloor=reduceMotion?0.28:0.42;
+  const aWall=reduceMotion?0.24:0.36;
 
   /* FLOOR y=Fy — X along floor, Z into depth */
   for(let i=0;i<=n;i++){
@@ -8216,14 +8216,14 @@ function drawAxisRoomGrid(cx,cy,s,t){
   }
 
   /* bright corner axes */
-  strokeSeg([Fx,Fy,Fz],[Fx+extent*0.7,Fy,Fz], 195, 0.32, lw*1.6);
-  strokeSeg([Fx,Fy,Fz],[Fx,Fy+extent*0.7,Fz], 305, 0.28, lw*1.6);
-  strokeSeg([Fx,Fy,Fz],[Fx,Fy,Fz+extent*0.7], 210, 0.28, lw*1.6);
+  strokeSeg([Fx,Fy,Fz],[Fx+extent*0.7,Fy,Fz], 195, 0.55, lw*1.8);
+  strokeSeg([Fx,Fy,Fz],[Fx,Fy+extent*0.7,Fz], 305, 0.50, lw*1.8);
+  strokeSeg([Fx,Fy,Fz],[Fx,Fy,Fz+extent*0.7], 210, 0.50, lw*1.8);
 
   /* floor–wall seams */
-  strokeSeg([Fx,Fy,wallBack],[Fx+extent,Fy,wallBack], 200, 0.22, lw*1.25);
-  strokeSeg([wallSide,Fy,Fz],[wallSide,Fy,Fz+extent], 215, 0.22, lw*1.25);
-  strokeSeg([wallSide,Fy,wallBack],[wallSide,Fy+extent*1.05,wallBack], 295, 0.20, lw*1.2);
+  strokeSeg([Fx,Fy,wallBack],[Fx+extent,Fy,wallBack], 200, 0.40, lw*1.4);
+  strokeSeg([wallSide,Fy,Fz],[wallSide,Fy,Fz+extent], 215, 0.40, lw*1.4);
+  strokeSeg([wallSide,Fy,wallBack],[wallSide,Fy+extent*1.05,wallBack], 295, 0.38, lw*1.35);
 
   if(!reduceMotion && !thin){
     ctx.globalCompositeOperation="source-over";
@@ -8238,7 +8238,7 @@ function drawAxisRoomGrid(cx,cy,s,t){
       const p=project(x,y,z,cx,cy,s);
       const out=edgeBoost(p[0],p[1]);
       if(out<0.15) continue;
-      ctx.fillStyle=hsl(hue,85,68,0.18+0.35*out);
+      ctx.fillStyle=`rgba(255,255,255,${0.45+0.45*out})`;
       ctx.fillText(lab, p[0], p[1]);
     }
   }
