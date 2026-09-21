@@ -2788,7 +2788,7 @@ html,body{
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientTrioOnly: trio-field + trio-grid + trio-core -->
+<div id="bgField" aria-hidden="true"><!-- clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
   <div class="trioField" aria-hidden="true">
     <img class="trioField anim" src="media/trio-field-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
     <img class="trioField still" src="media/trio-field-keyed.png" alt="" width="500" height="500" decoding="async">
@@ -2818,10 +2818,10 @@ html,body{
 <section id="sortDesk" aria-label="Upload window in, Organized and Aside folders out">
   <div id="phaseWhisper" class="phaseWhisper" role="status" aria-live="polite" aria-hidden="true"></div>
   <div id="uploadBox" tabindex="0" role="region" aria-label="Upload window — drop or choose files here">
-    <div class="uh"><b>Upload</b><span>csv · tsv · json · txt · md</span></div>
-    <div class="dropHint">Drop files here · or <em>choose</em></div>
+    <div class="uh"><b>Upload</b><span>whatever you're sorting</span></div>
+    <div class="dropHint">Drop any file · paste · or <em>choose</em> — runs through Seraphim</div>
     <div class="actions">
-      <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
+      <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson,.log,.xml,.html,.htm,.yaml,.yml,.py,.js,.ts,.csv.gz,text/*,*/*" hidden/></label>
       <button type="button" id="runSort" class="primary">sort</button>
       <button type="button" id="clearDesk" class="ghost">clear</button>
       <select id="demoDesk" class="ghost-chip" aria-label="Demo content" title="Demo content">
@@ -2832,7 +2832,7 @@ html,body{
         <option value="nonsense">Constant nonsense</option>
       </select>
     </div>
-    <textarea id="pasteDesk" placeholder="- paste content to sort…" rows="3"></textarea>
+    <textarea id="pasteDesk" placeholder="- paste anything to sort through Seraphim…" rows="3"></textarea>
   </div>
     <div id="sortedFigures" aria-live="polite" aria-label="Sorted folders">
     <div class="tray admit" id="trayAdmit" role="region" aria-label="Organized folder">
@@ -7487,7 +7487,7 @@ function wireSortDesk(){
   if(legacy)["input","keydown","paste","focus"].forEach(ev=>legacy.addEventListener(ev, markDeskUserTouch));
 }
 
-function render(res){lastResult=res; updateMetrics(res); pushLog(res.verdicts); renderSortedFigures(res.verdicts); if($("dlJson"))$("dlJson").disabled=false; if($("dlCsv"))$("dlCsv").disabled=false; ingestVerdicts(res.verdicts);}
+function render(res){lastResult=res; updateMetrics(res); pushLog(res.verdicts); renderSortedFigures(res.verdicts); if($("dlJson"))$("dlJson").disabled=false; if($("dlCsv"))$("dlCsv").disabled=false; ingestVerdicts(res.verdicts); if(typeof window.seraphimAutoExport==="function") try{window.seraphimAutoExport(res);}catch(e){}}
 function focusNode(id){
   focusId=id;
   document.querySelectorAll("#log .ev").forEach(el=>{el.classList.toggle("focus",String(el.dataset.id)===String(id));});
@@ -7801,6 +7801,68 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
   function boot(){
     wirePersist();
     wireExports();
+
+/* clientAutoExport — after Seraphim engine, auto-download full result */
+(function wireAutoExportAfterEngine(){
+  function cells(v){
+    return [v.id, v.decision, v.decision==="admit"?"organized":"aside", v.S_H, v.S_solv, v.R_H, v.cause||"", v.kind||"", v.audit||"", JSON.stringify(v.t||"")];
+  }
+  function stamp(){
+    const d=new Date();
+    const p=n=>String(n).padStart(2,"0");
+    return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+"-"+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds());
+  }
+  function triggerDownload(blob, name){
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=name;
+    a.rel="noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  }
+  window.seraphimAutoExport = function(res){
+    if(!res || !res.verdicts || !res.verdicts.length) return;
+    if(window.__seraphimAutoExportBusy) return;
+    window.__seraphimAutoExportBusy = true;
+    const ts=stamp();
+    const payload={
+      exported_at: res.stamp || new Date().toISOString(),
+      n: res.n,
+      counts: res.counts,
+      organized: res.verdicts.filter(v=>v.decision==="admit"),
+      aside: res.verdicts.filter(v=>v.decision!=="admit"),
+      verdicts: res.verdicts
+    };
+    const head=["id","decision","display","S_H","S_solv","R_H","cause","kind","audit","text"];
+    const csv=[head.join(",")].concat(res.verdicts.map(v=>cells(v).map(x=>`"${String(x).replace(/"/g,'""')}"`).join(","))).join("\n");
+    /* stagger — browsers often block multi-download bursts */
+    triggerDownload(new Blob([csv],{type:"text/csv;charset=utf-8"}), "seraphim-sorted-"+ts+".csv");
+    setTimeout(()=>{
+      triggerDownload(new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}), "seraphim-sorted-"+ts+".json");
+      window.__seraphimAutoExportBusy = false;
+      const tipEl=document.getElementById("tip");
+      if(tipEl){
+        tipEl.style.display="block";
+        tipEl.className="a";
+        tipEl.innerHTML="<b>EXPORTED</b><span class=\"whisper\">csv + json · "+res.n+" through Seraphim</span>";
+        setTimeout(()=>{ if(tipEl && tipEl.textContent.indexOf("EXPORTED")>=0) tipEl.style.display="none"; }, 3200);
+      }
+    }, 450);
+  };
+  /* patch render once */
+  if(typeof render==="function" && !render.__seraphimAutoExport){
+    const _render=render;
+    function renderHook(res){
+      _render(res);
+      try{ window.seraphimAutoExport(res); }catch(e){}
+    }
+    renderHook.__seraphimAutoExport=true;
+    render=renderHook;
+  }
+})();
+
     wirePasteAutoSort();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", ()=>setTimeout(boot, 140));
