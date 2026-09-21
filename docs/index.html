@@ -5099,7 +5099,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:clientSeeThrough|clientFaceInvert|clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -6321,7 +6321,7 @@ function drawLatticeFaceDetail(cx,cy,s,t,pv){
 }
 
 function drawDodecaLatticeCage(cx,cy,s,t){
-  /* clientNeonLattice|clientShowOff: Magpie cyan↔magenta neon cage */
+  /* clientSeeThrough|clientNeonLattice|clientShowOff: softened neon cage keeps lattice readable through translucent faces */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
   const pv=[];
@@ -6335,7 +6335,7 @@ function drawDodecaLatticeCage(cx,cy,s,t){
     const A=pv[i], B=pv[j];
     return {a:A,b:B,ei,md:(A.d+B.d)*0.5};
   }).sort((u,v)=>u.md-v.md);
-  ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
+  ctx.save(); ctx.globalAlpha=a*0.88; ctx.globalCompositeOperation="lighter";
   const thin=W<=480, mobile=W<=900;
   const lw=thin?2.55:(mobile?3.75:4.85); /* clientNeonLattice|clientThickSkeleton|clientShowpiecePush */
   const iriShift=18*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.55);
@@ -6651,7 +6651,7 @@ function drawCyberNatureField(cx,cy,s,t){
   ctx.restore();
 }
 
-function drawDodecaFrame(cx,cy,s,t){ /* clientNeonLattice|clientThickSkeleton: Magpie cyan↔magenta neon lattice wireframe */
+function drawDodecaFrame(cx,cy,s,t){ /* clientSeeThrough|clientNeonLattice|clientThickSkeleton: softened cyan↔magenta lattice bones */
   const pv=DODECA._projVerts;
   if(!pv||!pv.length||!DODECA.edges) return;
   const thin=W<=480;
@@ -6662,7 +6662,7 @@ function drawDodecaFrame(cx,cy,s,t){ /* clientNeonLattice|clientThickSkeleton: M
     const a=pv[i], b=pv[j];
     return {a,b,ei,md:((a&&a.d)||0)+((b&&b.d)||0)};
   }).filter(e=>e.a&&e.b).sort((u,v)=>u.md-v.md);
-  ctx.save(); ctx.globalCompositeOperation="lighter";
+  ctx.save(); ctx.globalAlpha=0.88; ctx.globalCompositeOperation="lighter";
   for(const ed of edged){
     const {a,b,ei,md}=ed;
     const near=Math.max(0.18, Math.min(1, 0.48+md*0.22));
@@ -7776,7 +7776,7 @@ function drawTexturedTri(img, s0x,s0y,s1x,s1y,s2x,s2y, d0x,d0y,d1x,d1y,d2x,d2y){
 }
 
 function drawDodecaFaceFills(cx,cy,s,t){
-  /* clientFaceFillOmni: depth-sorted textured pentagon faces; skeleton drawn after */
+  /* clientSeeThrough|clientFaceInvert|clientFaceFillOmni: inverted translucent screen-soft faces; lattice and hex void read through */
   if(reduceMotion || !FACE_FILL.ready || !DODECA.faces || !DODECA._projVerts) return;
   const pv=DODECA._projVerts;
   const fcs=DODECA._faceCenters2d;
@@ -7823,17 +7823,21 @@ function drawDodecaFaceFills(cx,cy,s,t){
     const near=Math.max(0.18, Math.min(1, 0.48+it.md*0.32));
     const img=skin;
     if(!img) continue;
-    /* clientShowpiecePush: higher face opacity so mosaic reads on dark hex void */
-    const alpha=0.58+0.36*near;
-    /* soft underplate — dark plate, not paper flash */
-    ctx.globalAlpha=Math.min(0.62, 0.22+0.32*near);
+    /* clientSeeThrough: cut face wash to ~0.27–0.40 so the hex void remains present */
+    const alpha=0.24+0.16*near;
+    /* restrained underplate — just enough depth without an opaque panel */
+    ctx.globalCompositeOperation="source-over";
+    ctx.globalAlpha=Math.min(0.20, 0.07+0.11*near);
     ctx.fillStyle='rgba(4,6,14,0.55)';
     ctx.beginPath();
     ctx.moveTo(it.pts[0].x,it.pts[0].y);
     for(let i=1;i<5;i++) ctx.lineTo(it.pts[i].x,it.pts[i].y);
     ctx.closePath();
     ctx.fill();
-    /* textured fan from face center */
+    /* clientFaceInvert: invert the mosaic only; every face uses the same full texture inversion */
+    /* screen-soft compositing preserves the hex void/lattice beneath the face wash */
+    ctx.globalCompositeOperation="screen";
+    ctx.filter="invert(1)";
     const fcx=it.fc[0], fcy=it.fc[1];
     const ucx=(uv[0][0]+uv[1][0]+uv[2][0]+uv[3][0]+uv[4][0])/5;
     const ucy=(uv[0][1]+uv[1][1]+uv[2][1]+uv[3][1]+uv[4][1])/5;
@@ -7845,6 +7849,7 @@ function drawDodecaFaceFills(cx,cy,s,t){
         ucx,ucy, ua[0],ua[1], ub[0],ub[1],
         fcx,fcy, a.x,a.y, b.x,b.y);
     }
+    ctx.filter="none";
   }
   ctx.restore();
 }
@@ -7869,7 +7874,7 @@ const CORE_SEED={img:null, ready:false};
 })();
 
 function drawCoreSeed(cx,cy,s,t){
-  /* clientCoreSeed: projected hub billboard; tumbles with cam roll; shares sealPulse */
+  /* clientSeeThrough|clientCoreSeed: hub seed stays bright so translucency still has an anchor */
   if(reduceMotion || !CORE_SEED.ready || !CORE_SEED.img) return;
   const img=CORE_SEED.img;
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
