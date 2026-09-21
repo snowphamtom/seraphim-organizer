@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -360,21 +360,62 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   inset:0;width:auto;height:auto;top:0;left:0;right:0;bottom:0;transform:none;
   background-image:url(bg-city-glint.gif);
   background-size:cover;background-position:center;background-repeat:no-repeat;
-  opacity:0.78;mix-blend-mode:normal;filter:contrast(1.08) saturate(1.15);
+  opacity:0.55;mix-blend-mode:normal;filter:contrast(1.05) saturate(1.05);
   pointer-events:none;
 }
 @media (max-width:900px){
-  #bgField .meta.cluster{opacity:0.62;filter:contrast(1.05) saturate(1.08)}
+  #bgField .meta.cluster{opacity:0.45;filter:contrast(1.02) saturate(1.02)}
 }
 @media (prefers-reduced-motion:reduce){
   #bgField .meta.cluster{opacity:0.45}
 }
 
+#bgField .meta.sculpture{
+  /* Refik-style data sculpture — soft spectrum mass bridging city → seal */
+  inset:0;
+  background-image:url(bg-data-sculpture.png);
+  background-size:contain;
+  background-position:center 42%;
+  background-repeat:no-repeat;
+  opacity:0.42;
+  mix-blend-mode:screen;
+  filter:saturate(1.35) contrast(1.1) brightness(0.95);
+  transform:scale(1.08);
+  transform-origin:center 45%;
+  pointer-events:none;
+}
+#bgField .meta.neon{
+  /* neon green dodeca ghost — locked to seal cx/cy (JS), screen-blend connector */
+  inset:auto;
+  width:min(72vmin, 640px);
+  height:min(72vmin, 640px);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background-image:url(bg-dodeca-neon.gif);
+  background-size:contain;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0.38;
+  mix-blend-mode:screen;
+  filter:saturate(1.2) brightness(1.05) hue-rotate(-8deg);
+  pointer-events:none;
+  will-change:left,top;
+}
+@media (max-width:900px){
+  #bgField .meta.sculpture{opacity:0.28;transform:scale(1.12);background-position:center 28%}
+  #bgField .meta.neon{width:58vmin;height:58vmin;opacity:0.30}
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .meta.sculpture{opacity:0.22}
+  #bgField .meta.neon{opacity:0.18}
+}
+
+
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div><div class="meta cluster"></div></div>
+<div id="bgField" aria-hidden="true"><div class="meta plexus"></div><div class="meta grid"></div><div class="meta blobs"></div><div class="meta cluster"></div><div class="meta sculpture"></div><div class="meta neon"></div></div>
 <canvas id="fx" role="img" aria-label="Seraphim orbit — dodecahedron seal organizing field"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.28"></canvas><!-- polishPass3: WebGL underlay quieter so canvas seal wins -->
 <header id="top">
@@ -829,7 +870,7 @@ const STORIES = {
    - fogShards: skip ≤900; α×0.5
    - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
    - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
-   - bg city-glint full-bleed dark HUD field; seal = sorting/analyzing instrument; wireframe gone
+   - bg hybrid: city-glint → data-sculpture spectrum → neon dodeca ghost locked to seal; lattice bridges field↔dodeca
    - chromatic edges: skip ≤900; α×0.5 (magenta/cyan/indigo fringe)
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
@@ -1682,6 +1723,24 @@ const inkDrops=[];
 
 /* lock ink wire GIF behind dodeca seal center (matches raised mobile cy) */
 let _clusterEl=null;
+
+let _neonEl=null,_sculptEl=null;
+function syncNeonBehindSeal(cx,cy,s){
+  if(!_neonEl) _neonEl=document.querySelector("#bgField .meta.neon");
+  if(!_sculptEl) _sculptEl=document.querySelector("#bgField .meta.sculpture");
+  if(_neonEl){
+    _neonEl.style.left=cx+"px";
+    _neonEl.style.top=cy+"px";
+    const sz=Math.max(180, Math.min(Math.min(W,H)*0.95, s*2.15));
+    _neonEl.style.width=sz+"px";
+    _neonEl.style.height=sz+"px";
+  }
+  if(_sculptEl){
+    /* keep sculpture centered on seal vertically so spikes aim at hub */
+    _sculptEl.style.backgroundPosition="center "+Math.round((cy/Math.max(H,1))*100)+"%";
+  }
+}
+
 function syncClusterBehindSeal(cx,cy){
   if(!_clusterEl) _clusterEl=document.querySelector("#bgField .meta.cluster");
   if(!_clusterEl) return;
@@ -2095,6 +2154,30 @@ function hashFigId(id){
   for(let i=0;i<str.length;i++){h^=str.charCodeAt(i); h=Math.imul(h,16777619);}
   return h>>>0;
 }
+
+function drawHybridBridgeRays(cx,cy,s,t){
+  /* spectrum rays: seal hub → field — connects neon ghost + data sculpture to city HUD */
+  if(reduceMotion||W<=480) return;
+  const n=W<=900?7:11;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  for(let i=0;i<n;i++){
+    const a=t*TEMPO.base*0.18+i/n*Math.PI*2;
+    const len=s*(1.15+0.55*Math.sin(t*TEMPO.base*PHI+i));
+    const x2=cx+Math.cos(a)*len, y2=cy+Math.sin(a)*len*0.92;
+    const hue=130+i*(220/n)+20*Math.sin(t*0.5+i); /* green→cyan→magenta */
+    const g=ctx.createLinearGradient(cx,cy,x2,y2);
+    g.addColorStop(0,hsl(hue,95,62,0.22));
+    g.addColorStop(0.45,hsl(hue+30,90,55,0.08));
+    g.addColorStop(1,hsl(hue+50,85,50,0));
+    ctx.strokeStyle=g; ctx.lineWidth=0.7+0.5*Math.sin(t+i);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x2,y2); ctx.stroke();
+    /* outer node hitch */
+    ctx.fillStyle=hsl(hue,100,65,0.18+0.12*Math.sin(t*2+i));
+    ctx.beginPath(); ctx.arc(x2,y2,1.4+0.8*Math.sin(t*1.5+i),0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
+
 function drawOrganizeLattice(cx,cy,s,t){
   /* organizing lattice — polishPass3|bgToDodeca|fateSplit|organizeLattice.
      PURPOSE: visible grammar — field/mint→dodeca lock; admit→cube crystallize. Cool admit / warm release. */
@@ -2153,7 +2236,7 @@ function drawOrganizeLattice(cx,cy,s,t){
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
       const scA=(0.028+0.045*depth)*pulse*(1+0.25*snap); /* ~half prior */
-      ctx.strokeStyle=hsl(200+t*14+hueDrift*0.35,78,50,scA);
+      ctx.strokeStyle=hsl(155+45*Math.sin(t*0.7+hueDrift)+t*10,82,52,scA); /* hybrid spectrum */
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
@@ -2165,7 +2248,7 @@ function drawOrganizeLattice(cx,cy,s,t){
       const a=cc[i], b=cc[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.15, Math.min(1,(md+0.45)/0.95));
-      ctx.strokeStyle=hsl(195+t*20+hueDrift*0.45,94,60,(0.08+0.14*depth)*pulse*(1+0.4*sealPop));
+      ctx.strokeStyle=hsl(140+70*((depth+Math.sin(t+hueDrift))*0.5+0.5),94,58,(0.10+0.16*depth)*pulse*(1+0.4*sealPop));
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
@@ -2688,6 +2771,8 @@ function frame(now){
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
   drawVoxels(cxV,cyV,s*0.96,t); drawMintRelease(cxM,cyM,s*0.96,t);
   drawTrailsAndGlow(cxH,cyH,s,t);
+  syncNeonBehindSeal(cx,cy,s);
+  if(!reduceMotion) drawHybridBridgeRays(cx,cy,s,t);
   if(!(W<=900 && (frameN&1))) drawOrganizeLattice(cxH,cyH,s,t);
   if(constellation && !(W<=900 && (frameN&1))) drawConstellation(cxV,cyV,s);
   drawSortShockwave(cx,cy,s);
