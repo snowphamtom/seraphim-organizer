@@ -6,12 +6,13 @@
   - Lattice veins = vesica piscis mesh feeding the gem (symbiotic mid/bg)
   - Desk cuts = **ORGANIZED** | **ASIDE** as labeled output facets (CRYSTALLIZE|RELEASE mapped)
   - Motion = exact mirror overlay + inverse-omni dual as the gem’s complete invert twin refraction
+- **Hologram opacity breath:** `hologramOpacityBreath|continuousOpacity` — figure layers (vesica, gem, seed, dual dodeca, prism, mirror invert twins) read as HOLOGRAM: opacity continuously modulates (breath / shimmer / scan) on the φ TEMPO family with per-layer phase offsets; shared hub. Typical band ~0.15–0.55 (heroes a bit higher); mirror twins counter-phase (+π). `prefers-reduced-motion` settles to mid opacity stills. Desk/text/UI untouched.
 - **Polish harmonize:** `polishHarmonize|layersAloneAndTogether` — every layer coheres alone (keys 1–5) and shares one center/size/angle/φ family together; symbiotic bg; gem facets carry angled light/shadow; vesica √3:1 almonds; desk Organized/Aside in purple/black/white only.
 - **Centerpiece (mid/fore):** neon dodeca reads as **cut gem** with seed fire inside; canvas owns mid/fore. Field labels ORGANIZED (left) / ASIDE (right).
 - **Vesica mesh (mid/bg):** `vesicaPiscisMeshLattice` — overlapping-circle almond grid as refractive veins under the gem; purple/black/white; φ-synced breathe + drift; no stagnant lines. Not a hero; not flower-of-life.
 - **NO flower-of-life** (`removeFlowerOfLife`) — FoL lattice culled; seed ≠ flower; vesica mesh ≠ FoL.
 - **Dual dodeca:** `inverseOmniMirrorDodeca|clientDualDodecaTether` — still_ypr = −tumble_ypr on shared φ axes; purple vertex tethers; twin refraction of the gem.
-- **Exact mirror overlay:** `exactMirrorOverlay|everyFigureColorMatch` — every visual figure (vesica, neon dodeca gem, seed core, dual dodeca, node/dot meshes, inner prism energy, symbiotic bg figures) gets a **complete invert twin**: geometric hub-flip + full purple/black/white color invert (light↔dark) + rotation phase inverse (−t). Opacity ~0.34–0.46 so twin reads clearly; primary stays hero. Inverse-omni dual incorporates this law. reduceMotion stills show both.
+- **Exact mirror overlay:** `exactMirrorOverlay|everyFigureColorMatch` — every visual figure (vesica, neon dodeca gem, seed core, dual dodeca, node/dot meshes, inner prism energy, symbiotic bg figures) gets a **complete invert twin**: geometric hub-flip + full purple/black/white color invert (light↔dark) + rotation phase inverse (−t). Twin opacity breathes counter-phase to primary (~0.15–0.55). Inverse-omni dual incorporates this law. reduceMotion stills show both at mid opacity.
 - **Mirror fence:** NEVER mirror/invert text, text boxes, windows, desk UI, Disorganized/Organized/Aside labels, inputs, panels, or help — figures only.
 - **Bg:** dark void + quiet vesica whisper — excess fore/mid DOM clutter stripped. Canvas heroes carry.
 - **Palette law:** purple + black + white only. Soft lilac/violet; black void; white speculars. NO gold, cyan, hot-magenta, orange, green chrome.
@@ -21,4 +22,4 @@
 - **Depth ladder (back→front):** dark void → vesica veins → soft dots → still dodeca (twin refraction) → tethers → gem facets + pillar rivets → tumbling dodeca bones → seed-of-life fire → prism energy → ORGANIZED|ASIDE cuts → desk (front).
 - **Topology encode:** in-page `<!-- THE GEM topology -->` + `#seraphimTopologyGem` JSON (N1…N5).
 - **Fences:** no crystallize / release / dump / S_H in user-visible strings; no XYZ room grid; no white-paper void; no flower-of-life; no lattice-as-hero; no stationary straight field lines; no gold/cyan/hot-pink/orange/green chrome.
-- **Live tip:** `?v=<shortsha>` — tip: `exactMirrorOverlay|everyFigureColorMatch` (complete invert twin on every figure — geom + P/B/W light↔dark; fence: no text/UI mirror; inverse-omni incorporates law; layers solo-safe 1–5; shared hub/φ; no FoL; desk usable)
+- **Live tip:** `?v=<shortsha>` — tip: `hologramOpacityBreath|continuousOpacity` (figure hologram opacity breath on φ TEMPO + phase offsets; twin counter-phase; reduceMotion mid stills; fence: no text/UI; exact mirror + inverse-omni kept; layers solo-safe 1–5; shared hub/φ; no FoL; desk usable)
