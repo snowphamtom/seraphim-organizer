@@ -654,7 +654,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil */
+/* SERAPHIM_MARKERS:antiBlotch|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:false,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -847,10 +847,10 @@ function layerAlpha(which){
 function drawAurora(cx,cy,s,t){
   if(reduceMotion||skipHeavy) return;
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  for(let r=0;r<5;r++){
-    const hue=160+r*24+Math.sin(t*0.3+r)*12; // 160–280
-    ctx.strokeStyle=hsl(hue,85,48,0.045+r*0.008);
-    ctx.lineWidth=10+r*6; ctx.beginPath();
+  for(let r=0;r<3;r++){ /* fewer ribbons — less blotch */
+    const hue=170+r*28+Math.sin(t*0.3+r)*10;
+    ctx.strokeStyle=hsl(hue,80,46,0.022+r*0.006);
+    ctx.lineWidth=6+r*4; ctx.beginPath();
     for(let i=0;i<=48;i++){
       const u=i/48, x=cx+(u-0.5)*s*2.6;
       const y=cy-s*0.85+Math.sin(u*Math.PI*2.2+t*0.55+r*0.7)*s*(0.18+r*0.04)
@@ -910,24 +910,14 @@ function drawDepthFogVignette(cx,cy,s){
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
   // soft center glow
   const g2=ctx.createRadialGradient(cx,cy,0,cx,cy,s*0.55);
-  addStops(g2,[[0,"rgba(80,200,220,0.05)"],[1,"rgba(0,0,0,0)"]]);
+  addStops(g2,[[0,"rgba(80,200,220,0.025)"],[1,"rgba(0,0,0,0)"]]);
   ctx.globalCompositeOperation="lighter";
   ctx.fillStyle=g2; ctx.beginPath();ctx.arc(cx,cy,s*0.55,0,Math.PI*2);ctx.fill();
   ctx.restore();
 }
 function drawFilmGrain(){
-  if(reduceMotion||skipHeavy||W<=480) return;
-  ctx.save(); ctx.globalCompositeOperation="source-over";
-  const step=7, a=0.028;
-  for(let y=0;y<H;y+=step){
-    for(let x=0;x<W;x+=step){
-      if(((x*12+y*7)|0)%5!==0) continue;
-      const n=(Math.random()*255)|0;
-      ctx.fillStyle=`rgba(${n},${n},${n},${a})`;
-      ctx.fillRect(x,y,1.2,1.2);
-    }
-  }
-  ctx.restore();
+  /* disabled — sparse random rects read as blotch on OLED */
+  return;
 }
 function drawSortShockwave(cx,cy,s){
   if(!shockwave) return;
@@ -1126,41 +1116,24 @@ function buildMint(refuses){
   }
 }
 function paintMetaballIso(centers, dimAlpha){
+  /* soft radial union — no cell grid (kills blotch) */
   if(!centers.length)return;
-  let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
-  for(const c of centers){minX=Math.min(minX,c.px);minY=Math.min(minY,c.py);maxX=Math.max(maxX,c.px);maxY=Math.max(maxY,c.py);}
-  if(!Number.isFinite(minX)||!Number.isFinite(maxX)||maxX<=minX||maxY<=minY)return;
-  const pad=42; minX-=pad;minY-=pad;maxX+=pad;maxY+=pad;
-  const cell=Math.max(5, Math.min(9, Math.floor((maxX-minX)/48)||5));
-  const cols=Math.max(1,Math.ceil((maxX-minX)/cell)), rows=Math.max(1,Math.ceil((maxY-minY)/cell));
-  if(cols*rows>9000)return;
-  const grid=new Float32Array(cols*rows);
-  const hueAcc=new Float32Array(cols*rows);
-  const eps=18;
-  for(const c of centers){
-    const mass=c.mass||1, a=c.alpha!=null?c.alpha:1;
-    const reach=Math.sqrt(mass)*cell*9;
-    const c0=Math.max(0,Math.floor((c.px-reach-minX)/cell));
-    const c1=Math.min(cols-1,Math.ceil((c.px+reach-minX)/cell));
-    const r0=Math.max(0,Math.floor((c.py-reach-minY)/cell));
-    const r1=Math.min(rows-1,Math.ceil((c.py+reach-minY)/cell));
-    for(let ry=r0;ry<=r1;ry++) for(let cx_=c0;cx_<=c1;cx_++){
-      const gx=minX+(cx_+0.5)*cell, gy=minY+(ry+0.5)*cell;
-      const dx=gx-c.px, dy=gy-c.py, d2=dx*dx+dy*dy+eps;
-      const v=(mass*a)/d2;
-      const idx=ry*cols+cx_;
-      grid[idx]+=v; hueAcc[idx]+=v*c.hue;
-    }
-  }
   ctx.globalCompositeOperation="lighter";
-  const bands=[[0.045,0.06,38],[0.09,0.10,46],[0.16,0.13,54],[0.28,0.16,60]];
-  for(let ry=0;ry<rows;ry++) for(let cx_=0;cx_<cols;cx_++){
-    const idx=ry*cols+cx_, v=grid[idx]; if(v<bands[0][0])continue;
-    const hue=hueAcc[idx]/v;
-    let bi=0; for(let b=bands.length-1;b>=0;b--) if(v>=bands[b][0]){bi=b;break;}
-    const [,al,lt]=bands[bi];
-    ctx.fillStyle=hsl(hue,95,lt,al*dimAlpha);
-    ctx.fillRect(minX+cx_*cell, minY+ry*cell, cell+0.6, cell+0.6);
+  const cap=W<=480?28:42;
+  const list=centers.length>cap?centers.slice(0,cap):centers;
+  for(const c of list){
+    const a=(c.alpha!=null?c.alpha:1)*dimAlpha;
+    if(a<0.02)continue;
+    const mass=Math.max(0.4,c.mass||1);
+    const R=Math.min(72, Math.max(14, Math.sqrt(mass)*11));
+    const g=ctx.createRadialGradient(c.px,c.py,0,c.px,c.py,R);
+    addStops(g,[
+      [0,hsl(c.hue,90,52,0.16*a)],
+      [0.45,hsl(c.hue,85,44,0.07*a)],
+      [1,"rgba(0,0,0,0)"]
+    ]);
+    ctx.fillStyle=g;
+    ctx.beginPath(); ctx.arc(c.px,c.py,R,0,Math.PI*2); ctx.fill();
   }
 }
 function drawVoxels(cx,cy,s,t){
@@ -1187,7 +1160,7 @@ function drawVoxels(cx,cy,s,t){
     const focus=focusId!=null&&it.v.id!=null&&String(it.v.id)===String(focusId);
     const alpha=focus?1:(focusId!=null?dim:1), sz=it.v.size*s*it.persp*(focus?1.55:1), hue=it.v.hue;
     ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=aV*alpha;
-    ctx.fillStyle=hsl(hue,90,34,0.18); ctx.beginPath();ctx.arc(it.px,it.py,sz*2.0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=hsl(hue,90,34,0.08); ctx.beginPath();ctx.arc(it.px,it.py,sz*1.55,0,Math.PI*2);ctx.fill();
     ctx.fillStyle=hsl(hue,100,54,0.88); ctx.fillRect(it.px-sz*0.5,it.py-sz*0.5,sz,sz);
     ctx.fillStyle=hsl(hue,100,40,0.82); ctx.beginPath(); ctx.moveTo(it.px+sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.85,it.py-sz*0.2); ctx.lineTo(it.px+sz*0.85,it.py+sz*0.8); ctx.lineTo(it.px+sz*0.5,it.py+sz*0.5); ctx.fill();
     ctx.fillStyle=hsl(hue,100,64,0.65); ctx.beginPath(); ctx.moveTo(it.px-sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.5,it.py-sz*0.5); ctx.lineTo(it.px+sz*0.85,it.py-sz*0.2); ctx.lineTo(it.px-sz*0.15,it.py-sz*0.2); ctx.fill();
@@ -1223,7 +1196,7 @@ function drawMintRelease(cx,cy,s,t){
     const px=p._px,py=p._py,focus=p._focus,alpha=p._alpha,hue=p._hue;
     ctx.globalAlpha=aM*alpha*(0.4+0.45*Math.abs(Math.sin(t*2+p.ph)));
     ctx.globalCompositeOperation="source-over";
-    ctx.fillStyle=hsl(hue,95,30,0.16*alpha); ctx.beginPath();ctx.arc(px,py,p.size*1.6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=hsl(hue,95,30,0.07*alpha); ctx.beginPath();ctx.arc(px,py,p.size*1.25,0,Math.PI*2);ctx.fill();
     ctx.globalCompositeOperation="lighter";
     if(p.shard){const sz=p.size*(focus?2:1); ctx.strokeStyle=hsl(hue,100,54,0.55); ctx.lineWidth=0.85; ctx.beginPath(); ctx.moveTo(px,py-sz);ctx.lineTo(px+sz*0.8,py+sz*0.5);ctx.lineTo(px-sz*0.7,py+sz*0.4);ctx.closePath();ctx.stroke();}
     else{ctx.fillStyle=hsl(hue,100,52,0.42*alpha); ctx.fillRect(px,py,p.size*(focus?1.7:1)*0.4,p.size*(focus?1.7:1)*0.4);}
