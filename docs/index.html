@@ -2953,10 +2953,137 @@ html,body{
   #bgField .trioCore{ opacity:.92!important; }
 }
 
+
+/* clientWindowsFit — every OS window fits inside the viewport */
+:root{
+  --win-gap:12px;
+  --win-top:max(64px, calc(var(--safe-t) + 52px));
+  --win-bot:max(12px, calc(var(--safe-b) + 10px));
+  --win-side:max(12px, 2.5vw);
+  --win-w:min(340px, calc((100vw - 36px) / 2));
+  --win-h-half:calc((100dvh - var(--win-top) - var(--win-bot) - var(--win-gap)) / 2);
+  --win-h-full:calc(100dvh - var(--win-top) - var(--win-bot));
+}
+#sortDesk{
+  position:fixed!important; inset:0!important;
+  pointer-events:none!important;
+  background:transparent!important;
+  overflow:hidden!important;
+}
+#sortDesk > *{ pointer-events:auto; }
+
+/* dissolve sortedFigures chrome — trays become independent fitted windows */
+#sortedFigures{
+  position:static!important;
+  inset:auto!important;
+  width:0!important; height:0!important;
+  margin:0!important; padding:0!important;
+  border:none!important; background:transparent!important;
+  box-shadow:none!important; backdrop-filter:none!important;
+  overflow:visible!important;
+  display:block!important;
+  pointer-events:none!important;
+  transform:none!important;
+}
+#sortedFigures::before,
+#sortedFigures::after{ display:none!important; content:none!important; }
+
+#uploadBox,
+#trayAdmit,
+#trayRelease{
+  position:fixed!important;
+  box-sizing:border-box!important;
+  width:var(--win-w)!important;
+  max-width:calc(100vw - 24px)!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+  z-index:14!important;
+  transform:none!important;
+  pointer-events:auto!important;
+}
+#uploadBox{
+  left:var(--win-side)!important;
+  top:var(--win-top)!important;
+  bottom:auto!important;
+  right:auto!important;
+  max-height:var(--win-h-full)!important;
+  height:auto!important;
+}
+#trayAdmit{
+  right:var(--win-side)!important;
+  top:var(--win-top)!important;
+  left:auto!important;
+  bottom:auto!important;
+  max-height:var(--win-h-half)!important;
+}
+#trayRelease{
+  right:var(--win-side)!important;
+  bottom:var(--win-bot)!important;
+  top:auto!important;
+  left:auto!important;
+  max-height:var(--win-h-half)!important;
+}
+#uploadBox .chips,
+#trayAdmit .chips,
+#trayRelease .chips,
+#figAdmit, #figRelease{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow:auto!important;
+  scrollbar-width:thin!important;
+}
+#uploadBox textarea,
+#pasteDesk{
+  max-height:min(22vh, 160px)!important;
+  min-height:64px!important;
+  overflow:auto!important;
+  resize:vertical!important;
+}
+#sortedFigures .tray{
+  width:var(--win-w)!important;
+  max-height:var(--win-h-half)!important;
+  margin:0!important;
+}
+
+/* phone: stack three fitted bands */
+@media (max-width:900px){
+  :root{
+    --win-w:calc(100vw - 16px);
+    --win-h-third:calc((100dvh - var(--win-top) - var(--win-bot) - 24px) / 3);
+  }
+  #uploadBox,
+  #trayAdmit,
+  #trayRelease{
+    left:8px!important;
+    right:8px!important;
+    width:auto!important;
+    max-width:none!important;
+  }
+  #uploadBox{
+    top:var(--win-top)!important;
+    max-height:var(--win-h-third)!important;
+  }
+  #trayAdmit{
+    top:calc(var(--win-top) + var(--win-h-third) + 8px)!important;
+    bottom:auto!important;
+    right:8px!important;
+    max-height:var(--win-h-third)!important;
+  }
+  #trayRelease{
+    top:auto!important;
+    bottom:var(--win-bot)!important;
+    max-height:var(--win-h-third)!important;
+  }
+  #uploadBox textarea,
+  #pasteDesk{ max-height:min(12vh, 96px)!important; min-height:48px!important; }
+}
+
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
+<div id="bgField" aria-hidden="true"><!-- clientWindowsFit|clientLegible|clientAutoExport|clientTrioOnly: trio-field + trio-grid + trio-core -->
   <div class="trioField" aria-hidden="true">
     <img class="trioField anim" src="media/trio-field-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
     <img class="trioField still" src="media/trio-field-keyed.png" alt="" width="500" height="500" decoding="async">
@@ -7990,6 +8117,54 @@ dz.addEventListener("drop",async e=>{e.preventDefault();dz.classList.remove("dra
     a.remove();
     setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
   }
+  
+/* clientWindowsFit — clamp dragged windows inside the viewport */
+(function fitWindowsInViewport(){
+  function bounds(){
+    const vv = window.visualViewport;
+    const w = (vv && vv.width) || window.innerWidth;
+    const h = (vv && vv.height) || window.innerHeight;
+    const ox = (vv && vv.offsetLeft) || 0;
+    const oy = (vv && vv.offsetTop) || 0;
+    return {w,h,ox,oy};
+  }
+  function clampWin(win){
+    if(!win) return;
+    const b = bounds();
+    const r = win.getBoundingClientRect();
+    let left = r.left, top = r.top;
+    const maxL = Math.max(b.ox + 4, b.ox + b.w - r.width - 4);
+    const maxT = Math.max(b.oy + 4, b.oy + b.h - r.height - 4);
+    left = Math.min(Math.max(left, b.ox + 4), maxL);
+    top = Math.min(Math.max(top, b.oy + 4), maxT);
+    win.style.position = "fixed";
+    win.style.left = left + "px";
+    win.style.top = top + "px";
+    win.style.right = "auto";
+    win.style.bottom = "auto";
+    win.style.transform = "none";
+    /* never taller than viewport */
+    const maxH = Math.max(120, b.h - 16);
+    if(r.height > maxH){
+      win.style.maxHeight = maxH + "px";
+      win.style.overflow = "auto";
+    }
+  }
+  function clampAll(){
+    ["uploadBox","trayAdmit","trayRelease"].forEach(id=>clampWin(document.getElementById(id)));
+  }
+  window.seraphimClampWindows = clampAll;
+  window.addEventListener("resize", clampAll, {passive:true});
+  if(window.visualViewport){
+    window.visualViewport.addEventListener("resize", clampAll, {passive:true});
+    window.visualViewport.addEventListener("scroll", clampAll, {passive:true});
+  }
+  document.addEventListener("mouseup", ()=>setTimeout(clampAll, 0));
+  document.addEventListener("touchend", ()=>setTimeout(clampAll, 0), {passive:true});
+  setTimeout(clampAll, 50);
+  setTimeout(clampAll, 400);
+})();
+
   window.seraphimAutoExport = function(res){
     if(!res || !res.verdicts || !res.verdicts.length) return;
     if(window.__seraphimAutoExportBusy) return;
