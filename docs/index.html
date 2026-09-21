@@ -17,6 +17,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Cpolygon points='32,6 58,20 58,44 32,58 6,44 6,20' fill='none' stroke='%2356b4c2' stroke-width='2.2'/%3E%3Ccircle cx='32' cy='32' r='7' fill='none' stroke='%23ae3dbf' stroke-width='2'/%3E%3C/svg%3E"/>
 <title>SERAPHIM ORGANIZER · Offline</title>
+<!-- clientPixelAbsorbed48h -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -2226,421 +2227,400 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 body{ background:#000!important; }
 
 
-/* clientMasterpieceDuo — cinematic polish on the two-GIF field + glass desk */
-:root{
-  --mp-cyan: #5eead4;
-  --mp-mag: #e879f9;
-  --mp-ink: rgba(236,244,255,.96);
-  --mp-glass: rgba(6,10,20,.48);
-  --mp-line: rgba(255,255,255,.08);
-}
-body{
-  background:#000!important;
-  color:var(--mp-ink)!important;
-}
-#bgField .duoField::after{
-  content:"";
-  position:absolute; inset:0; z-index:5; pointer-events:none;
-  background:
-    radial-gradient(ellipse 70% 62% at 50% 48%, transparent 35%, rgba(0,0,0,.55) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.35) 0%, transparent 18%, transparent 72%, rgba(0,0,0,.55) 100%);
-}
-#bgField .duoField{
-  perspective:min(110vw,110vh)!important;
-  perspective-origin:50% 48%!important;
-}
-#bgField .duoField .hybridA{
-  opacity:.78!important;
-  filter:contrast(1.5) brightness(1.08) saturate(1.05) hue-rotate(8deg)!important;
-}
-#bgField .duoField .hybridB{
-  opacity:1!important;
-  filter:contrast(1.55) brightness(1.22) saturate(1.35)!important;
-}
-#top{
-  top:max(14px, calc(var(--safe-t) + 6px))!important;
-  width:auto!important;
-  max-width:min(420px, calc(100vw - 28px))!important;
-  padding:.28rem .85rem!important;
-  gap:.55rem!important;
-  background:rgba(4,8,16,.42)!important;
-  border:1px solid var(--mp-line)!important;
-  box-shadow:0 8px 32px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06)!important;
-  backdrop-filter:blur(16px) saturate(1.2)!important;
-  -webkit-backdrop-filter:blur(16px) saturate(1.2)!important;
-}
-#top .title{
-  font-size:.62rem!important;
-  letter-spacing:.28em!important;
-  font-weight:650!important;
-  color:rgba(240,250,255,.92)!important;
-  text-shadow:0 0 18px rgba(94,234,212,.25)!important;
-}
-#top .metrics{
-  opacity:.55!important;
-  font-size:.52rem!important;
-  letter-spacing:.04em!important;
-}
-#top .metrics .a b{ color:var(--mp-cyan)!important; }
-#top .metrics .r b{ color:var(--mp-mag)!important; }
-#uploadBox,
-#sortedFigures .tray{
-  background:linear-gradient(165deg, rgba(12,18,32,.55) 0%, rgba(4,8,16,.62) 100%)!important;
-  border:1px solid var(--mp-line)!important;
-  border-radius:16px!important;
-  backdrop-filter:blur(18px) saturate(1.25)!important;
-  -webkit-backdrop-filter:blur(18px) saturate(1.25)!important;
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.04),
-    0 20px 56px rgba(0,0,0,.55),
-    inset 0 1px 0 rgba(255,255,255,.07)!important;
-}
-#uploadBox{
-  border-color:rgba(94,234,212,.38)!important;
-  box-shadow:
-    0 0 0 1px rgba(94,234,212,.12),
-    0 0 40px rgba(34,211,238,.08),
-    0 20px 56px rgba(0,0,0,.55),
-    inset 0 1px 0 rgba(255,255,255,.07)!important;
-}
-#sortedFigures .tray.admit{ border-color:rgba(94,234,212,.42)!important; }
-#sortedFigures .tray.release{ border-color:rgba(232,121,249,.4)!important; }
-#uploadBox::before,
-#sortedFigures .tray::before{
-  height:26px!important;
-  margin:-.55rem -.55rem .6rem!important;
-  border-radius:16px 16px 0 0!important;
-  background:linear-gradient(180deg, rgba(32,40,58,.88) 0%, rgba(10,14,24,.9) 100%)!important;
-  border-bottom:1px solid rgba(255,255,255,.07)!important;
-}
-#uploadBox::after{ color:rgba(94,234,212,.45)!important; }
-#sortedFigures .tray.admit::after{ color:rgba(94,234,212,.45)!important; }
-#sortedFigures .tray.release::after{ color:rgba(232,121,249,.5)!important; }
-#uploadBox .uh b,
-#sortedFigures .tray h3{
-  letter-spacing:.18em!important;
-  font-weight:600!important;
-  font-size:.58rem!important;
-}
-#sortedFigures .tray.admit h3{
-  color:rgba(165,243,252,.95)!important;
-  text-shadow:0 0 14px rgba(34,211,238,.35)!important;
-}
-#sortedFigures .tray.release h3{
-  color:rgba(240,171,252,.95)!important;
-  text-shadow:0 0 14px rgba(232,121,249,.3)!important;
-}
-#uploadBox .dropHint{
-  border-radius:10px!important;
-  border:1px dashed rgba(94,234,212,.32)!important;
-  background:rgba(0,20,32,.4)!important;
-}
-#uploadBox textarea{
-  border-radius:10px!important;
-  background:rgba(0,6,14,.55)!important;
-  border:1px solid rgba(94,234,212,.22)!important;
-  color:rgba(230,242,255,.92)!important;
-}
-#uploadBox .actions #runSort{
-  color:rgba(165,243,252,.95)!important;
-  letter-spacing:.08em!important;
-}
-#sortedFigures .chipFig{
-  font-size:.54rem!important;
-  letter-spacing:.02em!important;
-  transition:color .18s ease, transform .18s ease!important;
-}
-#sortedFigures .chipFig:hover{ transform:translateX(2px); }
-#sortedFigures .tray.admit .chipFig:hover{ color:var(--mp-cyan)!important; }
-#sortedFigures .tray.release .chipFig:hover{ color:var(--mp-mag)!important; }
-#intake, #log, #sub, #moreWrap, #morePanel, #cheat, #navhint, #phaseWhisper{
-  display:none!important;
-}
-#tip{
-  background:rgba(4,10,18,.72)!important;
-  border:1px solid rgba(94,234,212,.25)!important;
-  border-radius:10px!important;
-  backdrop-filter:blur(12px)!important;
-  box-shadow:0 12px 40px rgba(0,0,0,.5)!important;
-  font-size:.58rem!important;
-  letter-spacing:.03em!important;
-}
-@media (max-width:900px){
-  #top{ padding:.22rem .65rem!important; }
-  #top .title{ letter-spacing:.2em!important; font-size:.52rem!important; }
-}
-@media (prefers-reduced-motion:reduce){
-  #bgField .duoField::after{ opacity:.85; }
-}
 
-
-/* clientOptimalFinal — culminating cinematic duo + glass OS (overrides conflicts) */
+/* clientPixelAbsorbed48h — ONE hub: φ-locked duo + glass OS desk (absorbs 48h craft) */
 :root{
-  --opt-cyan:#5eead4;
-  --opt-mag:#e879f9;
-  --opt-ink:rgba(236,244,255,.96);
-  --opt-mute:rgba(160,190,220,.55);
-  --opt-glass:rgba(5,9,18,.52);
-  --opt-line:rgba(255,255,255,.075);
-  --opt-font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --px-cyan:#5eead4;
+  --px-mag:#e879f9;
+  --px-ink:rgba(236,244,255,.96);
+  --px-mute:rgba(160,190,220,.55);
+  --px-glass:rgba(5,9,18,.56);
+  --px-line:rgba(255,255,255,.08);
+  --px-hair:rgba(255,255,255,.08);
+  --px-font:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --px-r:16px;
+  --px-pad-x:16px;
+  --px-pad-y:12px;
+  --px-bar:28px;
 }
-body{
+html,body{
   background:#000!important;
-  color:var(--opt-ink)!important;
-  font-family:var(--opt-font-mono)!important;
+  color:var(--px-ink)!important;
+  font-family:var(--px-font)!important;
+  -webkit-font-smoothing:antialiased!important;
   letter-spacing:.01em;
 }
-/* true shared center + forced perspective; images stay viewport-sized */
-#bgField .duoField{
-  --hub-x:50%!important;
-  --hub-y:50%!important;
-  --fill-w:100vw!important;
-  --fill-h:100vh!important;
-  --duo-z-a:-90px;
-  --duo-z-b:28px;
-  --duo-tilt:14deg;
-  perspective:min(100vw,100vh)!important;
-  perspective-origin:50% 50%!important;
-  transform-style:preserve-3d!important;
-  overflow:hidden!important;
-}
-#bgField .duoField img{
-  left:var(--hub-x)!important;
-  top:var(--hub-y)!important;
-  width:var(--fill-w)!important;
-  height:var(--fill-h)!important;
-  max-width:100vw!important;
-  max-height:100vh!important;
-  object-fit:cover!important;
-  object-position:center center!important;
-  mix-blend-mode:screen!important;
-  /* no breath SCALE enlarge */
-  transform-origin:center center!important;
-}
-/* A quieter under B; cyan/magenta neon grade; high contrast on black */
-#bgField .duoField .hybridA{
-  opacity:.72!important;
-  z-index:1!important;
-  filter:contrast(1.58) brightness(.98) saturate(1.12) hue-rotate(12deg)
-         drop-shadow(0 0 28px rgba(34,211,238,.12))!important;
-  transform:translate3d(-50%,-50%,var(--duo-z-a,-90px))
-            rotateX(var(--duo-tilt,14deg))
-            rotateZ(var(--duo-a,0deg))!important;
-}
-#bgField .duoField .hybridB{
-  opacity:1!important;
-  z-index:2!important;
-  filter:contrast(1.62) brightness(1.18) saturate(1.42) hue-rotate(-6deg)
-         drop-shadow(0 0 36px rgba(232,121,249,.14))!important;
-  transform:translate3d(-50%,-50%,var(--duo-z-b,28px))
-            rotateX(var(--duo-tilt,14deg))
-            rotateZ(var(--duo-b,0deg))!important;
-}
-/* vignette bloom — deep black frame + soft neon edge wash */
-#bgField .duoField::after{
-  content:""!important;
-  position:absolute!important; inset:0!important; z-index:5!important;
-  pointer-events:none!important;
-  background:
-    radial-gradient(ellipse 58% 52% at 50% 50%, transparent 28%, rgba(0,0,0,.42) 72%, rgba(0,0,0,.78) 100%),
-    radial-gradient(ellipse 90% 70% at 50% 50%, rgba(34,211,238,.045) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 90% at 50% 50%, rgba(232,121,249,.035) 0%, transparent 50%),
-    linear-gradient(180deg, rgba(0,0,0,.42) 0%, transparent 16%, transparent 78%, rgba(0,0,0,.62) 100%)!important;
-  mix-blend-mode:normal!important;
-}
-/* mute every other aesthetic layer */
+/* kill scan-rain / rails / seal chrome — field presence only via duo + vignette */
+#bgField::before,
+#bgField::after{display:none!important;opacity:0!important;content:none!important;animation:none!important}
 #fx,#fxgl,#dataRail,#specBar,#introChip,#phaseWhisper,
 #navhint,#cheat,#intake,#log,#sub,#moreWrap,#morePanel,
 #top .whisper,#top .chip.law{display:none!important;opacity:0!important;visibility:hidden!important}
 #bgField .spiralField,#bgField .beamRainWhisper,#bgField .tunnelWindowsKeyed,
 #bgField .hexCoreKeyed,#bgField .nebulaWhisper,#bgField .magpieSealWorld,
 #bgField .hexCore,#bgField .tunnelGrid,#bgField .isoTunnel{display:none!important}
-/* quiet luminous SERAPHIM header + metrics */
+
+#bgField{
+  --duo-a:0deg;
+  --duo-b:0deg;
+  --duo-tilt:14deg;
+  --duo-z-a:-88px;
+  --duo-z-b:32px;
+}
+/* —— duo field: exact 50/50 hub, 100vw×100vh cover ONLY, forced perspective —— */
+#bgField .duoField{
+  --hub-x:50%!important;
+  --hub-y:50%!important;
+  --fill-w:100vw!important;
+  --fill-h:100vh!important;
+  position:fixed!important;inset:0!important;z-index:1!important;
+  pointer-events:none!important;overflow:hidden!important;
+  perspective:min(100vw,100vh)!important;
+  perspective-origin:50% 50%!important;
+  transform-style:preserve-3d!important;
+}
+#bgField .duoField img{
+  position:absolute!important;
+  left:var(--hub-x)!important;
+  top:var(--hub-y)!important;
+  width:var(--fill-w)!important;
+  height:var(--fill-h)!important;
+  max-width:100vw!important;
+  max-height:100vh!important;
+  margin:0!important;padding:0!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  mix-blend-mode:screen!important;
+  transform-origin:center center!important;
+  transform-style:preserve-3d!important;
+  image-rendering:auto!important;
+  will-change:transform;
+}
+#bgField .duoField img.still{display:none}
+/* A quieter underlay; B (hex) owns visual center */
+#bgField .duoField .hybridA{
+  opacity:.68!important;
+  z-index:1!important;
+  filter:contrast(1.58) brightness(.96) saturate(1.1) hue-rotate(12deg)
+         drop-shadow(0 0 24px rgba(34,211,238,.1))!important;
+  transform:translate3d(-50%,-50%,var(--duo-z-a,-88px))
+            rotateX(var(--duo-tilt,14deg))
+            rotateZ(var(--duo-a,0deg))!important;
+}
+#bgField .duoField .hybridB{
+  opacity:1!important;
+  z-index:2!important;
+  filter:contrast(1.64) brightness(1.2) saturate(1.4) hue-rotate(-6deg)
+         drop-shadow(0 0 32px rgba(232,121,249,.14))!important;
+  transform:translate3d(-50%,-50%,var(--duo-z-b,32px))
+            rotateX(var(--duo-tilt,14deg))
+            rotateZ(var(--duo-b,0deg))!important;
+}
+/* soft edge fade / vignette bloom — field presence, not clutter */
+#bgField .duoField::after{
+  content:""!important;
+  position:absolute!important;inset:0!important;z-index:5!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse 58% 52% at 50% 50%, transparent 26%, rgba(0,0,0,.44) 72%, rgba(0,0,0,.82) 100%),
+    radial-gradient(ellipse 88% 68% at 50% 50%, rgba(34,211,238,.04) 0%, transparent 55%),
+    radial-gradient(ellipse 68% 88% at 50% 50%, rgba(232,121,249,.03) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(0,0,0,.44) 0%, transparent 16%, transparent 78%, rgba(0,0,0,.64) 100%)!important;
+  mix-blend-mode:normal!important;
+}
+
+/* —— header: perfect center pill —— */
 #top{
   top:max(12px,calc(var(--safe-t) + 4px))!important;
   left:50%!important;
   transform:translateX(-50%)!important;
   width:auto!important;
   max-width:min(440px,calc(100vw - 24px))!important;
-  padding:.32rem .95rem!important;
-  gap:.65rem!important;
-  background:linear-gradient(180deg,rgba(8,14,26,.55),rgba(4,8,16,.48))!important;
-  border:1px solid var(--opt-line)!important;
+  padding:8px 16px!important;
+  gap:12px!important;
+  background:linear-gradient(180deg,rgba(8,14,26,.56),rgba(4,8,16,.5))!important;
+  border:1px solid var(--px-hair)!important;
   border-radius:999px!important;
   box-shadow:
     0 10px 36px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(255,255,255,.07),
-    0 0 24px rgba(94,234,212,.06)!important;
+    inset 0 1px 0 rgba(255,255,255,.07)!important;
   backdrop-filter:blur(18px) saturate(1.25)!important;
   -webkit-backdrop-filter:blur(18px) saturate(1.25)!important;
 }
 #top .title{
-  font-size:.64rem!important;
+  font-size:10px!important;
   letter-spacing:.34em!important;
   font-weight:650!important;
   color:rgba(244,252,255,.94)!important;
-  text-shadow:0 0 22px rgba(94,234,212,.32), 0 0 48px rgba(94,234,212,.12)!important;
+  text-shadow:0 0 20px rgba(94,234,212,.3)!important;
 }
 #top .metrics{
   opacity:.62!important;
-  font-size:.5rem!important;
+  font-size:8px!important;
   letter-spacing:.06em!important;
-  font-family:var(--opt-font-mono)!important;
+  font-family:var(--px-font)!important;
 }
-#top .metrics .a b{color:var(--opt-cyan)!important;text-shadow:0 0 10px rgba(94,234,212,.35)!important}
-#top .metrics .r b{color:var(--opt-mag)!important;text-shadow:0 0 10px rgba(232,121,249,.3)!important}
+#top .metrics .a b{color:var(--px-cyan)!important;text-shadow:0 0 10px rgba(94,234,212,.35)!important}
+#top .metrics .r b{color:var(--px-mag)!important;text-shadow:0 0 10px rgba(232,121,249,.3)!important}
 #top #mSHWrap{opacity:.4!important}
-/* glass OS floating windows */
+
+/* —— glass OS windows: 8px grid, clean titlebar (no negative-margin hacks) —— */
 #uploadBox,
 #sortedFigures .tray{
+  position:relative!important;
+  isolation:isolate;
   background:linear-gradient(165deg,rgba(10,16,30,.58) 0%,rgba(3,6,14,.66) 100%)!important;
-  border:1px solid var(--opt-line)!important;
-  border-radius:16px!important;
+  border:1px solid var(--px-hair)!important;
+  border-radius:var(--px-r)!important;
   backdrop-filter:blur(20px) saturate(1.3)!important;
   -webkit-backdrop-filter:blur(20px) saturate(1.3)!important;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,.035),
-    0 22px 60px rgba(0,0,0,.58),
-    inset 0 1px 0 rgba(255,255,255,.08)!important;
-  font-family:var(--opt-font-mono)!important;
+    0 20px 56px rgba(0,0,0,.56),
+    inset 0 1px 0 rgba(255,255,255,.07)!important;
+  font-family:var(--px-font)!important;
+  padding:var(--px-bar) var(--px-pad-x) var(--px-pad-y)!important; /* content below 28px bar */
+  margin:0!important;
+  overflow:hidden;
 }
 #uploadBox{
   border-color:rgba(94,234,212,.42)!important;
   box-shadow:
-    0 0 0 1px rgba(94,234,212,.14),
-    0 0 48px rgba(34,211,238,.1),
-    0 22px 60px rgba(0,0,0,.58),
-    inset 0 1px 0 rgba(255,255,255,.08)!important;
+    0 0 0 1px rgba(94,234,212,.12),
+    0 0 40px rgba(34,211,238,.08),
+    0 20px 56px rgba(0,0,0,.56),
+    inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
 #sortedFigures .tray.admit{
   border-color:rgba(94,234,212,.44)!important;
   box-shadow:
     0 0 0 1px rgba(94,234,212,.1),
-    0 0 36px rgba(34,211,238,.07),
-    0 22px 60px rgba(0,0,0,.55),
+    0 0 32px rgba(34,211,238,.06),
+    0 20px 56px rgba(0,0,0,.54),
     inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
 #sortedFigures .tray.release{
   border-color:rgba(232,121,249,.42)!important;
   box-shadow:
     0 0 0 1px rgba(232,121,249,.1),
-    0 0 36px rgba(232,121,249,.08),
-    0 22px 60px rgba(0,0,0,.55),
+    0 0 32px rgba(232,121,249,.07),
+    0 20px 56px rgba(0,0,0,.54),
     inset 0 1px 0 rgba(255,255,255,.07)!important;
 }
-/* title bar + traffic dots */
+/* titlebar plate — absolute, no negative margins */
 #uploadBox::before,
 #sortedFigures .tray::before{
-  height:28px!important;
-  margin:-.55rem -.55rem .65rem!important;
-  border-radius:16px 16px 0 0!important;
+  content:""!important;
+  position:absolute!important;
+  top:0!important;left:0!important;right:0!important;
+  height:var(--px-bar)!important;
+  margin:0!important;padding:0!important;
+  border-radius:var(--px-r) var(--px-r) 0 0!important;
   background:linear-gradient(180deg,rgba(28,36,54,.92) 0%,rgba(8,12,22,.94) 100%)!important;
   border-bottom:1px solid rgba(255,255,255,.07)!important;
+  box-shadow:none!important;
+  z-index:2!important;
+  pointer-events:none!important;
 }
-#uploadBox::after{
-  content:"● ● ●"!important;
-  color:rgba(94,234,212,.55)!important;
-  top:6px!important; left:14px!important;
-  font-size:7.5px!important; letter-spacing:.28em!important;
-  text-shadow:0 0 8px rgba(94,234,212,.35)!important;
-}
-#sortedFigures .tray.admit::after{
-  content:"● ● ●"!important;
-  color:rgba(94,234,212,.55)!important;
-  top:6px!important; left:14px!important;
-  font-size:7.5px!important; letter-spacing:.28em!important;
-  text-shadow:0 0 8px rgba(94,234,212,.35)!important;
-}
+/* traffic-light dots — left:12 top:10 aligned */
+#uploadBox::after,
+#sortedFigures .tray.admit::after,
 #sortedFigures .tray.release::after{
   content:"● ● ●"!important;
+  position:absolute!important;
+  top:10px!important;
+  left:12px!important;
+  font-size:7px!important;
+  letter-spacing:.28em!important;
+  line-height:1!important;
+  pointer-events:none!important;
+  z-index:4!important;
+  margin:0!important;
+}
+#uploadBox::after,
+#sortedFigures .tray.admit::after{
+  color:rgba(94,234,212,.55)!important;
+  text-shadow:0 0 8px rgba(94,234,212,.3)!important;
+}
+#sortedFigures .tray.release::after{
   color:rgba(232,121,249,.58)!important;
-  top:6px!important; left:14px!important;
-  font-size:7.5px!important; letter-spacing:.28em!important;
-  text-shadow:0 0 8px rgba(232,121,249,.35)!important;
+  text-shadow:0 0 8px rgba(232,121,249,.3)!important;
+}
+/* titles sit in the 28px bar via padding-top on window — kill margin-top:-1.55rem */
+#uploadBox .uh,
+#sortedFigures .tray h3{
+  position:absolute!important;
+  top:0!important;left:0!important;right:0!important;
+  height:var(--px-bar)!important;
+  margin:0!important;
+  padding:0 12px 0 52px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  z-index:3!important;
+  box-sizing:border-box!important;
+  border:none!important;
+  min-height:0!important;
+  pointer-events:none!important;
 }
 #uploadBox .uh b,
 #sortedFigures .tray h3{
-  letter-spacing:.2em!important;
+  letter-spacing:.18em!important;
   font-weight:600!important;
-  font-size:.56rem!important;
+  font-size:9px!important;
   text-transform:uppercase!important;
-  font-family:var(--opt-font-mono)!important;
+  font-family:var(--px-font)!important;
+  border:none!important;
 }
+#uploadBox .uh b{
+  position:static!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  display:inline!important;
+  pointer-events:none!important;
+}
+#uploadBox .uh b::before,
+#sortedFigures .tray.admit h3::before,
+#sortedFigures .tray.release h3::before{content:""!important}
 #uploadBox .uh b{color:rgba(186,242,248,.95)!important;text-shadow:0 0 12px rgba(34,211,238,.25)!important}
-#sortedFigures .tray.admit h3{
-  color:rgba(165,243,252,.96)!important;
-  text-shadow:0 0 14px rgba(34,211,238,.38)!important;
+#sortedFigures .tray.admit h3{color:rgba(165,243,252,.96)!important;text-shadow:0 0 12px rgba(34,211,238,.35)!important}
+#sortedFigures .tray.release h3{color:rgba(240,171,252,.96)!important;text-shadow:0 0 12px rgba(232,121,249,.32)!important}
+#uploadBox .uh span{
+  font-size:8px!important;
+  color:rgba(140,180,200,.5)!important;
+  letter-spacing:.04em!important;
+  text-transform:none!important;
 }
-#sortedFigures .tray.release h3{
-  color:rgba(240,171,252,.96)!important;
-  text-shadow:0 0 14px rgba(232,121,249,.34)!important;
+#sortedFigures .tray .count{
+  margin-left:4px!important;
+  opacity:.7!important;
 }
+/* draggable hit area aligned to 28px bar */
+#uploadBox .winBar,
+#sortedFigures .tray .winBar{
+  position:absolute!important;
+  top:0!important;left:0!important;right:0!important;
+  height:var(--px-bar)!important;
+  border-radius:var(--px-r) var(--px-r) 0 0!important;
+  cursor:grab!important;
+  z-index:5!important;
+  touch-action:none!important;
+  background:transparent!important;
+}
+#uploadBox .winBar:active,
+#sortedFigures .tray .winBar:active{cursor:grabbing!important}
+#uploadBox.isDragging,
+#sortedFigures .tray.isDragging{
+  opacity:.97!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1), 0 24px 56px rgba(0,0,0,.72)!important;
+  z-index:20!important;
+}
+
 #uploadBox .dropHint{
-  border-radius:10px!important;
+  border-radius:8px!important;
   border:1px dashed rgba(94,234,212,.34)!important;
   background:rgba(0,18,28,.42)!important;
   letter-spacing:.04em!important;
+  padding:12px 8px!important;
+  margin:0 0 8px!important;
+  text-align:center!important;
+  font-size:10px!important;
+  color:rgba(200,230,250,.78)!important;
+}
+#uploadBox .dropHint em{color:rgba(125,240,255,.95)!important;font-style:normal!important;font-weight:700}
+#uploadBox .actions{
+  display:flex!important;flex-wrap:wrap!important;gap:8px!important;
+  align-items:center!important;margin:0 0 8px!important;
 }
 #uploadBox textarea,
 #uploadBox .actions .filebtn,
 #uploadBox .actions button,
 #uploadBox .actions select{
-  font-family:var(--opt-font-mono)!important;
+  font-family:var(--px-font)!important;
   letter-spacing:.03em!important;
 }
 #uploadBox textarea{
-  border-radius:10px!important;
+  border-radius:8px!important;
   background:rgba(0,5,12,.58)!important;
   border:1px solid rgba(94,234,212,.22)!important;
   color:rgba(230,242,255,.92)!important;
+  padding:8px 12px!important;
+  min-height:64px!important;
 }
 #uploadBox .actions #runSort{
   color:rgba(165,243,252,.95)!important;
   letter-spacing:.1em!important;
 }
 #sortedFigures .chipFig{
-  font-size:.52rem!important;
+  font-size:8px!important;
   letter-spacing:.03em!important;
-  font-family:var(--opt-font-mono)!important;
+  font-family:var(--px-font)!important;
   transition:color .16s ease, transform .16s ease, text-shadow .16s ease!important;
 }
-#sortedFigures .chipFig:hover{
-  transform:translateX(3px)!important;
-}
+#sortedFigures .chipFig:hover{transform:translateX(2px)!important}
 #sortedFigures .tray.admit .chipFig:hover{
-  color:var(--opt-cyan)!important;
+  color:var(--px-cyan)!important;
   text-shadow:0 0 8px rgba(94,234,212,.35)!important;
 }
 #sortedFigures .tray.release .chipFig:hover{
-  color:var(--opt-mag)!important;
+  color:var(--px-mag)!important;
   text-shadow:0 0 8px rgba(232,121,249,.3)!important;
 }
+#sortedFigures .tray .folderTag{display:none!important}
 #tip{
   background:rgba(4,10,18,.76)!important;
   border:1px solid rgba(94,234,212,.22)!important;
-  border-radius:10px!important;
+  border-radius:8px!important;
   backdrop-filter:blur(14px)!important;
-  font-family:var(--opt-font-mono)!important;
-  font-size:.56rem!important;
+  font-family:var(--px-font)!important;
+  font-size:9px!important;
   letter-spacing:.04em!important;
+  box-shadow:0 12px 36px rgba(0,0,0,.5)!important;
+}
+
+/* mobile: stack without overlap; keep φ center */
+@media (max-width:700px){
+  #top{padding:8px 12px!important;border-radius:14px!important}
+  #top .title{letter-spacing:.22em!important;font-size:9px!important}
+  #uploadBox{
+    width:min(96vw,420px)!important;
+    left:50%!important;right:auto!important;
+    transform:translateX(-50%)!important;
+    bottom:max(42vh, calc(var(--safe-b) + 12px))!important;
+    top:auto!important;
+  }
+  #sortedFigures{
+    left:50%!important;right:auto!important;
+    transform:translateX(-50%)!important;
+    width:min(96vw,420px)!important;
+    bottom:max(12px, calc(var(--safe-b) + 10px))!important;
+    top:auto!important;
+    gap:8px!important;
+  }
+  #uploadBox[style*="left"],
+  #sortedFigures .tray[style*="left"]{transform:none!important}
+  #bgField .duoField{
+    --hub-x:50%!important;
+    --hub-y:50%!important;
+  }
 }
 @media (max-width:900px){
-  #top{padding:.24rem .7rem!important;border-radius:14px!important}
-  #top .title{letter-spacing:.22em!important;font-size:.52rem!important}
-  #uploadBox .uh b,#sortedFigures .tray h3{letter-spacing:.14em!important}
+  #top{padding:8px 12px!important}
+  #top .title{letter-spacing:.26em!important}
 }
 @media (prefers-reduced-motion:reduce){
   #bgField .duoField{perspective:none!important}
   #bgField .duoField .hybridA,
   #bgField .duoField .hybridB{
     transform:translate(-50%,-50%)!important;
-    filter:contrast(1.45) brightness(1.05) saturate(1.15)!important;
+    filter:contrast(1.48) brightness(1.05) saturate(1.15)!important;
   }
   #bgField .duoField img.anim{display:none!important}
   #bgField .duoField img.still{display:block!important}
   #bgField .duoField::after{opacity:.9!important}
   #sortedFigures .chipFig:hover{transform:none!important}
 }
+
 
 </style>
 </head>
@@ -2673,7 +2653,7 @@ body{
 <section id="sortDesk" aria-label="Upload window in, Organized and Aside folders out">
   <div id="phaseWhisper" class="phaseWhisper" role="status" aria-live="polite" aria-hidden="true"></div>
   <div id="uploadBox" tabindex="0" role="region" aria-label="Upload window — drop or choose files here">
-    <div class="uh"><b>Upload here</b><span>csv · tsv · json · txt · md</span></div>
+    <div class="uh"><b>Upload</b><span>csv · tsv · json · txt · md</span></div>
     <div class="dropHint">Drop files here · or <em>choose</em></div>
     <div class="actions">
       <label class="filebtn">choose<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
@@ -3285,7 +3265,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientOptimalFinal|clientMasterpieceDuo|clientForcePerspective|clientDuoHarmony|clientTwoOnly|clientNoOtherAesthetics|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
+/* SERAPHIM_MARKERS:clientPixelAbsorbed48h|clientOptimalFinal|clientMasterpieceDuo|clientForcePerspective|clientDuoHarmony|clientTwoOnly|clientNoOtherAesthetics|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -6148,15 +6128,15 @@ function drawDeskSealWiring(cx,cy,s,t){ return;
 }
 
 function syncSpinPhase(t){
-  /* clientOptimalFinal — ~120s outer φ crawl, nested 1/φ, soft tilt breathe; z -90/+28; no scale */
+  /* clientPixelAbsorbed48h — ~120s outer φ crawl, nested 1/φ, soft tilt breathe; z -88/+32; no scale */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
   if(typeof reduceMotion!=="undefined" && reduceMotion){
     _bgFieldEl.style.setProperty("--duo-a","0deg");
     _bgFieldEl.style.setProperty("--duo-b","0deg");
-    _bgFieldEl.style.setProperty("--duo-tilt","12deg");
-    _bgFieldEl.style.setProperty("--duo-z-a","-90px");
-    _bgFieldEl.style.setProperty("--duo-z-b","28px");
+    _bgFieldEl.style.setProperty("--duo-tilt","14deg");
+    _bgFieldEl.style.setProperty("--duo-z-a","-88px");
+    _bgFieldEl.style.setProperty("--duo-z-b","32px");
     return;
   }
   const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
@@ -6166,7 +6146,7 @@ function syncSpinPhase(t){
   const theta=t*omega;
   const degA=(theta*180/Math.PI);
   const degB=(theta/phi*180/Math.PI);
-  const tilt=(13.5+1.4*Math.sin(t*base*(1/phi)*0.28)).toFixed(2)+"deg";
+  const tilt=(14+1.236*Math.sin(t*base*(1/phi)*0.28)).toFixed(2)+"deg";
   const a=degA.toFixed(3)+"deg";
   const b=degB.toFixed(3)+"deg";
   if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoTilt!==tilt){
@@ -6174,8 +6154,8 @@ function syncSpinPhase(t){
     _bgFieldEl.style.setProperty("--duo-a", a);
     _bgFieldEl.style.setProperty("--duo-b", b);
     _bgFieldEl.style.setProperty("--duo-tilt", tilt);
-    _bgFieldEl.style.setProperty("--duo-z-a", "-90px");
-    _bgFieldEl.style.setProperty("--duo-z-b", "28px");
+    _bgFieldEl.style.setProperty("--duo-z-a", "-88px");
+    _bgFieldEl.style.setProperty("--duo-z-b", "32px");
   }
 }
 
