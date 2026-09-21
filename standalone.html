@@ -2186,21 +2186,13 @@ button.on{ border-color:rgba(94,234,212,.85)!important; color:var(--admit)!impor
 #bgField .duoField .hybridA{
   opacity:.92; z-index:1;
   filter:contrast(1.4) brightness(1.15) saturate(1.1);
-  animation:duoSpinA 96s linear infinite;
+  /* spin driven by syncSpinPhase — one φ clock */
+  transform:translate(-50%,-50%) rotate(var(--duo-a, 0deg)) scale(var(--duo-breath, 1));
 }
 #bgField .duoField .hybridB{
   opacity:.98; z-index:2;
   filter:contrast(1.45) brightness(1.2) saturate(1.25);
-  animation:duoSpinB 72s linear infinite;
-}
-/* keep translate(-50%,-50%) so both share the exact same center while spinning */
-@keyframes duoSpinA{
-  from{ transform:translate(-50%,-50%) rotate(0deg); }
-  to{ transform:translate(-50%,-50%) rotate(360deg); }
-}
-@keyframes duoSpinB{
-  from{ transform:translate(-50%,-50%) rotate(0deg); }
-  to{ transform:translate(-50%,-50%) rotate(-360deg); }
+  transform:translate(-50%,-50%) rotate(var(--duo-b, 0deg)) scale(var(--duo-breath, 1));
 }
 @media (prefers-reduced-motion:reduce){
   #bgField .duoField .hybridA,
@@ -5727,14 +5719,30 @@ function drawDeskSealWiring(cx,cy,s,t){ return;
 }
 
 function syncSpinPhase(t){
-  /* clientAllWired — shared spin clock so layers stay phase-locked */
+  /* clientDuoHarmony — one φ clock wires both GIFs; same direction, nested rates */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl) return;
-  /* negative delay locks all animations to one timeline */
-  const ph=(-t*0.15).toFixed(3)+"s";
-  if(_bgFieldEl._spinPh!==ph){
-    _bgFieldEl._spinPh=ph;
-    _bgFieldEl.style.setProperty("--spin-phase", ph);
+  if(typeof reduceMotion!=="undefined" && reduceMotion){
+    _bgFieldEl.style.setProperty("--duo-a","0deg");
+    _bgFieldEl.style.setProperty("--duo-b","0deg");
+    _bgFieldEl.style.setProperty("--duo-breath","1");
+    return;
+  }
+  const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
+  const phi=(typeof PHI==="number")?PHI:1.6180339887;
+  /* slow field turn ~89s; B nests at 1/φ so they lock as one organism */
+  const omega=base*(1/(phi*phi*phi))*0.085; /* rad/s — harmonious crawl */
+  const theta=t*omega;
+  const degA=(theta*180/Math.PI);
+  const degB=(theta/phi*180/Math.PI); /* same sign, φ-slower nest */
+  const breath=(1+0.012*Math.sin(t*base*(1/phi))).toFixed(4);
+  const a=(degA).toFixed(3)+"deg";
+  const b=(degB).toFixed(3)+"deg";
+  if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoBr!==breath){
+    _bgFieldEl._duoA=a; _bgFieldEl._duoB=b; _bgFieldEl._duoBr=breath;
+    _bgFieldEl.style.setProperty("--duo-a", a);
+    _bgFieldEl.style.setProperty("--duo-b", b);
+    _bgFieldEl.style.setProperty("--duo-breath", breath);
   }
 }
 
