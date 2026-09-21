@@ -7,3 +7,4 @@
 - **Labels:** Disorganized → Organized / Aside
 - **dodeca3DSphere:** canvas TRUE 3D dodeca + center sphere (hex-core GIF hidden); `?v=<shortsha>`
 - **layerPerspectiveSync:** all layers share tunnel VP; emerge from depth corridor; one φ TEMPO clock; GIF ride seal (no ω fight)
+- **sameVectors:** one shared ray field from seal VP (`sealRay` / 120° triad); funnels/beams/lattice/upload/shockwave travel those rays; pan/parallax keep VP fixed at seal

@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -418,10 +418,10 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #bgField .hexCore .beamTrio .b img{
   display:block;width:100%;height:100%;object-fit:contain;object-position:center;
 }
-/* attach to hex funnel shafts: top-left / top-right / bottom (120°) */
-#bgField .hexCore .beamTrio .b1{ left:28%; top:30%; transform:translate(-50%,-50%) rotate(-38deg); }
-#bgField .hexCore .beamTrio .b2{ left:72%; top:30%; transform:translate(-50%,-50%) rotate(38deg); }
-#bgField .hexCore .beamTrio .b3{ left:50%; top:76%; transform:translate(-50%,-50%) rotate(180deg); }
+/* sameVectors: beams on shared 120° seal rays (JS syncBeamTrioRays overrides left/top/rotate) */
+#bgField .hexCore .beamTrio .b1{ left:var(--ray0-x,28%); top:var(--ray0-y,30%); transform:translate(-50%,-50%) rotate(var(--ray0-r,-38deg)); }
+#bgField .hexCore .beamTrio .b2{ left:var(--ray1-x,72%); top:var(--ray1-y,30%); transform:translate(-50%,-50%) rotate(var(--ray1-r,38deg)); }
+#bgField .hexCore .beamTrio .b3{ left:var(--ray2-x,50%); top:var(--ray2-y,76%); transform:translate(-50%,-50%) rotate(var(--ray2-r,180deg)); }
 #bgField .isoTunnel .plane picture,
 #bgField .isoTunnel .plane img{ display:block;width:100%;height:100%;object-fit:cover; }
 @media (max-width:900px){
@@ -538,13 +538,13 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 /* layerPerspectiveSync — one VP organism: GIF layers ride --seal-x/--seal-y depth corridor.
    Smaller/fainter toward hub (tunnel VP); emerge toward viewer. Dodeca gyro owns ω. */
 #bgField{
-  --iso-scale:0.88; --iso-op:0.40; --beam-em:1; --voxel-em:0.78; --gif-drift:0deg;
+  --iso-scale:0.88; --iso-op:0.40; --beam-em:1; --voxel-em:0.78; --gif-breath:1;
   perspective:1100px;
   perspective-origin:var(--seal-x) var(--seal-y);
 }
 #bgField .hexCore .gyroRig{
-  /* ride seal center; optional micro φ drift only (no competing tumble) */
-  transform:translate(-50%,-50%) rotateZ(var(--gif-drift,0deg));
+  /* sameVectors: ride seal VP; micro scale breath only — no rotate inventing a second axis */
+  transform:translate(-50%,-50%) scale(var(--gif-breath,1));
 }
 #bgField .hexCore .gyroRig .beamTrio{
   transform:translate(-50%,-50%) scale(var(--beam-em,1));
@@ -1446,7 +1446,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync */
+/* SERAPHIM_MARKERS:fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -1455,6 +1455,7 @@ const STORIES = {
    SURVIVING layers (why they stay):
    - dodeca3DSphere: TRUE 3D dodeca + center sphere (canvas project/YPR gyro); hex-core GIF hidden; tunnel/beams/voxel kept
    - layerPerspectiveSync: ALL layers share tunnel VP (--seal-x/--seal-y); iso/beam/voxel/lattice/funnels/mint/upload/shockwave recede into hub (smaller/fainter) and emerge toward viewer; CSS+JS φ TEMPO one clock; GIF layers ride seal (slow φ drift only — no ω fight)
+   - sameVectors: one shared ray field from seal VP (sealRay(a)/120° triad locked to dodeca face normals); funnels/beams/lattice/upload/shockwave/iso drift travel those rays only — no sideways competing axes; pan/parallax keep VP fixed at seal
    - fourAssetCanon: tunnel-grid + iso-tunnel + beam-rain (+ hex-core asset kept, visually off)
    - tunnelAsSent|tunnelGridBg: Taylor tunnel-dots GIF AS SENT (light bg, black dots, α≈0.95); NO invert/screen/vignette/warp; VP locked to seal via translate+cover
    - hybridEngineTrio: quieted under tunnelAsSent (beams/plasma no-op — muddy light GIF); seal+organize story remain
@@ -1573,12 +1574,64 @@ function kindLightSplit(decision,baseL){
   return Math.max(28, (baseL||46)-4);
 }
 function parallaxOff(layer){
-  // true parallax: separate factors per layer from mouse + gentle orient
-  const f={star:0.022,hex:0.007,voxel:0.012,mint:0.015,label:0.026,seal:0.005}[layer]||0.01;
+  /* sameVectors: pan/parallax keep VP fixed at seal — whisper layers may breathe;
+     seal/hex/voxel/mint share one hub (no second vanishing point). */
+  const f={star:0.012,hex:0,voxel:0,mint:0,label:0.008,seal:0}[layer]||0;
   const mx=mouse.x+(orient.ok?orient.x*0.35:0);
   const my=mouse.y+(orient.ok?orient.y*0.35:0);
   const sc=Math.min(W,H);
   return{ox:mx*f*sc, oy:my*f*sc};
+}
+/* sameVectors — shared depth-ray field from seal hub (tunnel VP) */
+const SEAL_TRIAD=[-Math.PI*2/3, 0, Math.PI*2/3]; /* 120° family */
+let _sealTriadLive=SEAL_TRIAD.slice();
+let _sealHub={cx:0,cy:0,s:1,corridor:0};
+function sealRay(a, depth){
+  const d=(depth==null?1:depth);
+  const ux=Math.cos(a), uy=Math.sin(a);
+  return {ux,uy,ang:a, x:_sealHub.cx+ux*d, y:_sealHub.cy+uy*d};
+}
+function sealRayAt(cx,cy,a,r){ return [cx+Math.cos(a)*r, cy+Math.sin(a)*r]; }
+function lockSealTriad(cx,cy){
+  /* lock 120° triad to dodeca face-normal projections when available */
+  const base=SEAL_TRIAD;
+  const fcs=DODECA&&DODECA._faceCenters2d;
+  if(!(fcs&&fcs.length>=3)){ _sealTriadLive=base.slice(); return _sealTriadLive; }
+  let bestOff=0, bestScore=1e9;
+  for(let k=0;k<60;k++){
+    const off=k/60*Math.PI*2;
+    let score=0; const used=new Set();
+    for(const ang of base){
+      const a=ang+off;
+      let bd=1e9, bi=-1;
+      for(let i=0;i<fcs.length;i++){
+        if(used.has(i)) continue;
+        const dx=fcs[i][0]-cx, dy=fcs[i][1]-cy;
+        const fa=Math.atan2(dy,dx);
+        let da=Math.abs(((fa-a+Math.PI*3)%(Math.PI*2))-Math.PI);
+        if(da<bd){bd=da;bi=i;}
+      }
+      if(bi>=0) used.add(bi);
+      score+=bd;
+    }
+    if(score<bestScore){bestScore=score;bestOff=off;}
+  }
+  _sealTriadLive=base.map(a=>a+bestOff);
+  return _sealTriadLive;
+}
+function syncBeamTrioRays(){
+  if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
+  if(!_bgFieldEl) return;
+  const R=28; /* % from hub toward mouth along ray */
+  for(let i=0;i<3;i++){
+    const a=_sealTriadLive[i];
+    const lx=50+Math.cos(a)*R, ly=50+Math.sin(a)*R;
+    /* GIF local up → point inward along ray (toward hub) */
+    const deg=(a*180/Math.PI)+90;
+    _bgFieldEl.style.setProperty("--ray"+i+"-x", lx.toFixed(2)+"%");
+    _bgFieldEl.style.setProperty("--ray"+i+"-y", ly.toFixed(2)+"%");
+    _bgFieldEl.style.setProperty("--ray"+i+"-r", deg.toFixed(1)+"deg");
+  }
 }
 /* WebGL overlay (points+lines) — graceful fallback */
 let webglOk=false, webglFail=false, gl=null, glCanvas=null, glProg=null, glBuf=null, glFPSBad=0;
@@ -2155,8 +2208,7 @@ function triggerUploadFX(phase, verdicts){
     uploadFX.sparks.push({
       u:Math.random()*0.25, /* start delay */
       life:0.55+Math.random()*0.55,
-      side:(Math.random()-0.5)*0.7,
-      bow:0.15+Math.random()*0.35,
+      axis:i%3, /* sameVectors: travel seal triad ray */
       hue:admit?195+Math.random()*25:300+Math.random()*25,
       admit:!!admit,
       sz:1.2+Math.random()*2.2
@@ -2185,29 +2237,30 @@ function drawUploadStream(cx,cy,s,t){
     g.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(ox,oy,120,0,Math.PI*2); ctx.fill();
   }
-  /* streams into seal */
+  /* streams into seal — sameVectors: along triad ray through hub (no side bow) */
   const alive=[];
+  const deskR=Math.hypot(ox-cx,oy-cy)||1;
   for(const sp of uploadFX.sparks){
     const u=(age-sp.u)/sp.life;
     if(u<0){ alive.push(sp); continue; }
     if(u>1) continue;
     const e=u*u*(3-2*u); /* smoothstep */
-    /* quadratic toward seal with side bow */
-    const mx=ox+(cx-ox)*0.45 + sp.side*s*sp.bow;
-    const my=oy+(cy-oy)*0.4 - sp.bow*s*0.5;
-    const x=(1-e)*(1-e)*ox + 2*(1-e)*e*mx + e*e*cx;
-    const y=(1-e)*(1-e)*oy + 2*(1-e)*e*my + e*e*cy;
+    const ang=_sealTriadLive[(sp.axis|0)%3];
+    const [rx,ry]=sealRayAt(cx,cy,ang,deskR);
+    /* blend desk origin onto ray mouth, then ride ray into hub */
+    const sx0=ox+(rx-ox)*0.55, sy0=oy+(ry-oy)*0.55;
+    const x=sx0+(cx-sx0)*e, y=sy0+(cy-sy0)*e;
     /* layerPerspectiveSync: emerge at desk, recede (smaller/fainter) into seal VP */
     const depth=1-e;
     const a=depth*depth*0.55;
     ctx.fillStyle=hsl(sp.hue,95,62,a);
     ctx.beginPath(); ctx.arc(x,y,sp.sz*(0.45+0.55*depth),0,Math.PI*2); ctx.fill();
-    /* trail */
+    /* trail along same ray */
     ctx.strokeStyle=hsl(sp.hue,90,55,a*0.35);
     ctx.lineWidth=0.7;
     ctx.beginPath(); ctx.moveTo(x,y);
-    const x0=(1-(e-0.08))*(1-(e-0.08))*ox + 2*(1-(e-0.08))*(e-0.08)*mx + (e-0.08)*(e-0.08)*cx;
-    const y0=(1-(e-0.08))*(1-(e-0.08))*oy + 2*(1-(e-0.08))*(e-0.08)*my + (e-0.08)*(e-0.08)*cy;
+    const e0=Math.max(0,e-0.08);
+    const x0=sx0+(cx-sx0)*e0, y0=sy0+(cy-sy0)*e0;
     if(e>0.08){ ctx.lineTo(x0,y0); ctx.stroke(); }
     alive.push(sp);
   }
@@ -2223,20 +2276,29 @@ function drawUploadStream(cx,cy,s,t){
 }
 
 function drawSortShockwave(cx,cy,s){
-  /* layerPerspectiveSync: rings from seal VP — foreshortened corridor ellipse; cyan=magenta weight */
+  /* layerPerspectiveSync|sameVectors: rings from seal VP — ellipse major/minor = depth corridor */
   if(!shockwave) return;
   const age=(performance.now()-shockwave.t0)*0.001;
   const Tsw=1/(TEMPO.base*PHI); /* φ period ≈0.91s */
   if(age>Tsw*1.15){shockwave=null;return;}
   const u=Math.min(1,age/(Tsw*1.15)), R=s*(0.18+u*1.28);
-  const aspect=0.58+0.14*u; /* tunnel-floor foreshorten */
+  const aspect=0.58+0.14*u; /* foreshorten along view (tunnel floor) */
+  const rot=(_sealHub.corridor!=null?_sealHub.corridor:((cam&&cam.roll)||0)*0.35); /* gyro roll only — VP stays at seal */
   const fade=(1-u)*(1-u);
   ctx.save(); ctx.globalCompositeOperation="lighter";
   ctx.strokeStyle=hsl(192,100,58,fade*0.40);
   ctx.lineWidth=2.0*(1-u*0.45);
-  ctx.beginPath();ctx.ellipse(cx,cy,R,R*aspect,0,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.ellipse(cx,cy,R,R*aspect,rot,0,Math.PI*2);ctx.stroke();
   ctx.strokeStyle=hsl(305,92,56,fade*0.40);
-  ctx.lineWidth=1.35; ctx.beginPath();ctx.ellipse(cx,cy,R*0.86,R*0.86*aspect,0,0,Math.PI*2);ctx.stroke();
+  ctx.lineWidth=1.35; ctx.beginPath();ctx.ellipse(cx,cy,R*0.86,R*0.86*aspect,rot,0,Math.PI*2);ctx.stroke();
+  /* triad ray ticks — same axes as funnels/beams */
+  for(let i=0;i<3;i++){
+    const ang=_sealTriadLive[i];
+    const [x1,y1]=sealRayAt(cx,cy,ang,R*0.92);
+    const [x0,y0]=sealRayAt(cx,cy,ang,R*0.55);
+    ctx.strokeStyle=hsl(i===1?305:192,90,60,fade*0.22);
+    ctx.lineWidth=1.0; ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+  }
   ctx.restore();
 }
 function drawSoftCrossVeil(){
@@ -2951,30 +3013,34 @@ function drawBeamRain(cx,cy,s,t){
 }
 
 function syncGyroSharedCenter(cx,cy,s,t){
-  /* bgSealCenterLock|tunnelAsSent|layerPerspectiveSync: live seal → --seal-x/--seal-y
-     + depth-corridor scales so GIF layers emerge from same VP as tunnel. */
+  /* bgSealCenterLock|tunnelAsSent|layerPerspectiveSync|sameVectors: live seal → --seal-x/--seal-y
+     + depth-corridor scales; triad rays lock beams/funnels to one vector story. */
   if(!_bgFieldEl) _bgFieldEl=document.getElementById("bgField");
   if(!_bgFieldEl || !(W>0 && H>0)) return;
+  _sealHub.cx=cx; _sealHub.cy=cy; _sealHub.s=s;
+  _sealHub.corridor=(typeof cam!=="undefined"?(cam.roll||0)*0.35:0);
   const sx=Math.round(cx)+"px", sy=Math.round(cy)+"px";
   if(_bgFieldEl._sealX!==sx || _bgFieldEl._sealY!==sy){
     _bgFieldEl._sealX=sx; _bgFieldEl._sealY=sy;
     _bgFieldEl.style.setProperty("--seal-x", sx);
     _bgFieldEl.style.setProperty("--seal-y", sy);
   }
-  /* φ nest breath — iso recessed, beams/voxel mid-depth; micro drift ≠ canvas ω */
+  lockSealTriad(cx,cy);
+  syncBeamTrioRays();
+  /* φ nest breath — iso recessed, beams/voxel mid-depth; scale-only (no second axis) */
   const nest=Math.sin((t||0)*TEMPO.base*(TEMPO.nest||1/PHI));
   const isoSc=(0.84+0.045*nest).toFixed(4);
   const isoOp=(W<=900?(0.30+0.05*(0.5+0.5*nest)):(0.36+0.06*(0.5+0.5*nest))).toFixed(3);
   const beamEm=(1.02+0.035*nest).toFixed(4);
   const voxelEm=(0.72+0.045*nest).toFixed(4);
-  const drift=(nest*1.15).toFixed(3)+"deg";
-  if(_bgFieldEl._isoSc!==isoSc || _bgFieldEl._drift!==drift){
-    _bgFieldEl._isoSc=isoSc; _bgFieldEl._drift=drift;
+  const breath=(1+nest*0.012).toFixed(4);
+  if(_bgFieldEl._isoSc!==isoSc || _bgFieldEl._breath!==breath){
+    _bgFieldEl._isoSc=isoSc; _bgFieldEl._breath=breath;
     _bgFieldEl.style.setProperty("--iso-scale", isoSc);
     _bgFieldEl.style.setProperty("--iso-op", isoOp);
     _bgFieldEl.style.setProperty("--beam-em", beamEm);
     _bgFieldEl.style.setProperty("--voxel-em", voxelEm);
-    _bgFieldEl.style.setProperty("--gif-drift", drift);
+    _bgFieldEl.style.setProperty("--gif-breath", breath);
   }
 }
 
@@ -3126,8 +3192,8 @@ function drawFunnelsAndBeams(cx,cy,s,t){
   const mouths=[]; ctx.save(); ctx.globalAlpha=aHex*(W<=900?0.55:0.72); ctx.globalCompositeOperation="lighter";
   const fcs=DODECA._faceCenters2d;
   let tips;
-  /* balancePolish: lock ≤3 mouths to clean 120° triad (or nearest face centers) */
-  const triad=[-Math.PI*2/3, 0, Math.PI*2/3]; /* 120° */
+  /* sameVectors|balancePolish: ≤3 mouths on shared sealRay triad (locked to face normals) */
+  const triad=lockSealTriad(cx,cy);
   const sideNames=["tl","tr","bot"];
   if(fcs&&fcs.length>=12){
     const used=new Set();
@@ -3144,13 +3210,13 @@ function drawFunnelsAndBeams(cx,cy,s,t){
         if(score<bestScore){bestScore=score; best={fi,x:fc[0],y:fc[1],d:fc[2]};}
       }
       if(best) used.add(best.fi);
-      return {x:best?best.x:cx+Math.cos(ang)*s, y:best?best.y:cy+Math.sin(ang)*s*0.92, label:"", side:sideNames[k], fi:best?best.fi:-1};
+      const [fx,fy]=sealRayAt(cx,cy,ang,s);
+      return {x:best?best.x:fx, y:best?best.y:fy, label:"", side:sideNames[k], fi:best?best.fi:-1, ang};
     });
   }else{
     tips=triad.map((ang,k)=>{
-      const ox=Math.cos(ang)*1.06, oy=Math.sin(ang)*1.06*0.92;
-      const [tx,ty]=project(ox,oy,0,cx,cy,s);
-      return {x:tx,y:ty,label:"",side:sideNames[k]};
+      const [tx,ty]=sealRayAt(cx,cy,ang,s*1.06);
+      return {x:tx,y:ty,label:"",side:sideNames[k],ang};
     });
   }
   const primary=tips.slice(0,3);
@@ -3415,8 +3481,10 @@ function drawMintRelease(cx,cy,s,t){
     p.a+=0.0035*p.spin;
     const focus=focusId!=null&&p.id!=null&&String(p.id)===String(focusId); const alpha=focus?1:(focusId!=null?dim:1);
     const pull=0.014*coa;
-    const xx=Math.cos(p.b)*Math.cos(p.a+t*p.spin)*p.r*(1-pull*0.25)+0.40+pull*0.06;
-    const yy=Math.sin(p.b)*p.r*0.85+0.05*Math.sin(t*TEMPO.base*PHI+p.ph)+Math.sin(t*TEMPO.base*0.75+p.ph)*0.01;
+    const fateA=_sealTriadLive[1]; /* Aside ray */
+    const fateR=0.40+pull*0.06;
+    const xx=Math.cos(p.b)*Math.cos(p.a+t*p.spin)*p.r*(1-pull*0.25)+Math.cos(fateA)*fateR;
+    const yy=Math.sin(p.b)*p.r*0.85+Math.sin(fateA)*fateR*0.55+0.05*Math.sin(t*TEMPO.base*PHI+p.ph)+Math.sin(t*TEMPO.base*0.75+p.ph)*0.01;
     const zz=Math.cos(p.b)*Math.sin(p.a+t*p.spin)*p.r;
     const [px,py,d]=project(xx,yy,zz,cx,cy,s); if(d<-0.5){p._px=null;continue;}
     const hue=p.hue!=null?p.hue:320;
@@ -3879,17 +3947,22 @@ function drawTrailsAndGlow(cx,cy,s,t){
     const local=age-p.delay; if(local<0){p._px=null;continue;}
     let px,py;
     if(local<1.25){
-      const tips=[[-0.88,-0.55],[0.88,-0.55],[0,0.95]], tip=tips[p.funnel];
-      const [fx,fy]=project(tip[0],tip[1],0,cx,cy,s*0.95), u=Math.min(1,local/1.25), ease=u*u*(3-2*u);
-      const [bx,by]=project(0,0,0,cx,cy,s); px=fx+(bx-fx)*ease; py=fy+(by-fy)*ease;
+      const ang=_sealTriadLive[(p.funnel|0)%3];
+      const [fx,fy]=sealRayAt(cx,cy,ang,s*0.95);
+      const u=Math.min(1,local/1.25), ease=u*u*(3-2*u);
+      const bx=cx, by=cy; px=fx+(bx-fx)*ease; py=fy+(by-fy)*ease;
       /* single soft ghost behind hub — no multi-step snake */
       ctx.fillStyle=hsl(p.hue,100,56,0.12*(W<=900?0.7:1));
       ctx.beginPath();ctx.arc(fx+(bx-fx)*Math.max(0,ease-0.08),fy+(by-fy)*Math.max(0,ease-0.08),1.4,0,Math.PI*2);ctx.fill();
       ctx.fillStyle=hsl(p.hue,100,58,0.50); ctx.beginPath();ctx.arc(px,py,2.05,0,Math.PI*2);ctx.fill();
     }else{
-      const sideBias=p.decision==="admit"?-0.32:0.36;
+      /* sameVectors: Organized/Aside sit on triad rays (not L/R competing axis) */
+      const fateA=_sealTriadLive[p.decision==="admit"?0:1];
+      const fateR=0.34;
       /* omnidiscipline: inertia — spin conserved in φ family */
-      const xx=Math.cos(p.b)*Math.cos(p.a+t*p.spin)*p.r*0.55+sideBias, yy=Math.sin(p.b)*p.r*0.5, zz=Math.cos(p.b)*Math.sin(p.a+t*p.spin)*p.r*0.55;
+      const xx=Math.cos(p.b)*Math.cos(p.a+t*p.spin)*p.r*0.55+Math.cos(fateA)*fateR;
+      const yy=Math.sin(p.b)*p.r*0.5+Math.sin(fateA)*fateR*0.55;
+      const zz=Math.cos(p.b)*Math.sin(p.a+t*p.spin)*p.r*0.55;
       const pr=project(xx,yy,zz,cx,cy,s); px=pr[0];py=pr[1];
       /* jewel hub + soft contact */
       ctx.fillStyle=`rgba(0,0,0,0.12)`;
@@ -4340,20 +4413,18 @@ function frame(now){
   const s=Math.min(W,H)*(W<=900?0.70:0.66)*cam.zoom;
   const cx0=W*0.50+cam.panX, cy0=(W<=480?H*0.26:(W<=900?H*0.28:H*0.50))+cam.panY; /* polishPass2: raise seal on phone */
   // true parallax: per-layer offsets from mouse.tx/ty (+ DeviceOrientation)
-  const pStar=parallaxOff("star"), pHex=parallaxOff("hex"), pVox=parallaxOff("voxel");
-  const pMint=parallaxOff("mint"), pLab=parallaxOff("label"), pSeal=parallaxOff("seal");
-  const cxS=cx0+pStar.ox, cyS=cy0+pStar.oy;
-  const cxH=cx0+pHex.ox, cyH=cy0+pHex.oy;
-  const cxV=cx0+pVox.ox, cyV=cy0+pVox.oy;
-  const cxM=cx0+pMint.ox, cyM=cy0+pMint.oy;
+  const pStar=parallaxOff("star"), pLab=parallaxOff("label");
+  /* sameVectors: one hub — seal/hex/voxel/mint/lattice/funnels share cx,cy (VP fixed) */
+  const cx=cx0, cy=cy0;
+  const cxH=cx, cyH=cy, cxV=cx, cyV=cy, cxM=cx, cyM=cy;
   const cxL=cx0+pLab.ox, cyL=cy0+pLab.oy;
-  const cx=cx0+pSeal.ox, cy=cy0+pSeal.oy;
+  const cxS=cx0+pStar.ox, cyS=cy0+pStar.oy;
   /* polishPass3 draw order: bg whisper → intake → organize → seal authority → fate labels
      Story: field → dodeca lock → cube crystallize / mint release. Seal always paints last-but-labels. */
   /* stripToBones: skeleton only — seal + center lock + organize desk path + φ + light/shadow */
   const verts=projectDodecaSeal(cxH,cyH,s);
   projectInnerCube(cxH,cyH,s);
-  syncGyroSharedCenter(cx,cy,s,t); /* bgSealCenterLock — essential */
+  syncGyroSharedCenter(cx,cy,s,t); /* bgSealCenterLock|sameVectors — essential */
   /* underlay densify/ornament killed — GIF whispers + seal carry atmosphere */
   if(!reduceMotion && !skipHeavy) drawBeamRain(cx,cy,s,t); /* φ desk↔seal↔trays spine (quiet) */
   if(!reduceMotion && !skipHeavy) drawCorePlasma(cx,cy,s,t); /* soft hub light only */
