@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -355,22 +355,15 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   opacity:0.45;
   mix-blend-mode:screen;
 }
-/* 3 beam rain */
-#bgField .beamRain{z-index:2}
-#bgField .beamRain .plane{
-  width:min(70vmin,560px); height:min(70vmin,560px);
-  opacity:0.4;
-  mix-blend-mode:screen;
-}
-/* 4 hex core — dominant */
+/* beam rain moved into hexCore trio */
+/* 4 hex core + tripleBeamInCore */
 #bgField .hexCore{z-index:3}
-#bgField .hexCore .plane{
+#bgField .hexCore .plane.coreMain{
   width:min(72vmin,640px); height:min(72vmin,640px);
   opacity:1;
 }
 @media (max-width:900px){
   #bgField .isoTunnel .plane{opacity:0.35; width:min(88vmin,560px); height:min(88vmin,560px)}
-  #bgField .beamRain .plane{opacity:0.32; width:min(62vmin,420px); height:min(62vmin,420px)}
   #bgField .hexCore .plane{width:min(64vmin,480px); height:min(64vmin,480px)}
 }
 @media (prefers-reduced-motion:reduce){
@@ -608,16 +601,15 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
       <img class="still" src="media/iso-tunnel-still.jpg" alt="" width="500" height="500" decoding="async" fetchpriority="low">
     </div>
   </div>
-  <div class="assetLayer beamRain" aria-hidden="true">
-    <div class="plane">
-      <img class="anim" src="media/beam-rain.gif" alt="" width="420" height="420" decoding="async" fetchpriority="low">
-      <img class="still" src="media/beam-rain-still.jpg" alt="" width="420" height="420" decoding="async" fetchpriority="low">
-    </div>
-  </div>
   <div class="assetLayer hexCore" aria-hidden="true">
-    <div class="plane">
+    <div class="plane coreMain">
       <img class="anim" src="media/hex-core.gif" alt="" width="560" height="560" decoding="async" fetchpriority="low">
       <img class="still" src="media/hex-core-still.jpg" alt="" width="560" height="560" decoding="async" fetchpriority="low">
+    </div>
+    <div class="beamTrio" aria-hidden="true">
+      <div class="b b1"><img class="anim" src="media/beam-rain.gif" alt=""><img class="still" src="media/beam-rain-still.jpg" alt=""></div>
+      <div class="b b2"><img class="anim" src="media/beam-rain.gif" alt=""><img class="still" src="media/beam-rain-still.jpg" alt=""></div>
+      <div class="b b3"><img class="anim" src="media/beam-rain.gif" alt=""><img class="still" src="media/beam-rain-still.jpg" alt=""></div>
     </div>
   </div>
 </div>
