@@ -1,11 +1,14 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=03561cf
-- **Commit:** `03561cf` (`refinePolish2`)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=ef6f50c
+- **Commit:** `ef6f50c` (`beyondAIMaster` · `omnidiscipline`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
-`fallingCodeDepth` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `bgSealCenterLock` · `refinePolish2` · `sortTheater` · `idleDemoLoop` · `motionIntricateFast` · `markdownMaster`
+`fallingCodeDepth` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `bgSealCenterLock` · `refinePolish2` · `beyondAIMaster` · `omnidiscipline` · `sortTheater` · `idleDemoLoop` · `motionIntricateFast` · `markdownMaster`
+
+## Densify (beyondAIMaster / omnidiscipline)
+Art × math × physics as one φ organism: jewel nodes + keeper Fibonacci micro-orbits, kind-hue depth, rim/Fresnel/iri on dodeca, quasicrystal/Penrose whisper + geodesic pentagrams, Ylm sphere + Hopf torus hint, φ multi-axis plasma↔beam flow, chiaroscuro contact shadows, stronger bloom clamp. Seal absolute foreground; `--seal-x/--seal-y` center lock intact.
 
 ## Layers
 `#bgField`: codeRain → beamWhisper → coreWhisper → canvas `#fx` (dodeca seal authority)
