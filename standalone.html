@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgHoloCluster: cyan↔indigo↔magenta↔orchid on void (Taylor ref) */
+  /* holoPalette|bgHoloCluster|bgHoloClusterWire: cyan↔indigo↔magenta↔orchid on void (Taylor ref) */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -356,25 +356,25 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 
 #bgField .meta.cluster{
-  /* holographic voxel cluster — ~¾ viewport, soft side bias, seal still leads */
+  /* holographic wire cluster — lines+nodes only, 1.5× viewport, centered under seal */
   inset:auto;
-  width:75vmin;height:75vmin;
-  top:50%;left:58%;
+  width:150vmin;height:150vmin;
+  top:50%;left:50%;
   transform:translate(-50%,-50%);
-  background-image:url(bg-holo-cluster.gif);
+  background-image:url(bg-holo-cluster-wire.gif);
   background-size:contain;
   background-position:center;
   background-repeat:no-repeat;
-  opacity:0.30;
+  opacity:0.42;
   mix-blend-mode:screen;
-  filter:saturate(1.15) brightness(0.95);
+  filter:saturate(1.25) brightness(1.05) contrast(1.08);
   pointer-events:none;
 }
 @media (max-width:900px){
-  #bgField .meta.cluster{width:70vmin;height:70vmin;left:52%;opacity:0.22;filter:saturate(1.05) brightness(0.9)}
+  #bgField .meta.cluster{width:140vmin;height:140vmin;opacity:0.32;filter:saturate(1.1) brightness(1.0) contrast(1.05)}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .meta.cluster{opacity:0.12;filter:saturate(0.7) brightness(0.85)}
+  #bgField .meta.cluster{opacity:0.16;filter:saturate(0.8) brightness(0.9)}
 }
 
 
@@ -836,7 +836,7 @@ const STORIES = {
    - fogShards: skip ≤900; α×0.5
    - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
    - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
-   - bg holo cluster: ~¾vmin side-biased underlayer — holographic mass; opacity keeps seal authority
+   - bg holo cluster: wireframe lines+nodes, 150vmin centered — mass stripped; seal still leads
    - chromatic edges: skip ≤900; α×0.5 (magenta/cyan/indigo fringe)
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
