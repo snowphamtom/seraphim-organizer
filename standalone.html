@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light dark"/>
 <meta name="description" content="Seraphim organizer: drop disorganized content, get an organized field. Soft."/>
-<meta name="theme-color" content="#ffffff"/>
+<meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientPrismTempo|clientBlankFix|clientResidualPrism|clientBlueFive|clientIPhone|clientEnginePrismHybrid|clientZero|clientOptimalZero|clientShowOff|clientGrammarMarkdown|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientLatticeDepth|clientOmniMid|clientGiftEngine|clientDualCenter|clientNoWhite|clientDataMeshSync|clientXyzNuke|clientGraphGone|clientAxisGone|clientLatticeNuke|clientOmniGyroTree|clientLatticeField|clientAxisRoom|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientMotionHarmonic|clientHexVoid|clientShowpiecePush|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -4236,10 +4236,167 @@ html,body{
 /* end clientMotionHarmonic — omni dodeca / face fills / core-seed / neon lattice keep independent tumble via canvas */
 
 
+
+/* ========== clientHexVoid|clientShowpiecePush — dark hex lattice void + denser showpiece ========== */
+:root{
+  --void:#000000 !important;
+  --field-hub:96vmin;
+  --field-cover:170vmin;
+  --gift-op-hex:0.20;
+  --gift-op-iris:0.16;
+  --gift-op-mandala:0.22;
+  --gift-op-star:0.18;
+  --gift-op-scribble:0.10;
+}
+html,body{
+  background:#000000 !important;
+  background-color:#000000 !important;
+  color:rgba(230,242,255,.92) !important;
+}
+#bgField{
+  background:#000000 !important;
+  background-color:#000000 !important;
+  background-image:none !important;
+  --seal-x:50% !important;
+  --seal-y:50% !important;
+}
+/* furthest/back authority — cyan→purple 3D hex on black */
+@keyframes hexVoidPivot{
+  0%{ transform:translate(-50%,-50%) rotate(-1.2deg) scale(1.00); }
+  100%{ transform:translate(-50%,-50%) rotate(2.4deg) scale(1.035); }
+}
+#bgField > .hexVoid{
+  display:block !important; visibility:visible !important;
+  position:absolute !important; inset:0 !important;
+  z-index:-3 !important;
+  pointer-events:none !important; overflow:hidden !important;
+  opacity:1 !important;
+}
+#bgField > .hexVoid .plane{
+  position:absolute !important;
+  left:var(--seal-x,50%) !important;
+  top:var(--seal-y,50%) !important;
+  width:max(130vw,130vh) !important;
+  height:max(130vw,130vh) !important;
+  transform:translate(-50%,-50%) !important;
+  transform-origin:50% 50% !important;
+  background-image:url("media/hex-void.webp") !important;
+  background-size:cover !important;
+  background-position:50% 55% !important;
+  background-repeat:no-repeat !important;
+  animation:hexVoidPivot var(--field-T3,var(--Tphi3,7.718s)) linear infinite alternate !important;
+  filter:saturate(1.12) contrast(1.06) brightness(0.92) !important;
+  mix-blend-mode:normal !important;
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField > .hexVoid .plane{ animation:none !important; transform:translate(-50%,-50%) scale(1.02) !important; }
+}
+
+/* kill paper-white plates — honey was multiply-on-white; retire as back authority */
+#bgField > .honeyBack{
+  display:none !important; visibility:hidden !important; opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* opacity ladder on DARK: hexVoid(-3) < crystal(-1) < lattice(0) < gifts(1) < fx/engine(3) */
+#bgField > .crystalWash{
+  z-index:-1 !important;
+  opacity:0.28 !important;
+}
+#bgField > .crystalWash .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:min(var(--field-hub),700px) !important;
+  height:min(var(--field-hub),700px) !important;
+  animation:fieldCrystalPivot var(--field-T2) linear infinite alternate !important;
+}
+#bgField > .crystalWash picture,
+#bgField > .crystalWash img{
+  filter:contrast(1.18) saturate(1.25) brightness(1.05) !important;
+  mix-blend-mode:screen !important; /* dark void — not multiply */
+}
+#bgField > .latticeDepth{
+  z-index:0 !important;
+  opacity:0.42 !important;
+}
+#bgField > .latticeDepth .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:var(--field-cover) !important;
+  height:var(--field-cover) !important;
+  animation:fieldLatticePivot var(--field-T3) linear infinite alternate !important;
+}
+#bgField > .latticeDepth picture,
+#bgField > .latticeDepth img{
+  mix-blend-mode:screen !important;
+  filter:saturate(1.08) brightness(1.05) contrast(1.04) !important;
+}
+#bgField > .giftStack{ z-index:1 !important; }
+#bgField > .giftStack .gift .plane{
+  left:var(--seal-x) !important;
+  top:var(--seal-y) !important;
+  width:min(var(--field-hub),700px) !important;
+  height:min(var(--field-hub),700px) !important;
+}
+#bgField > .giftStack .gift picture,
+#bgField > .giftStack .gift img{
+  mix-blend-mode:screen !important; /* was multiply for white */
+  filter:saturate(1.1) brightness(1.02) !important;
+}
+#bgField > .giftStack .gift.hex{ opacity:0.16 !important; }
+#bgField > .giftStack .gift.iris{ opacity:0.12 !important; }
+#bgField > .giftStack .gift.mandala{ opacity:0.18 !important; }
+#bgField > .giftStack .gift.star{ opacity:0.14 !important; }
+#bgField > .giftStack .gift.scribble{ opacity:0.08 !important; }
+
+/* desk glass — readable on dark hex void (no vanish) */
+#uploadBox,
+#sortedFigures .tray{
+  background:linear-gradient(165deg, rgba(8,14,28,.72) 0%, rgba(4,8,18,.78) 100%) !important;
+  backdrop-filter:blur(18px) saturate(1.2) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.2) !important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.08),
+    0 16px 44px rgba(0,0,0,.72),
+    inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+#uploadBox{
+  border:1px solid rgba(34,211,238,.55) !important;
+}
+#sortedFigures .tray.admit{
+  border:1px solid rgba(34,211,238,.52) !important;
+}
+#sortedFigures .tray.release{
+  border:1px solid rgba(232,121,249,.48) !important;
+}
+#uploadBox .uh b{
+  color:rgba(235,248,255,.98) !important;
+  text-shadow:0 0 14px rgba(34,211,238,.35) !important;
+}
+#sortedFigures .tray.admit h3{
+  color:rgba(140,236,242,.98) !important;
+}
+#sortedFigures .tray.release h3{
+  color:rgba(240,180,236,.98) !important;
+}
+#uploadBox textarea{
+  background:rgba(0,8,18,.62) !important;
+  color:rgba(232,242,252,.96) !important;
+  border-color:rgba(34,211,238,.32) !important;
+}
+#top .title{
+  color:rgba(200,230,245,.72) !important;
+  text-shadow:0 0 18px rgba(34,211,238,.18) !important;
+}
+/* end clientHexVoid|clientShowpiecePush CSS */
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientHoneyBack|clientCrystalWash|clientFaceFillOmni -->
+<div id="bgField" aria-hidden="true"><!-- clientHexVoid|clientHoneyBack|clientCrystalWash|clientFaceFillOmni -->
+  <div class="hexVoid" aria-hidden="true"><!-- clientHexVoid: cyan→purple 3D hex on black — furthest back -->
+    <div class="plane" role="presentation"></div>
+  </div>
+
   <div class="honeyBack" aria-hidden="true"><!-- clientHoneyBack: inverted honeycomb authority -->
     <div class="rgbTile" role="presentation"></div>
     <div class="plane" role="presentation"></div>
@@ -4942,7 +5099,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
+/* SERAPHIM_MARKERS:clientShowpiecePush|clientHexVoid|clientMotionHarmonic|clientHoneyBack|clientCrystalWash|clientNeonLattice|clientFaceFillOmni|clientCoreSeed|clientStillEngine|clientThickSkeleton|clientBlueFive|cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|clientGrammarMarkdown|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede|clientAxisRoom */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -5055,8 +5212,8 @@ function syncTempoClock(){
   root.style.setProperty('--field-T', Tphi.toFixed(3)+'s');
   root.style.setProperty('--field-T2', Tphi2.toFixed(3)+'s');
   root.style.setProperty('--field-T3', Tphi3.toFixed(3)+'s');
-  root.style.setProperty('--field-hub', '100vmin'); /* shared center figure size */
-  root.style.setProperty('--field-cover', '180vmin'); /* depth/honey cover */
+  root.style.setProperty('--field-hub', '96vmin'); /* clientShowpiecePush matched hub */
+  root.style.setProperty('--field-cover', '170vmin'); /* hex void + lattice cover */
   root.style.setProperty('--field-tile', '28vmin'); /* honeycomb tile cell */
   root.style.setProperty('--field-tile-rgb', '42vmin');
   if(typeof STILL_ENGINE!=="undefined" && STILL_ENGINE){
@@ -6180,18 +6337,19 @@ function drawDodecaLatticeCage(cx,cy,s,t){
   }).sort((u,v)=>u.md-v.md);
   ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
   const thin=W<=480, mobile=W<=900;
-  const lw=thin?2.05:(mobile?3.05:3.85); /* clientNeonLattice|clientThickSkeleton */
+  const lw=thin?2.55:(mobile?3.75:4.85); /* clientNeonLattice|clientThickSkeleton|clientShowpiecePush */
   const iriShift=18*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)*0.55);
   for(const ed of edged){
     const near=Math.max(0,Math.min(1,(ed.md+0.55)/1.1));
     const pulse=(0.72+0.28*Math.sin(t*TEMPO.base*(TEMPO.lattice||1/PHI)+ed.ei*0.4))*(1+0.22*sealP);
     const aEdge=Math.min(0.98, (0.42+near*0.48)*pulse);
     const g=ctx.createLinearGradient(ed.a.x,ed.a.y,ed.b.x,ed.b.y);
-    g.addColorStop(0,hsl(186+iriShift*0.35,100,58,aEdge));
-    g.addColorStop(0.5,hsl(ed.ei%2?312:198,100,70,Math.min(0.99,aEdge+0.10)));
-    g.addColorStop(1,hsl(312-iriShift*0.2,100,62,aEdge));
-    ctx.strokeStyle=hsl(ed.ei%2?300:186,100,50,Math.min(0.35,0.14*near*pulse));
-    ctx.lineWidth=lw*(1.15+near*1.05);
+    g.addColorStop(0,hsl(184+iriShift*0.4,100,64,aEdge));
+    g.addColorStop(0.5,hsl(ed.ei%2?308:194,100,78,Math.min(0.99,aEdge+0.14)));
+    g.addColorStop(1,hsl(314-iriShift*0.25,100,66,aEdge));
+    ctx.strokeStyle=hsl(ed.ei%2?302:186,100,52,Math.min(0.48,0.2*near*pulse));
+    ctx.lineWidth=lw*(1.28+near*1.15); /* clientShowpiecePush cage glow */
+
     ctx.lineCap="round";
     ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
     ctx.strokeStyle=g; ctx.lineWidth=lw*(0.55+near*0.95);
@@ -6511,26 +6669,27 @@ function drawDodecaFrame(cx,cy,s,t){ /* clientNeonLattice|clientThickSkeleton: M
     const pulse=0.78+0.22*Math.sin(t*TEMPO.base*2.1+ei*0.37)+0.18*sealP;
     const hueC=186+iri*0.35+ei*0.4;
     const hueM=312-iri*0.25+ei*0.55;
-    const aGlow=Math.min(0.55, 0.22*near*pulse*(0.7+0.3*breath));
-    const aCore=Math.min(0.92, 0.48*near*pulse*(0.75+0.25*breath));
+    /* clientShowpiecePush: punchier cyan↔magenta phosphor, thicker readable bones */
+    const aGlow=Math.min(0.72, 0.32*near*pulse*(0.75+0.35*breath));
+    const aCore=Math.min(0.98, 0.62*near*pulse*(0.8+0.28*breath));
     const g0=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
-    g0.addColorStop(0,hsl(hueC,100,55,aGlow*0.55));
-    g0.addColorStop(0.5,hsl((hueC+hueM)*0.5,100,62,aGlow*0.75));
-    g0.addColorStop(1,hsl(hueM,100,58,aGlow*0.55));
+    g0.addColorStop(0,hsl(hueC,100,58,aGlow*0.7));
+    g0.addColorStop(0.5,hsl((hueC+hueM)*0.5,100,68,aGlow*0.92));
+    g0.addColorStop(1,hsl(hueM,100,60,aGlow*0.7));
     ctx.strokeStyle=g0;
-    ctx.lineWidth=(thin?4.2:6.2)*near;
+    ctx.lineWidth=(thin?5.4:8.0)*near;
     ctx.lineCap="round";
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     const g1=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
-    g1.addColorStop(0,hsl(hueC,100,68,aCore));
-    g1.addColorStop(0.5,hsl(ei%2?300:198,100,74,Math.min(0.98,aCore+0.12)));
-    g1.addColorStop(1,hsl(hueM,100,70,aCore));
+    g1.addColorStop(0,hsl(hueC,100,74,aCore));
+    g1.addColorStop(0.5,hsl(ei%2?308:192,100,82,Math.min(0.99,aCore+0.14)));
+    g1.addColorStop(1,hsl(hueM,100,76,aCore));
     ctx.strokeStyle=g1;
-    ctx.lineWidth=(thin?1.7:2.55)*near*(0.85+0.15*pulse);
+    ctx.lineWidth=(thin?2.15:3.25)*near*(0.88+0.16*pulse);
     ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-    if(!thin && near>0.45){
-      ctx.strokeStyle=hsl(ei%2?318:186,100,88,Math.min(0.55,0.22*near*pulse));
-      ctx.lineWidth=(thin?0.55:0.85)*near;
+    if(!thin && near>0.4){
+      ctx.strokeStyle=hsl(ei%2?320:184,100,92,Math.min(0.72,0.32*near*pulse));
+      ctx.lineWidth=(thin?0.7:1.15)*near;
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
@@ -6539,15 +6698,16 @@ function drawDodecaFrame(cx,cy,s,t){ /* clientNeonLattice|clientThickSkeleton: M
     const near=Math.max(0.2, Math.min(1, 0.5+(v.d||0)*0.35));
     const hub=0.75+0.25*breath+0.35*sealP+0.2*Math.sin(t*TEMPO.base*TEMPO.jewel+i);
     const hue=i%2?312:186;
-    const rad=(thin?2.1:3.15)*(0.88+0.18*hub)*near;
-    const g=ctx.createRadialGradient(v.x,v.y,0,v.x,v.y,rad*2.6);
-    g.addColorStop(0,hsl(hue,100,88,Math.min(0.95,0.72*near*hub)));
-    g.addColorStop(0.4,hsl(hue,100,62,Math.min(0.55,0.38*near*hub)));
+    /* clientShowpiecePush: luminous hubs */
+    const rad=(thin?2.55:3.85)*(0.9+0.2*hub)*near;
+    const g=ctx.createRadialGradient(v.x,v.y,0,v.x,v.y,rad*3.0);
+    g.addColorStop(0,hsl(hue,100,92,Math.min(0.98,0.88*near*hub)));
+    g.addColorStop(0.35,hsl(hue,100,68,Math.min(0.7,0.5*near*hub)));
     g.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=g;
-    ctx.beginPath(); ctx.arc(v.x,v.y,rad*2.6,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle=hsl(hue,100,78,Math.min(0.95,0.55*near*hub));
-    ctx.beginPath(); ctx.arc(v.x,v.y,rad*0.55,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad*3.0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=hsl(hue,100,86,Math.min(0.98,0.72*near*hub));
+    ctx.beginPath(); ctx.arc(v.x,v.y,rad*0.62,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
 }
@@ -7625,7 +7785,8 @@ function drawDodecaFaceFills(cx,cy,s,t){
   const sw=(skin&&skin.naturalWidth)||512, sh=(skin&&skin.naturalHeight)||512;
   /* regular-ish UV pentagon inscribed in unit square */
   const uvPent=(W,H)=>{
-    const cx=W*0.5, cy=H*0.5, R=Math.min(W,H)*0.46;
+    /* clientShowpiecePush: tighter UV inset so mosaic pattern reads on tumbling faces */
+    const cx=W*0.5, cy=H*0.5, R=Math.min(W,H)*0.485;
     const pts=[];
     for(let i=0;i<5;i++){
       const a=-Math.PI/2 + i*(Math.PI*2/5);
@@ -7658,14 +7819,15 @@ function drawDodecaFaceFills(cx,cy,s,t){
   ctx.save();
   ctx.globalCompositeOperation='source-over';
   for(const it of items){
-    if(!it.front && it.md > -0.05) continue; /* skip strong backfaces */
-    const near=Math.max(0.15, Math.min(1, 0.42+it.md*0.28));
+    if(!it.front && it.md > 0.05) continue; /* clientShowpiecePush: keep more faces in mosaic read */
+    const near=Math.max(0.18, Math.min(1, 0.48+it.md*0.32));
     const img=skin;
     if(!img) continue;
-    const alpha=0.42+0.38*near;
-    /* soft underplate so void gaps don't flash */
-    ctx.globalAlpha=Math.min(0.55, 0.18+0.28*near);
-    ctx.fillStyle='rgba(12,10,18,0.40)';
+    /* clientShowpiecePush: higher face opacity so mosaic reads on dark hex void */
+    const alpha=0.58+0.36*near;
+    /* soft underplate — dark plate, not paper flash */
+    ctx.globalAlpha=Math.min(0.62, 0.22+0.32*near);
+    ctx.fillStyle='rgba(4,6,14,0.55)';
     ctx.beginPath();
     ctx.moveTo(it.pts[0].x,it.pts[0].y);
     for(let i=1;i<5;i++) ctx.lineTo(it.pts[i].x,it.pts[i].y);
@@ -7713,24 +7875,26 @@ function drawCoreSeed(cx,cy,s,t){
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
   const breath=0.55+0.45*Math.sin(t*TEMPO.base*(TEMPO.plasma||TEMPO.rings||1/(PHI*PHI)));
   /* scale ~0.35–0.55 of seal s — lives INSIDE the dodeca as wired center */
-  const k=0.40 + 0.06*breath + 0.08*Math.min(1,sealP);
-  const size=s*Math.max(0.35, Math.min(0.55, k));
-  /* project hub (0,0,0) — same cam/project as omni seal */
+  /* clientShowpiecePush: core-seed welded brighter at hub */
+  const k=0.44 + 0.07*breath + 0.10*Math.min(1,sealP);
+  const size=s*Math.max(0.38, Math.min(0.60, k));
   const hub=project(0,0,0,cx,cy,s);
   const hx=hub[0], hy=hub[1], persp=(hub[3]!=null?hub[3]:1);
-  const drawS=size*Math.max(0.82, Math.min(1.18, persp*1.55));
+  const drawS=size*Math.max(0.85, Math.min(1.22, persp*1.55));
   const roll=cam.roll+cam.userRoll + 0.18*(cam.yaw+cam.userYaw);
-  const a=Math.min(0.92, 0.55 + 0.22*breath + 0.28*Math.min(1,sealP));
+  const a=Math.min(0.98, 0.68 + 0.22*breath + 0.28*Math.min(1,sealP));
   ctx.save();
   ctx.translate(hx, hy);
   ctx.rotate(roll);
   ctx.globalCompositeOperation='screen';
   ctx.globalAlpha=a;
   ctx.drawImage(img, -drawS*0.5, -drawS*0.5, drawS, drawS);
-  /* soft lighter kiss so magenta/yellow mesh blooms as pure light */
   ctx.globalCompositeOperation='lighter';
-  ctx.globalAlpha=a*0.28*(0.7+0.3*breath);
+  ctx.globalAlpha=a*0.42*(0.75+0.25*breath);
   ctx.drawImage(img, -drawS*0.46, -drawS*0.46, drawS*0.92, drawS*0.92);
+  /* extra hub kiss */
+  ctx.globalAlpha=a*0.22*(0.6+0.4*breath);
+  ctx.drawImage(img, -drawS*0.32, -drawS*0.32, drawS*0.64, drawS*0.64);
   ctx.restore();
 }
 
