@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -836,14 +836,16 @@ button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!impo
 #bgField .particlesField .plane{
   width:max(180vw,180vh); height:max(180vw,180vh);
   opacity:1;
-  filter:saturate(1.55) brightness(1.25) contrast(1.08);
+  filter:saturate(1.85) brightness(1.4) contrast(1.12);
+  animation:speedDetailSpin 4.5s linear infinite;
 }
 #bgField .particlesMeta{ z-index:1; }
 #bgField .particlesMeta .plane{
   width:min(95vmin,760px); height:min(95vmin,760px);
   opacity:1;
   mix-blend-mode:screen;
-  filter:saturate(1.7) brightness(1.35) contrast(1.1);
+  filter:saturate(2) brightness(1.5) contrast(1.15);
+  animation:speedDetailSpin 3.2s linear infinite reverse;
 }
 #bgField .tunnelGrid{ z-index:0; opacity:0.25; }
 #bgField .tunnelGrid .plane{ opacity:0.35 !important; }
@@ -855,9 +857,9 @@ button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!impo
 
 /* holoOpacity3D — all visual layers breathe like a volume hologram */
 #bgField{
-  --holo-field:0.42;
-  --holo-meta:0.68;
-  --holo-tunnel:0.22;
+  --holo-field:0.62;
+  --holo-meta:0.88;
+  --holo-tunnel:0.28;
   --holo-fx:0.96;
   --holo-desk:0.96;
   --holo-flicker:1;
@@ -912,6 +914,14 @@ button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!impo
   mix-blend-mode:screen;
   opacity:calc(0.45 * var(--holo-flicker,1));
   animation:holoScan 5.5s linear infinite;
+}
+@keyframes speedDetailSpin{
+  0%{ transform:translate(-50%,-50%) rotateZ(0deg) scale(1); }
+  100%{ transform:translate(-50%,-50%) rotateZ(360deg) scale(1.06); }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .particlesField .plane,
+  #bgField .particlesMeta .plane{ animation:none !important; }
 }
 @keyframes holoScan{
   0%{ transform:translateY(-8%); opacity:0.35; }
@@ -1655,7 +1665,7 @@ const LERP_BASE=reduceMotion?1:(isTouch?0.10:0.13); // refinePolish2: softer set
 const PHI=1.6180339887;
 const TEMPO={
   /* masterpieceFlow: alive but not frantic — base↓; every layer uses base·φ^k */
-  base:0.68,           // rad/s primary yaw (φ family root)
+  base:2.55,           // rad/s primary yaw — speedDetail: was 0.68 funeral crawl
   neon:1/PHI,
   sculpt:1/(PHI*PHI),
   city:1/(PHI*PHI*PHI),     // ≈0.236 field drift
@@ -1681,7 +1691,7 @@ const cam={
   // targets — pointer/wheel/auto write here; render uses lerped values
   tYaw:0.35,tPitch:0.18,tRoll:0,tPanX:0,tPanY:0,tZoom:1,tUserYaw:0,tUserPitch:0,tUserRoll:0,
   // living gyro — TEMPO φ family (tempoHarmonic)
-  gyro:{wx:TEMPO.base, wy:TEMPO.base/PHI, wz:TEMPO.base/(PHI*PHI)}
+  gyro:{wx:TEMPO.base*1.15, wy:TEMPO.base*0.85, wz:TEMPO.base*0.55}
 };
 function lerpCam(dtMs){
   /* frame-rate aware exp smooth — snappy enough, settles soft */
@@ -2217,7 +2227,7 @@ function project(x,y,z,cx,cy,s){
 function holoAlpha(tier, t){
   /* tier 0=far field, 1=mid particles, 2=seal/cage, 3=desk chrome */
   /* depth ladder: far whisper → mid → seal solid → desk readable */
-  const bases=[0.38, 0.64, 0.96, 0.97];
+  const bases=[0.58, 0.82, 0.98, 0.97];
   const base=bases[Math.max(0,Math.min(3,tier|0))]||0.65;
   if(typeof reduceMotion!=="undefined" && reduceMotion) return base;
   const tt=(t==null?(performance.now()*0.001):t);
@@ -2609,6 +2619,16 @@ function drawBoxSphereVents(cx,cy,s,t){
     ctx.fillStyle="rgba(240,171,252,0.92)";
     ctx.beginPath(); ctx.arc(v.x,v.y,lwBase*0.55,0,Math.PI*2); ctx.fill();
   }
+
+  /* speedDetail: face cross-hairs on cube for structure */
+  if(!(W<=480)){
+    const crosses=[[0,2],[1,3],[4,6],[5,7],[0,5],[1,4],[2,7],[3,6],[0,7],[3,4],[1,6],[2,5]];
+    for(const [i,j] of crosses){
+      const A=pv[i], B=pv[j];
+      ctx.strokeStyle="rgba(240,171,252,0.18)"; ctx.lineWidth=lw*0.35;
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+    }
+  }
   /* sphere — radius = half face (even fit inside cube) */
   const R=s*c*0.92;
   const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.25);
@@ -2695,6 +2715,60 @@ function drawBoxSphereVents(cx,cy,s,t){
   ctx.restore();
 }
 
+
+function drawLatticeFaceDetail(cx,cy,s,t,pv){
+  /* speedDetail: pent face spokes + nested inner cage — dense holographic structure */
+  if(!DODECA.faces||!pv||!pv.length) return;
+  const thin=W<=480;
+  if(thin) return;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
+  ctx.globalAlpha=a*0.85;
+  /* spokes: face center → each pent vertex */
+  for(let fi=0;fi<DODECA.faces.length;fi++){
+    const face=DODECA.faces[fi];
+    let sx=0,sy=0,sd=0,n=0;
+    const pts=[];
+    for(const vi of face){
+      const p=pv[vi]; if(!p) continue;
+      pts.push(p); sx+=p.x; sy+=p.y; sd+=p.d; n++;
+    }
+    if(n<3) continue;
+    const fx=sx/n, fy=sy/n, near=Math.max(0.15,Math.min(1,(sd/n+0.5)/1));
+    const pulse=0.65+0.35*Math.sin(t*TEMPO.base*1.8+fi*0.55);
+    for(const p of pts){
+      const g=ctx.createLinearGradient(fx,fy,p.x,p.y);
+      g.addColorStop(0,`rgba(250,232,255,${0.22*near*pulse})`);
+      g.addColorStop(1,`rgba(217,70,239,${0.08*near*pulse})`);
+      ctx.strokeStyle=g; ctx.lineWidth=W<=900?0.55:0.85;
+      ctx.beginPath(); ctx.moveTo(fx,fy); ctx.lineTo(p.x,p.y); ctx.stroke();
+    }
+    /* tiny hub jewel */
+    ctx.fillStyle=`rgba(240,171,252,${0.35*near*pulse})`;
+    ctx.beginPath(); ctx.arc(fx,fy,W<=900?1.1:1.6,0,Math.PI*2); ctx.fill();
+  }
+  /* nested inner dodeca — second shell of detail */
+  if(!(W<=900 && (typeof frameN==="number" && (frameN&1)))){
+    const sc=0.58+0.02*Math.sin(t*TEMPO.base*2.2);
+    const nested=[];
+    for(let i=0;i<DODECA.verts.length;i++){
+      const v=DODECA.verts[i];
+      const pr=project(v.x*sc,v.y*sc,v.z*sc,cx,cy,s);
+      nested.push({x:pr[0],y:pr[1],d:pr[2]});
+    }
+    for(let ei=0;ei<DODECA.edges.length;ei++){
+      const [i,j]=DODECA.edges[ei];
+      const A=nested[i], B=nested[j];
+      const near=Math.max(0.2,Math.min(1,(A.d+B.d)*0.5+0.5));
+      const pulse=0.7+0.3*Math.sin(t*TEMPO.base*2.4+ei*0.3);
+      ctx.strokeStyle=`rgba(232,121,249,${(0.18+0.22*near)*pulse})`;
+      ctx.lineWidth=W<=900?0.7:1.05;
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
 function drawDodecaLatticeCage(cx,cy,s,t){
   /* latticeCage|impressShowpiece — wire dodeca lattice + ghost twin + iridescent edges */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
@@ -2777,6 +2851,8 @@ function drawDodecaLatticeCage(cx,cy,s,t){
     }
     ctx.restore();
   }
+
+  drawLatticeFaceDetail(cx,cy,s,t,pv);
 
   const faceCenters=[];
   for(const fc of DODECA.faceCenters){
@@ -4668,7 +4744,7 @@ let lastYaw=cam.userYaw, lastPitch=cam.userPitch, lastRoll=cam.userRoll;
 let frameN=0;
 function frame(now){
   const dt=now-lastFrameTs; lastFrameTs=now;
-  skipHeavy=dt>18 || reduceMotion; /* stripToBones: skeleton prefers clarity */
+  skipHeavy=dt>32 || reduceMotion; /* speedDetail: keep densify draws */
   const t=(now-t0)*0.001;
   frameN++;
   // cinematic auto-orbit first 3–4s — impressShowpiece power-on punch
@@ -4683,16 +4759,16 @@ function frame(now){
   if(cam.auto){
     /* continuous gyroscopic tumble — integrate angular rates (omni 360°) */
     const dts=Math.min(0.05, Math.max(0, dt)*0.001);
-    const m=(W<=480)?0.42:(W<=900)?0.52:1; /* refinePolish2: damp mobile gyro jitter */
+    const m=(W<=480)?0.88:(W<=900)?0.94:1; /* speedDetail: mobile keeps pace */
     /* impressShowpiece: slightly faster orbit during cinema open */
-    const cinemaSpin=cinemaOn?(1.28+0.18*((cinemaUntil-now)/3800)):1;
+    const cinemaSpin=cinemaOn?(1.85+0.35*((cinemaUntil-now)/3800)):1.35; /* speedDetail: always brisk */
     /* omnidiscipline: conserved angular-momentum family — one φ organism tumble */
     const wx=cam.gyro.wx*(1+0.08*Math.sin(t*TEMPO.base*0.21))*cinemaSpin;
     const wy=cam.gyro.wy*(1+0.07*Math.cos(t*(TEMPO.base*0.21/PHI)))*cinemaSpin;
     const wz=cam.gyro.wz*(1+0.05*Math.sin(t*(TEMPO.base*0.21/(PHI*PHI))))*cinemaSpin;
     cam.tYaw+=wx*dts*m; cam.tPitch+=wy*dts*m; cam.tRoll+=wz*dts*m;
   }
-  const nudge=0.018;
+  const nudge=0.042;
   if(keys.KeyA||keys.ArrowLeft){cam.tUserYaw-=nudge;cam.auto=false;nav.idleAt=now;}
   if(keys.KeyD||keys.ArrowRight){cam.tUserYaw+=nudge;cam.auto=false;nav.idleAt=now;}
   if(keys.KeyW||keys.ArrowUp){cam.tUserPitch-=nudge;cam.auto=false;nav.idleAt=now;}
