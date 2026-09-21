@@ -4,12 +4,12 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta name="description" content="Offline Headroom×Seraphim dump organizer. Sort through S_H = S_solv · R_H — crystallize inside the seal, release outside. Fail-closed. Soft."/>
+<meta name="description" content="Seraphim organizer: drop a disorganized dump, get an organized field. Soft."/>
 <meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:title" content="SERAPHIM ORGANIZER"/>
-<meta property="og:description" content="Crystallize = keep inside the seal. Release = soft outside. S_H = S_solv · R_H, fail-closed."/>
+<meta property="og:description" content="Disorganized in. Organized out. Soft."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://snowphamtom.github.io/seraphim-organizer/"/>
 <meta name="twitter:card" content="summary_large_image"/>
@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -528,10 +528,10 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 </header>
 <div id="introChip" role="status" hidden aria-hidden="true"></div>
 
-<section id="sortDesk" aria-label="Upload dump and view sorted figures">
+<section id="sortDesk" aria-label="Disorganized dump in, organized figures out">
   <div id="uploadBox" tabindex="0">
-    <div class="uh"><b>Upload dump</b><span>csv · tsv · json · txt · md</span></div>
-    <div class="dropHint">Drop a file here, or <em>choose</em> / paste below</div>
+    <div class="uh"><b>Disorganized</b><span>csv · tsv · json · txt · md</span></div>
+    <div class="dropHint">Drop a disorganized dump, or <em>choose</em> / paste below</div>
     <div class="actions">
       <label class="filebtn">Choose file<input type="file" id="fileDesk" accept=".csv,.tsv,.json,.jsonl,.txt,.md,.ndjson" hidden/></label>
       <button type="button" id="runSort" class="primary">Sort → figures</button>
@@ -544,15 +544,15 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
         <option value="nonsense">Constant nonsense</option>
       </select>
     </div>
-    <textarea id="pasteDesk" placeholder="paste dump rows here…" rows="2"></textarea>
+    <textarea id="pasteDesk" placeholder="paste disorganized rows…" rows="2"></textarea>
   </div>
   <div id="sortedFigures" aria-live="polite">
     <div class="tray admit" id="trayAdmit">
-      <h3>Crystallized <span class="count" id="figAdmitN">0</span></h3>
+      <h3>Organized <span class="count" id="figAdmitN">0</span></h3>
       <div class="chips" id="figAdmit"><div class="empty">Sorted keepers appear here</div></div>
     </div>
     <div class="tray release" id="trayRelease">
-      <h3>Released <span class="count" id="figReleaseN">0</span></h3>
+      <h3>Aside <span class="count" id="figReleaseN">0</span></h3>
       <div class="chips" id="figRelease"><div class="empty">Soft outside S<sub>H</sub> appear here</div></div>
     </div>
   </div>
@@ -605,8 +605,8 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
     <div><kbd>F</kbd> fullscreen · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> solo layers · blend resumes</div>
     <div><kbd>✦</kbd> constellation · <kbd>◫</kbd> snapshot · <kbd>?</kbd> this sheet</div>
     <div class="legend">
-      <span><span class="sw" style="background:#56b4c2"></span>CRYSTALLIZE = kept inside seal</span>
-      <span><span class="sw" style="background:#c664c0"></span>RELEASE = soft outside S<sub>H</sub></span>
+      <span><span class="sw" style="background:#56b4c2"></span>ORGANIZED = kept in the field</span>
+      <span><span class="sw" style="background:#c664c0"></span>ASIDE = soft out</span>
     </div>
   </div>
 </div>
@@ -977,7 +977,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -3140,8 +3140,8 @@ function drawCanvasLabels(cx,cy,s,mouths,verts){
   const side=narrow?0.42:0.68;
   const fsz=narrow?Math.min(8,Math.max(6,s*0.028)):Math.min(10,Math.max(8,s*0.024));
   ctx.globalAlpha=narrow?0.55:0.72;
-  neonLabel("CRYSTALLIZE",cx-s*side,cy-s*0.02,"#56b4c2",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
-  neonLabel("RELEASE",cx+s*side,cy+s*0.02,"#c664c0",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
+  neonLabel("ORGANIZED",cx-s*side,cy-s*0.02,"#56b4c2",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
+  neonLabel("ASIDE",cx+s*side,cy+s*0.02,"#c664c0",`300 ${fsz}px ui-sans-serif, system-ui, sans-serif`);
   ctx.restore();
 }
 function ingestVerdicts(verdicts){
@@ -3271,7 +3271,7 @@ function pushLog(verdicts){
   const log=$("log"), frag=document.createDocumentFragment(), now=new Date();
   verdicts.slice(-18).reverse().forEach((v,idx)=>{ /* refine: quieter log — 18 rows */
     const ev=document.createElement("div"); ev.className="ev"; ev.dataset.id=v.id;
-    const dec=v.decision==="admit"?"CRYSTALLIZE":"RELEASE", cls=v.decision==="admit"?"a":"r";
+    const dec=v.decision==="admit"?"ORGANIZED":"ASIDE", cls=v.decision==="admit"?"a":"r";
     const title=(v.t||"").slice(0,36), tt=new Date(now.getTime()-idx*280);
     ev.innerHTML=`<span class="t">${hhmmss(tt)}</span><span class="d ${cls}">${dec}</span><span class="title">${esc(title)}</span>`;
     ev.onclick=()=>focusNode(v.id); frag.appendChild(ev);
@@ -3356,7 +3356,7 @@ function focusNode(id){
   document.querySelectorAll("#log .ev").forEach(el=>{el.classList.toggle("focus",String(el.dataset.id)===String(id));});
   if(lastResult){const v=lastResult.verdicts.find(x=>String(x.id)===String(id)); if(v){
     tip.style.display="block"; tip.className=v.decision;
-    tip.innerHTML=`<b>${v.decision==="admit"?"CRYSTALLIZE":"RELEASE"}</b><span class="whisper">${esc(v.t.slice(0,120))}</span><div class="gate">S_solv=${v.S_solv?1:0} · R_H=${v.R_H?1:0} · S_H=${v.S_H?1:0}<br/>${esc(v.cause)}</div>`;
+    tip.innerHTML=`<b>${v.decision==="admit"?"ORGANIZED":"ASIDE"}</b><span class="whisper">${esc(v.t.slice(0,120))}</span>`;
     const tw=290, th=110;
     let lx=tipPos.x+16, ly=tipPos.y+16;
     // Prefer lower-right quadrant; never park over orbit dead-center
