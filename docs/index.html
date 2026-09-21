@@ -783,7 +783,7 @@ const STORIES = {
 15,Solvency Interior Claimed rails,code`
 };
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground */
+/* SERAPHIM_MARKERS:antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground */
 const canvas=document.getElementById("fx");
 const ctx=canvas.getContext("2d",{alpha:true,desynchronized:true});
 let W=0,H=0,DPR=1,t0=performance.now();
@@ -920,6 +920,36 @@ function buildDodecahedron(){
   return {verts,edges,faces,faceCenters};
 }
 const DODECA=buildDodecahedron(); /* init once: 20 verts, 30 edges, 12 faces */
+/* —— inner cube crystal (admit-mass lattice targets inside dodeca) —— */
+function buildInnerCube(){
+  /* half-size c sits clearly inside dodeca radius ~1.05; frames voxel cube (~±0.1) */
+  const c=0.29;
+  const corners=[];
+  for(const x of[-c,c]) for(const y of[-c,c]) for(const z of[-c,c]) corners.push({x,y,z});
+  /* 12 edges: pairs differing in exactly one axis */
+  const edges=[];
+  for(let i=0;i<8;i++) for(let j=i+1;j<8;j++){
+    let diff=0;
+    if(corners[i].x!==corners[j].x) diff++;
+    if(corners[i].y!==corners[j].y) diff++;
+    if(corners[i].z!==corners[j].z) diff++;
+    if(diff===1) edges.push([i,j]);
+  }
+  const faceCenters=[
+    {x:c,y:0,z:0},{x:-c,y:0,z:0},
+    {x:0,y:c,z:0},{x:0,y:-c,z:0},
+    {x:0,y:0,z:c},{x:0,y:0,z:-c}
+  ];
+  /* optional edge midpoints for denser tether options */
+  const edgeMids=edges.map(([i,j])=>({
+    x:(corners[i].x+corners[j].x)*0.5,
+    y:(corners[i].y+corners[j].y)*0.5,
+    z:(corners[i].z+corners[j].z)*0.5
+  }));
+  return {c,corners,edges,faceCenters,edgeMids,_proj:null};
+}
+const INNER_CUBE=buildInnerCube(); /* 8 corners + 12 edges + 6 faces; c=0.29 */
+
 /* —— three.js WebGL orbit (import when holds; silent fallback) —— */
 let threeOk=false, threeRenderer=null, threeScene=null, threeCam=null, threePoints=null, threeHex=null, threeClock=0;
 function bootThreeOrbit(){
@@ -1473,6 +1503,59 @@ function drawDodecaFrame(cx,cy,s,t){
 }
 const drawHexFrame=drawDodecaFrame; /* alias — existing call sites keep working */
 
+function drawInnerCubeWire(cx,cy,s,t){
+  /* crisp luminous cube wireframe — inner crystal receiving tethers; paints with dodeca FG */
+  const proj=INNER_CUBE._proj;
+  if(!proj||!proj.corners||proj.corners.length<8) return;
+  const aHex=layerAlpha("hex");
+  const thin=W<=480, mobile=W<=900;
+  const cc=proj.corners;
+  const edged=INNER_CUBE.edges.map(([i,j],ei)=>{
+    const a=cc[i], b=cc[j];
+    return {a,b,ei,md:(a.d+b.d)*0.5};
+  }).sort((u,v)=>u.md-v.md);
+  ctx.save(); ctx.globalAlpha=aHex; ctx.globalCompositeOperation="lighter";
+  const lw=thin?1.0:(mobile?1.35:1.85);
+  for(const ed of edged){
+    const {a,b,ei,md}=ed;
+    const near=Math.max(0, Math.min(1, (md+0.45)/0.95));
+    const hue=148+ei*7+t*28;
+    const g=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+    addStops(g,[
+      [0,hsl(hue,100,54,0.42+near*0.38)],
+      [0.5,hsl(hue+35,100,66,0.55+near*0.35)],
+      [1,hsl(hue+10,100,54,0.42+near*0.38)]
+    ]);
+    ctx.strokeStyle=g; ctx.lineWidth=lw*(0.65+near*0.7);
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    if(!thin){
+      ctx.lineWidth=lw*2.8; ctx.strokeStyle=hsl(hue,100,48,0.08+near*0.08);
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+  }
+  /* corner nodes — tether lock points */
+  for(let i=0;i<cc.length;i++){
+    const v=cc[i];
+    const pulse=0.55+0.45*Math.sin(t*3.2+i*0.9);
+    const near=Math.max(0.3, Math.min(1,(v.d+0.45)/0.9));
+    ctx.fillStyle=hsl(150+i*12+t*30,100,64,0.62*pulse*near);
+    ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.4:2.2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*0.38*pulse*near;
+    ctx.beginPath(); ctx.arc(v.x,v.y,0.75,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha=aHex;
+  }
+  /* face-center micro-nodes */
+  if(proj.faceCenters&&!thin){
+    for(let i=0;i<proj.faceCenters.length;i++){
+      const v=proj.faceCenters[i];
+      const near=Math.max(0.25, Math.min(1,(v.d+0.4)/0.85));
+      ctx.fillStyle=hsl(170+i*18+t*20,90,58,0.35*near);
+      ctx.beginPath(); ctx.arc(v.x,v.y,mobile?1.0:1.35,0,Math.PI*2); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
 
 function drawStarfieldInPanels(cx,cy,s,t,verts){
   /* dodeca: skip 6-wedge clip (broken on 12-face mesh); soft global cool field instead */
@@ -1732,70 +1815,113 @@ function projectDodecaSeal(cx,cy,s){
   DODECA._faceCenters2d=faceCenters;
   return faceCenters;
 }
+function projectInnerCube(cx,cy,s){
+  /* project cube corners / face centers / edges for lattice tethers + foreground wire */
+  const corners=[];
+  for(let i=0;i<INNER_CUBE.corners.length;i++){
+    const v=INNER_CUBE.corners[i];
+    const pr=project(v.x,v.y,v.z,cx,cy,s);
+    corners.push({x:pr[0],y:pr[1],d:pr[2],i});
+  }
+  const faceCenters=[];
+  for(const fc of INNER_CUBE.faceCenters){
+    const pr=project(fc.x,fc.y,fc.z,cx,cy,s);
+    faceCenters.push({x:pr[0],y:pr[1],d:pr[2]});
+  }
+  const edgeMids=[];
+  for(const em of INNER_CUBE.edgeMids){
+    const pr=project(em.x,em.y,em.z,cx,cy,s);
+    edgeMids.push({x:pr[0],y:pr[1],d:pr[2]});
+  }
+  /* primary tether anchors: 8 corners + 6 face centers (=14) */
+  const anchors=corners.concat(faceCenters);
+  INNER_CUBE._proj={corners,faceCenters,edgeMids,anchors};
+  return INNER_CUBE._proj;
+}
 function hashFigId(id){
   let h=2166136261|0; const str=String(id==null?"":id);
   for(let i=0;i<str.length;i++){h^=str.charCodeAt(i); h=Math.imul(h,16777619);}
   return h>>>0;
 }
 function drawOrganizeLattice(cx,cy,s,t){
-  /* organizing lattice mesh — figures → seal nodes; node↔node crystalline close.
+  /* organizing lattice mesh — figures → INNER CUBE nodes; faint dodeca scaffold mid.
      Short structural segments only (not curly threads / trails). */
   const pv=DODECA._projVerts, fcs=DODECA._faceCenters2d;
+  const cubeProj=INNER_CUBE._proj;
   if(!pv||pv.length<3) return;
   const mobile=W<=900, thin=W<=480;
   const step=thin?4:(mobile?3:1);
   const maxSeg=s*(thin?0.18:mobile?0.22:0.28);
   const shOn=sealLockFlash>0.04||sealPulse>0.08||(typeof lastCI==="number"&&lastCI>0&&prevSH);
   const pulse=shOn?(0.62+0.38*Math.sin(t*4.5)):(0.38+0.18*Math.sin(t*1.35));
-  /* structural anchors: dodeca verts + face centers + live node hubs */
-  const anchors=[];
-  for(const v of pv) anchors.push({x:v.x,y:v.y,d:v.d});
-  if(fcs) for(const fc of fcs) anchors.push({x:fc[0],y:fc[1],d:fc[2]});
-  for(const p of nodes){ if(p._px!=null) anchors.push({x:p._px,y:p._py,d:0}); }
-  if(!anchors.length) return;
-  ctx.save(); ctx.globalCompositeOperation="lighter";
-  /* A) faint dodeca-edge-aligned scaffold (mid) — densifying toward seal; full bright edges paint later in foreground */
-  ctx.lineWidth=thin?0.45:0.55;
-  for(const [i,j] of DODECA.edges){
-    const a=pv[i], b=pv[j]; if(!a||!b) continue;
-    const md=(a.d+b.d)*0.5;
-    const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
-    ctx.strokeStyle=hsl(168+t*16,82,54,(0.035+0.07*depth)*pulse);
-    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+  /* primary tether targets: cube corners + face centers (14); hash % count for stable assign */
+  const cubeAnchors=(cubeProj&&cubeProj.anchors&&cubeProj.anchors.length)?cubeProj.anchors.slice():[];
+  if(!cubeAnchors.length && cubeProj&&cubeProj.corners){
+    for(const v of cubeProj.corners) cubeAnchors.push(v);
+    if(cubeProj.faceCenters) for(const fc of cubeProj.faceCenters) cubeAnchors.push(fc);
   }
-  /* B) face-center k-NN (k=2) — closing mesh between mouths */
-  if(fcs&&fcs.length>=3&&!thin){
+  /* faint optional: live node hubs as last-resort fallback only */
+  const fallback=[];
+  for(const p of nodes){ if(p._px!=null) fallback.push({x:p._px,y:p._py,d:0}); }
+  if(!cubeAnchors.length && !fallback.length) return;
+  ctx.save(); ctx.globalCompositeOperation="lighter";
+  /* A) faint dodeca-edge scaffold (mid) — structural whisper; tethers hit cube not dodeca */
+  if(pv&&pv.length>=3){
+    ctx.lineWidth=thin?0.35:0.45;
+    for(const [i,j] of DODECA.edges){
+      const a=pv[i], b=pv[j]; if(!a||!b) continue;
+      const md=(a.d+b.d)*0.5;
+      const depth=Math.max(0.12, Math.min(1,(md+0.55)/1.05));
+      ctx.strokeStyle=hsl(168+t*16,82,54,(0.02+0.045*depth)*pulse);
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+  }
+  /* A2) faint cube-edge scaffold toward crystal — densifies toward inner mass */
+  if(cubeProj&&cubeProj.corners&&cubeProj.corners.length>=8){
+    const cc=cubeProj.corners;
+    ctx.lineWidth=thin?0.5:0.65;
+    for(const [i,j] of INNER_CUBE.edges){
+      const a=cc[i], b=cc[j]; if(!a||!b) continue;
+      const md=(a.d+b.d)*0.5;
+      const depth=Math.max(0.15, Math.min(1,(md+0.45)/0.95));
+      ctx.strokeStyle=hsl(155+t*22,88,56,(0.05+0.10*depth)*pulse);
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+  }
+  /* B) cube face-center k-NN whisper (desktop) */
+  const cfc=cubeProj&&cubeProj.faceCenters;
+  if(cfc&&cfc.length>=3&&!thin){
     ctx.lineWidth=0.5;
-    for(let i=0;i<fcs.length;i++){
+    for(let i=0;i<cfc.length;i++){
       const dists=[];
-      for(let j=0;j<fcs.length;j++){
+      for(let j=0;j<cfc.length;j++){
         if(i===j) continue;
-        dists.push({j,d:Math.hypot(fcs[i][0]-fcs[j][0],fcs[i][1]-fcs[j][1])});
+        dists.push({j,d:Math.hypot(cfc[i].x-cfc[j].x,cfc[i].y-cfc[j].y)});
       }
       dists.sort((u,v)=>u.d-v.d);
       for(let k=0;k<2&&k<dists.length;k++){
-        const nb=dists[k]; if(!nb||nb.d>s*0.58||i>nb.j) continue;
-        const md=(fcs[i][2]+fcs[nb.j][2])*0.5;
+        const nb=dists[k]; if(!nb||nb.d>s*0.4||i>nb.j) continue;
+        const md=(cfc[i].d+cfc[nb.j].d)*0.5;
         const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
-        ctx.strokeStyle=hsl(195+t*10,78,52,(0.03+0.06*depth)*pulse);
-        ctx.beginPath(); ctx.moveTo(fcs[i][0],fcs[i][1]); ctx.lineTo(fcs[nb.j][0],fcs[nb.j][1]); ctx.stroke();
+        ctx.strokeStyle=hsl(175+t*12,80,54,(0.04+0.07*depth)*pulse);
+        ctx.beginPath(); ctx.moveTo(cfc[i].x,cfc[i].y); ctx.lineTo(cfc[nb.j].x,cfc[nb.j].y); ctx.stroke();
       }
     }
   }
-  /* C) each visible background figure → assigned/nearest anchor (short segment) */
+  /* C) each visible background figure → cube node (hash % anchors / nearest cube) */
   function linkFigure(px,py,id,hue,boost){
     if(px==null||py==null||!Number.isFinite(px)) return;
-    const prefer=anchors[hashFigId(id)%anchors.length];
+    const pool=cubeAnchors.length?cubeAnchors:fallback;
+    const prefer=pool[hashFigId(id)%pool.length];
     let best=null, bestD=1e9;
     if(prefer){
       const d=Math.hypot(px-prefer.x,py-prefer.y);
       if(d<maxSeg*1.4){best=prefer;bestD=d;}
     }
     if(!best){
-      /* nearest among a small probe set for perf */
-      const nA=anchors.length, stride=nA>48?2:1;
-      for(let ai=0;ai<nA;ai+=stride){
-        const a=anchors[ai];
+      /* nearest cube node (full scan — pool is tiny: 14) */
+      for(let ai=0;ai<pool.length;ai++){
+        const a=pool[ai];
         const d=Math.hypot(px-a.x,py-a.y);
         if(d<bestD){bestD=d;best=a;}
       }
@@ -1810,7 +1936,7 @@ function drawOrganizeLattice(cx,cy,s,t){
       const u=bestD>maxSeg?(maxSeg/bestD):1;
       x1=px+(best.x-px)*u; y1=py+(best.y-py)*u;
       const depth=best.d!=null?Math.max(0.18,Math.min(1,(best.d+0.5)/1.0)):0.65;
-      const a=(0.09+0.11*depth)*pulse*(boost?1.35:1);
+      const a=(0.10+0.12*depth)*pulse*(boost?1.35:1);
       ctx.strokeStyle=hsl(hue||165,90,54,a);
     }
     ctx.lineWidth=0.6;
@@ -2177,8 +2303,9 @@ function frame(now){
   if(!skipHeavy) drawFogShards(cxS,cyS,s,t,orbitSpeed);
   drawGhostOrbits(cxH,cyH,s,t);
   drawDualHexGhost(cxH,cyH,s,t);
-  // project seal anchors early (no paint) for funnels / lattice
+  // project seal anchors early (no paint) for funnels / lattice / cube tethers
   const verts=projectDodecaSeal(cxH,cyH,s);
+  projectInnerCube(cxH,cyH,s);
   if(!reduceMotion) drawStarfieldInPanels(cxS,cyS,s,t,verts);
   // 3–4) mid — data organizing into seal (voxels/mint/lattice/funnels/hubs)
   const mouths=drawFunnelsAndBeams(cxH,cyH,s,t);
@@ -2192,8 +2319,9 @@ function frame(now){
   drawBloomClamp(cx0,cy0,s);
   drawFilmGrain();
   drawSoftCrossVeil();
-  // 5) dodeca + contents ALWAYS foreground — nothing after paints over the crystal
+  // 5) dodeca + inner cube + contents ALWAYS foreground — nothing after paints over the crystal
   drawHexFrame(cxH,cyH,s,t);
+  drawInnerCubeWire(cxH,cyH,s,t); /* cubeTether — luminous inner crystal receiving lattice */
   drawNestedSeals(cxH,cyH,s,t);
   drawChromaticHexEdges(verts,t);
   if(!skipHeavy) drawSphereWire(cxH,cyH,s*0.96,t);
