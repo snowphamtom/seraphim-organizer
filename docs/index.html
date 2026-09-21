@@ -2622,6 +2622,73 @@ html,body{
 }
 
 
+
+/* clientNoUnusedSpace — every viewport pixel owns field; overflow-clipped cover */
+#bgField .duoField{
+  inset:0!important;
+  overflow:hidden!important;
+  /* cover after rotateX/Z without letterbox void */
+  --fill-w:max(100vw,100vh)!important;
+  --fill-h:max(100vw,100vh)!important;
+  perspective:140vw!important;
+  perspective-origin:50% 50%!important;
+}
+#bgField .duoField img{
+  /* square cover ≥ viewport so tilt/spin never reveals black */
+  width:var(--fill-w)!important;
+  height:var(--fill-h)!important;
+  max-width:none!important;
+  max-height:none!important;
+  min-width:100vw!important;
+  min-height:100vh!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+}
+/* kill empty void vignette — field goes edge to edge */
+#bgField .duoField::after{
+  background:
+    radial-gradient(ellipse 85% 80% at 50% 50%, transparent 55%, rgba(0,0,0,.18) 100%)!important;
+  opacity:.55!important;
+}
+#bgField{
+  --duo-tilt:5deg!important;
+  --duo-z-a:-24px!important;
+  --duo-z-b:12px!important;
+}
+#bgField .duoField .hybridA{
+  opacity:.88!important;
+  filter:contrast(1.55) brightness(1.05) saturate(1.15) hue-rotate(10deg)!important;
+}
+#bgField .duoField .hybridB{
+  opacity:1!important;
+  filter:contrast(1.58) brightness(1.2) saturate(1.4)!important;
+}
+/* desk rides mid-band so vertical space is used, not parked in a bottom gutter */
+#uploadBox{
+  left:max(12px,3vw)!important;
+  top:max(72px, calc(var(--safe-t) + 56px))!important;
+  bottom:auto!important;
+  width:min(360px,42vw)!important;
+}
+#sortedFigures{
+  right:max(12px,3vw)!important;
+  top:max(72px, calc(var(--safe-t) + 56px))!important;
+  bottom:auto!important;
+  width:min(400px,44vw)!important;
+}
+@media (max-width:900px){
+  #uploadBox{
+    left:8px!important; right:8px!important; width:auto!important;
+    top:auto!important;
+    bottom:max(12px, calc(var(--safe-b) + 8px))!important;
+  }
+  #sortedFigures{
+    left:8px!important; right:8px!important; width:auto!important;
+    top:auto!important;
+    bottom:max(200px, calc(var(--safe-b) + 190px))!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -6134,9 +6201,9 @@ function syncSpinPhase(t){
   if(typeof reduceMotion!=="undefined" && reduceMotion){
     _bgFieldEl.style.setProperty("--duo-a","0deg");
     _bgFieldEl.style.setProperty("--duo-b","0deg");
-    _bgFieldEl.style.setProperty("--duo-tilt","14deg");
-    _bgFieldEl.style.setProperty("--duo-z-a","-88px");
-    _bgFieldEl.style.setProperty("--duo-z-b","32px");
+    _bgFieldEl.style.setProperty("--duo-tilt","5deg");
+    _bgFieldEl.style.setProperty("--duo-z-a","-24px");
+    _bgFieldEl.style.setProperty("--duo-z-b","12px");
     return;
   }
   const base=(typeof TEMPO!=="undefined"&&TEMPO.base)?TEMPO.base:3.45;
@@ -6146,7 +6213,8 @@ function syncSpinPhase(t){
   const theta=t*omega;
   const degA=(theta*180/Math.PI);
   const degB=(theta/phi*180/Math.PI);
-  const tilt=(14+1.236*Math.sin(t*base*(1/phi)*0.28)).toFixed(2)+"deg";
+  /* shallow tilt — fills frame; no empty foreshorten void */
+  const tilt=(5+0.8*Math.sin(t*base*(1/phi)*0.28)).toFixed(2)+"deg";
   const a=degA.toFixed(3)+"deg";
   const b=degB.toFixed(3)+"deg";
   if(_bgFieldEl._duoA!==a || _bgFieldEl._duoB!==b || _bgFieldEl._duoTilt!==tilt){
@@ -6154,8 +6222,8 @@ function syncSpinPhase(t){
     _bgFieldEl.style.setProperty("--duo-a", a);
     _bgFieldEl.style.setProperty("--duo-b", b);
     _bgFieldEl.style.setProperty("--duo-tilt", tilt);
-    _bgFieldEl.style.setProperty("--duo-z-a", "-88px");
-    _bgFieldEl.style.setProperty("--duo-z-b", "32px");
+    _bgFieldEl.style.setProperty("--duo-z-a", "-24px");
+    _bgFieldEl.style.setProperty("--duo-z-b", "12px");
   }
 }
 
