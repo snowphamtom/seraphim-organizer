@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -356,18 +356,22 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 }
 
 #bgField .meta.cluster{
-  /* city-glint — full-bleed dark geometric HUD field behind seal */
+  /* terrain-warp — cyan/magenta crystalline grid, diagonal scroll + undulation (JS) */
   inset:0;width:auto;height:auto;top:0;left:0;right:0;bottom:0;transform:none;
-  background-image:url(bg-city-glint.gif);
-  background-size:cover;background-position:center;background-repeat:no-repeat;
-  opacity:0.55;mix-blend-mode:normal;filter:contrast(1.05) saturate(1.05);
-  pointer-events:none;transform-origin:center center;will-change:transform,opacity;
+  background-image:url(bg-terrain-warp.gif);
+  background-size:155% 155%;
+  background-position:50% 50%;
+  background-repeat:repeat;
+  opacity:0.62;mix-blend-mode:screen;
+  filter:contrast(1.12) saturate(1.25) brightness(0.95);
+  pointer-events:none;transform-origin:center center;
+  will-change:transform,opacity,background-position;
 }
 @media (max-width:900px){
-  #bgField .meta.cluster{opacity:0.45;filter:contrast(1.02) saturate(1.02)}
+  #bgField .meta.cluster{opacity:0.48;background-size:170% 170%;filter:contrast(1.08) saturate(1.15) brightness(0.92)}
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField .meta.cluster{opacity:0.45}
+  #bgField .meta.cluster{opacity:0.35;background-size:cover;background-position:center}
 }
 
 #bgField .meta.sculpture{
@@ -875,7 +879,7 @@ const STORIES = {
    - fogShards: skip ≤900; α×0.5
    - ghostOrbits / dualGhost: skip ≤900; α×0.5 (prior-shell memory)
    - nested shells: 2 rings max, α×0.5 (depth cue, not second seal)
-   - gyroHarmony: all figures share seal center; φ-family spin/opacity/spacing; city→sculpture→neon→rays→rings→seal
+   - gyroHarmony + terrainWarp: crystalline cyan/magenta grid scrolls diagonally + undulates; shared seal center with sculpture/neon/rays
    - chromatic edges: skip ≤900; α×0.5 (magenta/cyan/indigo fringe)
    - sphere wire: skip ≤900; desktop α×0.35 (no globe vs dodeca fight)
    - depth vignette: outer α cut (GIF is the void)
@@ -899,7 +903,9 @@ const TEMPO={
   city:0.12,                // slow field drift
   rays:0.55,                // bridge spokes
   rings:0.34,               // orbit rings
-  lattice:0.5
+  lattice:0.5,
+  terrain:0.28,   // diagonal treadmill
+  undulate:0.55  // vertical warp breathe
 };
 const cam={
   yaw:0.35,pitch:0.18,roll:0,panX:0,panY:0,zoom:1,auto:!reduceMotion,
@@ -1770,10 +1776,17 @@ function syncGyroSharedCenter(cx,cy,s,t){
   }
   /* city field: tiny shared-center drift (not full spin — cover stays readable) */
   if(_cityEl){
-    const crot=t*TEMPO.base*TEMPO.city*12 + yaw*4;
+    /* vaporwave terrain: diagonal treadmill + undulating warp around seal center */
+    const ox=(t*TEMPO.base*TEMPO.terrain*42)%100;
+    const oy=(t*TEMPO.base*TEMPO.terrain*28)%100;
+    /* bottom-left scroll feel: increase x%, decrease y% */
+    _cityEl.style.backgroundPosition=(50+ox)+"% "+(50-oy)+"%";
+    const und=Math.sin(t*TEMPO.base*TEMPO.undulate*PHI)*2.4;
+    const und2=Math.cos(t*TEMPO.base*TEMPO.undulate)*1.6;
+    const crot=yaw*3 + Math.sin(t*TEMPO.base*TEMPO.city)*2;
     _cityEl.style.transformOrigin=(cx/Math.max(W,1)*100)+"% "+(cy/Math.max(H,1)*100)+"%";
-    _cityEl.style.transform="rotate("+crot+"deg) scale(1.08)";
-    _cityEl.style.opacity=String((W<=900?0.40:0.52)+(0.06*breath2));
+    _cityEl.style.transform="translate("+und+"px,"+(-und*0.65+und2)+"px) rotate("+crot+"deg) scale("+(1.12+0.04*breath2)+") skewX("+(und*0.2)+"deg) skewY("+(und2*0.12)+"deg)";
+    _cityEl.style.opacity=String((W<=900?0.42:0.58)+(0.08*breath)+(0.04*breath2));
   }
 }
 
