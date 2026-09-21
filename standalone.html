@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientBlueFive|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|holoOpacity3D|holoDepth|holoVibrant|impressShowpiece|speedDetail|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent|cyberNatureFormat|magpieWorkFormat|magpieImpressSupersede|innerNodePlexus|nodesWiredSeal|nodeNetLattice|clientQuadFib|clientMathGif|clientNodesMath|clientBlueFive|mergePolish: Magpie WORK dense data instrument — seal/rings/streams/rail/spectrum; no forest */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -2411,53 +2411,93 @@ html,body{ background:#000!important; color:var(--ink)!important; }
 }
 
 
-/* clientMathGif — Seraphim/Magpie math rendered as sole field GIF */
+/* clientNodesMath — PI-SLICES lattice over quad Fibonacci + legacy math */
 #bgField > .blueStack,
 #bgField > .duoField,
 #bgField > .uniStack,
 #bgField > .trioStack{ display:none!important; }
-#bgField > .mathField{
-  position:fixed!important; inset:0!important; z-index:1!important;
+#bgField{
+  position:fixed!important; inset:0!important; z-index:0!important;
+  pointer-events:none!important; overflow:hidden!important;
+  background:#000!important;
+  perspective:1200px;
+  --field-tilt:6deg;
+}
+#bgField > .mathField,
+#bgField > .nodeField{
+  position:fixed!important; inset:0!important;
   pointer-events:none!important; overflow:hidden!important;
   display:grid!important; place-items:center!important;
-  background:#000!important;
+  background:transparent!important;
 }
-#bgField > .mathField img{
-  width:max(100vw,100vh)!important;
-  height:max(100vw,100vh)!important;
+#bgField > .mathField.legacy{ z-index:1!important; }
+#bgField > .mathField.quad{ z-index:2!important; }
+#bgField > .nodeField{ z-index:3!important; }
+#bgField > .mathField img,
+#bgField > .nodeField img{
+  width:min(120vmax,2100px)!important;
+  height:min(120vmax,2100px)!important;
   max-width:none!important; max-height:none!important;
   object-fit:cover!important;
   object-position:center!important;
   mix-blend-mode:screen!important;
-  opacity:1!important;
-  filter:contrast(1.25) brightness(1.1) saturate(1.2)!important;
   transform-origin:center center;
+  transform:rotateX(var(--field-tilt,6deg));
+}
+#bgField > .mathField.legacy img{
+  opacity:0.30!important;
+  filter:contrast(1.15) brightness(1.05) saturate(1.05)!important;
   animation:mathSpin 96s linear infinite;
 }
+#bgField > .mathField.quad img{
+  opacity:0.50!important;
+  filter:contrast(1.2) brightness(1.08) saturate(1.15)!important;
+  animation:mathSpin 155s linear infinite; /* φ·96 ≈ 155 */
+}
+#bgField > .nodeField img{
+  opacity:0.95!important;
+  filter:contrast(1.2) brightness(1.12) saturate(1.25)!important;
+  animation:nodeSpin 155s linear infinite; /* slower counter φ to mathSpin */
+}
 @keyframes mathSpin{
-  from{ transform:rotate(0deg); }
-  to{ transform:rotate(360deg); }
+  from{ transform:rotateX(var(--field-tilt,6deg)) rotate(0deg); }
+  to{ transform:rotateX(var(--field-tilt,6deg)) rotate(360deg); }
+}
+@keyframes nodeSpin{
+  from{ transform:rotateX(var(--field-tilt,6deg)) rotate(0deg); }
+  to{ transform:rotateX(var(--field-tilt,6deg)) rotate(-360deg); }
 }
 @media (prefers-reduced-motion:reduce){
-  #bgField > .mathField img{ animation:none!important; }
-  #bgField > .mathField img.anim{ display:none!important; }
-  #bgField > .mathField img.still{ display:block!important; }
+  #bgField > .mathField img,
+  #bgField > .nodeField img{
+    animation:none!important;
+    transform:rotateX(var(--field-tilt,6deg))!important;
+  }
+  #bgField > .mathField img.anim,
+  #bgField > .nodeField img.anim{ display:none!important; }
+  #bgField > .mathField img.still,
+  #bgField > .nodeField img.still{ display:block!important; }
 }
-#bgField > .mathField img.still{ display:none; }
+#bgField > .mathField img.still,
+#bgField > .nodeField img.still{ display:none; }
 #fx,#fxgl,#dataRail,#specBar{ display:none!important; opacity:0!important; }
 body{ background:#000!important; }
 
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true"><!-- clientQuadFib: Residual Closure + Fibonacci Braiding -->
+<div id="bgField" aria-hidden="true"><!-- clientNodesMath: PI-SLICES lattice over quad Fibonacci -->
   <div class="mathField legacy" aria-hidden="true">
     <img class="anim" src="media/math-seraphim.webp" alt="" width="480" height="480" decoding="async">
     <img class="still" src="media/math-seraphim.png" alt="" width="480" height="480" decoding="async">
   </div>
   <div class="mathField quad" aria-hidden="true">
-    <img class="anim" src="media/math-quad-fib.webp" alt="" width="512" height="512" decoding="async" fetchpriority="high">
+    <img class="anim" src="media/math-quad-fib.webp" alt="" width="512" height="512" decoding="async">
     <img class="still" src="media/math-quad-fib.png" alt="" width="512" height="512" decoding="async">
+  </div>
+  <div class="nodeField" aria-hidden="true">
+    <img class="anim" src="media/nodes-lattice-keyed.webp" alt="" width="500" height="500" decoding="async" fetchpriority="high">
+    <img class="still" src="media/nodes-lattice-keyed.png" alt="" width="500" height="500" decoding="async">
   </div>
 </div>
 <div id="dataRail" aria-hidden="true"></div>
