@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|blackRedOnly|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|hexCoreGyroSeal|dodeca3DSphere|layerPerspectiveSync|sameVectors|boxSphereVents|latticeCage|purpleOnly|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -773,40 +773,52 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
 #intake{display:none!important}
 
 
-/* boxSphereVents|blackRedOnly — centerpiece box+sphere+3 vents; black/red only */
+/* boxSphereVents|purpleOnly — centerpiece box+sphere+3 vents; black/purple */
 :root{
   --void:#000 !important;
-  --ink:#ffb0b0 !important;
-  --mute:#8a4040 !important;
-  --admit:#ff2a2a !important;
-  --release:#a01010 !important;
-  --mint:#ff6666 !important;
-  --cyan:#ff3030 !important;
-  --mag:#cc1010 !important;
-  --warn:#ff8888 !important;
-  --glass:rgba(20,0,0,0.45) !important;
-  --line:rgba(255,40,40,0.35) !important;
-  --holo-wash:linear-gradient(135deg,rgba(255,30,30,0.08),rgba(0,0,0,0.05),rgba(160,0,0,0.08)) !important;
+  --ink:#e9d5ff !important;
+  --mute:#7c5a9e !important;
+  --admit:#c084fc !important;
+  --release:#7e22ce !important;
+  --mint:#d8b4fe !important;
+  --cyan:#a855f7 !important;
+  --mag:#9333ea !important;
+  --warn:#e9d5ff !important;
+  --glass:rgba(20,0,32,0.45) !important;
+  --line:rgba(168,85,247,0.40) !important;
+  --holo-wash:linear-gradient(135deg,rgba(168,85,247,0.10),rgba(0,0,0,0.05),rgba(126,34,206,0.10)) !important;
 }
 #bgField{ background:#000 !important; }
 #bgField .tunnelGrid .plane{
-  filter:invert(1) sepia(1) saturate(8) hue-rotate(-50deg) brightness(0.85) !important;
-  opacity:0.55 !important;
+  filter:invert(1) sepia(1) saturate(6) hue-rotate(220deg) brightness(0.9) !important;
+  opacity:0.45 !important;
 }
 /* hide competing GIF centerpieces */
 #bgField .hexCore,
 #bgField .isoTunnel,
 #bgField .beamRain,
 #bgField .voxelSpin{ display:none !important; }
-#sortDesk{ color:rgba(255,200,200,.94) !important; }
-#sortDesk .tray.admit h3{ color:rgba(255,80,80,.95)!important; text-shadow:0 0 12px rgba(255,40,40,.4)!important; }
-#sortDesk .tray.release h3{ color:rgba(180,40,40,.95)!important; text-shadow:0 0 12px rgba(120,0,0,.35)!important; }
-#uploadBox .uh b{ color:rgba(255,220,220,.98)!important; }
-#uploadBox .uh b::before{ color:rgba(255,60,60,.9)!important; }
-#top .title{ color:#ff4444!important; }
+#sortDesk{ color:rgba(233,213,255,.94) !important; }
+#sortDesk .tray.admit h3{ color:rgba(192,132,252,.98)!important; text-shadow:0 0 12px rgba(168,85,247,.45)!important; }
+#sortDesk .tray.release h3{ color:rgba(147,51,234,.95)!important; text-shadow:0 0 12px rgba(88,28,135,.4)!important; }
+#uploadBox .uh b{ color:rgba(245,230,255,.98)!important; }
+#uploadBox .uh b::before{ color:rgba(192,132,252,.95)!important; }
+#top .title{ color:#c084fc!important; }
+
+/* purpleOnly UI chrome — kill leftover cyan hardcodes */
+button,.filebtn{ border-color:rgba(192,132,252,.35)!important; color:rgba(245,230,255,.9)!important; }
+button:hover,.filebtn:hover{ border-color:#e9d5ff!important; box-shadow:0 0 10px rgba(168,85,247,.28)!important; }
+button.primary{ border-color:rgba(168,85,247,.6)!important; color:#f3e8ff!important; box-shadow:0 0 12px rgba(168,85,247,.18)!important; }
+button.on{ border-color:rgba(192,132,252,.85)!important; color:var(--admit)!important; }
+#log .ev:hover,#log .ev.focus{ background:rgba(168,85,247,.12)!important; box-shadow:inset 2px 0 0 rgba(192,132,252,.6)!important; }
+#log .ev .d.a{ color:#c084fc!important; }
+#log .ev .d.r{ color:#a855f7!important; }
+.metrics{ color:rgba(180,150,210,.78)!important; }
+#phaseWhisper{ color:rgba(200,160,240,.55)!important; }
 
 
-/* redParticles — black/red particle fields feeding box centerpiece */
+
+/* purpleParticles — black/purple particle fields feeding box centerpiece */
 #bgField .particleLayer{
   position:absolute; inset:0; overflow:hidden; pointer-events:none;
 }
@@ -1827,7 +1839,7 @@ function bootThreeOrbit(){
     for(let i=0;i<N;i++){
       const a=Math.random()*Math.PI*2, b=(Math.random()-0.5)*Math.PI, r=0.9+Math.random()*1.4;
       pos[i*3]=Math.cos(a)*Math.cos(b)*r; pos[i*3+1]=Math.sin(b)*r*0.72; pos[i*3+2]=Math.sin(a)*Math.cos(b)*r;
-      const k=0.55+Math.random()*0.45; col[i*3]=0.95*k; col[i*3+1]=0.12*k; col[i*3+2]=0.12*k;
+      const k=0.55+Math.random()*0.45; col[i*3]=0.72*k; col[i*3+1]=0.22*k; col[i*3+2]=0.95*k;
     }
     const geo=new THREE.BufferGeometry();
     geo.setAttribute("position", new THREE.BufferAttribute(pos,3));
@@ -2443,7 +2455,7 @@ function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(
 
 
 function drawBoxSphereVents(cx,cy,s,t){
-  /* boxSphereVents|evenBox: true even cube (equal edges), sphere, 3 face-centered vents; black/red */
+  /* boxSphereVents|evenBox: true even cube (equal edges), sphere, 3 face-centered vents; black/purple */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   ctx.save(); ctx.globalAlpha=a; ctx.globalCompositeOperation="lighter";
   /* even cube half-extent — same |x|=|y|=|z|; scale fits inside lattice cage (~1.15) */
@@ -2461,29 +2473,29 @@ function drawBoxSphereVents(cx,cy,s,t){
   for(const [i,j] of edges){
     const A=pv[i], B=pv[j];
     const g=ctx.createLinearGradient(A.x,A.y,B.x,B.y);
-    g.addColorStop(0,"rgba(255,45,45,0.72)");
-    g.addColorStop(0.5,"rgba(255,80,80,0.88)");
-    g.addColorStop(1,"rgba(200,20,20,0.72)");
+    g.addColorStop(0,"rgba(168,85,247,0.72)");
+    g.addColorStop(0.5,"rgba(216,180,254,0.90)");
+    g.addColorStop(1,"rgba(126,34,206,0.72)");
     ctx.strokeStyle=g; ctx.lineWidth=lw;
     ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
   }
   /* even vertex nodes */
   for(const v of pv){
-    ctx.fillStyle="rgba(255,70,70,0.75)";
+    ctx.fillStyle="rgba(192,132,252,0.80)";
     ctx.beginPath(); ctx.arc(v.x,v.y,lw*0.55,0,Math.PI*2); ctx.fill();
   }
   /* sphere — radius = half face (even fit inside cube) */
   const R=s*c*0.92;
   const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.25);
-  grd.addColorStop(0,`rgba(255,130,130,${0.5+0.12*Math.sin(t*TEMPO.base)})`);
-  grd.addColorStop(0.5,"rgba(220,35,35,0.28)");
-  grd.addColorStop(1,"rgba(60,0,0,0)");
+  grd.addColorStop(0,`rgba(232,200,255,${0.5+0.12*Math.sin(t*TEMPO.base)})`);
+  grd.addColorStop(0.5,"rgba(147,51,234,0.32)");
+  grd.addColorStop(1,"rgba(40,0,60,0)");
   ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(cx,cy,R*1.15,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle="rgba(255,70,70,0.7)"; ctx.lineWidth=lw*0.65;
+  ctx.strokeStyle="rgba(192,132,252,0.75)"; ctx.lineWidth=lw*0.65;
   ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
   for(let i=1;i<=2;i++){
     const k=i/3;
-    ctx.strokeStyle="rgba(255,50,50,0.22)"; ctx.lineWidth=0.9;
+    ctx.strokeStyle="rgba(168,85,247,0.28)"; ctx.lineWidth=0.9;
     ctx.beginPath(); ctx.ellipse(cx,cy,R*Math.sqrt(Math.max(0.05,1-k*k)), R*0.22+R*0.12*k, t*0.1, 0, Math.PI*2); ctx.stroke();
   }
   /* vents centered on +X/+Y/+Z faces — even placement */
@@ -2496,12 +2508,12 @@ function drawBoxSphereVents(cx,cy,s,t){
     const vw=s*0.055, vh=s*0.04;
     ctx.save();
     ctx.translate(vx,vy); ctx.rotate(ang+Math.PI/2);
-    ctx.fillStyle="rgba(30,0,0,0.65)";
-    ctx.strokeStyle="rgba(255,55,55,0.9)"; ctx.lineWidth=lw*0.85;
+    ctx.fillStyle="rgba(20,0,40,0.7)";
+    ctx.strokeStyle="rgba(192,132,252,0.95)"; ctx.lineWidth=lw*0.85;
     ctx.beginPath();
     ctx.moveTo(0,-vh); ctx.lineTo(vw,0); ctx.lineTo(0,vh); ctx.lineTo(-vw,0); ctx.closePath();
     ctx.fill(); ctx.stroke();
-    ctx.strokeStyle="rgba(255,90,90,0.55)"; ctx.lineWidth=1.1;
+    ctx.strokeStyle="rgba(216,180,254,0.6)"; ctx.lineWidth=1.1;
     for(let k=1;k<=2;k++){
       const o=k*s*0.022;
       ctx.beginPath(); ctx.moveTo(-vw*0.45,-vh-o); ctx.lineTo(0,-vh*0.25-o); ctx.lineTo(vw*0.45,-vh-o); ctx.stroke();
@@ -2512,7 +2524,7 @@ function drawBoxSphereVents(cx,cy,s,t){
 }
 
 function drawDodecaLatticeCage(cx,cy,s,t){
-  /* latticeCage — wire dodeca as open lattice cage around box+sphere+vents; black/red only */
+  /* latticeCage — wire dodeca as open lattice cage around box+sphere+vents; black/purple */
   const a=typeof layerAlpha==="function"?layerAlpha("hex"):1;
   const pv=[];
   for(let i=0;i<DODECA.verts.length;i++){
@@ -2532,15 +2544,15 @@ function drawDodecaLatticeCage(cx,cy,s,t){
     const near=Math.max(0,Math.min(1,(ed.md+0.55)/1.1));
     const pulse=0.75+0.25*Math.sin(t*TEMPO.base+ed.ei*0.4);
     const g=ctx.createLinearGradient(ed.a.x,ed.a.y,ed.b.x,ed.b.y);
-    g.addColorStop(0,`rgba(255,30,30,${(0.28+near*0.4)*pulse})`);
-    g.addColorStop(0.5,`rgba(255,90,90,${(0.4+near*0.35)*pulse})`);
-    g.addColorStop(1,`rgba(160,0,0,${(0.28+near*0.4)*pulse})`);
+    g.addColorStop(0,`rgba(147,51,234,${(0.28+near*0.4)*pulse})`);
+    g.addColorStop(0.5,`rgba(216,180,254,${(0.42+near*0.35)*pulse})`);
+    g.addColorStop(1,`rgba(88,28,135,${(0.28+near*0.4)*pulse})`);
     ctx.strokeStyle=g; ctx.lineWidth=lw*(0.55+near*0.7);
     ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
     /* lattice node jewels */
     if(!thin && ed.ei%2===0){
       const mx=(ed.a.x+ed.b.x)*0.5, my=(ed.a.y+ed.b.y)*0.5;
-      ctx.fillStyle=`rgba(255,70,70,${0.35*near})`;
+      ctx.fillStyle=`rgba(216,180,254,${0.40*near})`;
       ctx.beginPath(); ctx.arc(mx,my,1.2,0,Math.PI*2); ctx.fill();
     }
   }
@@ -2548,7 +2560,7 @@ function drawDodecaLatticeCage(cx,cy,s,t){
   for(let i=0;i<pv.length;i++){
     const v=pv[i];
     const near=Math.max(0.2,Math.min(1,(v.d+0.5)/1));
-    ctx.fillStyle=`rgba(255,50,50,${0.45*near})`;
+    ctx.fillStyle=`rgba(168,85,247,${0.55*near})`;
     ctx.beginPath(); ctx.arc(v.x,v.y,thin?1.4:2.2,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
@@ -2585,7 +2597,7 @@ function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWir
   for(const ed of edged){
     const {a,b,ei,md}=ed;
     const near=Math.max(0, Math.min(1, (md+0.45)/0.95));
-    const hue=198+ei*7+t*28;
+    const hue=280+ei*5+t*18;
     const g=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
     addStops(g,[
       [0,hsl(hue,100,56,0.50+near*0.38+sealBoost)],
@@ -2605,7 +2617,7 @@ function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWir
     const pulse=0.55+0.45*Math.sin(t*2.8+i*0.9)+sealBoost;
     const near=Math.max(0.35, Math.min(1,(v.d+0.45)/0.9));
     const rad=(thin?1.7:2.7)*(0.94+0.2*pulse);
-    ctx.fillStyle=hsl(200+i*10+t*28,100,70,Math.min(0.98,0.82*pulse*near));
+    ctx.fillStyle=hsl(275+i*8+t*18,95,68,Math.min(0.98,0.82*pulse*near));
     ctx.beginPath(); ctx.arc(v.x,v.y,rad,0,Math.PI*2); ctx.fill();
     ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*Math.min(0.85,0.55*pulse*near);
     ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.95:1.15,0,Math.PI*2); ctx.fill();
