@@ -1,25 +1,34 @@
 # Seraphim Organizer — saved canon
 
-- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=ea9fed6
-- **Commit:** `ea9fed6` (`excessPrune` after `simkinsAI` densify)
+- **Live:** https://snowphamtom.github.io/seraphim-organizer/?v=stripToBones
+- **Marker:** `stripToBones` (after `excessPrune`)
 - **Saved:** 2026-09-21 CT
 
 ## Markers
-`fallingCodeDepth` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `bgSealCenterLock` · `refinePolish2` · `beyondAIMaster` · `omnidiscipline` · `simkinsAI` · `excessPrune` · `sortTheater` · `idleDemoLoop` · `motionIntricateFast` · `markdownMaster`
+`stripToBones` · `excessPrune` · `bgSealCenterLock` · `hybridEngineTrio` · `masterpieceFlow` · `balancePolish` · `refinePolish2` · `sortTheater` · `idleDemoLoop` · `markdownMaster` · `motionIntricateFast` · `fallingCodeDepth` · `dodecaSeal`
 
-## excessPrune (post-densify subtract)
+## stripToBones (honest skeleton)
 
-Subtract until every remaining mark is necessary. Keep masterpiece craft that earns the frame; cut clutter.
+Aggressive subtract. Keep only what makes Seraphim hit.
 
-**KEEP:** dodeca seal authority, `bgSealCenterLock`, Organized/Aside story + desk markdown, φ TEMPO harmony, sort theater, idle demo, anti-blotch (`bloomClamp`), public labels, quieter ink-wash underpaint, geodesic accents, CRT hub flares (desktop, no scanlines).
+**KEEP**
+- Dodeca seal authority (`drawHexFrame` + breath + contrast veil)
+- Center lock (`syncGyroSharedCenter` → `--seal-x/--seal-y`)
+- Desk story: Disorganized → Organized / Aside (markdown desk + sort theater + idle demo)
+- φ TEMPO motion (shared clocks on beam spine + gyro)
+- Clear light/shadow (`drawBloomClamp`, soft cross veil — anti-blotch)
 
-**CUT / quiet:** aurora; ornamental stipple; biomorphic filigree; chimera ink-echo chord web; quasicrystal/Penrose whisper; Ylm sphere + Hopf torus (`drawSphereWire`); CRT scanlines; duplicate depth-fog contact shadow; extra mobile beams (2/3/8); `#log`/whisper chrome α↓; `skipHeavy` at dt>20.
+**KILL / no-op** (fight clarity when stacked)
+- Aurora, fog shards, ghost/dual hex underlays, starfield-in-panels, three/webgl star underlays
+- Chimera custom field, ink-wash, nested seals, geodesic accents, chromatic edge fringe
+- Hybrid bridge spokes, gyro orbit rings, CRT polish, constellation, depth-fog vignette, prove-break HUD
+- Prior densify ornament: stipple, biomorphic filigree, ink-echo chords, quasicrystal, Ylm/Hopf sphereWire
+
+**SELECTIVE spine**
+Sparse `drawBeamRain` + quiet `drawCorePlasma` = desk↔seal↔trays as one φ creature. Cyan admit / magenta aside. No maximalism.
 
 ## Layers
-`#bgField`: codeRain → beamWhisper → coreWhisper → canvas `#fx` (dodeca seal authority)
-
-## Center lock
-`syncGyroSharedCenter` writes `--seal-x` / `--seal-y` from live seal `cx,cy` every frame.
+`#bgField` whispers (codeRain / beamWhisper / coreWhisper, α≤0.06) → canvas `#fx` seal boss
 
 ## Labels
 Disorganized → Organized / Aside
