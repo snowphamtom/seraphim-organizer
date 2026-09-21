@@ -8128,107 +8128,121 @@ function drawFieldWhisper(cx,cy,s,t){
 
 
 function drawAxisRoomGrid(cx,cy,s,t){
-  /* clientAxisRoom: floor X + wall Y + wall Z — seal floats in corner room.
-     Grid uses dampened cam + fixed room pose so dodeca tumbles ABOVE the room. */
+  /* clientAxisRoomDepth: angled corner room — floor X, wall Y, wall Z.
+     Strong perspective depth; grid bright everywhere seal ISN'T (radial veil). */
   ctx.save();
   const thin=W<=480, mobile=W<=900;
-  const n = reduceMotion ? 4 : (thin ? 5 : (mobile ? 7 : 10));
-  const step = 0.20 * (PHI>1 ? 1 : 1); /* φ-friendly spacing base */
+  const n = reduceMotion ? 6 : (thin ? 8 : (mobile ? 11 : 14));
+  const step = 0.16;
   const extent = step * n;
-  const breath = reduceMotion ? 0 : 0.014*Math.sin(t*TEMPO.base/(PHI*PHI));
-  const damp = reduceMotion ? 0 : 0.16;
-  /* stash cam — room more stable than seal */
+  const breath = reduceMotion ? 0 : 0.01*Math.sin(t*TEMPO.base/(PHI*PHI));
+  const damp = reduceMotion ? 0 : 0.10;
   const oYaw=cam.yaw,oPitch=cam.pitch,oRoll=cam.roll;
   const oUY=cam.userYaw,oUP=cam.userPitch,oUR=cam.userRoll;
-  cam.yaw = 0.52 + damp*(oYaw-0.48) + breath;
-  cam.pitch = 0.32 + damp*(oPitch-0.38);
-  cam.roll = damp*oRoll*0.55;
-  cam.userYaw = oUY*damp; cam.userPitch = oUP*damp; cam.userRoll = oUR*damp*0.5;
+  /* angled room — look into the corner for clear depth (floor foreshortened) */
+  cam.yaw = 0.78 + damp*(oYaw-0.48) + breath;
+  cam.pitch = 0.58 + damp*(oPitch-0.38);
+  cam.roll = 0.08 + damp*oRoll*0.4;
+  cam.userYaw = oUY*damp; cam.userPitch = oUP*damp; cam.userRoll = oUR*damp*0.4;
 
-  /* corner behind+below hub: floor under seal, walls recede to VP near hub */
-  const Fx= -extent*0.08, Fy= -1.05, Fz= 0.55;
-  const wallBack = Fz + extent;   /* +z = farther (behind seal) */
-  const wallSide = Fx - 0.02;     /* -x side wall */
+  const Fx= -extent*0.35, Fy= -1.35, Fz= 0.15;
+  const wallBack = Fz + extent;
+  const wallSide = Fx;
 
-  function strokeSeg(a,b,hue,a0,a1,lw){
+  /* seal occupancy radius in screen space — grid fades inside, bright outside */
+  const sealR = s * (thin ? 0.72 : 0.78);
+  function edgeBoost(px,py){
+    const dx=px-cx, dy=py-cy;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    /* 0 near hub, 1 outside seal */
+    const t0 = Math.max(0, Math.min(1, (d - sealR*0.55) / (sealR*0.85)));
+    return t0*t0*(3-2*t0); /* smoothstep */
+  }
+
+  function strokeSeg(a,b,hue,baseA,lw){
     const pa=project(a[0],a[1],a[2],cx,cy,s);
     const pb=project(b[0],b[1],b[2],cx,cy,s);
+    const midX=(pa[0]+pb[0])*0.5, midY=(pa[1]+pb[1])*0.5;
+    const out = edgeBoost(midX, midY);
+    if(out < 0.04) return;
     const depth=Math.min(pa[2],pb[2]);
-    /* farther (higher z) → quieter */
-    const fade=Math.max(0.18, Math.min(1, 1.05-(depth+0.2)*0.55));
-    const alpha=(a0+(a1-a0)*0.5)*fade*(thin?0.72:1);
-    if(alpha<0.008) return;
-    ctx.strokeStyle=hsl(hue,88,58,Math.min(0.20,alpha));
-    ctx.lineWidth=lw;
+    const depthFade=Math.max(0.35, Math.min(1.15, 1.1-(depth+0.15)*0.35));
+    const alpha = baseA * (0.22 + 0.78*out) * depthFade * (thin?0.85:1);
+    if(alpha < 0.02) return;
+    ctx.strokeStyle=hsl(hue, 92, 62, Math.min(0.55, alpha));
+    ctx.lineWidth=lw * (0.75 + 0.55*out);
     ctx.beginPath(); ctx.moveTo(pa[0],pa[1]); ctx.lineTo(pb[0],pb[1]); ctx.stroke();
   }
 
   ctx.globalCompositeOperation="lighter";
-  const lw=thin?0.35:(mobile?0.45:0.55);
-  const aFloor=reduceMotion?0.055:0.075;
-  const aWall=reduceMotion?0.045:0.065;
+  const lw=thin?0.55:(mobile?0.7:0.85);
+  const aFloor=reduceMotion?0.14:0.20;
+  const aWall=reduceMotion?0.12:0.17;
 
-  /* —— FLOOR (y=Fy): X runs along floor with depth (z) —— cyan whisper */
+  /* FLOOR y=Fy — X along floor, Z into depth */
   for(let i=0;i<=n;i++){
     const u=i/n;
     const x=Fx+u*extent;
-    const z0=Fz, z1=Fz+extent;
-    strokeSeg([x,Fy,z0],[x,Fy,z1], 195, aFloor*0.55, aFloor, lw); /* || X-depth */
+    strokeSeg([x,Fy,Fz],[x,Fy,Fz+extent], 195, aFloor, lw);
   }
   for(let i=0;i<=n;i++){
     const u=i/n;
     const z=Fz+u*extent;
-    const x0=Fx, x1=Fx+extent;
-    strokeSeg([x0,Fy,z],[x1,Fy,z], 198, aFloor*0.5, aFloor*0.95, lw); /* || X */
+    strokeSeg([Fx,Fy,z],[Fx+extent,Fy,z], 198, aFloor*0.95, lw);
   }
 
-  /* —— WALL Y (vertical, z=wallBack): Y axis wall —— magenta whisper */
+  /* WALL Y — back wall z=wallBack (vertical Y) */
   for(let i=0;i<=n;i++){
     const u=i/n;
     const x=Fx+u*extent;
-    strokeSeg([x,Fy,wallBack],[x,Fy+extent*0.95,wallBack], 305, aWall*0.5, aWall, lw);
+    strokeSeg([x,Fy,wallBack],[x,Fy+extent*1.05,wallBack], 305, aWall, lw);
   }
   for(let i=0;i<=n;i++){
     const u=i/n;
-    const y=Fy+u*extent*0.95;
-    strokeSeg([Fx,y,wallBack],[Fx+extent,y,wallBack], 300, aWall*0.45, aWall*0.9, lw);
+    const y=Fy+u*extent*1.05;
+    strokeSeg([Fx,y,wallBack],[Fx+extent,y,wallBack], 300, aWall*0.92, lw);
   }
 
-  /* —— WALL Z (vertical, x=wallSide): Z axis wall —— cyan/magenta mix */
+  /* WALL Z — side wall x=wallSide (vertical, Z depth) */
   for(let i=0;i<=n;i++){
     const u=i/n;
     const z=Fz+u*extent;
-    strokeSeg([wallSide,Fy,z],[wallSide,Fy+extent*0.95,z], 210, aWall*0.48, aWall*0.92, lw);
+    strokeSeg([wallSide,Fy,z],[wallSide,Fy+extent*1.05,z], 210, aWall, lw);
   }
   for(let i=0;i<=n;i++){
     const u=i/n;
-    const y=Fy+u*extent*0.95;
-    strokeSeg([wallSide,y,Fz],[wallSide,y,Fz+extent], 292, aWall*0.42, aWall*0.85, lw);
+    const y=Fy+u*extent*1.05;
+    strokeSeg([wallSide,y,Fz],[wallSide,y,Fz+extent], 292, aWall*0.9, lw);
   }
 
-  /* corner axes — slightly brighter */
-  strokeSeg([Fx,Fy,Fz],[Fx+extent*0.55,Fy,Fz], 195, 0.10, 0.14, lw*1.35); /* X floor */
-  strokeSeg([Fx,Fy,Fz],[Fx,Fy+extent*0.55,Fz], 305, 0.09, 0.13, lw*1.35); /* Y up */
-  strokeSeg([Fx,Fy,Fz],[Fx,Fy,Fz+extent*0.55], 210, 0.09, 0.13, lw*1.35); /* Z depth */
+  /* bright corner axes */
+  strokeSeg([Fx,Fy,Fz],[Fx+extent*0.7,Fy,Fz], 195, 0.32, lw*1.6);
+  strokeSeg([Fx,Fy,Fz],[Fx,Fy+extent*0.7,Fz], 305, 0.28, lw*1.6);
+  strokeSeg([Fx,Fy,Fz],[Fx,Fy,Fz+extent*0.7], 210, 0.28, lw*1.6);
 
-  /* tiny X/Y/Z glyphs — optional, skip on thin/reduced */
+  /* floor–wall seams */
+  strokeSeg([Fx,Fy,wallBack],[Fx+extent,Fy,wallBack], 200, 0.22, lw*1.25);
+  strokeSeg([wallSide,Fy,Fz],[wallSide,Fy,Fz+extent], 215, 0.22, lw*1.25);
+  strokeSeg([wallSide,Fy,wallBack],[wallSide,Fy+extent*1.05,wallBack], 295, 0.20, lw*1.2);
+
   if(!reduceMotion && !thin){
     ctx.globalCompositeOperation="source-over";
-    ctx.font=(mobile?"8px":"9px")+" ui-monospace,SFMono-Regular,Menlo,monospace";
+    ctx.font=(mobile?"9px":"11px")+" ui-monospace,SFMono-Regular,Menlo,monospace";
     ctx.textAlign="center"; ctx.textBaseline="middle";
     const glyphs=[
-      ["X", Fx+extent*0.62, Fy, Fz, 195],
-      ["Y", Fx, Fy+extent*0.62, Fz, 305],
-      ["Z", Fx, Fy, Fz+extent*0.62, 210]
+      ["X", Fx+extent*0.72, Fy, Fz, 195],
+      ["Y", Fx, Fy+extent*0.72, Fz, 305],
+      ["Z", Fx, Fy, Fz+extent*0.72, 210]
     ];
     for(const [lab,x,y,z,hue] of glyphs){
       const p=project(x,y,z,cx,cy,s);
-      ctx.fillStyle=hsl(hue,80,62,0.22);
+      const out=edgeBoost(p[0],p[1]);
+      if(out<0.15) continue;
+      ctx.fillStyle=hsl(hue,85,68,0.18+0.35*out);
       ctx.fillText(lab, p[0], p[1]);
     }
   }
 
-  /* restore cam */
   cam.yaw=oYaw; cam.pitch=oPitch; cam.roll=oRoll;
   cam.userYaw=oUY; cam.userPitch=oUP; cam.userRoll=oUR;
   ctx.restore();
