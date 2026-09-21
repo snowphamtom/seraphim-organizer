@@ -20,7 +20,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
+  /* holoPalette|bgWireRemoved|bgCityGlint|hudSortAnalyze|hybridBridge|gyroHarmony|terrainWarp|fgContrast|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|motionIntricateFast|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|fourAssetCanon|voxelCubeRotate|tripleBeamInCore|tunnelInvertWB|hexCoreAsSent: dark futuristic HUD sorting+analyzing */
   --void:#000;--ink:#e8e6f8;--mute:#8a90c0;
   --admit:#56b4c2;--release:#c664c0;--mint:#c8e090;
   --cyan:#56b4c2;--mag:#ae3dbf;--warn:#f0c878;
@@ -427,6 +427,42 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   #bgField .hexCore .plane.coreMain .still{display:block!important}
 }
 
+
+/* voxelCubeRotate|cutBlackBg — keyed voxel cube, CSS 3D rotate in hex-core center */
+#bgField .hexCore .voxelSpin{
+  position:absolute;
+  left:var(--seal-x); top:var(--seal-y);
+  width:min(28vmin,240px); height:min(26vmin,220px);
+  transform:translate(-50%,-50%);
+  transform-style:preserve-3d;
+  perspective:600px;
+  z-index:5;
+  pointer-events:none;
+}
+#bgField .hexCore .voxelSpin .spin{
+  width:100%; height:100%;
+  animation:voxelYaw 14s linear infinite;
+  transform-style:preserve-3d;
+}
+#bgField .hexCore .voxelSpin picture,
+#bgField .hexCore .voxelSpin img{
+  display:block;width:100%;height:100%;object-fit:contain;
+  filter:drop-shadow(0 0 12px rgba(120,220,255,.25));
+}
+#bgField .hexCore .voxelSpin img.still{display:none}
+@keyframes voxelYaw{
+  from{transform:rotateY(0deg) rotateX(12deg)}
+  to{transform:rotateY(360deg) rotateX(12deg)}
+}
+@media (max-width:900px){
+  #bgField .hexCore .voxelSpin{ width:min(24vmin,180px); height:min(22vmin,160px); }
+}
+@media (prefers-reduced-motion:reduce){
+  #bgField .hexCore .voxelSpin .spin{animation:none}
+  #bgField .hexCore .voxelSpin img.anim{display:none}
+  #bgField .hexCore .voxelSpin img.still{display:block}
+}
+
 /* —— uploadSortedDesk: obvious upload + sorted figures trays —— */
 
 
@@ -674,6 +710,15 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
       <div class="b b3">
         <picture><source srcset="media/beam-rain.webp" type="image/webp"><img class="anim" src="media/beam-rain.gif" alt=""></picture>
         <img class="still" src="media/beam-rain-still.png" alt="" style="display:none">
+      </div>
+    </div>
+    <div class="voxelSpin" aria-hidden="true">
+      <div class="spin">
+        <picture>
+          <source srcset="media/voxel-cube.webp" type="image/webp">
+          <img class="anim" src="media/voxel-cube-still.png" alt="" width="360" height="330" decoding="async">
+        </picture>
+        <img class="still" src="media/voxel-cube-still.png" alt="" width="360" height="330" decoding="async" style="display:none">
       </div>
     </div>
   </div>
