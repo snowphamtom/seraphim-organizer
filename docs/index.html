@@ -3153,7 +3153,7 @@ function renderSortedFigures(verdicts){
     el.className="chipFig"; el.title=(v.cause||"")+" · "+(v.kind||"");
     el.dataset.id=v.id;
     el.innerHTML="<span class=\"k\">"+(v.kind||"?")+"</span><span class=\"ttl\">"+esc((v.t||"").slice(0,48))+"</span>";
-    el.addEventListener("click",()=>focusId(v.id));
+    el.addEventListener("click",()=>focusNode(v.id));
     return el;
   };
   a.innerHTML=""; r.innerHTML="";
