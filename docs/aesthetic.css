@@ -1,6 +1,6 @@
-/* Seraphim Organizer — masterpiece desk 2026-09-21
-   Instruments only. One frost layer. Canon: purple + black + white.
-   Canvas / gem / figures untouched. */
+/* Seraphim Organizer — masterpiece desk + black/green maze veil
+   Desk frost: purple/black/white. Veil: phosphor green on black, two opacities.
+   Canvas / gem / sorter untouched. */
 :root{
   --void:#05010a;
   --ink:#f6f3ff;
@@ -17,24 +17,17 @@
   --sheen:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,0) 38%);
   --holo-wash:linear-gradient(135deg,rgba(124,58,237,.10),rgba(10,0,20,.08),rgba(196,181,253,.08));
   --blur:12px;
+  --veil-green:#14ff7a;
 }
-html,body{
-  background:#05010a;
-  color:var(--ink);
-  font-feature-settings:"ss01" on,"kern" on;
-}
-::selection{background:rgba(124,58,237,.48);color:#fff}
+html,body{background:#05010a;color:var(--ink)}
+::selection{background:rgba(20,255,122,.28);color:#fff}
 a{color:#c4b5fd}
 
-/* — frost recipe: only the three instruments that sit on the void — */
 #top,#intake,#sortDesk{
   background:var(--glass)!important;
   background-image:var(--sheen)!important;
   border:1px solid var(--line)!important;
-  box-shadow:
-    0 18px 48px rgba(0,0,0,.46),
-    0 0 0 1px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.08)!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.08)!important;
 }
 @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   #top,#intake,#sortDesk{
@@ -44,112 +37,66 @@ a{color:#c4b5fd}
     backdrop-filter:blur(var(--blur)) saturate(1.28);
   }
 }
-
-/* lower plates: tint only — no second blur pass */
 #uploadBox,#sortedFigures,#log,#morePanel,#introChip,#cheat{
   background:rgba(8,2,16,.78)!important;
   border:1px solid rgba(196,181,253,.18)!important;
   box-shadow:0 10px 28px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.04)!important;
-  -webkit-backdrop-filter:none!important;
   backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
   color:#e9e4ff;
 }
-
-#top{
-  border-radius:999px!important;
-}
-#top .title{
-  letter-spacing:.28em;
-  font-weight:650;
-  color:#f6f3ff;
-  text-shadow:0 0 22px rgba(167,139,250,.28);
-}
-.metrics{color:rgba(196,181,253,.74);letter-spacing:.04em}
-.metrics b{color:#f6f3ff;font-weight:600}
-.metrics .a b{color:#ddd6fe}
-.metrics .r b{color:#c4b5fd}
-
-.chip,.chip.law,.ghost-chip{
-  border:1px solid rgba(196,181,253,.28)!important;
-  color:#ddd6fe!important;
-  background:rgba(12,4,24,.55)!important;
-  letter-spacing:.08em;
-}
-
-#introChip{color:#e9e4ff}
-#introChip b.c,#introChip b.r{color:#c4b5fd}
-#introChip button{
-  border-color:rgba(196,181,253,.4)!important;
-  color:#f6f3ff!important;
-  background:rgba(124,58,237,.28)!important;
-}
-
-#intake,#sortDesk,#uploadBox,#sortedFigures{
-  border-radius:16px!important;
-}
-#log,#morePanel,#cheat{
-  border-radius:12px!important;
-}
-
-#dropzone,.dropHint{
-  border:1px dashed rgba(196,181,253,.32)!important;
-  border-radius:12px!important;
-  background:rgba(0,0,0,.22)!important;
-}
-
-#intake textarea,#sortDesk textarea,#paste,#pasteDesk,
-textarea,input[type=text],input[type=search],select{
-  background:rgba(0,0,0,.38)!important;
-  color:#f6f3ff!important;
-  border:1px solid rgba(196,181,253,.22)!important;
-  border-radius:10px!important;
-  caret-color:#c4b5fd;
-}
-#intake textarea:focus,#sortDesk textarea:focus,
-textarea:focus,input:focus,select:focus{
-  outline:none!important;
-  border-color:#c4b5fd!important;
-  box-shadow:0 0 0 3px rgba(124,58,237,.22)!important;
-}
-
+#top{border-radius:999px!important}
+#top .title{letter-spacing:.28em;font-weight:650;color:#f6f3ff;text-shadow:0 0 22px rgba(167,139,250,.28)}
+.metrics{color:rgba(196,181,253,.74)}
+.metrics b{color:#f6f3ff}
+.chip,.chip.law{border-color:rgba(196,181,253,.28)!important;color:#ddd6fe!important;background:rgba(12,4,24,.55)!important}
 button,.btn,.filebtn,.primary,.ghost{
   border:1px solid rgba(196,181,253,.34)!important;
   color:#f6f3ff!important;
   background:rgba(124,58,237,.16)!important;
   border-radius:999px!important;
-  letter-spacing:.06em;
-  transition:background .18s ease,border-color .18s ease,transform .18s ease;
 }
-button:hover,.btn:hover,.filebtn:hover,.primary:hover,.ghost:hover{
-  background:rgba(124,58,237,.32)!important;
-  border-color:#ddd6fe!important;
-}
-button:active,.btn:active{transform:translateY(1px)}
-.primary{
-  background:rgba(167,139,250,.28)!important;
-  border-color:rgba(221,214,254,.45)!important;
-}
+button:hover,.btn:hover,.primary:hover{background:rgba(124,58,237,.32)!important}
+.primary{background:rgba(167,139,250,.28)!important}
 
-.tray.admit,.tray.release,#trayAdmit,#trayRelease{
-  background:rgba(8,2,16,.72)!important;
-  border:1px solid rgba(196,181,253,.2)!important;
-  border-radius:14px!important;
+/* black + green maze veil — two plates, changing opacities, never covers desk */
+#bgField::before,
+#bgField::after{
+  content:"";
+  position:fixed;
+  inset:-12%;
+  pointer-events:none;
+  z-index:2;
+  background-color:#000;
+  background-image:
+    repeating-conic-gradient(from 0.15turn at 50% 42%, #14ff7a 0 0.035turn, #000 0.035turn 0.07turn),
+    repeating-linear-gradient(18deg, transparent 0 11px, rgba(20,255,122,.18) 11px 12px),
+    repeating-linear-gradient(-18deg, transparent 0 11px, rgba(0,0,0,.85) 11px 12px);
+  background-size:42% 32%, 100% 100%, 100% 100%;
+  background-position:center;
+  filter:contrast(1.35) saturate(1.2);
 }
-.tray.admit .t,.sec-h{color:#ddd6fe}
-.tray.release .t{color:#c4b5fd}
-
-#navhint,#sub,#tip,#phaseWhisper,.whisper{
-  color:rgba(196,181,253,.62)!important;
-  text-shadow:none!important;
+#bgField::before{
+  mix-blend-mode:screen;
+  animation:veilA 9.24s ease-in-out infinite;
 }
-
-@media (prefers-reduced-transparency:reduce){
-  #top,#intake,#sortDesk{
-    background:var(--glass-solid)!important;
-    -webkit-backdrop-filter:none!important;
-    backdrop-filter:none!important;
-  }
+#bgField::after{
+  mix-blend-mode:overlay;
+  transform:scale(1.08) rotate(1.2deg);
+  filter:contrast(1.5) hue-rotate(12deg);
+  animation:veilB 14.95s ease-in-out infinite;
+}
+@keyframes veilA{
+  0%,100%{opacity:.08}
+  50%{opacity:.30}
+}
+@keyframes veilB{
+  0%,100%{opacity:.22}
+  50%{opacity:.05}
 }
 @media (prefers-reduced-motion:reduce){
-  button,.btn,.filebtn,.primary,.ghost{transition:none!important}
+  #bgField::before,#bgField::after{animation:none;opacity:.14}
+}
+@media (prefers-reduced-transparency:reduce){
+  #bgField::before,#bgField::after{display:none}
 }
