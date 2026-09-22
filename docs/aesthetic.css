@@ -1,8 +1,9 @@
-/* Seraphim Organizer — aesthetic pass 2026-09-21
-   Desk/HUD only. Canvas figures stay. Palette: purple + black + white. */
+/* Seraphim Organizer — masterpiece desk 2026-09-21
+   Instruments only. One frost layer. Canon: purple + black + white.
+   Canvas / gem / figures untouched. */
 :root{
   --void:#05010a;
-  --ink:#f4f1ff;
+  --ink:#f6f3ff;
   --mute:#9b97c4;
   --admit:#c4b5fd;
   --release:#a78bfa;
@@ -10,60 +11,145 @@
   --cyan:#c4b5fd;
   --mag:#7c3aed;
   --warn:#e9e4ff;
-  --glass:rgba(8,4,18,0.58);
-  --line:rgba(167,139,250,0.28);
-  --holo-wash:linear-gradient(135deg,rgba(124,58,237,0.10),rgba(10,0,20,0.08),rgba(196,181,253,0.08));
+  --glass:rgba(10,4,22,.52);
+  --glass-solid:rgba(8,2,16,.88);
+  --line:rgba(196,181,253,.26);
+  --sheen:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,0) 38%);
+  --holo-wash:linear-gradient(135deg,rgba(124,58,237,.10),rgba(10,0,20,.08),rgba(196,181,253,.08));
+  --blur:12px;
 }
-html,body{background:#05010a;color:#f4f1ff}
+html,body{
+  background:#05010a;
+  color:var(--ink);
+  font-feature-settings:"ss01" on,"kern" on;
+}
+::selection{background:rgba(124,58,237,.48);color:#fff}
+a{color:#c4b5fd}
+
+/* — frost recipe: only the three instruments that sit on the void — */
+#top,#intake,#sortDesk{
+  background:var(--glass)!important;
+  background-image:var(--sheen)!important;
+  border:1px solid var(--line)!important;
+  box-shadow:
+    0 18px 48px rgba(0,0,0,.46),
+    0 0 0 1px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  #top,#intake,#sortDesk{
+    background:rgba(10,4,22,.42)!important;
+    background-image:var(--sheen)!important;
+    -webkit-backdrop-filter:blur(var(--blur)) saturate(1.28);
+    backdrop-filter:blur(var(--blur)) saturate(1.28);
+  }
+}
+
+/* lower plates: tint only — no second blur pass */
+#uploadBox,#sortedFigures,#log,#morePanel,#introChip,#cheat{
+  background:rgba(8,2,16,.78)!important;
+  border:1px solid rgba(196,181,253,.18)!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.04)!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  color:#e9e4ff;
+}
+
 #top{
-  background:linear-gradient(180deg,rgba(8,2,18,.72),rgba(8,2,18,.28));
-  border:1px solid rgba(196,181,253,.18);
-  box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05);
+  border-radius:999px!important;
 }
 #top .title{
-  letter-spacing:.22em;
-  color:#f4f1ff;
-  text-shadow:0 0 18px rgba(167,139,250,.35);
+  letter-spacing:.28em;
+  font-weight:650;
+  color:#f6f3ff;
+  text-shadow:0 0 22px rgba(167,139,250,.28);
 }
-.metrics{color:rgba(196,181,253,.72)}
-.metrics b{color:#f4f1ff}
-.chip,.chip.law{
-  border-color:rgba(196,181,253,.28);
-  color:#ddd6fe;
-  background:rgba(12,4,24,.45);
+.metrics{color:rgba(196,181,253,.74);letter-spacing:.04em}
+.metrics b{color:#f6f3ff;font-weight:600}
+.metrics .a b{color:#ddd6fe}
+.metrics .r b{color:#c4b5fd}
+
+.chip,.chip.law,.ghost-chip{
+  border:1px solid rgba(196,181,253,.28)!important;
+  color:#ddd6fe!important;
+  background:rgba(12,4,24,.55)!important;
+  letter-spacing:.08em;
 }
-#introChip{
-  background:rgba(8,2,18,.72);
-  border-color:rgba(196,181,253,.28);
-  color:#e9e4ff;
-}
+
+#introChip{color:#e9e4ff}
 #introChip b.c,#introChip b.r{color:#c4b5fd}
 #introChip button{
-  border-color:rgba(196,181,253,.4);
-  color:#f4f1ff;
-  background:rgba(124,58,237,.25);
+  border-color:rgba(196,181,253,.4)!important;
+  color:#f6f3ff!important;
+  background:rgba(124,58,237,.28)!important;
 }
-#introChip button:hover{border-color:#e9e4ff}
-#intake,#sortDesk,#uploadBox,#sortedFigures,.log,#morePanel{
-  background:rgba(8,2,18,.55)!important;
-  border-color:rgba(196,181,253,.18)!important;
-  box-shadow:0 12px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04)!important;
-  color:#e9e4ff;
+
+#intake,#sortDesk,#uploadBox,#sortedFigures{
+  border-radius:16px!important;
 }
-#intake textarea,#sortDesk textarea,textarea,input[type=text],select{
-  background:rgba(0,0,0,.35)!important;
-  color:#f4f1ff!important;
+#log,#morePanel,#cheat{
+  border-radius:12px!important;
+}
+
+#dropzone,.dropHint{
+  border:1px dashed rgba(196,181,253,.32)!important;
+  border-radius:12px!important;
+  background:rgba(0,0,0,.22)!important;
+}
+
+#intake textarea,#sortDesk textarea,#paste,#pasteDesk,
+textarea,input[type=text],input[type=search],select{
+  background:rgba(0,0,0,.38)!important;
+  color:#f6f3ff!important;
   border:1px solid rgba(196,181,253,.22)!important;
-  border-radius:8px;
+  border-radius:10px!important;
+  caret-color:#c4b5fd;
 }
-button,.btn{
-  border-color:rgba(196,181,253,.32)!important;
-  color:#f4f1ff!important;
-  background:rgba(124,58,237,.18)!important;
-}
-button:hover,.btn:hover{
-  background:rgba(124,58,237,.32)!important;
+#intake textarea:focus,#sortDesk textarea:focus,
+textarea:focus,input:focus,select:focus{
+  outline:none!important;
   border-color:#c4b5fd!important;
+  box-shadow:0 0 0 3px rgba(124,58,237,.22)!important;
 }
-a{color:#c4b5fd}
-::selection{background:rgba(124,58,237,.45);color:#fff}
+
+button,.btn,.filebtn,.primary,.ghost{
+  border:1px solid rgba(196,181,253,.34)!important;
+  color:#f6f3ff!important;
+  background:rgba(124,58,237,.16)!important;
+  border-radius:999px!important;
+  letter-spacing:.06em;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+button:hover,.btn:hover,.filebtn:hover,.primary:hover,.ghost:hover{
+  background:rgba(124,58,237,.32)!important;
+  border-color:#ddd6fe!important;
+}
+button:active,.btn:active{transform:translateY(1px)}
+.primary{
+  background:rgba(167,139,250,.28)!important;
+  border-color:rgba(221,214,254,.45)!important;
+}
+
+.tray.admit,.tray.release,#trayAdmit,#trayRelease{
+  background:rgba(8,2,16,.72)!important;
+  border:1px solid rgba(196,181,253,.2)!important;
+  border-radius:14px!important;
+}
+.tray.admit .t,.sec-h{color:#ddd6fe}
+.tray.release .t{color:#c4b5fd}
+
+#navhint,#sub,#tip,#phaseWhisper,.whisper{
+  color:rgba(196,181,253,.62)!important;
+  text-shadow:none!important;
+}
+
+@media (prefers-reduced-transparency:reduce){
+  #top,#intake,#sortDesk{
+    background:var(--glass-solid)!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  button,.btn,.filebtn,.primary,.ghost{transition:none!important}
+}
