@@ -12,23 +12,25 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Inject stylesheet link
+      - name: Wire and stamp stylesheet
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import hashlib, re
+          css = Path('docs/aesthetic.css').read_bytes()
+          stamp = hashlib.sha256(css).hexdigest()[:8]
+          href = f'aesthetic.css?v={stamp}'
           p = Path('docs/index.html')
           t = p.read_text(encoding='utf-8')
-          link = '<link rel="stylesheet" href="aesthetic.css"/>'
-          if link not in t:
-              t = t.replace('</title>', '</title>\n' + link, 1)
-              p.write_text(t, encoding='utf-8')
-              print('wired docs/index.html')
-          else:
-              print('already wired')
+          t2 = re.sub(r'<link rel="stylesheet" href="aesthetic\.css[^"]*"/>', f'<link rel="stylesheet" href="{href}"/>', t)
+          if t2 == t and 'aesthetic.css' not in t:
+              t2 = t.replace('</title>', '</title>\n' + f'<link rel="stylesheet" href="{href}"/>', 1)
+          p.write_text(t2, encoding='utf-8')
+          print('href', href)
           PY
       - name: Commit if changed
         run: |
           git config user.name snowphamtom
           git config user.email yeti.monstersink@gmail.com
           git add docs/index.html
-          if git diff --cached --quiet; then echo nochange; else git commit -m "aesthetic: load purple/black/white chrome" && git push; fi
+          if git diff --cached --quiet; then echo nochange; else git commit -m "aesthetic: stamp frost stylesheet" && git push; fi
