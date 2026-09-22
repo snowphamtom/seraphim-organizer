@@ -1,0 +1,34 @@
+name: wire-aesthetic
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - docs/aesthetic.css
+      - .github/workflows/wire-aesthetic.yml
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inject stylesheet link
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('docs/index.html')
+          t = p.read_text(encoding='utf-8')
+          link = '<link rel="stylesheet" href="aesthetic.css"/>'
+          if link not in t:
+              t = t.replace('</title>', '</title>\n' + link, 1)
+              p.write_text(t, encoding='utf-8')
+              print('wired docs/index.html')
+          else:
+              print('already wired')
+          PY
+      - name: Commit if changed
+        run: |
+          git config user.name snowphamtom
+          git config user.email yeti.monstersink@gmail.com
+          git add docs/index.html
+          if git diff --cached --quiet; then echo nochange; else git commit -m "aesthetic: load purple/black/white chrome" && git push; fi
