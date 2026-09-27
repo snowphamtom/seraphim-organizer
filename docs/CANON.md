@@ -1,5 +1,7 @@
 # Seraphim Organizer — canon
 
+> **2026-09-27 (current):** background = ONE solid-shaded dodecahedron (WebGL, `#gyro`), gyroscopic rotation about the viewport centre, axis rates 1 : φ : φ². Purple / black / white only. No lattice, mesh, maze, frost, seed plates or background media. Reduced motion → static; DPR ≤ 2; paused when hidden. Placement = deterministic content classifier (spam / duplicates / gibberish → Aside). Items below are history.
+
 - **THE GEM (derived):** `deriveTheGem|masterpieceTopologyGem` — crystalline compression of the Seraphim node topology into one living seal-core.
   - Outer facets = Tier-1 pillars as dodeca faces / rivets (N1 Visual Field · N2 Seal Hub Sync · N3 Sort Desk · N4 Aesthetic Law · N5 Ship Continuity)
   - Inner fire = Seed-of-Life core (nested inside neon dodeca)
