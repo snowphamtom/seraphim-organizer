@@ -4,10 +4,10 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta name="description" content="Paste messy notes and Seraphim Organizer sorts them in your browser: tasks, meetings and ideas go to Organized; spam, duplicates and gibberish are set Aside. Local and private."/>
+<meta name="description" content="Seraphim Organizer sorts the live X feed for @magpie_inventor in your browser: questions, mentions, leads and feedback go to Organized; spam, reposts, duplicates and noise are set aside."/>
 <meta name="theme-color" content="#05010a"/>
 <meta property="og:title" content="Seraphim Organizer"/>
-<meta property="og:description" content="Paste messy notes. Seraphim keeps what matters in Organized and sets spam and duplicates Aside. Runs locally in your browser."/>
+<meta property="og:description" content="Sorting the live X feed for @magpie_inventor: signal in Organized, spam, reposts and duplicates set aside."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://snowphamtom.github.io/seraphim-organizer/"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
@@ -32,8 +32,9 @@ body{background:radial-gradient(130% 100% at 50% 32%,#14062e 0%,#080114 42%,#000
 button{font:inherit;color:inherit}
 #gyro{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
 /* header */
-#top{position:fixed;top:var(--s2);left:50%;transform:translateX(-50%);z-index:3;display:flex;align-items:center;gap:var(--s2);padding:var(--s1) var(--s2);border-radius:999px;background:rgba(6,2,14,.62);border:1px solid var(--line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);white-space:nowrap;max-width:calc(100vw - 2*var(--s2))}
+#top{position:fixed;top:var(--s2);left:0;right:0;margin:0 auto;width:fit-content;z-index:3;display:flex;align-items:center;gap:var(--s2);padding:var(--s1) var(--s2);border-radius:999px;background:rgba(6,2,14,.62);border:1px solid var(--line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);white-space:nowrap;max-width:calc(100vw - 2*var(--s2))}
 #top .title{font:600 var(--t-m)/1.2 var(--sans);letter-spacing:.02em;color:var(--ink)}
+#top .sub{font:400 var(--t-s)/1.2 var(--sans);color:var(--ink);margin-left:calc(-1*var(--s1))}
 #top .note{display:inline-flex;align-items:center;gap:var(--s1);font:400 var(--t-xs)/1.2 var(--sans);color:var(--mute)}
 #top .note::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lilac);box-shadow:0 0 8px rgba(196,181,253,.9)}
 /* desk */
@@ -41,37 +42,41 @@ button{font:inherit;color:inherit}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s2);box-shadow:0 16px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);min-width:0;display:flex;flex-direction:column}
 .card h2{font:600 var(--t-l)/1.3 var(--sans);color:var(--ink);display:flex;align-items:center;gap:var(--s1)}
 .helper{margin-top:4px;font-size:var(--t-s);line-height:1.5;color:var(--mute)}
-#pasteDesk{display:block;width:100%;margin-top:var(--s2);min-height:96px;height:96px;max-height:30dvh;padding:12px;font:400 var(--t-m)/1.55 var(--mono);color:var(--ink);background:rgba(0,0,0,.5);border:1px solid var(--line-2);border-radius:var(--r-md);resize:vertical}
-#pasteDesk::placeholder{color:rgba(212,206,242,.55)}
-#pasteDesk:focus{outline:none;border-color:rgba(237,233,254,.75);box-shadow:0 0 0 3px rgba(124,58,237,.35)}
-#uploadCard.drag{border-color:rgba(237,233,254,.7);box-shadow:0 0 0 3px rgba(124,58,237,.4)}
 .row{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s1)}
 .primaryRow{margin-top:var(--s2);gap:var(--s2)}
-@media (max-height:760px) and (min-width:601px){.card{padding:12px var(--s2)}#pasteDesk{margin-top:12px;height:88px;min-height:88px}.primaryRow,.secondaryRow{margin-top:12px}.downloads{margin-top:12px;padding-top:12px}}
+@media (max-height:760px) and (min-width:601px){.card{padding:12px var(--s2)}.primaryRow{margin-top:12px}.downloads{margin-top:12px;padding-top:12px}}
 #sortBtn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 var(--s3);font:600 var(--t-m)/1 var(--sans);color:#fff;background:var(--violet);border:1px solid rgba(237,233,254,.5);border-radius:999px;box-shadow:0 6px 20px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.25);cursor:pointer;transition:background .15s,box-shadow .15s,transform .1s}
 #sortBtn:hover{background:var(--violet-2);box-shadow:0 8px 26px rgba(124,58,237,.6),inset 0 1px 0 rgba(255,255,255,.25)}
 #sortBtn:active{transform:translateY(1px)}
 .hint{font-size:var(--t-xs);color:var(--dim)}
 kbd{font:500 11px/1 var(--mono);padding:3px 6px;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:6px;color:var(--ink);background:rgba(124,58,237,.14)}
-.secondaryRow{margin-top:var(--s2)}
+.status{margin-top:var(--s2);font-size:var(--t-s);color:var(--ink)}
+.stale{margin-top:var(--s1);padding:6px 10px;font-size:var(--t-xs);color:#ede9fe;background:rgba(124,58,237,.18);border:1px solid var(--line-2);border-radius:var(--r-md)}
+.stale[hidden]{display:none}
+.sources{margin-top:4px;font-size:var(--t-xs);color:var(--dim)}
+.sources:empty{display:none}
+#refreshBtn{min-height:40px;padding:0 var(--s2)}
 .btn2{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;font:500 var(--t-s)/1 var(--sans);color:var(--mute);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;cursor:pointer;transition:color .15s,border-color .15s,background .15s}
 .btn2:hover{color:var(--ink);border-color:var(--line-2);background:rgba(124,58,237,.16)}
 .btn2:disabled{opacity:.45;cursor:default;background:none}
-.formats{margin-top:var(--s1);font-size:var(--t-xs);color:var(--dim)}
 #deskMsg{margin-top:var(--s1);font-size:var(--t-xs);color:var(--lilac)}
 #deskMsg:empty{display:none}
 #deskMsg b{color:var(--ink);font-weight:600}
 /* result panels */
-.panel h2 .count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 var(--s1);font:600 var(--t-xs)/1 var(--sans);color:#fff;background:rgba(124,58,237,.62);border:1px solid var(--line-2);border-radius:999px}
-.panel.aside h2 .count{background:rgba(255,255,255,.1)}
+.card h2 .count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 var(--s1);font:600 var(--t-xs)/1 var(--sans);color:#fff;background:rgba(124,58,237,.62);border:1px solid var(--line-2);border-radius:999px}
+.panel.aside h2 .count,#feedCard h2 .count{background:rgba(255,255,255,.1)}
 .panel .helper{margin-top:2px}
 .items{list-style:none;display:flex;flex-direction:column;gap:var(--s1);margin-top:var(--s2);flex:1 1 auto;min-height:56px;max-height:30dvh;overflow-y:auto;padding-right:2px}
-.item{display:flex;align-items:flex-start;gap:var(--s1);font-size:var(--t-s);line-height:1.45;color:var(--ink);border-radius:8px;padding:2px 4px;margin:0 -4px}
-.item:focus-visible{outline:2px solid #ede9fe;outline-offset:0}
+.item{font-size:var(--t-s);line-height:1.45;color:var(--ink)}
+.plink{display:block;padding:var(--s1) 10px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.28);color:inherit;text-decoration:none;transition:border-color .15s,background .15s}
+.plink:hover{border-color:var(--line-2);background:rgba(124,58,237,.12)}
+.plink:focus-visible{outline:2px solid #ede9fe;outline-offset:0}
+.meta{display:flex;align-items:center;gap:var(--s1);min-width:0}
+.who{font-weight:600;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta time{margin-left:auto;flex:none;font-size:var(--t-xs);color:var(--dim)}
 .tag{flex:none;margin-top:1px;padding:1px var(--s1);font:500 11px/1.4 var(--sans);border:1px solid var(--line-2);border-radius:999px;color:var(--lilac);background:rgba(124,58,237,.12)}
 .aside .tag{color:var(--mute);background:rgba(255,255,255,.05)}
-.txt{min-width:0;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.item:hover .txt,.item:focus .txt{-webkit-line-clamp:unset;display:block}
+.txt{display:block;margin-top:4px;min-width:0;white-space:pre-line;overflow-wrap:anywhere;word-break:break-word}
 .aside .txt{color:var(--mute)}
 .empty{font-size:var(--t-s);color:var(--dim);padding:var(--s1) 0}
 .downloads{margin-top:var(--s2);padding-top:var(--s2);border-top:1px solid var(--line)}
@@ -80,23 +85,27 @@ footer{grid-column:1/-1;text-align:center;font-size:var(--t-xs);color:var(--dim)
 :focus{outline:none}
 :focus-visible{outline:2px solid #ede9fe;outline-offset:2px}
 /* tablet: input full width, panels side by side */
+@media (max-width:900px){#top{white-space:normal;flex-wrap:wrap;justify-content:center;row-gap:2px}}
 @media (max-width:1023px){
   #desk{grid-template-columns:1fr 1fr;width:min(720px,calc(100vw - 2*var(--s2)))}
-  #uploadCard{grid-column:1/-1}
+  #feedCard{grid-column:1/-1}
 }
 @media (max-width:600px){
-  #top{top:var(--s1);flex-direction:column;gap:2px;padding:6px var(--s2);border-radius:var(--r-lg)}
+  #top{top:var(--s1);flex-direction:column;gap:2px;padding:6px var(--s2);border-radius:var(--r-lg);white-space:normal;text-align:center}
+  #top .sub{margin-left:0;font-size:var(--t-xs)}
+  #top .note::before{display:none}
   #top .title{font-size:var(--t-s)}
   #top .note{font-size:11px}
   #desk{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14px);mask-image:linear-gradient(to bottom,transparent 0,#000 14px);grid-template-columns:1fr;bottom:var(--s1);width:calc(100vw - 2*var(--s1));gap:var(--s1);max-height:calc(100dvh - 320px);min-height:0}
   .card{padding:12px}
   .helper{font-size:var(--t-xs)}
-  #pasteDesk{font-size:16px;min-height:88px;height:88px;margin-top:12px}
   .primaryRow{margin-top:12px}
   #sortBtn{flex:1 1 auto;min-height:44px}
   .hint{display:none}
-  .secondaryRow{margin-top:var(--s1);flex-wrap:nowrap}
-  .btn2{flex:1 1 auto;justify-content:center;min-height:36px;padding:0 var(--s1);font-size:var(--t-xs);white-space:nowrap}
+  .status{margin-top:var(--s1);font-size:var(--t-xs)}
+  #feedCard .helper,.sources{display:none}
+  #refreshBtn{flex:0 0 auto;min-height:44px;padding:0 var(--s2)}
+  .downloads .btn2{flex:1 1 auto;justify-content:center;min-height:36px;padding:0 var(--s1);font-size:var(--t-xs);white-space:nowrap}
   .items{margin-top:var(--s1);max-height:none;min-height:0}
   .downloads{margin-top:12px;padding-top:12px;flex-wrap:nowrap}
   .panel .helper{display:none}
@@ -109,41 +118,36 @@ footer{grid-column:1/-1;text-align:center;font-size:var(--t-xs);color:var(--dim)
 <canvas id="gyro" aria-hidden="true"></canvas>
 <header id="top">
   <h1 class="title">Seraphim Organizer</h1>
+  <span class="sub">· Sorting the live X feed for @magpie_inventor</span>
   <span class="note">Runs in your browser · nothing is uploaded</span>
 </header>
 <main id="desk">
-  <section id="uploadCard" class="card" aria-labelledby="hNotes">
-    <h2 id="hNotes">Your notes</h2>
-    <p class="helper" id="notesHelp">Paste or type one item per line. Seraphim keeps real notes and sets aside spam, duplicates, and gibberish.</p>
-    <label for="pasteDesk" class="sr-only">Your notes, one item per line</label>
-    <textarea id="pasteDesk" spellcheck="false" aria-describedby="notesHelp" placeholder="Team sync Tuesday 10am&#10;Buy milk and eggs&#10;buy milk and eggs!&#10;CLICK HERE NOW!!!&#10;asdfghjkl"></textarea>
+  <section id="feedCard" class="card" aria-labelledby="hFeed">
+    <h2 id="hFeed">Live X feed <span class="count" id="feedN">0</span></h2>
+    <p class="helper">Mentions of @magpie_inventor, its home timeline, and recent posts about Seraphim Organizer and Grok Bot, from the latest snapshot.</p>
+    <p id="feedStatus" class="status" role="status" aria-live="polite">Loading the latest snapshot…</p>
+    <p id="staleMsg" class="stale" hidden></p>
+    <p id="feedSources" class="sources"></p>
     <div class="row primaryRow">
-      <button type="button" id="sortBtn" aria-keyshortcuts="Control+Enter Meta+Enter">Sort notes</button>
+      <button type="button" id="sortBtn" aria-keyshortcuts="Control+Enter Meta+Enter">Sort feed</button>
+      <button type="button" class="btn2" id="refreshBtn">Refresh</button>
       <span class="hint" id="shortcutHint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
     </div>
-    <div class="row secondaryRow">
-      <button type="button" class="btn2" id="sampleDesk">Try an example</button>
-      <button type="button" class="btn2" id="openFile">Open file</button>
-      <button type="button" class="btn2" id="clearDesk">Clear</button>
-      <input type="file" id="fileDesk" accept=".txt,.md,.csv,.tsv,.json,.jsonl,.ndjson" hidden/>
-      <button type="button" id="runSort" hidden tabindex="-1" aria-hidden="true">sort</button>
-    </div>
-    <p class="formats">Accepts .txt, .md, .csv, .json</p>
-    <p id="deskMsg" role="status" aria-live="polite"></p>
+    <p id="deskMsg" aria-live="polite"></p>
   </section>
   <section class="card panel keep" id="trayAdmit" aria-labelledby="hAdmit">
     <h2 id="hAdmit">Organized <span class="count" id="figAdmitN">0</span></h2>
-    <p class="helper">Notes worth keeping</p>
-    <ul class="items" id="figAdmit"><li class="empty">Nothing sorted yet. Paste your notes and choose Sort notes.</li></ul>
+    <p class="helper">Questions, mentions, replies, leads, feedback, links, and updates</p>
+    <ul class="items" id="figAdmit"><li class="empty">Sorting…</li></ul>
     <div class="row downloads"><button type="button" class="btn2" id="exportAdmitCsv" disabled>Download CSV</button><button type="button" class="btn2" id="exportAdmitJson" disabled>Download JSON</button></div>
   </section>
   <section class="card panel aside" id="trayRelease" aria-labelledby="hRelease">
     <h2 id="hRelease">Set aside <span class="count" id="figReleaseN">0</span></h2>
-    <p class="helper">Spam, duplicates, and noise</p>
+    <p class="helper">Spam, duplicates, reposts, bots, promos, and noise</p>
     <ul class="items" id="figRelease"><li class="empty">Nothing set aside yet.</li></ul>
     <div class="row downloads"><button type="button" class="btn2" id="exportReleaseCsv" disabled>Download CSV</button><button type="button" class="btn2" id="exportReleaseJson" disabled>Download JSON</button></div>
   </section>
-  <footer>How it works: each line is checked on its own words and against earlier lines. Nothing leaves this page.</footer>
+  <footer>How it works: posts from the public X feed are saved into a snapshot on a regular schedule (the Updated line shows when). Each post is checked on its own words and against earlier posts. Nothing you do here is sent anywhere.</footer>
 </main>
 <script>
 /* ===== Background: one solid dodecahedron (with a smaller counter-rotating core), gyroscopic rotation, WebGL, no libraries =====
@@ -293,227 +297,199 @@ footer{grid-column:1/-1;text-align:center;font-size:var(--t-xs);color:var(--dim)
   cv.addEventListener("webglcontextlost",e=>{e.preventDefault();stop();});
 })();
 
-/* ===== Seraphim Organizer — sorting (deterministic, client-side; nothing leaves the browser) ===== */
-const CAP=4000;
-const $=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-/* SERAPHIM_NOTE_CLASSIFIER_BEGIN — deterministic, client-side: spam / duplicate / noise → Aside; real notes → Organized */
-const NOTE_SPAM_RULES=[
-  [/\bguarantee(d|s)?\b/i,1],[/\b(guaranteed?)\s+(returns?|profits?|results?|income|gains?|winnings?)\b/i,2],
-  [/\b\d{2,}\s?x\b/i,2],[/\bclick\s+(here|now|below|this\s+link)\b/i,2],[/\bfree\s+(money|cash|gift|iphone|crypto|bitcoin|trial\s+now)\b/i,2],
-  [/\b(act|buy|order|join|sign\s*up|invest)\s+now\b/i,1.5],[/\blimited[\s-]+time\b/i,1],[/\brisk[\s-]*free\b|\bno\s+risk\b/i,1.5],
-  [/\bdouble\s+your\b|\bget\s+rich\b|\bmake\s+money\s+fast\b|\bpassive\s+income\b|\bfinancial\s+freedom\b/i,2],
-  [/\bearn\s+\$?\d/i,1.5],[/\byou('ve|\s+have)?\s+(won|been\s+selected)\b|\bclaim\s+your\s+(prize|reward|gift)\b|\bwinner\b/i,2],
-  [/\bcongratulations\b/i,1],[/\bto\s+the\s+moon\b|\bpump\b|\bairdrop\b|\bmoonshot\b|\bnext\s+100x\b|\bshitcoin\b|\bmemecoin\b/i,2],
-  [/\b(crypto|bitcoin|btc|eth|doge|token|coin|nft)s?\b.*\b(buy|now|profit|gains?|moon|pump|x\d+|\d+x|rich|guarantee)|\b(buy|profit|gains?|pump)\b.*\b(crypto|bitcoin|btc|eth|doge|token|coin|nft)s?\b/i,2],
-  [/\b(dm|message)\s+me\s+(now|for)\b|\bwork\s+from\s+home\b.*\$|\bcasino\b|\bviagra\b|\blose\s+weight\s+fast\b|\bmiracle\b|\bunsubscribe\b/i,2],
-  [/\$\$+|💰|🚀|🤑|💸|🔥🔥/u,1.5],[/!{3,}/,2],[/!{2}/,1],[/\b100%\s*(free|guaranteed|legit)\b/i,2]
+/* SERAPHIM_POST_CLASSIFIER_BEGIN — deterministic, client-side post sorting. Uses each post's own words and earlier posts (older first); never its position. */
+const POST_SPAM_RULES=[
+  [/\b(giveaway|give\s*away|airdrop|presale|pre-sale|whitelist|mint\s+now|free\s+mint)\b/i,2],
+  [/\b(100|1000|10+)x\b|\bto\s+the\s+moon\b|\bmoonshot\b|\bpump(ing)?\b|\bshitcoin|\bmemecoin|\bgem\s+alert\b/i,2],
+  [/\bfollow\s*(back|4\s*follow|for\s*follow)\b|\bf4f\b|\bfollow\s+me\s+(and|&|\+)|\bgain\s+followers\b|\bfollowers?\s+fast\b/i,2.5],
+  [/\b(rt|retweet|repost|like)\s*(\+|&|and)\s*(follow|like|tag|comment)\b/i,2],
+  [/\b(dm|inbox|message)\s+(me|us)\b[^.]{0,60}\b(earn|profit|invest|crypto|forex|trad(e|ing)|signals?|pay\s*out|recover)/i,2.5],
+  [/\bforex\b|\bbinary\s+options?\b|\bsignals?\s+group\b|\bguaranteed?\s+(returns?|profits?|income|gains?)\b|\bdouble\s+your\b|\bget\s+rich\b|\bpassive\s+income\b/i,2],
+  [/\b(claim|win)\s+(your|a|free)\s+\w+|\byou('ve|\s+have)\s+(won|been\s+selected)\b|\bwinners?\s+(announced|picked)\b/i,2],
+  [/\bfree\s+(money|cash|crypto|bitcoin|btc|eth|nft|iphone|gift\s*card)\b/i,2],
+  [/\$[A-Z]{2,6}\b[^.]{0,60}\b(buy|moon|pump|send|ape|x\d+|\d+x|gains?)\b/i,2],
+  [/\b(recover|hacked)\s+(your\s+)?(account|wallet|funds)\b|\bwallet\s+connect\b|\bseed\s+phrase\b/i,2],
+  [/\bonlyfans\b|\bcasino\b|\bbetting\s+tips\b|\bviagra\b/i,2],
+  [/💰|🤑|💸|🚀.*🚀|🔥🔥/u,1],[/!{3,}/,1]
 ];
-const NOTE_KB_ROWS=["qwertyuiop","asdfghjkl","zxcvbnm","1234567890"];
-function noteKey(s){return String(s||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/https?:\/\/\S+|www\.\S+/g," url ").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim();}
-function noteSpamScore(t){
-  let s=0; for(const [re,w] of NOTE_SPAM_RULES) if(re.test(t)) s+=w;
-  const letters=(t.match(/[A-Za-z]/g)||[]), upper=(t.match(/[A-Z]/g)||[]).length, words=t.split(/\s+/).filter(w=>/[A-Za-z]/.test(w));
-  if(letters.length>=8 && words.length>=3 && upper/letters.length>=0.7) s+=2; /* ALL-CAPS shouting */
-  return s;
-}
-function noteIsGibberish(t){
-  const letters=(t.toLowerCase().match(/[a-z]/g)||[]);
-  if(letters.length<2) return "empty";
-  const alpha=letters.join("");
-  if(/([a-z])\1{4,}/.test(alpha)) return "mash";
-  const vowels=(alpha.match(/[aeiou]/g)||[]).length;
-  if(letters.length>=6 && vowels/letters.length<0.18) return "no vowels";
-  const toks=t.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
-  for(const tok of toks){ if(tok.length>=4 && NOTE_KB_ROWS.some(r=>r.includes(tok)||r.split("").reverse().join("").includes(tok))) return "keyboard mash"; }
-  const alphaToks=toks.filter(x=>/^[a-z]{3,}$/.test(x));
-  if(alphaToks.length>=2 && alphaToks.filter(x=>!/[aeiouy]/.test(x)).length/alphaToks.length>0.5) return "gibberish";
-  return "";
-}
-function noteTokens(k){return k.split(" ").filter(w=>w.length>1);}
-function noteNearDup(k,seen){
-  const flat=k.replace(/ /g,"");
-  if(seen.flat.has(flat)) return true;
-  const A=new Set(noteTokens(k)); if(A.size<3) return false;
+const POST_PROMO_RULES=[
+  /\b\d{1,2}\s?%\s*off\b|\b\$?\d[\d,]*\s+(weekend\s+)?discount\b|\bdiscount\s+code\b|\bpromo\s*code\b|\buse\s+code\b|\bcoupon\b|\bflash\s+sale\b|\bon\s+sale\b|\bdeals?\b.*\$\d/i,
+  /\blowest\s+price\b|\bbuy\s+now\b|\bshop\s+now\b|\border\s+now\b|\blink\s+in\s+bio\b|\bsign\s*up\s+(now|today|here)\b|\bregister\s+(now|today|here)\b/i,
+  /\bpay-to-rank\b|\bsponsored\b|\b#ad\b|\bpaid\s+partnership\b|\bsubscribe\s+(now|today|to\s+my)\b/i,
+  /\b(makes?|earn|earns|earning|making)\s+\$\d[\d,]*\+?\s*(k\s*)?(a|per|\/)\s*(month|mo|week|day)\b/i
+];
+const POST_BOT_RULES=[/[—–-]\s*posted\s+by\b/i,/\b(this\s+is\s+an?\s+)?automated\s+(post|message|reply|account)\b/i,/\bi\s+am\s+a\s+bot\b|\bbeep\s+boop\b/i,/^\s*\[(bot|auto)\]/i];
+const POST_LEAD_RULES=[
+  /\b(looking\s+for|searching\s+for)\s+(a|an|someone|some)\b/i,/\b(anyone|anybody|who)\s+(know|knows|recommend|can\s+(build|help|make))\b/i,
+  /\b(can|could|would)\s+you\s+(build|make|help\s+(me|us)|do\s+this\s+for)\b/i,/\bwe('re|\s+are)\s+hiring\b|\bhiring\b.*\b(dev|engineer|designer|help)\b/i,
+  /\b(i|we)\s+(need|want)\s+(someone|help|a\s+tool|a\s+bot|this)\b/i,/\bwould\s+(pay|buy|use)\b|\bhow\s+much\s+(for|does|would|is)\b|\b(pricing|quote|rates?)\s+for\b/i,
+  /\binterested\s+in\s+(working|a\s+collab|collaborat|partnering|using)\b|\blet'?s\s+(collab|work\s+together|partner)\b|\bopen\s+to\s+(a\s+)?(collab|work)/i,
+  /\bif\s+there\s+is\s+a\s+\w[\w\s]{0,20}\byou\s+would\s+actually\s+use\b/i
+];
+const POST_FEEDBACK_RULES=[
+  /\b(love|loved|loving)\s+(this|it|the|your)\b|\b(great|nice|awesome|amazing|impressive|brilliant|cool|clever)\s+(work|build|demo|job|idea|share|tool|post|thread|project)\b/i,
+  /\b(very|so|super|really)\s+(impressive|cool|useful|helpful|good)\b|\bthank(s|\s+you)\b|\bappreciate\b/i,
+  /\b(disappoint\w*|broken|buggy|doesn'?t\s+work|not\s+working|frustrat\w*|terrible|worst|bad\s+experience)\b/i,
+  /\bfeature\s+request\b|\bi\s+wish\s+(it|you|there)\b|\bsuggestion\b|\bplease\s+add\b/i
+];
+const POST_QUESTION_START=/^(who|what|when|where|why|how|which|is|are|was|were|do|does|did|can|could|would|will|should|has|have|any|anyone|anybody)\b/i;
+function postBody(t){return String(t||"").replace(/^RT\s+@\w+:\s*/,"").replace(/https?:\/\/\S+/gi," ").replace(/(^|\s)(@\w+\s*)+/g," ").replace(/\s+/g," ").trim();}
+function postKey(t){return postBody(t).toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[…]+$/,"").replace(/[^\p{L}\p{N}]+/gu," ").replace(/\s+/g," ").trim();}
+function postTokens(k){return k.split(" ").filter(w=>w.length>1);}
+function newPostSeen(){return {flat:new Set(),keys:[]};}
+function postNearDup(k,handle,seen){
+  const flat=k.replace(/ /g,""); if(flat.length>=12&&seen.flat.has(flat)) return true;
+  const A=new Set(postTokens(k)); if(A.size<4) return false;
   for(const prev of seen.keys){
-    const B=prev.set; if(B.size<3) continue;
+    const B=prev.set; if(B.size<4) continue;
     let inter=0; for(const w of A) if(B.has(w)) inter++;
-    if(inter/(A.size+B.size-inter)>=0.8) return true;
+    const j=inter/(A.size+B.size-inter);
+    if(j>=0.8) return true;
+    if(prev.handle===handle&&j>=0.55) return true;          /* same account, same template */
   }
   return false;
 }
-function noteLabel(t){
-  const l=t.toLowerCase();
-  if(/\b(meeting|meet|sync|standup|stand-up|1:1|one-on-one|agenda|call with|interview|retro|kickoff|catch up|lunch with)\b/.test(l)) return "meeting";
-  if(/\b\d{1,2}(:\d\d)?\s?(am|pm)\b|\b(appt|appointment)\b/.test(l)) return "event";
-  if(/\b(remember|remind|don'?t forget|deadline|due|by (mon|tue|wed|thu|fri|sat|sun)|tomorrow|tonight)\b/.test(l)) return "reminder";
-  if(/\b(ideas?|what if|maybe|could we|brainstorm|concept|try)\b/.test(l)) return "idea";
-  if(/^\s*(-\s*\[\s?\]|\[\s?\]|todo|to do|task)\b|\b(buy|call|email|send|book|schedule|finish|fix|review|update|pay|clean|pick up|renew|order|write|draft|prepare|submit|water|return)\b/.test(l)) return "task";
-  return "note";
+function postSpamScore(t){let s=0;for(const [re,w] of POST_SPAM_RULES) if(re.test(t)) s+=w;return s;}
+/* post: {id, handle, text, refs?, reply_to_account?}; ctx: {account} */
+function classifyPost(post,seen,ctx){
+  seen=seen||newPostSeen(); ctx=ctx||{};
+  const account=String(ctx.account||"").toLowerCase();
+  const raw=String(post&&post.text!=null?post.text:"");
+  const t=raw.replace(/\s+/g," ").trim();
+  const handle=String(post&&post.handle||"").toLowerCase();
+  const refs=(post&&post.refs)||[];
+  const own=account&&handle===account;
+  const k=postKey(t);
+  const isDup=!!k&&postNearDup(k,handle,seen);
+  if(k){seen.flat.add(k.replace(/ /g,""));seen.keys.push({set:new Set(postTokens(k)),handle});}
+  const out=(keep,tag,reason)=>({keep,tag,reason:reason||tag.toLowerCase()});
+  if(!t) return out(false,"Noise","empty");
+  if(/^RT\s+@\w+:/.test(t)||refs.includes("retweeted")) return out(false,"Repost","reposts someone else's post");
+  const body=postBody(t);
+  const hasUrl=/https?:\/\/\S+/i.test(t);
+  const words=(body.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu)||[]).filter(w=>!/^#/.test(w));
+  const letters=(body.replace(/#[\p{L}\p{N}_]+/gu," ").match(/\p{L}/gu)||[]).length;
+  if(hasUrl&&(words.length<2||letters<4)) return out(false,"Link only","only a link");
+  if(postSpamScore(t)>=2) return out(false,"Spam","spam pattern (crypto, giveaway, or follow-back)");
+  if(!own&&(/bot$/i.test(handle)||POST_BOT_RULES.some(re=>re.test(t)))) return out(false,"Bot","automated account or post");
+  if(POST_PROMO_RULES.some(re=>re.test(t))) return out(false,"Promo","advertising or sales pitch");
+  const tags=(t.match(/#[\p{L}\p{N}_]+/gu)||[]).length;
+  if(letters<4||(tags>=2&&words.length<=tags+1)) return out(false,"Noise","no real words (emoji, hashtags, or mentions only)");
+  const lettersAll=(body.match(/\p{Lu}/gu)||[]).length, lower=(body.match(/\p{Ll}/gu)||[]).length;
+  if(letters>=24&&lettersAll/(lettersAll+lower)>0.8&&!own) return out(false,"Spam","shouting in capitals");
+  if(isDup) return out(false,"Duplicate","repeats an earlier post");
+  if(words.length<2&&!hasUrl) return out(false,"Noise","too short to carry meaning");
+  /* keep: pick one signal tag */
+  const mentionsMe=account&&new RegExp("@"+account.replace(/[^a-z0-9_]/g,"")+"\\b","i").test(t);
+  const isReply=refs.includes("replied_to")||/^@\w+/.test(t);
+  const question=/\?(\s|$)/.test(body)&&(POST_QUESTION_START.test(body)||/\b(how|what|why|when|where|who|which|anyone|thoughts)\b[^.?!]*\?/i.test(body));
+  if(!own&&POST_LEAD_RULES.some(re=>re.test(t))) return out(true,"Lead","asks for help, a build, or a price");
+  if(question) return out(true,"Question","asks a question");
+  if(!own&&(isReply||mentionsMe||post.reply_to_account)&&POST_FEEDBACK_RULES.some(re=>re.test(t))) return out(true,"Feedback","praise, complaint, or suggestion");
+  if(!own&&(mentionsMe||post.reply_to_account)) return out(true,"Mention","mentions @"+account);
+  if(isReply) return out(true,"Reply","part of a conversation");
+  if(hasUrl) return out(true,"Link","shares a link with context");
+  return out(true,"Update","a post with its own content");
 }
-function newNoteSeen(){return {flat:new Set(),keys:[]};}
-function classifyNote(text,seen){
-  seen=seen||newNoteSeen();
-  const t=String(text==null?"":text).replace(/\s+/g," ").trim();
-  if(!t) return {keep:false,reason:"empty",label:"empty"};
-  const noUrl=t.replace(/https?:\/\/\S+|www\.\S+/gi," ").trim();
-  const urlOnly=noUrl!==t && (noUrl.match(/[A-Za-z]{2,}/g)||[]).length<2;
-  const k=noteKey(t);
-  const isDup=k && noteNearDup(k,seen);
-  if(k){ seen.flat.add(k.replace(/ /g,"")); seen.keys.push({k,set:new Set(noteTokens(k))}); }
-  if(urlOnly) return {keep:false,reason:"link only",label:"spam"};
-  if((noUrl.match(/[A-Za-z]/g)||[]).length<2) return {keep:false,reason:"empty",label:"empty"};
-  if(noteSpamScore(t)>=2) return {keep:false,reason:"spam",label:"spam"};
-  const g=noteIsGibberish(noUrl||t);
-  if(g) return {keep:false,reason:g,label:g==="empty"?"empty":"noise"};
-  if(isDup) return {keep:false,reason:"duplicate",label:"duplicate"};
-  return {keep:true,reason:"kept",label:noteLabel(t)};
-}
-/* SERAPHIM_NOTE_CLASSIFIER_END */
+/* SERAPHIM_POST_CLASSIFIER_END */
 
-function parseDump(name,text){
-  const items=[]; const n=(name||"").toLowerCase();
-  const push=(id,t,kind)=>{const s=String(t||"").trim();if(s)items.push({id:String(id),text:s,kind:kind||""});};
-  const capped=()=>{if(items.length>CAP){items.length=CAP;return true;}return false;};
+/* ===== Seraphim Organizer — sorts the live X feed snapshot (./feed.json). Client-side; the only request is same-origin feed.json. ===== */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ACCOUNT="magpie_inventor", STALE_MS=2*3600*1000, TZ="America/Chicago";
+let feed=null, lastResult=null;
+function ctTime(d){
+  const now=new Date(), same=d.toLocaleDateString("en-US",{timeZone:TZ})===now.toLocaleDateString("en-US",{timeZone:TZ});
+  const t=d.toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"});
+  return (same?"":d.toLocaleDateString("en-US",{timeZone:TZ,month:"short",day:"numeric"})+", ")+t+" CT";
+}
+function ago(d,now){
+  const s=Math.max(0,Math.round(((now||Date.now())-d.getTime())/1000));
+  if(s<60) return "just now"; const m=Math.round(s/60); if(m<60) return m+" min ago";
+  const h=Math.round(m/60); if(h<48) return h+(h===1?" hour ago":" hours ago"); const dd=Math.round(h/24); return dd+" days ago";
+}
+function shortAgo(d){const s=Math.max(0,(Date.now()-d.getTime())/1000);if(s<3600)return Math.max(1,Math.round(s/60))+"m";if(s<86400)return Math.round(s/3600)+"h";return d.toLocaleDateString("en-US",{timeZone:TZ,month:"short",day:"numeric"});}
+function validPosts(j){return (j&&Array.isArray(j.posts)?j.posts:[]).filter(p=>p&&p.id&&p.handle&&typeof p.text==="string");}
+function safeUrl(p){const u=String(p.url||"");return /^https:\/\/(x|twitter)\.com\//.test(u)?u:"https://x.com/"+encodeURIComponent(p.handle)+"/status/"+encodeURIComponent(p.id);}
+async function loadFeed(bust){
+  $("feedStatus").textContent="Loading the latest snapshot…";
+  let j=null;
   try{
-    if(n.endsWith(".json")||(/^\s*[\[{]/.test(text)&&!n.endsWith(".jsonl")&&!n.endsWith(".ndjson"))){
-      const j=JSON.parse(text);
-      const arr=Array.isArray(j)?j:(j.items||j.rows||j.data||j.lines||j.entries||[]);
-      if(Array.isArray(arr)&&arr.length){
-        arr.forEach((row,i)=>{
-          if(typeof row==="string")push(i+1,row);
-          else if(row&&typeof row==="object")push(row.id||row.ID||(i+1),row.title||row.text||row.name||row.label||row.item||row.content||JSON.stringify(row),row.kind||row.type||"");
-        });
-        capped();return items;
-      }
-      if(j&&typeof j==="object"&&(j.text||j.t)){push(j.id||0,j.text||j.t,j.kind);return items;}
-    }
-  }catch(_){}
-  if(n.endsWith(".jsonl")||n.endsWith(".ndjson")||(/^\s*\{/.test(text)&&text.includes("\n{"))){
-    text.split(/\r?\n/).forEach((line,i)=>{
-      if(!line.trim())return;
-      try{const o=JSON.parse(line);if(typeof o==="string")push(i+1,o);else push(o.id||i+1,o.title||o.text||o.name||line,o.kind);}catch{push(i+1,line);}
-    });
-    capped();return items;
-  }
-  const _rows=text.split(/\r?\n/).filter(l=>l.trim());
-  const _headLike=_rows.length>1&&/^\s*"?(id|title|name|text|kind|type|label|item|content|line)"?\s*[,\t]/i.test(_rows[0]);
-  const _allTabs=_rows.length>1&&_rows.every(l=>l.includes("\t"));
-  if(n.endsWith(".csv")||n.endsWith(".tsv")||_headLike||_allTabs){
-    const delim=n.endsWith(".tsv")||(!text.includes(",")&&text.includes("\t"))?"\t":",";
-    const lines=text.split(/\r?\n/).filter(l=>l.trim());
-    if(lines.length){
-      const split=(line)=>{
-        const out=[];let cur="",q=false;
-        for(let i=0;i<line.length;i++){
-          const c=line[i];
-          if(c==='"'){if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q;}
-          else if(c===delim&&!q){out.push(cur);cur="";}
-          else cur+=c;
-        }
-        out.push(cur);return out.map(x=>x.trim());
-      };
-      const headers=split(lines[0]).map(h=>h.replace(/^"|"$/g,""));
-      const low=headers.map(h=>h.toLowerCase());
-      const hasHeader=low.some(h=>/^(id|title|name|text|t|kind|type|label|item|content|line)$/.test(h));
-      const ti=Math.max(0,low.findIndex(h=>/title|name|text|file|label|item|content|line/.test(h)));
-      const ii=low.findIndex(h=>/^id$/.test(h));
-      const ki=low.findIndex(h=>/kind|type/.test(h));
-      const start=hasHeader?1:0;
-      for(let i=start;i<lines.length;i++){
-        const cols=split(lines[i]).map(c=>c.replace(/^"|"$/g,""));
-        if(!cols.some(Boolean))continue;
-        if(hasHeader)push(ii>=0&&cols[ii]?cols[ii]:(i),cols[ti]||cols.filter(Boolean).join(" · "),ki>=0?cols[ki]:"");
-        else if(cols.length===1)push(i,cols[0]);
-        else push(cols[0],cols.slice(1).join(" · "));
-        if(capped())break;
-      }
-      if(items.length)return items;
-    }
-  }
-  text.split(/\r?\n/).forEach((line,i)=>{const s=line.trim();if(!s||s.startsWith("#"))return;push(i+1,s);});
-  capped();return items;
+    const r=await fetch("./feed.json"+(bust?"?t="+Date.now():""),{cache:bust?"no-store":"default",credentials:"same-origin"});
+    if(r.ok) j=await r.json();
+  }catch(_){j=null;}
+  feed=j; showFeedMeta(); sortFeed();
 }
-
-/* Controller: one pass over the items; placement comes only from each line's content (and earlier lines, for duplicates). */
-class Controller{
-  constructor(){this.seen=newNoteSeen();this.admits=0;this.refuses=0;}
-  evaluate(text,id,kind){
-    const note=classifyNote(text,this.seen);
-    const decision=note.keep?"admit":"refuse";
-    note.keep?this.admits++:this.refuses++;
-    return {id:String(id),t:String(text).slice(0,400),decision,label:note.label,reason:note.reason,kind:kind||"",cause:note.keep?"KEEP":"ASIDE:"+note.reason,toks:[]};
+function showFeedMeta(){
+  const posts=validPosts(feed);
+  $("feedN").textContent=posts.length;
+  const at=feed&&feed.fetched_at?new Date(feed.fetched_at):null, ok=at&&!isNaN(at);
+  if(!posts.length){
+    $("feedStatus").textContent="No posts in the latest snapshot yet."+(ok?" Updated "+ago(at)+" ("+ctTime(at)+").":"");
+  }else{
+    $("feedStatus").textContent=ok?("Updated "+ago(at)+" ("+ctTime(at)+") · "+posts.length+" post"+(posts.length===1?"":"s")):(posts.length+" posts · update time unknown");
   }
+  const stale=ok&&Date.now()-at.getTime()>STALE_MS;
+  $("staleMsg").hidden=!stale;
+  $("staleMsg").textContent=stale?"This snapshot is "+ago(at).replace(" ago","")+" old, so posts from after "+ctTime(at)+" are not included.":"";
+  const sc=feed&&feed.source_counts, names={mention:"mentions",timeline:"home timeline",search:"search"};
+  $("feedSources").textContent=sc&&posts.length?Object.keys(names).filter(k=>k in sc).map(k=>sc[k]+" from "+names[k]).join(" · "):"";
 }
-let lastResult=null;
-function organize(items){
-  const ctrl=new Controller();
-  const verdicts=items.map(it=>ctrl.evaluate(it.text,it.id,it.kind));
-  lastResult={n:verdicts.length,counts:{admit:ctrl.admits,refuse:ctrl.refuses},verdicts,stamp:new Date().toISOString()};
+/* Controller: classify oldest→newest so a repeat is judged against the posts before it; display newest first. */
+function sortFeed(){
+  const posts=validPosts(feed);
+  const byTime=[...posts].sort((a,b)=>String(a.created_at).localeCompare(String(b.created_at))||String(a.id).localeCompare(String(b.id)));
+  const seen=newPostSeen();
+  const verdicts=byTime.map(p=>{const r=classifyPost(p,seen,{account:ACCOUNT});return {id:String(p.id),handle:p.handle,name:p.name||p.handle,text:p.text,url:safeUrl(p),created_at:p.created_at,tag:r.tag,reason:r.reason,bucket:r.keep?"organized":"set aside"};}).reverse();
+  lastResult={n:verdicts.length,verdicts,stamp:new Date().toISOString()};
   render(lastResult);
   return lastResult;
 }
-const TAGS={meeting:"Meeting",event:"Event",task:"Task",reminder:"Reminder",idea:"Idea",note:"Note",duplicate:"Duplicate",spam:"Spam","link only":"Link only",empty:"Empty"};
-function tagFor(v){ if(v.decision==="admit") return TAGS[v.label]||"Note"; return TAGS[v.reason]||(v.reason==="empty"?"Empty":"Noise"); }
 function chip(v){
   const li=document.createElement("li");
-  const tag=tagFor(v);
-  li.className="item chipFig"; li.tabIndex=0; li.dataset.id=v.id; li.dataset.text=v.t; li.dataset.reason=v.reason; li.dataset.tag=tag;
-  li.title=v.t;
-  li.innerHTML='<span class="tag">'+esc(tag)+'</span><span class="txt">'+esc(v.t)+'</span>';
+  li.className="item post"; li.dataset.id=v.id; li.dataset.tag=v.tag; li.dataset.bucket=v.bucket;
+  const d=v.created_at?new Date(v.created_at):null, ok=d&&!isNaN(d);
+  li.innerHTML='<a class="plink" href="'+esc(v.url)+'" target="_blank" rel="noopener" title="'+esc(v.reason)+' — open on x.com">'+
+    '<span class="meta"><span class="tag">'+esc(v.tag)+'</span><span class="who">@'+esc(v.handle)+'</span>'+(ok?'<time datetime="'+esc(v.created_at)+'" title="'+esc(ctTime(d))+'">'+esc(shortAgo(d))+'</time>':'')+'</span>'+
+    '<span class="txt">'+esc(v.text)+'</span></a>';
   return li;
 }
 function render(res){
   const vs=res?res.verdicts:[];
-  const A=vs.filter(v=>v.decision==="admit"), R=vs.filter(v=>v.decision!=="admit");
+  const A=vs.filter(v=>v.bucket==="organized"), R=vs.filter(v=>v.bucket!=="organized");
   $("figAdmitN").textContent=A.length; $("figReleaseN").textContent=R.length;
+  const none=!validPosts(feed).length;
   const fill=(ul,list,empty)=>{ul.textContent="";if(!list.length){ul.innerHTML='<li class="empty">'+empty+'</li>';return;}const fr=document.createDocumentFragment();list.forEach(v=>fr.appendChild(chip(v)));ul.appendChild(fr);};
-  fill($("figAdmit"),A,"Nothing sorted yet. Paste your notes and choose Sort notes.");
-  fill($("figRelease"),R,"Nothing set aside yet.");
+  fill($("figAdmit"),A,none?"No posts in the latest snapshot yet.":"No posts kept in this snapshot.");
+  fill($("figRelease"),R,none?"Nothing to set aside yet.":"Nothing set aside in this snapshot.");
   ["exportAdmitCsv","exportAdmitJson"].forEach(id=>$(id).disabled=!A.length);
   ["exportReleaseCsv","exportReleaseJson"].forEach(id=>$(id).disabled=!R.length);
-  $("deskMsg").innerHTML=res?('Sorted '+vs.length+' line'+(vs.length===1?'':'s')+': <b id="mA">'+A.length+'</b> organized, <b id="mR">'+R.length+'</b> set aside.'):"";
-  if(res&&innerWidth<=600){const d=$("desk"),t=$("trayAdmit");if(d&&t)d.scrollTo({top:t.offsetTop-8,behavior:"smooth"});}
-  if(res) window.dispatchEvent(new CustomEvent("seraphim:sort",{detail:{organized:A.length,aside:R.length}}));
-}
-function deskText(){return $("pasteDesk").value||"";}
-function runDeskSort(){
-  const text=deskText();
-  if(!text.trim()){ $("deskMsg").textContent="Add a few notes first, one item per line."; $("pasteDesk").focus(); return null; }
-  return organize(parseDump("paste.txt",text));
+  if(res&&vs.length){
+    const counts={};vs.forEach(v=>counts[v.tag]=(counts[v.tag]||0)+1);
+    $("deskMsg").innerHTML='Sorted '+vs.length+' post'+(vs.length===1?'':'s')+': <b id="mA">'+A.length+'</b> organized, <b id="mR">'+R.length+'</b> set aside.';
+    $("deskMsg").dataset.counts=JSON.stringify(counts);
+  }else{$("deskMsg").textContent="";}
+  if(res&&vs.length) window.dispatchEvent(new CustomEvent("seraphim:sort",{detail:{organized:A.length,aside:R.length}}));
 }
 function download(which,asJson){
   if(!lastResult) return;
-  const rows=lastResult.verdicts.filter(v=>which==="admit"?v.decision==="admit":v.decision!=="admit");
+  const rows=lastResult.verdicts.filter(v=>which==="admit"?v.bucket==="organized":v.bucket!=="organized");
   if(!rows.length) return;
   const label=which==="admit"?"organized":"set-aside"; let blob;
-  if(asJson) blob=new Blob([JSON.stringify({folder:label,n:rows.length,items:rows.map(v=>({id:v.id,text:v.t,tag:tagFor(v),reason:v.reason}))},null,2)],{type:"application/json"});
-  else{const q=s=>'"'+String(s).replace(/"/g,'""')+'"';blob=new Blob([["id","panel","tag","reason","text"].join(",")+"\n"+rows.map(v=>[v.id,label,tagFor(v),v.reason,v.t].map(q).join(",")).join("\n")+"\n"],{type:"text/csv"});}
+  const pick=v=>({id:v.id,handle:"@"+v.handle,url:v.url,text:v.text,tag:v.tag,bucket:v.bucket,created_at:v.created_at||""});
+  if(asJson) blob=new Blob([JSON.stringify({bucket:label,fetched_at:feed&&feed.fetched_at||null,n:rows.length,items:rows.map(pick)},null,2)],{type:"application/json"});
+  else{const q=s=>'"'+String(s).replace(/"/g,'""')+'"';const cols=["id","handle","url","text","tag","bucket","created_at"];blob=new Blob([cols.join(",")+"\n"+rows.map(v=>{const o=pick(v);return cols.map(c=>q(o[c])).join(",");}).join("\n")+"\n"],{type:"text/csv"});}
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="seraphim-"+label+(asJson?".json":".csv"); a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
 }
-const SAMPLE=["Team standup Monday 9:30am","Book a haircut for next week","Remember to water the plants on Friday","Idea: add a reading list to the weekly plan","book a haircut for next week!","CLICK HERE NOW!!! LIMITED TIME OFFER","asdfghjkl qwerty","https://example.com/xyz","Pick up dry cleaning, then call the library"].join("\n");
 (function wire(){
-  const ta=$("pasteDesk"), box=$("uploadCard");
-  $("sortBtn").addEventListener("click",runDeskSort);
-  $("runSort").addEventListener("click",runDeskSort);
-  $("clearDesk").addEventListener("click",()=>{ta.value="";$("fileDesk").value="";lastResult=null;render(null);ta.focus();});
-  $("openFile").addEventListener("click",()=>$("fileDesk").click());
+  $("sortBtn").addEventListener("click",()=>{sortFeed();if(innerWidth<=600){const d=$("desk"),t=$("trayAdmit");if(d&&t)d.scrollTo({top:t.offsetTop-8,behavior:"smooth"});}});
+  $("refreshBtn").addEventListener("click",()=>loadFeed(true));
   if(/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||"")) $("shortcutHint").innerHTML="<kbd>⌘</kbd> + <kbd>Enter</kbd>";
-  /* quiet command: a line that is just "> sort" sorts the notes above it */
-  ta.addEventListener("keydown",e=>{ if(e.key!=="Enter"||e.shiftKey||e.metaKey||e.ctrlKey) return;
-    const before=ta.value.slice(0,ta.selectionStart), lines=before.split("\n"), cur=lines[lines.length-1];
-    if(/^\s*>\s*sort\s*$/i.test(cur)){ e.preventDefault(); lines.pop(); ta.value=lines.join("\n")+ta.value.slice(ta.selectionStart); runDeskSort(); } });
-  $("sampleDesk").addEventListener("click",()=>{ta.value=SAMPLE;runDeskSort();});
   $("exportAdmitCsv").onclick=()=>download("admit",false); $("exportAdmitJson").onclick=()=>download("admit",true);
   $("exportReleaseCsv").onclick=()=>download("release",false); $("exportReleaseJson").onclick=()=>download("release",true);
-  $("fileDesk").addEventListener("change",async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const t=await f.text();ta.value=t;organize(parseDump(f.name,t));});
-  const over=e=>{e.preventDefault();box.classList.add("drag");}, leave=e=>{e.preventDefault();box.classList.remove("drag");};
-  ["dragenter","dragover"].forEach(ev=>box.addEventListener(ev,over)); ["dragleave","drop"].forEach(ev=>box.addEventListener(ev,leave));
-  box.addEventListener("drop",async e=>{const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
-    if(f){const t=await f.text();ta.value=t;organize(parseDump(f.name,t));return;}
-    const t=e.dataTransfer&&e.dataTransfer.getData("text/plain"); if(t){ta.value=t;organize(parseDump("paste.txt",t));}});
-  let pt=null; ta.addEventListener("paste",()=>{clearTimeout(pt);pt=setTimeout(()=>{if(ta.value.trim())runDeskSort();},350);});
-  document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter"){e.preventDefault();runDeskSort();}});
+  document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter"){e.preventDefault();sortFeed();}});
+  setInterval(()=>{if(feed)showFeedMeta();},60000);
+  loadFeed(false);
 })();
 </script>
 </body>
