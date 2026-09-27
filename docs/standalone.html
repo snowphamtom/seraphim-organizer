@@ -4691,6 +4691,7 @@ requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDro
 })();
 
 /* SERAPHIM_NOTE_CLASSIFIER_BEGIN — deterministic, client-side: spam / duplicate / noise → Aside; real notes → Organized */
+/* Strong signals: any one of these (score ≥ 2 total) refuses a line. */
 const NOTE_SPAM_RULES=[
   [/\bguarantee(d|s)?\b/i,1],[/\b(guaranteed?)\s+(returns?|profits?|results?|income|gains?|winnings?)\b/i,2],
   [/\b\d{2,}\s?x\b/i,2],[/\bclick\s+(here|now|below|this\s+link)\b/i,2],[/\bfree\s+(money|cash|gift|iphone|crypto|bitcoin|trial\s+now)\b/i,2],
@@ -4700,23 +4701,37 @@ const NOTE_SPAM_RULES=[
   [/\bcongratulations\b/i,1],[/\bto\s+the\s+moon\b|\bpump\b|\bairdrop\b|\bmoonshot\b|\bnext\s+100x\b|\bshitcoin\b|\bmemecoin\b/i,2],
   [/\b(crypto|bitcoin|btc|eth|doge|token|coin|nft)s?\b.*\b(buy|now|profit|gains?|moon|pump|x\d+|\d+x|rich|guarantee)|\b(buy|profit|gains?|pump)\b.*\b(crypto|bitcoin|btc|eth|doge|token|coin|nft)s?\b/i,2],
   [/\b(dm|message)\s+me\s+(now|for)\b|\bwork\s+from\s+home\b.*\$|\bcasino\b|\bviagra\b|\blose\s+weight\s+fast\b|\bmiracle\b|\bunsubscribe\b/i,2],
-  [/\$\$+|💰|🚀|🤑|💸|🔥🔥/u,1.5],[/!{3,}/,2],[/!{2}/,1],[/\b100%\s*(free|guaranteed|legit)\b/i,2]
+  [/\b100%\s*(free|guaranteed|legit)\b/i,2],
+  /* dating spam */
+  [/\b(hot|lonely|local|sexy)\s+singles\b|\b(meet|date|chat\s+with)\s+(hot\s+|local\s+|lonely\s+|sexy\s+)?singles\b|\bsingles\s+(in|near)\s+(your\s+area|you)\b/i,2],
+  /* phishing: each is a hint (1.5); two together, or one plus any other signal, refuse */
+  [/\byour\s+(account|mailbox|profile|apple\s+id|paypal)\s+(has\s+been|was|is|will\s+be)\s+(suspended|locked|disabled|compromised|deactivated|restricted|limited|closed|on\s+hold)\b/i,1.5],
+  [/\b(verify|confirm|validate|re-?activate|unlock)\s+your\s+(password|account|identity|login|log-?in|credentials|payment|billing|card|bank)\b/i,1.5],
+  [/\bunusual\s+(sign[\s-]?in|log[\s-]?in)\s+activity\b/i,1.5],[/\b(package|parcel|delivery)\s+(could\s+not|couldn'?t|was\s+unable\s+to)\s+be\s+delivered\b/i,1.5],
+  [/\bupdate\s+your\s+(payment|billing)\s+(info|information|details|method)\b/i,1.5],[/\byour\s+password\s+(expires|has\s+expired|will\s+expire)\b/i,1.5]
 ];
+/* Amplifiers: punctuation / emoji. They only add to a line that already has a strong signal, never on their own. */
+const NOTE_SPAM_AMPLIFIERS=[[/\$\$+|💰|🚀|🤑|💸|🔥🔥/u,1.5],[/!{3,}/,1.5],[/!{2}/,0.5]];
 const NOTE_KB_ROWS=["qwertyuiop","asdfghjkl","zxcvbnm","1234567890"];
-function noteKey(s){return String(s||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/https?:\/\/\S+|www\.\S+/g," url ").replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim();}
+/* Letters in any script count as text (Cyrillic, CJK, accented Latin, ...). */
+const NOTE_LETTER=/\p{L}/gu, NOTE_WORD2=/\p{L}{2,}/u;
+const NOTE_NOSPACE_SCRIPT=/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Thai}\p{Script=Lao}\p{Script=Khmer}\p{Script=Myanmar}]/gu;
+function noteKey(s){return String(s||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/https?:\/\/\S+|www\.\S+/g," url ").replace(/[^\p{L}\p{N}\p{M}]+/gu," ").replace(/\s+/g," ").trim();}
 function noteSpamScore(t){
   let s=0; for(const [re,w] of NOTE_SPAM_RULES) if(re.test(t)) s+=w;
-  const letters=(t.match(/[A-Za-z]/g)||[]), upper=(t.match(/[A-Z]/g)||[]).length, words=t.split(/\s+/).filter(w=>/[A-Za-z]/.test(w));
-  if(letters.length>=8 && words.length>=3 && upper/letters.length>=0.7) s+=2; /* ALL-CAPS shouting */
+  const cased=(t.match(/[\p{Lu}\p{Ll}]/gu)||[]).length, upper=(t.match(/\p{Lu}/gu)||[]).length, words=t.split(/\s+/).filter(w=>/\p{L}/u.test(w));
+  if(cased>=8 && words.length>=3 && upper/cased>=0.7) s+=2; /* ALL-CAPS shouting */
+  if(s>0) for(const [re,w] of NOTE_SPAM_AMPLIFIERS) if(re.test(t)) s+=w;
   return s;
 }
 function noteIsGibberish(t){
-  const letters=(t.toLowerCase().match(/[a-z]/g)||[]);
-  if(letters.length<2) return "empty";
+  const all=(t.match(NOTE_LETTER)||[]);
+  if(all.length<2) return "empty";
+  const letters=(t.toLowerCase().match(/[a-z]/g)||[]);   /* the mash heuristics below are Latin-keyboard heuristics */
   const alpha=letters.join("");
   if(/([a-z])\1{4,}/.test(alpha)) return "mash";
   const vowels=(alpha.match(/[aeiou]/g)||[]).length;
-  if(letters.length>=6 && vowels/letters.length<0.18) return "no vowels";
+  if(letters.length>=6 && letters.length/all.length>=0.5 && vowels/letters.length<0.18) return "no vowels";
   const toks=t.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   for(const tok of toks){ if(tok.length>=4 && NOTE_KB_ROWS.some(r=>r.includes(tok)||r.split("").reverse().join("").includes(tok))) return "keyboard mash"; }
   const alphaToks=toks.filter(x=>/^[a-z]{3,}$/.test(x));
@@ -4745,27 +4760,36 @@ function noteLabel(t){
   return "note";
 }
 function newNoteSeen(){return {flat:new Set(),keys:[]};}
+/* Order of checks: link-only → empty → duplicate (case-insensitive, of an earlier KEPT line) → spam → noise → keep.
+   Only kept lines (and their duplicates) are remembered, so a refused or noise line never makes a later original a "duplicate". */
 function classifyNote(text,seen){
   seen=seen||newNoteSeen();
   const t=String(text==null?"":text).replace(/\s+/g," ").trim();
   if(!t) return {keep:false,reason:"empty",label:"empty"};
   const noUrl=t.replace(/https?:\/\/\S+|www\.\S+/gi," ").trim();
-  const urlOnly=noUrl!==t && (noUrl.match(/[A-Za-z]{2,}/g)||[]).length<2;
-  const k=noteKey(t);
-  const isDup=k && noteNearDup(k,seen);
-  if(k){ seen.flat.add(k.replace(/ /g,"")); seen.keys.push({k,set:new Set(noteTokens(k))}); }
+  const urlOnly=noUrl!==t && (noUrl.match(/\p{L}{2,}/gu)||[]).length<2;
   if(urlOnly) return {keep:false,reason:"link only",label:"spam"};
-  if((noUrl.match(/[A-Za-z]/g)||[]).length<2) return {keep:false,reason:"empty",label:"empty"};
+  if((noUrl.match(NOTE_LETTER)||[]).length<2) return {keep:false,reason:"empty",label:"empty"};
+  const k=noteKey(t);
+  const remember=()=>{ if(k){ seen.flat.add(k.replace(/ /g,"")); seen.keys.push({k,set:new Set(noteTokens(k))}); } };
+  if(k && noteNearDup(k,seen)){ remember(); return {keep:false,reason:"duplicate",label:"duplicate"}; }
   if(noteSpamScore(t)>=2) return {keep:false,reason:"spam",label:"spam"};
   const g=noteIsGibberish(noUrl||t);
   if(g) return {keep:false,reason:g,label:g==="empty"?"empty":"noise"};
-  if(isDup) return {keep:false,reason:"duplicate",label:"duplicate"};
+  remember();
   return {keep:true,reason:"kept",label:noteLabel(t)};
 }
 /* Lanes (Machine Theater): where each line lands around the core. Placement uses only the line's own words and earlier lines.
    keep  → ORGANIZED, or HOLD (kept but thin: one word, or a weak spam hint) / WATCH (kept, carries a link to check)
    drop  → REFUSE star (spam, link-only) · ASIDE star (duplicate of an earlier line) · NOISE (keyboard mash, gibberish, empty) */
 const NOTE_LANES=["organized","hold","watch","noise","refuse","aside"];
+function noteWordCount(t){
+  const noUrl=t.replace(/https?:\/\/\S+|www\.\S+/gi," ");
+  const n=noUrl.split(" ").filter(w=>NOTE_WORD2.test(w)).length;
+  if(n>=2) return n;
+  /* scripts written without spaces: 4+ characters read as more than one word */
+  return (noUrl.match(NOTE_NOSPACE_SCRIPT)||[]).length>=4?2:n;
+}
 function noteLane(r,text){
   if(!r||!r.keep){
     const why=r?r.reason:"empty";
@@ -4774,8 +4798,7 @@ function noteLane(r,text){
     return "noise";
   }
   const t=String(text==null?"":text).replace(/\s+/g," ").trim();
-  const words=t.replace(/https?:\/\/\S+|www\.\S+/gi," ").split(" ").filter(w=>/[A-Za-z]{2,}/.test(w));
-  if(words.length<2 || noteSpamScore(t)>0) return "hold";
+  if(noteWordCount(t)<2 || noteSpamScore(t)>0) return "hold";
   if(/https?:\/\/\S+|www\.\S+/i.test(t)) return "watch";
   return "organized";
 }
