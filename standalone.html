@@ -1029,8 +1029,8 @@ body.lanesReady #mtWires{opacity:1}
 }
 @media (prefers-reduced-motion:reduce){#lanes .star svg path{animation:none}}
 /* palette law on the restored seal plate + canvas glow: monochrome, then violet tint */
-#bgField{filter:grayscale(1) brightness(.9)}
-#bgField::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(110,80,230,.10),transparent 65%);mix-blend-mode:screen;pointer-events:none}
+#bgField{background:radial-gradient(ellipse at 50% 42%,rgba(60,36,140,.22),rgba(12,6,30,.10) 45%,#000 78%)!important;filter:none!important} /* seal plate dropped: plain violet-to-black void under the mesh */
+#bgField>*{display:none!important}
 /* hybrid mesh field (mesh.js) — sits behind the core canvas, same stacking level */
 #mesh{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:1;pointer-events:none;display:block}
 #lanes .star.flash svg{animation:mtFlash 1.6s ease-out 1}
@@ -1039,14 +1039,7 @@ body.lanesReady #mtWires{opacity:1}
 </style>
 </head>
 <body>
-<div id="bgField" aria-hidden="true">
-  <div class="magpieSealWorld cyberNatureWorld">
-    <picture>
-      <source srcset="media/magpie-seal-plate.webp" type="image/webp">
-      <img src="media/magpie-seal-plate.png" alt="" width="1024" height="1024" decoding="async" fetchpriority="high">
-    </picture>
-  </div>
-</div>
+<div id="bgField" aria-hidden="true"></div>
 <div id="dataRail" aria-hidden="true"></div>
 <canvas id="mesh" aria-hidden="true"></canvas>
 <canvas id="fx" role="img" aria-label="Machine Theater: the sorting core"></canvas>
@@ -4993,6 +4986,9 @@ const LANE_POS={
   wide:{laneOrganized:[-0.68,-0.02],laneIntake:[0.27,-0.25],laneHold:[0.55,0.10],laneWatch:[0.22,0.185],laneNoise:[0.46,0.245],starRefuse:[-0.08,0.185],starAside:[0.62,0.02],gateNode:[0.28,0.02]},
   narrow:{laneOrganized:[-0.44,-0.02],laneIntake:[0.18,-0.30],laneHold:[0.38,0.12],laneWatch:[0.10,0.26],laneNoise:[0.36,0.28],starRefuse:[-0.26,0.20],starAside:[0.40,-0.10],gateNode:[0.18,0.02]}
 };
+let _deskTopCache={t:0,v:null};
+function deskTop(){ const now=performance.now(); if(now-_deskTopCache.t<250) return _deskTopCache.v;
+  const el=document.getElementById("uploadBox"); const r=el?el.getBoundingClientRect():null; _deskTopCache={t:now,v:r&&r.height?r.top:null}; return _deskTopCache.v; }
 (function laneLoop(){
   const els={}; for(const k of Object.keys(LANE_POS.wide)) els[k]=$(k);
   const wr=$("wireRefuse"), wa=$("wireAside"); let last="";
@@ -5000,6 +4996,9 @@ const LANE_POS={
     const h=_sealHub, set=(W<=900?LANE_POS.narrow:LANE_POS.wide);
     if(h&&h.s>1){
       const P={}; for(const k in set){const [ux,uy]=set[k]; P[k]=[h.cx+ux*h.s,h.cy+uy*h.s];}
+      /* clearance: keep every lane (and each star's full glow) above the desk, at every breakpoint */
+      const dt=deskTop(); if(dt!=null){ for(const k in P){ const pad=(k==="starRefuse"||k==="starAside")?(W<=900?34:54):(k==="gateNode"?16:14); if(P[k][1]>dt-pad){ P[k][1]=dt-pad; } } }
+      window.__laneXY=P;
       const key=Object.values(P).map(p=>p[0].toFixed(0)+","+p[1].toFixed(0)).join(";");
       if(key!==last){ last=key;
         for(const k in P){const el=els[k]; if(el) el.style.transform=`translate(${P[k][0].toFixed(1)}px,${P[k][1].toFixed(1)}px)`;}
@@ -5032,6 +5031,7 @@ updateMetrics(null);
     c.fillStyle=gr;c.fillRect(0,0,32,32);})();
   function hub(){const h=(typeof _sealHub!=="undefined")?_sealHub:null; if(h&&h.s>1) return h; return {cx:MW*0.5,cy:MH*0.46,s:Math.min(MW,MH)*0.62};}
   function anchors(){ /* lane + star anchors in core units, shared with the DOM lanes */
+    if(window.__laneXY) return Object.values(window.__laneXY); /* exact on-screen lane positions (after desk clearance) */
     const h=hub(), set=(typeof LANE_POS!=="undefined")?(MW<=900?LANE_POS.narrow:LANE_POS.wide):{};
     return Object.values(set).map(([ux,uy])=>[h.cx+ux*h.s,h.cy+uy*h.s]);
   }
