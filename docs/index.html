@@ -1031,6 +1031,11 @@ body.lanesReady #mtWires{opacity:1}
 /* palette law on the restored seal plate + canvas glow: monochrome, then violet tint */
 #bgField{filter:grayscale(1) brightness(.9)}
 #bgField::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(110,80,230,.10),transparent 65%);mix-blend-mode:screen;pointer-events:none}
+/* hybrid mesh field (mesh.js) — sits behind the core canvas, same stacking level */
+#mesh{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:1;pointer-events:none;display:block}
+#lanes .star.flash svg{animation:mtFlash 1.6s ease-out 1}
+@keyframes mtFlash{0%{filter:drop-shadow(0 0 4px #fff)}18%{filter:drop-shadow(0 0 22px #fff) drop-shadow(0 0 40px rgba(170,140,255,1))}100%{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 18px rgba(150,120,255,.95))}}
+@media (prefers-reduced-motion:reduce){#lanes .star.flash svg{animation:none}}
 </style>
 </head>
 <body>
@@ -1043,6 +1048,7 @@ body.lanesReady #mtWires{opacity:1}
   </div>
 </div>
 <div id="dataRail" aria-hidden="true"></div>
+<canvas id="mesh" aria-hidden="true"></canvas>
 <canvas id="fx" role="img" aria-label="Machine Theater: the sorting core"></canvas>
 <canvas id="fxgl" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;display:none"></canvas>
 <div id="mtArc" aria-hidden="true"></div>
@@ -5006,6 +5012,163 @@ const LANE_POS={
   requestAnimationFrame(tick);
 })();
 updateMetrics(null);
+
+/* ========== Hybrid field: live Delaunay node network fused with the Machine Theater core ==========
+   Procedural take on Taylor's triangulated-network GIF (glowing nodes, thin edges, dense top → sparse bottom), recolored to
+   purple / white. The core's own stars are nodes in the same mesh: the projected dodeca seal vertices, the sorted-note nodes,
+   and every lane / star anchor are inserted into the triangulation each pass, and the ambient density rises toward the core
+   and the lanes. A radial + edge vignette fades it into black with no seams. On each sort a pulse ripples outward through the
+   edges from the core. Reduced motion → one still frame (redrawn on resize/sort); paused while the tab is hidden; DPR ≤ 2. */
+(function hybridMesh(){
+  const cv=document.getElementById("mesh"); if(!cv) return;
+  const g=cv.getContext("2d",{alpha:true});
+  const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let MW=0,MH=0,MD=1,pts=[],tris=null,edges=[],frameN=0,pulse=null,running=false,seedKey="";
+  const mobile=()=>MW<=900;
+  /* glow sprite: white core, lilac halo */
+  const spr=document.createElement("canvas"); spr.width=spr.height=32;
+  (function(){const c=spr.getContext("2d"),gr=c.createRadialGradient(16,16,0,16,16,16);
+    gr.addColorStop(0,"rgba(255,255,255,1)");gr.addColorStop(0.18,"rgba(244,238,255,.95)");gr.addColorStop(0.42,"rgba(185,160,255,.38)");gr.addColorStop(1,"rgba(120,90,230,0)");
+    c.fillStyle=gr;c.fillRect(0,0,32,32);})();
+  function hub(){const h=(typeof _sealHub!=="undefined")?_sealHub:null; if(h&&h.s>1) return h; return {cx:MW*0.5,cy:MH*0.46,s:Math.min(MW,MH)*0.62};}
+  function anchors(){ /* lane + star anchors in core units, shared with the DOM lanes */
+    const h=hub(), set=(typeof LANE_POS!=="undefined")?(MW<=900?LANE_POS.narrow:LANE_POS.wide):{};
+    return Object.values(set).map(([ux,uy])=>[h.cx+ux*h.s,h.cy+uy*h.s]);
+  }
+  function resize(){
+    MD=Math.min(2,devicePixelRatio||1); MW=innerWidth; MH=innerHeight;
+    cv.width=Math.round(MW*MD); cv.height=Math.round(MH*MD); g.setTransform(MD,0,0,MD,0,0);
+    seed();
+  }
+  function density(x,y,h,A){
+    const top=0.28+0.72*Math.pow(1-Math.min(1,Math.max(0,y/MH)),1.25);            /* the GIF's dense-top / sparse-bottom */
+    const dc=Math.hypot(x-h.cx,y-h.cy)/(h.s*0.62), core=2.4*Math.exp(-dc*dc);       /* rising toward the core */
+    let lane=0; for(const [ax,ay] of A){const d=Math.hypot(x-ax,y-ay)/(h.s*0.16); lane+=0.9*Math.exp(-d*d);}  /* and the lanes */
+    return top+core+lane;
+  }
+  function seed(){
+    const h=hub(), A=anchors();
+    seedKey=[MW,MH,Math.round(h.cx),Math.round(h.cy),Math.round(h.s)].join(",");
+    const target=mobile()?Math.min(230,Math.round(MW*MH/1700)):Math.min(620,Math.round(MW*MH/1650));
+    const r0=Math.sqrt(MW*MH/target)*0.62; pts=[];
+    const pad=40, grid=new Map(), cs=r0/2.2, key=(x,y)=>Math.floor(x/cs)+","+Math.floor(y/cs);
+    let tries=0;
+    while(pts.length<target&&tries<target*60){ tries++;
+      const x=-pad+Math.random()*(MW+2*pad), y=-pad+Math.random()*(MH+2*pad);
+      const w=density(x,y,h,A), md=r0/Math.sqrt(w);
+      let ok=true; const gx=Math.floor(x/cs),gy=Math.floor(y/cs), rr=Math.ceil(md/cs);
+      for(let i=-rr;i<=rr&&ok;i++)for(let j=-rr;j<=rr&&ok;j++){const b=grid.get((gx+i)+","+(gy+j)); if(b)for(const q of b){if(Math.hypot(q.bx-x,q.by-y)<md){ok=false;break;}}}
+      if(!ok) continue;
+      const p={bx:x,by:y,x,y,ax:(6+Math.random()*16)*(mobile()?0.7:1),ay:(6+Math.random()*16)*(mobile()?0.7:1),wx:0.05+Math.random()*0.11,wy:0.05+Math.random()*0.11,px:Math.random()*6.283,py:Math.random()*6.283,sz:0.7+Math.random()*0.8,fused:false};
+      pts.push(p); const k=key(x,y); if(!grid.has(k))grid.set(k,[]); grid.get(k).push(p);
+    }
+    tris=null;
+  }
+  /* Bowyer–Watson Delaunay (points pre-sorted by x; circumcircles cached) */
+  function delaunay(P){
+    const n=P.length; if(n<3) return [];
+    const big=Math.max(MW,MH)*20, cx0=MW/2, cy0=MH/2;
+    const X=new Float64Array(n+3),Y=new Float64Array(n+3);
+    for(let i=0;i<n;i++){X[i]=P[i].x;Y[i]=P[i].y;}
+    X[n]=cx0-big;Y[n]=cy0-big; X[n+1]=cx0+big;Y[n+1]=cy0-big; X[n+2]=cx0;Y[n+2]=cy0+big;
+    let T=[];
+    const mk=(a,b,c)=>{const ax=X[a],ay=Y[a],bx=X[b],by=Y[b],cx=X[c],cy=Y[c];const d=2*(ax*(by-cy)+bx*(cy-ay)+cx*(ay-by));
+      if(Math.abs(d)<1e-12) return null; const a2=ax*ax+ay*ay,b2=bx*bx+by*by,c2=cx*cx+cy*cy;
+      const ux=(a2*(by-cy)+b2*(cy-ay)+c2*(ay-by))/d, uy=(a2*(cx-bx)+b2*(ax-cx)+c2*(bx-ax))/d;
+      return {a,b,c,x:ux,y:uy,r2:(ax-ux)*(ax-ux)+(ay-uy)*(ay-uy)};};
+    T.push(mk(n,n+1,n+2));
+    const order=[...Array(n).keys()].sort((i,j)=>X[i]-X[j]);
+    const done=[]; /* triangles whose circumcircle lies fully left of the sweep can never change */
+    for(const i of order){
+      const px=X[i],py=Y[i], keep=[], poly=new Map();
+      for(const t of T){
+        const dx=px-t.x;
+        if(dx>0&&dx*dx>t.r2){done.push(t);continue;}
+        if(dx*dx+(py-t.y)*(py-t.y)<t.r2){
+          for(const [u,v] of [[t.a,t.b],[t.b,t.c],[t.c,t.a]]){const k=u<v?u+"_"+v:v+"_"+u; if(poly.has(k))poly.delete(k); else poly.set(k,[u,v]);}
+        } else keep.push(t);
+      }
+      for(const [u,v] of poly.values()){const t=mk(u,v,i); if(t) keep.push(t);}
+      T=keep;
+    }
+    const out=[]; for(const t of done.concat(T)) if(t.a<n&&t.b<n&&t.c<n) out.push(t.a,t.b,t.c);
+    return out;
+  }
+  function gather(t){
+    /* ambient nodes drift; fused nodes come from the live core each pass */
+    const all=pts.filter(p=>!p.fused);
+    if(!RM) for(const p of all){p.x=p.bx+p.ax*Math.sin(t*p.wx*6.283+p.px); p.y=p.by+p.ay*Math.cos(t*p.wy*6.283+p.py);}
+    const h=hub(), fused=[];
+    const pv=(typeof DODECA!=="undefined"&&DODECA._projVertsSeal)||[];
+    for(const v of pv) if(isFinite(v.x)) fused.push({x:v.x,y:v.y,sz:1.5,fused:true,star:false});
+    for(const [x,y] of anchors()) fused.push({x,y,sz:1.9,fused:true,star:true});
+    if(typeof nodes!=="undefined") for(let i=0;i<nodes.length&&i<60;i++){const q=nodes[i]; if(q._px!=null&&isFinite(q._px)) fused.push({x:q._px,y:q._py,sz:1.2,fused:true,star:false});}
+    /* keep ambient nodes from crowding the fused ones */
+    const minD=h.s*0.035;
+    const amb=all.filter(p=>{for(const f of fused){if(Math.abs(f.x-p.x)<minD&&Math.abs(f.y-p.y)<minD)return false;}return true;});
+    return amb.concat(fused);
+  }
+  function vign(x,y,h){
+    const e=Math.min(x,y,MW-x,MH-y), edge=Math.min(1,Math.max(0,e/(Math.min(MW,MH)*0.16)));
+    const rx=(x-MW*0.5)/(MW*0.62), ry=(y-MH*0.48)/(MH*0.66), rr=Math.sqrt(rx*rx+ry*ry);
+    const rad=1-Math.min(1,Math.max(0,(rr-0.55)/0.55));
+    const s=edge*edge*(3-2*edge);
+    return s*(0.35+0.65*rad*rad);
+  }
+  let cur=[], lastTri=-99;
+  function draw(now){
+    const t=now*0.001, h=hub();
+    const k=[MW,MH,Math.round(h.cx),Math.round(h.cy),Math.round(h.s)].join(",");
+    if(k!==seedKey&&frameN%30===0){const [,, ,cxs,cys,ss]=[0,0,0,...seedKey.split(",").slice(2).map(Number)]; if(Math.abs(cxs-h.cx)>40||Math.abs(cys-h.cy)>40||Math.abs(ss-h.s)>60||!seedKey.startsWith(MW+","+MH+",")) seed();}
+    cur=gather(t);
+    const every=mobile()?6:4;
+    if(!tris||frameN-lastTri>=every||tris.n!==cur.length){ const s=cur.map((p,i)=>i); tris=delaunay(cur); tris.n=cur.length; lastTri=frameN;
+      const set=new Set(); edges=[]; const n=cur.length;
+      for(let i=0;i<tris.length;i+=3){const a=tris[i],b=tris[i+1],c=tris[i+2];for(const [u,v] of [[a,b],[b,c],[c,a]]){const kk=u<v?u*n+v:v*n+u; if(!set.has(kk)){set.add(kk);edges.push(u<v?[u,v]:[v,u]);}}}
+    }
+    frameN++;
+    g.clearRect(0,0,MW,MH);
+    const P=cur, maxL=Math.min(MW,MH)*0.22, pr=pulse?(now-pulse.t0)/1000:9;
+    const pR=pr*Math.max(MW,MH)*0.55, pW=Math.max(MW,MH)*0.07, pOn=pulse&&pr<2.4;
+    /* bucket edges by alpha → few stroke calls */
+    const B=10, paths=Array.from({length:B},()=>new Path2D()), hot=Array.from({length:B},()=>new Path2D()); const used=new Uint8Array(B),usedH=new Uint8Array(B);
+    for(const [u,v] of edges){const A=P[u],C=P[v]; if(!A||!C) continue;
+      const L=Math.hypot(A.x-C.x,A.y-C.y); if(L>maxL) continue;
+      const mx=(A.x+C.x)/2,my=(A.y+C.y)/2, vg=vign(mx,my,h); if(vg<0.02) continue;
+      const dc=Math.hypot(mx-h.cx,my-h.cy)/h.s;
+      let a=vg*(0.15+0.22*(1-L/maxL))*(dc<0.45?0.75:1)+(A.star||C.star?0.18*vg:0)+(A.fused&&C.fused?0.08:0);
+      let boost=0; if(pOn){const dd=Math.abs(dc*h.s-pR); if(dd<pW) boost=(1-dd/pW)*(1-pr/2.4);}
+      if(boost>0.05){const bi=Math.min(B-1,Math.floor(Math.min(1,a+boost*0.8)*B)); hot[bi].moveTo(A.x,A.y);hot[bi].lineTo(C.x,C.y);usedH[bi]=1;}
+      else{const bi=Math.min(B-1,Math.floor(Math.min(0.999,a)*B*2.2)); paths[bi].moveTo(A.x,A.y);paths[bi].lineTo(C.x,C.y);used[bi]=1;}
+    }
+    g.lineWidth=mobile()?0.6:0.7;
+    for(let i=0;i<B;i++) if(used[i]){g.strokeStyle=`rgba(196,178,255,${((i+0.5)/(B*2.2)).toFixed(3)})`; g.stroke(paths[i]);}
+    g.lineWidth=1.2;
+    for(let i=0;i<B;i++) if(usedH[i]){g.strokeStyle=`rgba(240,232,255,${((i+0.5)/B).toFixed(3)})`; g.stroke(hot[i]);}
+    /* glowing nodes */
+    g.globalCompositeOperation="lighter";
+    for(const p of P){const vg=vign(p.x,p.y,h); if(vg<0.03) continue;
+      let a=vg*(p.fused?0.9:0.62), r=(p.sz||1)*(mobile()?3.1:3.6);
+      if(pOn){const dd=Math.abs(Math.hypot(p.x-h.cx,p.y-h.cy)-pR); if(dd<pW){const bb=(1-dd/pW)*(1-pr/2.4); a=Math.min(1,a+bb*0.8); r*=1+bb*0.8;}}
+      g.globalAlpha=a; g.drawImage(spr,p.x-r*2,p.y-r*2,r*4,r*4);}
+    g.globalAlpha=1; g.globalCompositeOperation="source-over";
+  }
+  function loop(now){ if(!running) return; draw(now); requestAnimationFrame(loop); }
+  function start(){ if(RM){ requestAnimationFrame(n=>{draw(n);}); return; } if(running) return; running=true; requestAnimationFrame(loop); }
+  function stop(){ running=false; }
+  addEventListener("resize",()=>{resize(); if(RM) requestAnimationFrame(n=>draw(n));});
+  document.addEventListener("visibilitychange",()=>{ if(document.hidden) stop(); else start(); });
+  addEventListener("seraphim:sort",()=>{
+    pulse={t0:performance.now()};
+    ["starRefuse","starAside"].forEach(id=>{const el=document.getElementById(id); if(!el) return; el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");});
+    if(RM) requestAnimationFrame(n=>draw(n));
+  });
+  resize();
+  /* reduced motion: wait for the core to settle, then one still */
+  if(RM) setTimeout(()=>requestAnimationFrame(n=>draw(n)),400);
+  if(!document.hidden) start();
+  window.__mesh={count:()=>cur.length,edges:()=>edges.length,running:()=>running,fused:()=>cur.filter(p=>p.fused).length};
+})();
 </script>
 </body>
 </html>
