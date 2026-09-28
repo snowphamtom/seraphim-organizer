@@ -1190,6 +1190,40 @@ body:not(.sorted) #sortDesk #sortedFigures .chips{height:40px}
 @media (min-width:481px){#sortDesk{width:min(704px,calc(100vw - 32px))!important}#sortDesk #sortedFigures{column-gap:16px!important}}
 
 @media (prefers-reduced-motion:reduce){ #uploadBox .scanBar{animation:none!important;display:none!important} } /* refine: no scan sweep during a sort under reduced motion */
+/* folders (2026-09-27, Taylor): after a sort each tray groups its lines into native <details> folders by the lane/label the classifier
+   already assigns. Summary = "Name (n)". Collapsed by default except the largest; one Expand all / Collapse all control.
+   No open/close animation (native details, no transitions); 44px tap targets on phones; purple / black / white only. */
+/* the desk's bottom row (50px at every width) holds Expand all / Collapse all on the left and "Try the next version" on the right */
+#sortDesk{padding-bottom:50px!important}
+#sortDesk #folderBar{position:absolute;left:20px;bottom:3px;height:44px;display:flex;align-items:center;margin:0;z-index:2}
+#sortDesk #folderBar[hidden]{display:none!important}
+#sortDesk #foldAll{appearance:none;box-sizing:border-box;cursor:pointer;min-height:28px;padding:0 12px;border-radius:6px;background:transparent;
+  border:1px solid rgba(190,170,255,.42);color:#efe9ff;font:600 11px/1.2 var(--rf-mono);letter-spacing:.02em;transition:none}
+#sortDesk #foldAll:hover{background:rgba(155,123,255,.14);color:#fff;border-color:rgba(205,189,255,.62)}
+#sortDesk #sortedFigures details.folder{margin:0 0 2px;border-left:1.5px solid rgba(155,123,255,.30);min-width:0}
+#sortDesk #sortedFigures details.folder>summary{list-style:none;display:flex;align-items:center;gap:6px;box-sizing:border-box;min-height:28px;
+  padding:2px 8px;cursor:pointer;border-radius:0 4px 4px 0;font:650 12px/1.3 var(--rf-mono);color:#efe9ff;user-select:none;
+  -webkit-user-select:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:none;animation:none}
+#sortDesk #sortedFigures details.folder>summary::-webkit-details-marker{display:none}
+#sortDesk #sortedFigures details.folder>summary::marker{content:""}
+#sortDesk #sortedFigures details.folder>summary::before{content:"\25B8";flex:none;width:1ch;color:#b8a4ff}
+#sortDesk #sortedFigures details.folder[open]>summary::before{content:"\25BE"}
+#sortDesk #sortedFigures details.folder>summary .fc{color:rgba(205,192,255,.78);font-weight:500}
+#sortDesk #sortedFigures details.folder>summary:hover{background:rgba(155,123,255,.12);color:#fff}
+#sortDesk #sortedFigures details.folder>summary:focus-visible{outline:none;box-shadow:var(--rf-ring)}
+#sortDesk #sortedFigures details.folder[open]>summary{color:#fff}
+#sortDesk #sortedFigures .folderBody{padding:0 0 4px 14px;min-width:0}
+#sortDesk #sortedFigures .folderBody .chipFig{margin:0 0 0 -6px}
+#sortDesk #sortedFigures .folderBody .empty{height:auto;justify-content:flex-start;padding:2px 0}
+body.sorted #sortDesk #sortedFigures .chips{height:clamp(96px,16vh,150px)}
+@media (max-width:480px),(pointer:coarse){
+  #sortDesk #foldAll{min-height:44px;padding:0 14px}
+  #sortDesk #sortedFigures details.folder>summary{min-height:44px}
+}
+@media (max-width:480px){body.sorted #sortDesk #sortedFigures .chips{height:clamp(80px,10.5vh,92px)}#sortDesk #folderBar{left:12px}}
+/* "Try the next version": a 44px-tall tap area at every width (was 19px tall at 600 and 1280) */
+#sortDesk #vnextLink{box-sizing:border-box;display:inline-flex!important;align-items:center;min-height:44px!important;bottom:3px!important;padding:0 10px!important}
+@media (prefers-reduced-motion:reduce){#sortDesk details.folder,#sortDesk details.folder *{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -1235,6 +1269,7 @@ body:not(.sorted) #sortDesk #sortedFigures .chips{height:40px}
     <p id="deskMsg" role="status" aria-live="polite"></p>
   </div>
   <div id="sortedFigures">
+    <div id="folderBar" hidden><button type="button" id="foldAll" aria-controls="figAdmit figRelease" aria-expanded="false">Expand all</button></div>
     <div class="tray admit" id="trayAdmit">
       <h3><span class="hash">## </span>Organized <span class="count" id="figAdmitN">0</span></h3>
       <div class="dl"><button type="button" id="exportAdmitCsv" disabled>Download CSV</button><button type="button" id="exportAdmitJson" disabled>Download JSON</button></div>
@@ -1918,7 +1953,7 @@ canvas.addEventListener("wheel",e=>{
 },{passive:false});
 canvas.addEventListener("dblclick",e=>{e.preventDefault();resetView();});
 document.getElementById("resetView").onclick=e=>{e.stopPropagation();resetView();};
-addEventListener("keydown",e=>{const tg=e.target&&e.target.tagName; if(tg==="TEXTAREA"||tg==="INPUT"||tg==="SELECT"||tg==="BUTTON"||(e.target&&e.target.isContentEditable)) return; keys[e.code]=true; if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code))e.preventDefault();});
+addEventListener("keydown",e=>{const tg=e.target&&e.target.tagName; if(tg==="TEXTAREA"||tg==="INPUT"||tg==="SELECT"||tg==="BUTTON"||tg==="SUMMARY"||(e.target&&e.target.isContentEditable)) return; keys[e.code]=true; if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code))e.preventDefault();});
 addEventListener("keyup",e=>{keys[e.code]=false;});
 
 function seedField(n){
@@ -4712,7 +4747,7 @@ if(reduceMotion){
   const once=()=>{rmOnce=1;};
   addEventListener("seraphim:sort",once);
   addEventListener("wheel",once,{passive:true});
-  addEventListener("keydown",e=>{ const el=e.target; if(el&&(el.tagName==="TEXTAREA"||el.tagName==="INPUT"||el.tagName==="BUTTON"||el.tagName==="A"||el.isContentEditable)) return; rmOnce=1; },{passive:true});
+  addEventListener("keydown",e=>{ const el=e.target; if(el&&(el.tagName==="TEXTAREA"||el.tagName==="INPUT"||el.tagName==="BUTTON"||el.tagName==="A"||el.tagName==="SUMMARY"||el.isContentEditable)) return; rmOnce=1; },{passive:true});
 }
 function frame(now){
   const dt=now-lastFrameTs; lastFrameTs=now;
@@ -4796,6 +4831,7 @@ function frame(now){
   // FPS guard: drop WebGL if frames tank on mobile
   if(webglOk && W<=900 && dt>28){ glFPSBad=(glFPSBad||0)+1; if(glFPSBad>45){ webglOk=false; if(glCanvas) glCanvas.style.display="none"; } }
   else if(webglOk) glFPSBad=Math.max(0,(glFPSBad||0)-1);
+  if(reduceMotion&&window.__mesh&&window.__mesh.rmFlush) window.__mesh.rmFlush(now); /* reduced motion: the mesh is drawn in this same frame as the core (no follow-up redraw) */
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDrops();
@@ -5143,8 +5179,30 @@ function flightChipsFromDesk(chips){
     el.classList.add(el.closest(".tray.admit")?"chipFlightAdmit":"chipFlightRelease");
   });
 }
-const SHOW_MAX=400;
 const EMPTY_ADMIT='<div class="empty">kept notes land here</div>', EMPTY_ASIDE='<div class="empty">spam, duplicates and noise land here</div>';
+/* Folders: after a sort each tray groups its lines into collapsible <details> folders. A folder is the lane or label the
+   classifier already assigned (no new model): kept lines by label (Tasks, Meetings, Events, Reminders, Ideas, Notes), kept-but-
+   uncertain by lane (Hold, Watch), set-aside lines by lane (Refuse, Noise, Aside). Folder counts always add up to the lines sorted. */
+const FOLDER_OF_TAG={task:"Tasks",meeting:"Meetings",event:"Events",reminder:"Reminders",idea:"Ideas",note:"Notes"};
+const FOLDER_ORDER=["Tasks","Meetings","Events","Reminders","Ideas","Notes","Hold","Watch","Refuse","Noise","Aside"];
+function folderFor(v){
+  if(v.lane==="refuse") return "Refuse"; if(v.lane==="aside") return "Aside"; if(v.lane==="noise") return "Noise";
+  if(v.lane==="hold") return "Hold"; if(v.lane==="watch") return "Watch";
+  if(v.decision!=="admit") return "Noise";
+  return FOLDER_OF_TAG[TAGS[v.label]]||"Notes";
+}
+function folderGroups(list){
+  const m=new Map(); list.forEach(v=>{const f=folderFor(v); if(!m.has(f)) m.set(f,[]); m.get(f).push(v);});
+  const rank=f=>{const i=FOLDER_ORDER.indexOf(f); return i<0?99:i;};
+  return [...m.entries()].sort((a,b)=>b[1].length-a[1].length||rank(a[0])-rank(b[0]));   /* by count, largest first */
+}
+function syncFoldAll(){
+  const b=$("foldAll"), bar=$("folderBar"); if(!b||!bar) return;
+  const fs=[...document.querySelectorAll("#sortedFigures details.folder")];
+  bar.hidden=!fs.length; const allOpen=fs.length>0&&fs.every(d=>d.open);
+  b.textContent=allOpen?"Collapse all":"Expand all"; b.setAttribute("aria-expanded",allOpen?"true":"false");
+}
+function setAllFolders(open){ document.querySelectorAll("#sortedFigures details.folder").forEach(d=>{d.open=open;}); syncFoldAll(); }
 function renderSortedFigures(verdicts){
   const a=$("figAdmit"), r=$("figRelease");
   const admits=(verdicts||[]).filter(v=>v.decision==="admit"), releases=(verdicts||[]).filter(v=>v.decision!=="admit");
@@ -5152,20 +5210,29 @@ function renderSortedFigures(verdicts){
   const mk=v=>{
     const el=document.createElement("div"); const tag=tagFor(v);
     el.className="chipFig lane-"+v.lane; el.tabIndex=0; el.title=(LANE_NAME[v.lane]||"")+" · "+v.t;
-    el.dataset.id=v.id; el.dataset.lane=v.lane; el.dataset.tag=tag; el.dataset.text=v.t;
+    el.dataset.id=v.id; el.dataset.lane=v.lane; el.dataset.tag=tag; el.dataset.text=v.t; el.dataset.folder=folderFor(v);
     el.innerHTML='<span class="k">'+esc(tag)+'</span><span class="ttl">'+esc(v.t)+'</span>';
     el.addEventListener("click",()=>focusNode(v.id));
     el.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); focusNode(v.id); } });
     return el;
   };
   a.innerHTML=""; r.innerHTML=""; const flown=[];
-  /* the tray shows the first SHOW_MAX rows; the rest are counted by lane in a "+N more in the download" note */
-  const more=(el,rest)=>{ if(!rest.length) return; const c={}; rest.forEach(v=>{c[v.lane]=(c[v.lane]||0)+1;});
-    const d=document.createElement("div"); d.className="moreNote"; d.dataset.more=String(rest.length);
-    d.style.cssText="margin:.45rem 0 .2rem;padding:.3rem .55rem;border:1px dashed rgba(200,182,255,.38);border-radius:4px;color:#dccfff;font-size:.8em;letter-spacing:.01em";
-    d.textContent="+"+rest.length+" more in the download ("+Object.keys(c).map(k=>(LANE_NAME[k]||k).toLowerCase()+" "+c[k]).join(" · ")+")"; el.appendChild(d); };
-  if(!admits.length) a.innerHTML=EMPTY_ADMIT; else { admits.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);a.appendChild(el);flown.push(el);}); more(a,admits.slice(SHOW_MAX)); }
-  if(!releases.length) r.innerHTML=EMPTY_ASIDE; else { releases.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);r.appendChild(el);flown.push(el);}); more(r,releases.slice(SHOW_MAX)); }
+  /* the largest folder across both trays starts open (ties: Tasks … Aside order); every other folder starts collapsed */
+  const all=folderGroups(verdicts||[]), openName=all.length?all[0][0]:null;
+  /* every line is rendered inside its folder, so a folder's "(n)" is exactly the rows in it (folders are collapsed, so this stays cheap) */
+  const fill=(el,list)=>{
+    folderGroups(list).forEach(([name,vs])=>{
+      const d=document.createElement("details"); d.className="folder"; d.dataset.folder=name; d.dataset.count=String(vs.length);
+      if(name===openName) d.open=true;
+      const s=document.createElement("summary");
+      s.innerHTML='<span class="fn">'+esc(name)+'</span> <span class="fc">('+vs.length+')</span>';
+      const body=document.createElement("div"); body.className="folderBody";
+      vs.forEach(v=>{ const c=mk(v); body.appendChild(c); if(d.open) flown.push(c); });
+      d.appendChild(s); d.appendChild(body); d.addEventListener("toggle",syncFoldAll); el.appendChild(d);
+    }); };
+  if(!admits.length) a.innerHTML=EMPTY_ADMIT; else fill(a,admits);
+  if(!releases.length) r.innerHTML=EMPTY_ASIDE; else fill(r,releases);
+  syncFoldAll();
   ["exportAdmitCsv","exportAdmitJson"].forEach(id=>$(id).disabled=!admits.length);
   ["exportReleaseCsv","exportReleaseJson"].forEach(id=>$(id).disabled=!releases.length);
   if(flown.length) requestAnimationFrame(()=>flightChipsFromDesk(flown));
@@ -5220,8 +5287,9 @@ function download(which,asJson){
   if(!lastResult) return;
   const rows=lastResult.verdicts.filter(v=>which==="admit"?v.decision==="admit":v.decision!=="admit"); if(!rows.length) return;
   const label=which==="admit"?"organized":"aside"; let blob;
-  if(asJson) blob=new Blob([JSON.stringify({folder:label,n:rows.length,items:rows.map(v=>({id:v.id,text:v.t,lane:v.lane,tag:tagFor(v),reason:v.reason}))},null,2)],{type:"application/json"});
-  else{const q=s=>'"'+String(s).replace(/"/g,'""')+'"';blob=new Blob([["id","panel","lane","tag","reason","text"].join(",")+"\n"+rows.map(v=>[v.id,label,v.lane,tagFor(v),v.reason,v.t].map(q).join(",")).join("\n")+"\n"],{type:"text/csv"});}
+  const folders={}; folderGroups(rows).forEach(([f,vs])=>{folders[f]=vs.length;});
+  if(asJson) blob=new Blob([JSON.stringify({folder:label,n:rows.length,folders,items:rows.map(v=>({id:v.id,text:v.t,folder:folderFor(v),lane:v.lane,tag:tagFor(v),reason:v.reason}))},null,2)],{type:"application/json"});
+  else{const q=s=>'"'+String(s).replace(/"/g,'""')+'"';blob=new Blob([["id","panel","folder","lane","tag","reason","text"].join(",")+"\n"+rows.map(v=>[v.id,label,folderFor(v),v.lane,tagFor(v),v.reason,v.t].map(q).join(",")).join("\n")+"\n"],{type:"text/csv"});}
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="seraphim-"+label+(asJson?".json":".csv"); a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
 }
 const DEMO=["Team standup Monday 9:30am","Book a haircut for next week","Remember to water the plants on Friday","book a haircut for next week!","CLICK HERE NOW!!! LIMITED TIME OFFER","asdfghjkl qwerty"].join("\n");
@@ -5236,6 +5304,7 @@ const DEMO=["Team standup Monday 9:30am","Book a haircut for next week","Remembe
     const before=ta.value.slice(0,ta.selectionStart), lines=before.split("\n"), cur=lines[lines.length-1];
     if(/^\s*>\s*sort\s*$/i.test(cur)){ e.preventDefault(); lines.pop(); ta.value=lines.join("\n")+ta.value.slice(ta.selectionStart); runDeskSort(); } });
   $("exportAdmitCsv").onclick=()=>download("admit",false); $("exportAdmitJson").onclick=()=>download("admit",true);
+  $("foldAll").addEventListener("click",()=>{ const fs=[...document.querySelectorAll("#sortedFigures details.folder")]; setAllFolders(!(fs.length&&fs.every(d=>d.open))); });
   $("exportReleaseCsv").onclick=()=>download("release",false); $("exportReleaseJson").onclick=()=>download("release",true);
   $("fileDesk").addEventListener("change",async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const t=await f.text();ta.value=t;triggerUploadFX("receive");organize(parseDump(f.name,t));});
   const over=e=>{e.preventDefault();box.classList.add("drag");}, leave=e=>{e.preventDefault();box.classList.remove("drag");};
@@ -5256,7 +5325,7 @@ canvas.addEventListener("click",e=>{
 document.addEventListener("keydown",e=>{
   if((e.metaKey||e.ctrlKey)&&e.key==="Enter"){e.preventDefault();runDeskSort();return;}
   if(e.key==="Escape"){tip.style.display="none";focusId=null;return;}
-  const tg=e.target&&e.target.tagName; if(tg==="TEXTAREA"||tg==="INPUT"||tg==="SELECT"||tg==="BUTTON") return;
+  const tg=e.target&&e.target.tagName; if(tg==="TEXTAREA"||tg==="INPUT"||tg==="SELECT"||tg==="BUTTON"||tg==="SUMMARY") return;   /* Space on a folder header toggles the folder, not the camera */
   if(e.code==="Space"){e.preventDefault(); cam.auto=!cam.auto; cinemaUntil=0; if(!cam.auto)nav.idleAt=performance.now(); return;}
   if(e.key==="1"){layerSolo=1;layerSoloUntil=performance.now()+2200;}
   if(e.key==="2"){layerSolo=2;layerSoloUntil=performance.now()+2200;}
@@ -5531,7 +5600,8 @@ updateMetrics(null);
       g.lineWidth=0.9; g.strokeStyle="rgba(246,240,255,.78)"; g.stroke(rk); g.strokeStyle="rgba(192,164,255,.62)"; g.stroke(ra); }
   }
   /* auditPolish: one loop only. Keep the rAF id, cancel it on hide, never start a second loop. */
-  let rafId=0, drawN=0;
+  let rafId=0, drawN=0, rmPending=false;
+  function rmFlush(now){ if(!RM||!rmPending) return; rmPending=false; draw(now); drawN++; }
   function loop(now){ rafId=0; if(!running) return; draw(now); drawN++; rafId=requestAnimationFrame(loop); }
   function start(){ if(RM){ requestAnimationFrame(n=>{draw(n);drawN++;}); return; } if(running||rafId) return; running=true; rafId=requestAnimationFrame(loop); }
   function stop(){ running=false; if(rafId){ cancelAnimationFrame(rafId); rafId=0; } }
@@ -5541,13 +5611,13 @@ updateMetrics(null);
   addEventListener("seraphim:sort",()=>{
     pulse={t0:performance.now()};
     ["starRefuse","starAside"].forEach(id=>{const el=document.getElementById(id); if(!el) return; el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");});
-    if(RM) requestAnimationFrame(n=>draw(n));
+    if(RM) rmPending=true;   /* reduced motion: drawn by the core's own frame (rmFlush), so a sort is exactly 1 frame */
   });
   resize();
   /* reduced motion: wait for the core to settle, then one still */
   if(RM) setTimeout(()=>requestAnimationFrame(n=>draw(n)),400);
   if(!document.hidden) start();
-  window.__mesh={count:()=>cur.length,edges:()=>edges.length,running:()=>running,draws:()=>drawN,fused:()=>cur.filter(p=>p.fused).length,mst:()=>mst.length,lanePts:()=>lanePts.map(q=>({lane:q.k,x:Math.round(q.x),y:Math.round(q.y)})),cells:()=>cells.map(c=>c.k),nodes:()=>cur.length};
+  window.__mesh={rmFlush,count:()=>cur.length,edges:()=>edges.length,running:()=>running,draws:()=>drawN,fused:()=>cur.filter(p=>p.fused).length,mst:()=>mst.length,lanePts:()=>lanePts.map(q=>({lane:q.k,x:Math.round(q.x),y:Math.round(q.y)})),cells:()=>cells.map(c=>c.k),nodes:()=>cur.length};
 })();
 </script>
 </body>
