@@ -4694,7 +4694,7 @@ requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDro
 /* Strong signals: any one of these (score ≥ 2 total) refuses a line. */
 const NOTE_SPAM_RULES=[
   [/\bguarantee(d|s)?\b/i,1],[/\b(guaranteed?)\s+(returns?|profits?|results?|income|gains?|winnings?)\b/i,2],
-  [/\b\d{2,}\s?x\b/i,2],[/\bclick\s+(here|now|below|this\s+link)\b/i,2],[/\bfree\s+(money|cash|gift|iphone|crypto|bitcoin|trial\s+now)\b/i,2],
+  [/\bnext\s+\d{2,}\s?x\b|\b\d{2,}\s?x\s+(gains?|returns?|profits?|potential|gem|coin|token|crypto|pump|moon)\b/i,2], /* '12x modules' in a parts list is not spam */[/\bclick\s+(here|now|below|this\s+link)\b/i,2],[/\bfree\s+(money|cash|gift|iphone|crypto|bitcoin|trial\s+now)\b/i,2],
   [/\b(act|buy|order|join|sign\s*up|invest)\s+now\b/i,1.5],[/\blimited[\s-]+time\b/i,1],[/\brisk[\s-]*free\b|\bno\s+risk\b/i,1.5],
   [/\bdouble\s+your\b|\bget\s+rich\b|\bmake\s+money\s+fast\b|\bpassive\s+income\b|\bfinancial\s+freedom\b/i,2],
   [/\bearn\s+\$?\d/i,1.5],[/\byou('ve|\s+have)?\s+(won|been\s+selected)\b|\bclaim\s+your\s+(prize|reward|gift)\b|\bwinner\b/i,2],
@@ -4716,79 +4716,127 @@ const NOTE_KB_ROWS=["qwertyuiop","asdfghjkl","zxcvbnm","1234567890"];
 /* Letters in any script count as text (Cyrillic, CJK, accented Latin, ...). */
 const NOTE_LETTER=/\p{L}/gu, NOTE_WORD2=/\p{L}{2,}/u;
 const NOTE_NOSPACE_SCRIPT=/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Thai}\p{Script=Lao}\p{Script=Khmer}\p{Script=Myanmar}]/gu;
-function noteKey(s){return String(s||"").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/https?:\/\/\S+|www\.\S+/g," url ").replace(/[^\p{L}\p{N}\p{M}]+/gu," ").replace(/\s+/g," ").trim();}
+const NOTE_URL=/https?:\/\/\S+|www\.\S+/gi;
+/* Code: identifiers with _ or dots, calls, assignments, braces. Code is never gibberish and never "shouting". */
+const NOTE_CODE=/[A-Za-z0-9]_[A-Za-z0-9]|_[A-Za-z]|\b[A-Za-z_]\w*\.[A-Za-z_]\w*|\b[A-Za-z_]\w*\(|[^=!<>]=[^=]|[{}]|;\s*$|=>|:=|==|\+=|-=/;
+/* Document markings and headings are not shouting. */
+const NOTE_MARKING=/\b(CONFIDENTIAL|PROPRIETARY|INTERNAL|DRAFT|CLASSIFIED|UNCLASSIFIED|RESTRICTED|SECRET|PRIVILEGED|FOUO|COPYRIGHT|ALL RIGHTS RESERVED|DO NOT (DISTRIBUTE|COPY|RELEASE|FORWARD)|FOR OFFICIAL USE|NOTICE|APPENDIX|SECTION|CHAPTER|TABLE OF CONTENTS|ABSTRACT|SUMMARY)\b/;
+const NOTE_HEADING=/^\s*([#>*\-•]+\s*)?((\d+(\.\d+)*|[IVXLC]+|[A-Z])[.):]\s+)|:\s*$|\s\|\s|^\s*\|/;
+/* 'PART LIST: ...' — a short label before a colon marks a heading or list, not prose */
+const NOTE_LABEL=/^\s*[\p{Lu}\p{N} _\-\/&]{2,40}:\s/u;
+/* A bare date / time stamp is a thin note (HOLD), not noise. */
+const NOTE_STAMP=/^\s*(\d{4}-\d{2}-\d{2}([T ]\d{1,2}:\d{2}(:\d{2}(\.\d+)?)?\s?(Z|UTC|[+-]\d{2}:?\d{2})?)?|\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}|\d{1,2}:\d{2}(:\d{2})?\s?([ap]m)?)\s*$/i;
+/* Duplicate keys. Kept-line key: case, whitespace and punctuation ignored, links read as "url" (a repost with a new short link is a
+   duplicate); operators = + * / < > are kept, so a+b and a-b differ. Refused/noise key: case-sensitive, links kept verbatim. A line with no letters or digits keys on its collapsed text. */
+function noteBase(s,urlToken){s=String(s||""); if(urlToken) s=s.replace(NOTE_URL," url "); return s.normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/([=+*\/<>])/g," $1 ").replace(/[^\p{L}\p{N}\p{M}=+*\/<>]+/gu," ").replace(/\s+/g," ").trim();}
+function noteKey(s){const b=noteBase(s,true).toLowerCase(); return b||("~"+String(s||"").replace(/\s+/g," ").trim());}
+function noteKeyCase(s){const b=noteBase(s); return b||("~"+String(s||"").replace(/\s+/g," ").trim());}
+function noteIsCode(t){return NOTE_CODE.test(t.replace(NOTE_URL," ").replace(/(^|\s)[@#][\w.]+/g," "));}   /* @handles and #tags are not code */
+function noteShouting(t){
+  /* Long shouting prose only: at least 7 plain ALL-CAPS words (letters only, no digits/_), plain words ≥ 70% of tokens,
+     and not a heading, table row, document marking or code line. */
+  if(noteIsCode(t)||NOTE_HEADING.test(t)||NOTE_LABEL.test(t)||NOTE_MARKING.test(t)) return false;
+  const toks=t.replace(NOTE_URL," ").split(/\s+/).filter(Boolean);
+  const plain=toks.map(w=>w.replace(/^[^\p{L}]+|[^\p{L}]+$/gu,"")).filter(w=>w&&/^[\p{L}'’]+$/u.test(w));
+  const caps=plain.filter(w=>(w.match(/\p{L}/gu)||[]).length>=2&&w===w.toUpperCase()&&w!==w.toLowerCase());
+  const cased=(t.match(/[\p{Lu}\p{Ll}]/gu)||[]).length, upper=(t.match(/\p{Lu}/gu)||[]).length;
+  return cased>=8 && upper/cased>=0.7 && caps.length>=7 && plain.length/toks.length>=0.7;
+}
 function noteSpamScore(t){
   let s=0; for(const [re,w] of NOTE_SPAM_RULES) if(re.test(t)) s+=w;
-  const cased=(t.match(/[\p{Lu}\p{Ll}]/gu)||[]).length, upper=(t.match(/\p{Lu}/gu)||[]).length, words=t.split(/\s+/).filter(w=>/\p{L}/u.test(w));
-  if(cased>=8 && words.length>=3 && upper/cased>=0.7) s+=2; /* ALL-CAPS shouting */
+  if(noteShouting(t)) s+=2; /* ALL-CAPS shouting (long prose only) */
   if(s>0) for(const [re,w] of NOTE_SPAM_AMPLIFIERS) if(re.test(t)) s+=w;
   return s;
 }
+/* A real word: 3+ letters with a vowel and no run of 5+ consonants (so "strength" counts and "ghfjdksla" does not). */
+function noteRealWord(w){return w.length>=3&&/[aeiouy]/.test(w)&&!/[bcdfghjklmnpqrstvwxz]{5,}/.test(w);}
 function noteIsGibberish(t){
   const all=(t.match(NOTE_LETTER)||[]);
-  if(all.length<2) return "empty";
+  if(all.length<2) return all.length?"too short":"no words";
   const letters=(t.toLowerCase().match(/[a-z]/g)||[]);   /* the mash heuristics below are Latin-keyboard heuristics */
   const alpha=letters.join("");
-  if(/([a-z])\1{4,}/.test(alpha)) return "mash";
-  const vowels=(alpha.match(/[aeiou]/g)||[]).length;
-  if(letters.length>=6 && letters.length/all.length>=0.5 && vowels/letters.length<0.18) return "no vowels";
+  const words=t.toLowerCase().split(/[^a-z]+/).filter(Boolean);
+  if(words.some(w=>/([a-z])\1{4,}/.test(w))) return "mash";
   const toks=t.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   for(const tok of toks){ if(tok.length>=4 && NOTE_KB_ROWS.some(r=>r.includes(tok)||r.split("").reverse().join("").includes(tok))) return "keyboard mash"; }
+  /* code, or any real vowel word, is never "no vowels" / gibberish */
+  if(noteIsCode(t)||words.some(noteRealWord)) return "";
+  const vowels=(alpha.match(/[aeiou]/g)||[]).length;
+  if(letters.length>=6 && letters.length/all.length>=0.5 && vowels/letters.length<0.18) return "no vowels";
   const alphaToks=toks.filter(x=>/^[a-z]{3,}$/.test(x));
   if(alphaToks.length>=2 && alphaToks.filter(x=>!/[aeiouy]/.test(x)).length/alphaToks.length>0.5) return "gibberish";
   return "";
 }
-function noteTokens(k){return k.split(" ").filter(w=>w.length>1);}
-function noteNearDup(k,seen){
-  const flat=k.replace(/ /g,"");
-  if(seen.flat.has(flat)) return true;
-  const A=new Set(noteTokens(k)); if(A.size<3) return false;
-  for(const prev of seen.keys){
-    const B=prev.set; if(B.size<3) continue;
-    let inter=0; for(const w of A) if(B.has(w)) inter++;
-    if(inter/(A.size+B.size-inter)>=0.8) return true;
+/* Near-duplicate of an earlier KEPT line: only on long lines (case-insensitive key ≥ 40 chars), edit distance ≤ 2. */
+function noteEdit2(a,b){
+  if(Math.abs(a.length-b.length)>2) return false;
+  const K=2, n=a.length, m=b.length; let prev=new Array(m+1).fill(99), cur=new Array(m+1).fill(99);
+  for(let j=0;j<=Math.min(m,K);j++) prev[j]=j;
+  for(let i=1;i<=n;i++){
+    cur.fill(99); if(i<=K) cur[0]=i; let best=cur[0];
+    for(let j=Math.max(1,i-K);j<=Math.min(m,i+K);j++){
+      cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1)); if(cur[j]<best) best=cur[j];
+    }
+    if(best>K) return false; [prev,cur]=[cur,prev];
   }
+  return prev[m]<=K;
+}
+function noteNearDup(k,seen){
+  if(k.length<40) return false;
+  /* digits are meaningful (numbers, ids, times): lines whose digit sequences differ are never near-duplicates */
+  const dg=k.replace(/\D/g,"");
+  for(let L=k.length-2;L<=k.length+2;L++){ const arr=seen.byLen.get(L); if(!arr) continue; for(const p of arr) if(p.replace(/\D/g,"")===dg&&noteEdit2(k,p)) return true; }
   return false;
 }
 function noteLabel(t){
   const l=t.toLowerCase();
   if(/\b(meeting|meet|sync|standup|stand-up|1:1|one-on-one|agenda|call with|interview|retro|kickoff|catch up|lunch with)\b/.test(l)) return "meeting";
-  if(/\b\d{1,2}(:\d\d)?\s?(am|pm)\b|\b(appt|appointment)\b/.test(l)) return "event";
+  if(/\b\d{1,2}(:\d\d)?\s?(am|pm)\b|\b(appt|appointment)\b/.test(l)||NOTE_STAMP.test(t)) return "event";
   if(/\b(remember|remind|don'?t forget|deadline|due|by (mon|tue|wed|thu|fri|sat|sun)|tomorrow|tonight)\b/.test(l)) return "reminder";
   if(/\b(ideas?|what if|maybe|could we|brainstorm|concept|try)\b/.test(l)) return "idea";
   if(/^\s*(-\s*\[\s?\]|\[\s?\]|todo|to do|task)\b|\b(buy|call|email|send|book|schedule|finish|fix|review|update|pay|clean|pick up|renew|order|write|draft|prepare|submit|water|return)\b/.test(l)) return "task";
   return "note";
 }
-function newNoteSeen(){return {flat:new Set(),keys:[]};}
-/* Order of checks: link-only → empty → duplicate (case-insensitive, of an earlier KEPT line) → spam → noise → keep.
-   Only kept lines (and their duplicates) are remembered, so a refused or noise line never makes a later original a "duplicate". */
+function newNoteSeen(){return {kept:new Set(),dropped:new Set(),byLen:new Map()};}
+/* Order of checks: duplicate (exact, normalized) of ANY earlier line → link-only → no letters → near-duplicate of a kept line → spam → noise → keep.
+   Kept lines are remembered case-insensitively (an UPPERCASE copy of a kept note is ASIDE). Refused/noise lines are remembered
+   case-sensitively, so an exact repeat of spam or mash is ASIDE, but a refused SHOUTING copy never turns the later normal-case original into a duplicate. */
 function classifyNote(text,seen){
   seen=seen||newNoteSeen();
   const t=String(text==null?"":text).replace(/\s+/g," ").trim();
   if(!t) return {keep:false,reason:"empty",label:"empty"};
-  const noUrl=t.replace(/https?:\/\/\S+|www\.\S+/gi," ").trim();
+  const k=noteKey(t), kc=noteKeyCase(t);
+  if(seen.kept.has(k)||seen.dropped.has(kc)) return {keep:false,reason:"duplicate",label:"duplicate"};
+  const keepIt=(label)=>{ seen.kept.add(k); if(k[0]!=="~"){ if(!seen.byLen.has(k.length)) seen.byLen.set(k.length,[]); seen.byLen.get(k.length).push(k); } return {keep:true,reason:"kept",label}; };
+  const drop=(reason,label)=>{ seen.dropped.add(kc); return {keep:false,reason,label}; };
+  const noUrl=t.replace(NOTE_URL," ").trim();
   const urlOnly=noUrl!==t && (noUrl.match(/\p{L}{2,}/gu)||[]).length<2;
-  if(urlOnly) return {keep:false,reason:"link only",label:"spam"};
-  if((noUrl.match(NOTE_LETTER)||[]).length<2) return {keep:false,reason:"empty",label:"empty"};
-  const k=noteKey(t);
-  const remember=()=>{ if(k){ seen.flat.add(k.replace(/ /g,"")); seen.keys.push({k,set:new Set(noteTokens(k))}); } };
-  if(k && noteNearDup(k,seen)){ remember(); return {keep:false,reason:"duplicate",label:"duplicate"}; }
-  if(noteSpamScore(t)>=2) return {keep:false,reason:"spam",label:"spam"};
+  if(urlOnly) return drop("link only","spam");
+  if(NOTE_STAMP.test(t)) return keepIt("event");
+  const nl=(noUrl.match(NOTE_LETTER)||[]).length;
+  if(nl<2) return nl?drop("too short","noise"):drop("no words","noise");
+  if(noteNearDup(k,seen)) return {keep:false,reason:"duplicate",label:"duplicate"};
+  if(noteSpamScore(t)>=2) return drop("spam","spam");
   const g=noteIsGibberish(noUrl||t);
-  if(g) return {keep:false,reason:g,label:g==="empty"?"empty":"noise"};
-  remember();
-  return {keep:true,reason:"kept",label:noteLabel(t)};
+  if(g) return drop(g,"noise");
+  return keepIt(noteLabel(t));
 }
 /* Lanes (Machine Theater): where each line lands around the core. Placement uses only the line's own words and earlier lines.
-   keep  → ORGANIZED, or HOLD (kept but thin: one word, or a weak spam hint) / WATCH (kept, carries a link to check)
-   drop  → REFUSE star (spam, link-only) · ASIDE star (duplicate of an earlier line) · NOISE (keyboard mash, gibberish, empty) */
+   keep  → ORGANIZED, or HOLD (kept but thin: one word or a bare stamp, or a weak spam hint) / WATCH (kept, carries a link to check)
+   drop  → REFUSE star (spam, link-only) · ASIDE star (duplicate of an earlier line) · NOISE (keyboard mash, gibberish, no words, too short) */
 const NOTE_LANES=["organized","hold","watch","noise","refuse","aside"];
 function noteWordCount(t){
-  const noUrl=t.replace(/https?:\/\/\S+|www\.\S+/gi," ");
-  const n=noUrl.split(" ").filter(w=>NOTE_WORD2.test(w)).length;
+  const toks=t.replace(NOTE_URL," ").split(" ").filter(Boolean);
+  /* code: each identifier part counts (self._fwd → self, fwd; e = s * K → e, s, K) */
+  if(noteIsCode(t)){ const parts=t.replace(NOTE_URL," ").split(/[^\p{L}\p{N}]+/u).filter(w=>/\p{L}/u.test(w)).length; if(parts>=2) return parts; }
+  const letterWords=toks.filter(w=>NOTE_WORD2.test(w)).length;
+  /* identifiers like P0, Q3, v2 count as words; so do 3+ digit numbers once there is a real word (reference lists, ids) */
+  const alnum=toks.filter(w=>!NOTE_WORD2.test(w)&&/\p{L}/u.test(w)&&/\d/.test(w)&&w.replace(/[^\p{L}\p{N}]/gu,"").length>=2).length;
+  const nums=letterWords?toks.filter(w=>/^\(?\d{3,}[\d.,]*\)?[.,;:]?$/.test(w)).length:0;
+  const n=letterWords+alnum+nums;
   if(n>=2) return n;
   /* scripts written without spaces: 4+ characters read as more than one word */
-  return (noUrl.match(NOTE_NOSPACE_SCRIPT)||[]).length>=4?2:n;
+  return (t.match(NOTE_NOSPACE_SCRIPT)||[]).length>=4?2:n;
 }
 function noteLane(r,text){
   if(!r||!r.keep){
@@ -4811,9 +4859,14 @@ function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",
 function hhmmss(d=new Date()){return[d.getHours(),d.getMinutes(),d.getSeconds()].map(n=>String(n).padStart(2,"0")).join(":");}
 /* parseDump from v2: one item per line; CSV only for .csv/.tsv files or a real header row — commas in prose never split a note */
 function parseDump(name,text){
-  const items=[]; const n=(name||"").toLowerCase();
-  const push=(id,t,kind)=>{const s=String(t||"").trim();if(s)items.push({id:String(id),text:s,kind:kind||""});};
-  const capped=()=>{if(items.length>CAP){items.length=CAP;return true;}return false;};
+  /* No silent drops: every non-blank line is sorted. Only an exact "> sort" command line is skipped, and skips are counted
+     (items.skipped = {command, overCap}) so the status line can report them. */
+  const items=[]; const n=(name||"").toLowerCase(); items.skipped={command:0,overCap:0};
+  const push=(id,t,kind)=>{const s=String(t||"").trim();if(!s)return;
+    if(/^>\s*sort$/i.test(s)){items.skipped.command++;return;}
+    if(items.length>=CAP){items.skipped.overCap++;return;}
+    items.push({id:String(id),text:s,kind:kind||""});};
+  const capped=()=>items.skipped.overCap>0;
   try{
     if(n.endsWith(".json")||(/^\s*[\[{]/.test(text)&&!n.endsWith(".jsonl")&&!n.endsWith(".ndjson"))){
       const j=JSON.parse(text);
@@ -4865,18 +4918,17 @@ function parseDump(name,text){
         if(hasHeader)push(ii>=0&&cols[ii]?cols[ii]:(i),cols[ti]||cols.filter(Boolean).join(" · "),ki>=0?cols[ki]:"");
         else if(cols.length===1)push(i,cols[0]);
         else push(cols[0],cols.slice(1).join(" · "));
-        if(capped())break;
       }
       if(items.length)return items;
     }
   }
-  text.split(/\r?\n/).forEach((line,i)=>{const s=line.trim();if(!s||s.startsWith("#"))return;push(i+1,s);});
+  text.split(/\r?\n/).forEach((line,i)=>{push(i+1,line);});   /* '#' lines are notes too (headings, comments) */
   capped();return items;
 }
 
 
 const LANE_NAME={organized:"ORGANIZED",hold:"HOLD",watch:"WATCH",noise:"NOISE",refuse:"REFUSE",aside:"ASIDE"};
-const TAGS={meeting:"meeting",event:"event",task:"task",reminder:"reminder",idea:"idea",note:"note",duplicate:"duplicate",spam:"spam","link only":"link only",empty:"empty",mash:"mash","keyboard mash":"keyboard mash","no vowels":"gibberish",gibberish:"gibberish"};
+const TAGS={meeting:"meeting",event:"event",task:"task",reminder:"reminder",idea:"idea",note:"note",duplicate:"duplicate",spam:"spam","link only":"link only",empty:"empty",mash:"mash","keyboard mash":"keyboard mash","no vowels":"gibberish",gibberish:"gibberish","too short":"too short","no words":"no words"};
 function tagFor(v){ if(v.decision==="admit") return (v.lane==="hold"||v.lane==="watch")?v.lane:(TAGS[v.label]||"note"); return TAGS[v.reason]||"noise"; }
 function laneCounts(vs){const c={intake:vs.length,organized:0,hold:0,watch:0,noise:0,refuse:0,aside:0};vs.forEach(v=>{c[v.lane]=(c[v.lane]||0)+1;});return c;}
 function updateMetrics(res){
@@ -4927,8 +4979,13 @@ function renderSortedFigures(verdicts){
     return el;
   };
   a.innerHTML=""; r.innerHTML=""; const flown=[];
-  if(!admits.length) a.innerHTML='<div class="empty">nothing organized yet</div>'; else admits.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);a.appendChild(el);flown.push(el);});
-  if(!releases.length) r.innerHTML='<div class="empty">nothing aside yet</div>'; else releases.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);r.appendChild(el);flown.push(el);});
+  /* the tray shows the first SHOW_MAX rows; the rest are counted by lane in a "+N more in the download" note */
+  const more=(el,rest)=>{ if(!rest.length) return; const c={}; rest.forEach(v=>{c[v.lane]=(c[v.lane]||0)+1;});
+    const d=document.createElement("div"); d.className="moreNote"; d.dataset.more=String(rest.length);
+    d.style.cssText="margin:.45rem 0 .2rem;padding:.3rem .55rem;border:1px dashed rgba(200,182,255,.38);border-radius:4px;color:#dccfff;font-size:.8em;letter-spacing:.01em";
+    d.textContent="+"+rest.length+" more in the download ("+Object.keys(c).map(k=>(LANE_NAME[k]||k).toLowerCase()+" "+c[k]).join(" · ")+")"; el.appendChild(d); };
+  if(!admits.length) a.innerHTML='<div class="empty">nothing organized yet</div>'; else { admits.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);a.appendChild(el);flown.push(el);}); more(a,admits.slice(SHOW_MAX)); }
+  if(!releases.length) r.innerHTML='<div class="empty">nothing aside yet</div>'; else { releases.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);r.appendChild(el);flown.push(el);}); more(r,releases.slice(SHOW_MAX)); }
   ["exportAdmitCsv","exportAdmitJson"].forEach(id=>$(id).disabled=!admits.length);
   ["exportReleaseCsv","exportReleaseJson"].forEach(id=>$(id).disabled=!releases.length);
   if(flown.length) requestAnimationFrame(()=>flightChipsFromDesk(flown));
@@ -4937,12 +4994,15 @@ function deskMsgFor(res){
   if(!res) return "";
   const c=laneCounts(res.verdicts), n=res.n;
   const parts=[["refuse",c.refuse],["aside",c.aside],["noise",c.noise],["hold",c.hold],["watch",c.watch]].filter(x=>x[1]).map(x=>x[0]+" "+x[1]);
-  return 'sorted '+n+' line'+(n===1?'':'s')+': <b>'+res.counts.admit+'</b> organized, <b>'+res.counts.refuse+'</b> aside'+(parts.length?' <span class="lanesMsg">· '+parts.join(' · ')+'</span>':'');
+  const sk=res.skipped||{command:0,overCap:0}, skips=[];
+  if(sk.command) skips.push(sk.command+' command line'+(sk.command===1?'':'s')+' skipped');
+  if(sk.overCap) skips.push(sk.overCap+' line'+(sk.overCap===1?'':'s')+' over the '+CAP+'-line cap skipped');
+  return 'sorted '+n+' line'+(n===1?'':'s')+': <b>'+res.counts.admit+'</b> organized, <b>'+res.counts.refuse+'</b> aside'+(parts.length?' <span class="lanesMsg">· '+parts.join(' · ')+'</span>':'')+(skips.length?' <span class="skipMsg">· '+skips.join(' · ')+'</span>':'');
 }
 function render(res){
   lastResult=res; updateMetrics(res); pushLog(res?res.verdicts:[]); renderSortedFigures(res?res.verdicts:[]);
   $("deskMsg").innerHTML=deskMsgFor(res);
-  if(res){ ingestVerdicts(res.verdicts); window.dispatchEvent(new CustomEvent("seraphim:sort",{detail:{organized:res.counts.admit,aside:res.counts.refuse,lanes:laneCounts(res.verdicts)}})); }
+  if(res){ ingestVerdicts(res.verdicts); window.dispatchEvent(new CustomEvent("seraphim:sort",{detail:{organized:res.counts.admit,aside:res.counts.refuse,lanes:laneCounts(res.verdicts),skipped:res.skipped}})); }
 }
 function focusNode(id){
   focusId=id;
@@ -4955,11 +5015,12 @@ function focusNode(id){
   sealPulse=Math.max(sealPulse,0.5);
 }
 function organize(items){
-  if(!items.length) return null;
-  const ctrl=new Controller(); const verdicts=items.map(it=>ctrl.evaluate(it.text,it.id,it.kind));
+  if(!items.length){ const sk=items.skipped; if(sk&&(sk.command||sk.overCap)) $("deskMsg").textContent="nothing to sort: only a > sort command line."; return null; }
+  /* exports keep the full line (the engine trims its display copy to 400 chars) */
+  const ctrl=new Controller(); const verdicts=items.map(it=>{const v=ctrl.evaluate(it.text,it.id,it.kind); v.t=it.text; return v;});
   const counts={admit:verdicts.filter(v=>v.decision==="admit").length,refuse:verdicts.filter(v=>v.decision!=="admit").length};
   const ciPct=ctrl.I.sum()>0?(ctrl.C.sum()/ctrl.I.sum())*100:0; lastCI=ciPct;
-  const res={n:verdicts.length,counts,lanes:laneCounts(verdicts),verdicts,ciPct,stamp:new Date().toISOString()};
+  const res={n:verdicts.length,counts,lanes:laneCounts(verdicts),verdicts,ciPct,skipped:items.skipped||{command:0,overCap:0},stamp:new Date().toISOString()};
   render(res); return res;
 }
 function deskText(){ return $("pasteDesk").value||""; }
