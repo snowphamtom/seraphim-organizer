@@ -1182,6 +1182,12 @@ body:not(.sorted) #sortDesk #sortedFigures .chips{height:40px}
 @media (max-width:480px){#sortDesk{width:calc(100vw - 16px)!important}#sortDesk #sortedFigures .tray h3{flex:0 1 auto;margin-right:auto!important}}
 @media (max-width:480px){#sortDesk #sortedFigures .tray{column-gap:4px}#sortDesk #sortedFigures .tray .dl button{padding:0 4px!important}}
 @media (max-width:480px){#sortDesk #vnextLink::after{content:"";position:absolute;left:-8px;right:-8px;top:-10px;bottom:-10px}}
+/* refine: the tray title yields (ellipsis) before the downloads ever wrap under it */
+#sortDesk #sortedFigures .tray{flex-wrap:wrap}
+#sortDesk #sortedFigures .tray h3{flex:1 1 0%!important;min-width:0!important;margin-right:0!important}
+#sortDesk #sortedFigures .tray .dl{gap:8px!important}
+@media (max-width:480px){#sortDesk #sortedFigures .tray .dl{gap:0!important}}
+@media (min-width:481px){#sortDesk{width:min(704px,calc(100vw - 32px))!important}#sortDesk #sortedFigures{column-gap:16px!important}}
 </style>
 </head>
 <body>
