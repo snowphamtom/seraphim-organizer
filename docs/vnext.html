@@ -17,7 +17,7 @@
 <meta name="twitter:image" content="https://snowphamtom.github.io/seraphim-organizer/vnext-cover.png"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Cpolygon points='32,6 58,20 58,44 32,58 6,44 6,20' fill='none' stroke='%239b7bff' stroke-width='2.2'/%3E%3Ccircle cx='32' cy='32' r='7' fill='none' stroke='%23cdbdff' stroke-width='2'/%3E%3C/svg%3E"/>
 <title>Seraphim Desk · v-next</title>
-<!-- aesthetic.css is intentionally not linked: the Machine Theater styles are inline below (restored from cb20c8a). -->
+<!-- aesthetic.css is intentionally not linked: the Seraphim Engine styles are inline below (restored from cb20c8a). -->
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -691,7 +691,7 @@ body:not(.reveal-chrome) #sub{opacity:0!important;pointer-events:none!important}
   0%{opacity:0;transform:translateY(4px);filter:blur(2px)}
   100%{opacity:1;transform:none;filter:none}
 }
-/* sortTheater — ink-line flight from desk → tray (FLIP via --flight-dx/dy) */
+/* sortEngine — ink-line flight from desk → tray (FLIP via --flight-dx/dy) */
 @keyframes chipFlightAdmit{
   0%{opacity:0;transform:translate(var(--flight-dx,0px),var(--flight-dy,10px)) scale(.94);filter:blur(1.6px);color:rgba(156,110,235,.95)}
   55%{opacity:.9;filter:blur(.2px)}
@@ -927,7 +927,7 @@ button.on{ border-color:rgba(145,94,234,.85)!important; color:var(--admit)!impor
   #bgField::after{ animation:none; }
 }
 
-/* ===================== mtRestore — Machine Theater (return 2026-09-27) =====================
+/* ===================== mtRestore — Seraphim Engine (return 2026-09-27) =====================
    Title card · lit REFUSE / ASIDE stars · lanes around the core · ## Disorganized mono desk.
    Palette law: purple / black / white only. */
 :root{--mt-ink:#f5f1ff;--mt-lilac:#cdbdff;--mt-violet:#9b7bff;--mt-deep:#5b3fd1;--mt-dim:rgba(205,189,255,.55);--mt-line:rgba(190,170,255,.30);--mt-glass:rgba(6,3,14,.78)}
@@ -1195,7 +1195,7 @@ html body #log:empty{display:none!important}
 <div id="log" aria-label="Sort log"></div>
 <div id="tip"></div>
 <script id="app">
-/* ===== Machine Theater engine — restored from cb20c8a (Sep 21), patched: no CDN, no idle demo, no fetch, purple/black/white ===== */
+/* ===== Seraphim Engine core engine — restored from cb20c8a (Sep 21), patched: no CDN, no idle demo, no fetch, purple/black/white ===== */
 /* nuclear: clamp every gradient stop on create */
 (function(){
   function wrapGrad(g){
@@ -1305,7 +1305,7 @@ let softCrossQueued = null;
 let shockwave = null; // {t0,cx,cy} sort pulse ring
 let uploadFX = {flash:0, sparks:[], t0:0}; // desk→seal stream on upload/sort
 /* ========== VISUAL CORE — harmonized hybrid ========== */
-/* SERAPHIM_MARKERS:cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortTheater|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
+/* SERAPHIM_MARKERS:cyberNatureFormat|fourAssetCanon|antiBlotch|fogCut|lerpCam|aurora|pinch|chromatic|shockwave|softCross|cinemaUntil|refineClean|beyondHuman|hybridComplete|cubeCenter|cubeTether|tetherVisible|maxComplex|nestedSeal|proveBreak|ghostOrbit|kindHue|parallax|webglCore|bgMetaballs|bgReplace|bgHybridBW|gyroOmni360|dodecaSeal|organizeLattice|dodecaForeground|bgToDodeca|recursiveNest|sortSnap|crtPolish|fateSplit|polishPass2|polishPass3|holoPalette|tempoHarmonic|chimeraUltimate|customProcedural|uploadSortedDesk|uploadSortFX|publicOrganizeLabels|dumpToContent|cameraCleanChrome|markdownDesk|markdownMaster|sortEngine|idleDemoLoop|fallingCodeDepth|hybridEngineTrio|masterpieceFlow|balancePolish|bgSealCenterLock|refinePolish2|beyondAIMaster|omnidiscipline|simkinsAI|excessPrune|stripToBones|tunnelGridBg|tunnelAsSent|gatherThenSort|dodeca3DSphere|layerPerspectiveSync|sameVectors|impressShowpiece|cyberNatureFormat|speedDetail|magpieWorkFormat|magpieImpressSupersede */
 /* polishPass3 PURPOSE MAP (law: every aspect harmonizes + visible purpose)
    Story: bg-field → dodeca lock → cube crystallize / mint release.
    Grammar: cool cyan-indigo admit→cube; warm magenta-orchid release→outward; seal = foreground authority.
@@ -4632,7 +4632,7 @@ function ingestVerdicts(verdicts){
   nodes.length=0; const show=verdicts.length>100?verdicts.slice(0,100):verdicts;
   show.forEach((v,i)=>{const admit=v.decision==="admit"; nodes.push({v,id:v.id,decision:v.decision,a:Math.random()*Math.PI*2,b:(Math.random()-0.5)*1.0,r:0.12+Math.random()*0.32,spin:TEMPO.base*0.6+(Math.random()-0.5)*0.1,hue:hueForVerdict(v,i,v.decision),size:2.8+Math.random()*3,funnel:i%3,delay:Math.random()*0.65,_px:null,_py:null,kind:v.kind||null});});
   const admits=verdicts.filter(v=>v.decision==="admit"), refuses=verdicts.filter(v=>v.decision==="refuse");
-  buildVoxels(admits); buildMint(refuses); sealPulse=1; celebrate=1; /* sortTheater: strong snap */
+  buildVoxels(admits); buildMint(refuses); sealPulse=1; celebrate=1; /* sortEngine: strong snap */
   pushGhostOrbit(verdicts, lastCI);
   afterglow.push({r:0.5,hue:VH(266.25),life:1},{r:0.65,hue:VH(270.833333),life:0.9},{r:0.8,hue:VH(275.416667),life:0.8});
   shockwave={t0:performance.now()}; // G: sort pulse radial once
@@ -4914,7 +4914,7 @@ function classifyNote(text,seen){
   if(g) return drop(g,"noise");
   return keepIt(noteLabel(t));
 }
-/* Lanes (Machine Theater): where each line lands around the core. Placement uses only the line's own words and earlier lines.
+/* Lanes (Seraphim Engine): where each line lands around the core. Placement uses only the line's own words and earlier lines.
    keep  → ORGANIZED, or HOLD (kept but thin: one word or a bare stamp, or a weak spam hint) / WATCH (kept, carries a link to check)
    drop  → REFUSE star (spam, link-only) · ASIDE star (duplicate of an earlier line) · NOISE (keyboard mash, gibberish, no words, too short) */
 const NOTE_LANES=["organized","hold","watch","noise","refuse","aside"];
@@ -5501,7 +5501,7 @@ document.addEventListener("keydown",e=>{
   if(e.key==="3"){layerSolo=3;layerSoloUntil=performance.now()+2200;}
 });
 
-/* Lanes ride the core: positions in core units (s) around the live seal hub, matching the Machine Theater frame */
+/* Lanes ride the core: positions in core units (s) around the live seal hub, matching the Seraphim Engine frame */
 const LANE_POS={
   wide:{laneOrganized:[-0.68,-0.02],laneIntake:[0.27,-0.25],laneHold:[0.55,0.10],laneWatch:[0.22,0.185],laneNoise:[0.46,0.245],starRefuse:[-0.08,0.185],starAside:[0.62,0.02],laneSeal:[0.47,-0.13],gateNode:[0.28,0.02]},
   narrow:{laneOrganized:[-0.44,-0.02],laneIntake:[0.18,-0.30],laneHold:[0.38,0.12],laneWatch:[0.10,0.26],laneNoise:[0.36,0.28],starRefuse:[-0.26,0.20],starAside:[0.40,-0.10],laneSeal:[-0.30,-0.16],gateNode:[0.18,0.02]}
@@ -5532,7 +5532,7 @@ function deskTop(){ const now=performance.now(); if(now-_deskTopCache.t<250) ret
 })();
 
 
-/* ========== Hybrid field: live Delaunay node network fused with the Machine Theater core ==========
+/* ========== Hybrid field: live Delaunay node network fused with the Seraphim Engine core ==========
    Procedural take on Taylor's triangulated-network GIF (glowing nodes, thin edges, dense top → sparse bottom), recolored to
    purple / white. The core's own stars are nodes in the same mesh: the projected dodeca seal vertices, the sorted-note nodes,
    and every lane / star anchor are inserted into the triangulation each pass, and the ambient density rises toward the core
