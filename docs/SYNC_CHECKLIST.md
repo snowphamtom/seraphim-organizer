@@ -18,7 +18,7 @@ List every visible term or tooltip a first-time visitor wouldn't understand
 (internal words such as residual, Δ, coh, GR-21, Magpie, CTI, interior, admit).
 Exempt under HERO LOCK (Taylor's design choice): the `## ` headings, the
 `> sort` syntax, the `## Disorganized` input and the title card's layout and
-MACHINE THEATER heading. The title card's other text and all tooltips are NOT
+SERAPHIM ENGINE heading. The title card's other text and all tooltips are NOT
 exempt (Wizard scope decision, 2026-09-27).
 
 ## 3. Reduced motion
