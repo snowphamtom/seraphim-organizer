@@ -4843,14 +4843,15 @@ requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDro
 /* SERAPHIM_NOTE_CLASSIFIER_BEGIN — deterministic, client-side: spam / duplicate / noise → Aside; real notes → Organized */
 /* Strong signals: any one of these (score ≥ 2 total) refuses a line. */
 const NOTE_SPAM_RULES=[
-  [/\bguarantee(d|s)?\b/i,1],[/\b(guaranteed?)\s+(returns?|profits?|results?|income|gains?|winnings?)\b/i,2],
+  [/^(?!.*\b(not|no|never|without|cannot|can't|doesn't|isn't)\s+(\S+\s+){0,3}guarantee).*\bguarantee(d|s)?\b/i,1], /* 'does not guarantee' / 'not a guarantee' is no promise */[/\b(guaranteed?)\s+(returns?|profits?|results?|income|gains?|winnings?)\b/i,2],
   [/\bnext\s+\d{2,}\s?x\b|\b\d{2,}\s?x\s+(gains?|returns?|profits?|potential|gem|coin|token|crypto|pump|moon)\b/i,2], /* '12x modules' in a parts list is not spam */[/\bclick\s+(here|now|below|this\s+link)\b/i,2],[/\bfree\s+(money|cash|gift|iphone|crypto|bitcoin|trial\s+now)\b/i,2],
   [/\b(act|buy|order|join|sign\s*up|invest)\s+now\b/i,1.5],[/\blimited[\s-]+time\b/i,1],[/\brisk[\s-]*free\b|\bno\s+risk\b/i,1.5],
   [/\bdouble\s+your\b|\bget\s+rich\b|\bmake\s+money\s+fast\b|\bpassive\s+income\b|\bfinancial\s+freedom\b/i,2],
   [/\bearn\s+\$?\d/i,1.5],[/\byou('ve|\s+have)?\s+(won|been\s+selected)\b|\bclaim\s+your\s+(prize|reward|gift)\b|\bwinner\b/i,2],
-  [/\bcongratulations\b/i,1],[/\bto\s+the\s+moon\b|\bpump\b|\bairdrop\b|\bmoonshot\b|\bnext\s+100x\b|\bshitcoin\b|\bmemecoin\b/i,2],
-  [/\b(crypto|bitcoin|btc|eth|doge|token|coin|nft)s?\b.*\b(buy|now|profit|gains?|moon|pump|x\d+|\d+x|rich|guarantee)|\b(buy|profit|gains?|pump)\b.*\b(crypto|bitcoin|btc|eth|doge|token|coin|nft)s?\b/i,2],
-  [/\b(dm|message)\s+me\s+(now|for)\b|\bwork\s+from\s+home\b.*\$|\bcasino\b|\bviagra\b|\blose\s+weight\s+fast\b|\bmiracle\b|\bunsubscribe\b/i,2],
+  [/\bcongratulations\b/i,1],[/\bto\s+the\s+moon\b|\bpump(ing)?\s+(and|&|n'?)\s+dump(ing)?\b|\bairdrop\b|\bmoonshot\b|\bnext\s+100x\b|\bshitcoin\b|\bmemecoin\b/i,2],
+  /* crypto hype: whole words only ('buyer' is not 'buy'); 'token' / 'coin' are also software words, so they need a money word, not just 'now' */
+  [/\b(crypto|bitcoin|btc|eth|doge|nft|altcoin)s?\b.*\b(buy|now|profit|gains?|moon|pump|x\d+|\d+x|rich|guaranteed?)\b|\b(tokens?|coins?)\b.*\b(buy|profit|gains?|moon|pump|\d{2,}x|rich|guaranteed?)\b|\b(buy|profit|gains?|pump)\b.*\b(crypto|bitcoin|btc|eth|doge|token|coin|nft)s?\b/i,2],
+  [/\b(dm|message)\s+me\s+(now|for)\b|\bwork\s+from\s+home\b.*\$|\bcasino\b|\bviagra\b|\blose\s+weight\s+fast\b|\bmiracle\b|\b(to|here\s+to)\s+unsubscribe\b|\bunsubscribe\s+(here|below|now|link)\b|\bclick\b.{0,40}\bunsubscribe\b/i,2],
   [/\b100%\s*(free|guaranteed|legit)\b/i,2],
   /* dating spam */
   [/\b(hot|lonely|local|sexy)\s+singles\b|\b(meet|date|chat\s+with)\s+(hot\s+|local\s+|lonely\s+|sexy\s+)?singles\b|\bsingles\s+(in|near)\s+(your\s+area|you)\b/i,2],
@@ -4862,11 +4863,18 @@ const NOTE_SPAM_RULES=[
 ];
 /* Amplifiers: punctuation / emoji. They only add to a line that already has a strong signal, never on their own. */
 const NOTE_SPAM_AMPLIFIERS=[[/\$\$+|💰|🚀|🤑|💸|🔥🔥/u,1.5],[/!{3,}/,1.5],[/!{2}/,0.5]];
+/* 'P0: 22745146 · 22745348': a short identifier with 3+ digit record numbers is a reference note, not "too short" */
+const NOTE_REFLINE=/(^|[^\p{L}\p{N}])\p{L}\d+([^\p{L}\p{N}]|$)/u, NOTE_RECNUM=/(^|\D)\d{3,}(\D|$)/;
+function noteIsRefLine(t){return NOTE_REFLINE.test(t)&&NOTE_RECNUM.test(t.replace(NOTE_REFLINE," "));}
 const NOTE_KB_ROWS=["qwertyuiop","asdfghjkl","zxcvbnm","1234567890"];
 /* Letters in any script count as text (Cyrillic, CJK, accented Latin, ...). */
 const NOTE_LETTER=/\p{L}/gu, NOTE_WORD2=/\p{L}{2,}/u;
 const NOTE_NOSPACE_SCRIPT=/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Thai}\p{Script=Lao}\p{Script=Khmer}\p{Script=Myanmar}]/gu;
 const NOTE_URL=/https?:\/\/\S+|www\.\S+/gi;
+/* 'GitHub:' / '2. Repo:' / '- Health:' left after removing the link: a labeled link */
+const NOTE_LINK_LABEL=/^[\s\-*•>]*(\d+[.)]\s*)?\p{L}[\p{L}\p{N}_\-]*\s*:[^\p{L}]*$|^\s*(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\s*$/u;   /* also an HTTP method before an endpoint */
+/* XML namespace URIs in code (xmlns="http://www.w3.org/2000/svg") are identifiers, not links to check */
+const NOTE_NS_URI=/https?:\/\/www\.w3\.org\/\S*/gi;
 /* Code: identifiers with _ or dots, calls, assignments, braces. Code is never gibberish and never "shouting". */
 const NOTE_CODE=/[A-Za-z0-9]_[A-Za-z0-9]|_[A-Za-z]|\b[A-Za-z_]\w*\.[A-Za-z_]\w*|\b[A-Za-z_]\w*\(|[^=!<>]=[^=]|[{}]|;\s*$|=>|:=|==|\+=|-=/;
 /* Document markings and headings are not shouting. */
@@ -4874,18 +4882,25 @@ const NOTE_MARKING=/\b(CONFIDENTIAL|PROPRIETARY|INTERNAL|DRAFT|CLASSIFIED|UNCLAS
 const NOTE_HEADING=/^\s*([#>*\-•]+\s*)?((\d+(\.\d+)*|[IVXLC]+|[A-Z])[.):]\s+)|:\s*$|\s\|\s|^\s*\|/;
 /* 'PART LIST: ...' — a short label before a colon marks a heading or list, not prose */
 const NOTE_LABEL=/^\s*[\p{Lu}\p{N} _\-\/&]{2,40}:\s/u;
+/* Titles and headings, any case: a markdown heading, a list item with a label ('- Cover line: ...'), or title separators ' / ', ' — ', ' · ', ' • ' */
+/* ALL-CAPS reads as prose aimed at a reader only with a pronoun, an urgency word, or sentence punctuation (two sentences, ! or ?).
+   An all-caps title or section heading ('STATEMENT REGARDING FEDERALLY SPONSORED RESEARCH') has none of these. */
+const NOTE_PROSE=/\b(WE|YOU|YOUR|YOURS|YOU'RE|YOU'LL|I'M|I'VE|I'LL|OUR|MY|ME|EVERYONE|ANYONE|TODAY|NOW|TONIGHT|HURRY|URGENT)\b|[!?]|\p{L}\.\s+\p{L}/u;
+const NOTE_TITLE=/^\s*#{1,6}\s|^\s*[-*•]\s+[^:]{1,40}:\s|\s[\/—–·•]\s/u;
 /* A bare date / time stamp is a thin note (HOLD), not noise. */
 const NOTE_STAMP=/^\s*(\d{4}-\d{2}-\d{2}([T ]\d{1,2}:\d{2}(:\d{2}(\.\d+)?)?\s?(Z|UTC|[+-]\d{2}:?\d{2})?)?|\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}|\d{1,2}:\d{2}(:\d{2})?\s?([ap]m)?)\s*$/i;
 /* Duplicate keys. Kept-line key: case, whitespace and punctuation ignored, links read as "url" (a repost with a new short link is a
    duplicate); operators = + * / < > are kept, so a+b and a-b differ. Refused/noise key: case-sensitive, links kept verbatim. A line with no letters or digits keys on its collapsed text. */
 function noteBase(s,urlToken){s=String(s||""); if(urlToken) s=s.replace(NOTE_URL," url "); return s.normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/([=+*\/<>])/g," $1 ").replace(/[^\p{L}\p{N}\p{M}=+*\/<>]+/gu," ").replace(/\s+/g," ").trim();}
-function noteKey(s){const b=noteBase(s,true).toLowerCase(); return b||("~"+String(s||"").replace(/\s+/g," ").trim());}
+/* A link counts as "url" in the key only when the line has real text around it (3+ words): a repost of a post with a new short link is a
+   duplicate, but 'Buy: <link A>' and 'Buy: <link B>' are two different links. */
+function noteKey(s){const txt=String(s||"").replace(NOTE_URL," ");const b=noteBase(s,(txt.match(/\p{L}{2,}/gu)||[]).length>=3).toLowerCase(); return b||("~"+String(s||"").replace(/\s+/g," ").trim());}
 function noteKeyCase(s){const b=noteBase(s); return b||("~"+String(s||"").replace(/\s+/g," ").trim());}
 function noteIsCode(t){return NOTE_CODE.test(t.replace(NOTE_URL," ").replace(/(^|\s)[@#][\w.]+/g," "));}   /* @handles and #tags are not code */
 function noteShouting(t){
   /* Long shouting prose only: at least 7 plain ALL-CAPS words (letters only, no digits/_), plain words ≥ 70% of tokens,
      and not a heading, table row, document marking or code line. */
-  if(noteIsCode(t)||NOTE_HEADING.test(t)||NOTE_LABEL.test(t)||NOTE_MARKING.test(t)) return false;
+  if(noteIsCode(t)||NOTE_HEADING.test(t)||NOTE_LABEL.test(t)||NOTE_TITLE.test(t)||NOTE_MARKING.test(t)||!NOTE_PROSE.test(t)) return false;
   const toks=t.replace(NOTE_URL," ").split(/\s+/).filter(Boolean);
   const plain=toks.map(w=>w.replace(/^[^\p{L}]+|[^\p{L}]+$/gu,"")).filter(w=>w&&/^[\p{L}'’]+$/u.test(w));
   const caps=plain.filter(w=>(w.match(/\p{L}/gu)||[]).length>=2&&w===w.toUpperCase()&&w!==w.toLowerCase());
@@ -4903,9 +4918,13 @@ function noteRealWord(w){return w.length>=3&&/[aeiouy]/.test(w)&&!/[bcdfghjklmnp
 function noteIsGibberish(t){
   const all=(t.match(NOTE_LETTER)||[]);
   if(all.length<2) return all.length?"too short":"no words";
+  /* hex literals, hashes and ids (letters mixed with digits, 6+ chars) are identifiers, not mash; drop them before the letter heuristics */
+  const t0=t; t=t.replace(/\b0x[0-9a-f]+\b/gi," ").replace(/(?<![\p{L}\p{N}])(?=[\p{L}\p{N}_-]*\d)(?=[\p{L}\p{N}_-]*\p{L})[\p{L}\p{N}_-]{6,}(?![\p{L}\p{N}])/gu," ");
+  if(t0!==t && !(t.match(/\p{L}{2,}/gu)||[]).length) return "";
   const letters=(t.toLowerCase().match(/[a-z]/g)||[]);   /* the mash heuristics below are Latin-keyboard heuristics */
   const alpha=letters.join("");
   const words=t.toLowerCase().split(/[^a-z]+/).filter(Boolean);
+  if(noteIsCode(t0)||words.filter(noteRealWord).length>=2) return "";   /* real sentence or code: never mash */
   if(words.some(w=>/([a-z])\1{4,}/.test(w))) return "mash";
   const toks=t.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
   for(const tok of toks){ if(tok.length>=4 && NOTE_KB_ROWS.some(r=>r.includes(tok)||r.split("").reverse().join("").includes(tok))) return "keyboard mash"; }
@@ -4960,14 +4979,15 @@ function classifyNote(text,seen){
   const keepIt=(label)=>{ seen.kept.add(k); if(k[0]!=="~"){ if(!seen.byLen.has(k.length)) seen.byLen.set(k.length,[]); seen.byLen.get(k.length).push(k); } return {keep:true,reason:"kept",label}; };
   const drop=(reason,label)=>{ seen.dropped.add(kc); return {keep:false,reason,label}; };
   const noUrl=t.replace(NOTE_URL," ").trim();
-  const urlOnly=noUrl!==t && (noUrl.match(/\p{L}{2,}/gu)||[]).length<2;
+  const urlOnly=noUrl!==t && (noUrl.match(/\p{L}{2,}/gu)||[]).length<2 && !NOTE_LINK_LABEL.test(noUrl);
   if(urlOnly) return drop("link only","spam");
   if(NOTE_STAMP.test(t)) return keepIt("event");
   const nl=(noUrl.match(NOTE_LETTER)||[]).length;
-  if(nl<2) return nl?drop("too short","noise"):drop("no words","noise");
+  const ref=nl<2&&noteIsRefLine(noUrl);
+  if(nl<2&&!ref) return nl?drop("too short","noise"):drop("no words","noise");
   if(noteNearDup(k,seen)) return {keep:false,reason:"duplicate",label:"duplicate"};
   if(noteSpamScore(t)>=2) return drop("spam","spam");
-  const g=noteIsGibberish(noUrl||t);
+  const g=ref?"":noteIsGibberish(noUrl||t);
   if(g) return drop(g,"noise");
   return keepIt(noteLabel(t));
 }
@@ -4982,7 +5002,7 @@ function noteWordCount(t){
   const letterWords=toks.filter(w=>NOTE_WORD2.test(w)).length;
   /* identifiers like P0, Q3, v2 count as words; so do 3+ digit numbers once there is a real word (reference lists, ids) */
   const alnum=toks.filter(w=>!NOTE_WORD2.test(w)&&/\p{L}/u.test(w)&&/\d/.test(w)&&w.replace(/[^\p{L}\p{N}]/gu,"").length>=2).length;
-  const nums=letterWords?toks.filter(w=>/^\(?\d{3,}[\d.,]*\)?[.,;:]?$/.test(w)).length:0;
+  const nums=(letterWords||alnum)?toks.filter(w=>/^\(?\d{3,}[\d.,]*\)?[.,;:]?$/.test(w)).length:0;
   const n=letterWords+alnum+nums;
   if(n>=2) return n;
   /* scripts written without spaces: 4+ characters read as more than one word */
@@ -4996,8 +5016,9 @@ function noteLane(r,text){
     return "noise";
   }
   const t=String(text==null?"":text).replace(/\s+/g," ").trim();
-  if(noteWordCount(t)<2 || noteSpamScore(t)>0) return "hold";
-  if(/https?:\/\/\S+|www\.\S+/i.test(t)) return "watch";
+  if(noteSpamScore(t)>0) return "hold";
+  if(/https?:\/\/\S+|www\.\S+/i.test(t.replace(NOTE_NS_URI," "))) return "watch";
+  if(noteWordCount(t)<2) return "hold";
   return "organized";
 }
 /* SERAPHIM_NOTE_CLASSIFIER_END */
@@ -5011,7 +5032,7 @@ function hhmmss(d=new Date()){return[d.getHours(),d.getMinutes(),d.getSeconds()]
 function parseDump(name,text){
   /* No silent drops: every non-blank line is sorted. Only an exact "> sort" command line is skipped, and skips are counted
      (items.skipped = {command, overCap}) so the status line can report them. */
-  const items=[]; const n=(name||"").toLowerCase(); items.skipped={command:0,overCap:0};
+  const items=[]; const n=(name||"").toLowerCase(); items.skipped={command:0,overCap:0,header:0};
   const push=(id,t,kind)=>{const s=String(t||"").trim();if(!s)return;
     if(/^>\s*sort$/i.test(s)){items.skipped.command++;return;}
     if(items.length>=CAP){items.skipped.overCap++;return;}
@@ -5058,16 +5079,18 @@ function parseDump(name,text){
       const headers=split(lines[0]).map(h=>h.replace(/^"|"$/g,""));
       const low=headers.map(h=>h.toLowerCase());
       const hasHeader=low.some(h=>/^(id|title|name|text|t|kind|type|label|item|content|line)$/.test(h));
-      const ti=Math.max(0,low.findIndex(h=>/title|name|text|file|label|item|content|line/.test(h)));
+      const tiRaw=low.findIndex(h=>/title|name|text|file|label|item|content|line/.test(h)), ti=Math.max(0,tiRaw);
       const ii=low.findIndex(h=>/^id$/.test(h));
       const ki=low.findIndex(h=>/kind|type/.test(h));
-      const start=hasHeader?1:0;
+      const start=hasHeader?1:0; if(hasHeader) items.skipped.header=1;   /* the header row is read as column names, and reported */
       for(let i=start;i<lines.length;i++){
         const cols=split(lines[i]).map(c=>c.replace(/^"|"$/g,""));
-        if(!cols.some(Boolean))continue;
-        if(hasHeader)push(ii>=0&&cols[ii]?cols[ii]:(i),cols[ti]||cols.filter(Boolean).join(" · "),ki>=0?cols[ki]:"");
+        /* every row is sorted: an empty row is sorted as its raw text; with no title-like column the row text is all its non-id cells */
+        if(!cols.some(Boolean)){push(i,lines[i]);continue;}
+        const rest=cols.filter((c,k)=>c&&k!==ii).join(" · ")||cols.filter(Boolean).join(" · ");
+        if(hasHeader)push(ii>=0&&cols[ii]?cols[ii]:(i),(tiRaw>=0&&cols[ti])||rest,ki>=0?cols[ki]:"");
         else if(cols.length===1)push(i,cols[0]);
-        else push(cols[0],cols.slice(1).join(" · "));
+        else push(cols[0],cols.slice(1).filter(Boolean).join(" · ")||lines[i]);
       }
       if(items.length)return items;
     }
@@ -5148,6 +5171,7 @@ function deskMsgFor(res){
   const parts=[["refuse",c.refuse],["aside",c.aside],["noise",c.noise],["hold",c.hold],["watch",c.watch]].filter(x=>x[1]).map(x=>x[0]+" "+x[1]);
   const sk=res.skipped||{command:0,overCap:0}, skips=[];
   if(sk.command) skips.push(sk.command+' command line'+(sk.command===1?'':'s')+' skipped');
+  if(sk.header) skips.push('1 header row read as column names');
   if(sk.overCap) skips.push(sk.overCap+' line'+(sk.overCap===1?'':'s')+' over the '+CAP+'-line cap skipped');
   return 'sorted '+n+' line'+(n===1?'':'s')+': <b>'+res.counts.admit+'</b> organized, <b>'+res.counts.refuse+'</b> aside'+(parts.length?' <span class="lanesMsg">· '+parts.join(' · ')+'</span>':'')+(skips.length?' <span class="skipMsg">· '+skips.join(' · ')+'</span>':'');
 }
