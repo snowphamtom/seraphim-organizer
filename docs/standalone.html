@@ -66,7 +66,7 @@ button,input,textarea,select{font:inherit;color:inherit}
   display:none;align-items:center;gap:.4rem;padding:.16rem .48rem;
   background:rgba(8,4,20,.55);border:1px solid rgba(126,86,194,.22);border-radius:999px;
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  font-size:.5rem;color:rgba(216,236,224,.78);box-shadow:0 4px 16px rgba(0,0,0,.3);
+  font-size:.5rem;color:rgba(233,221,255,.78);box-shadow:0 4px 16px rgba(0,0,0,.3);
   white-space:nowrap;max-width:calc(100vw - 24px);opacity:0;transition:opacity .5s ease}
 #introChip.show{display:inline-flex;opacity:1}
 #introChip.ghost{opacity:.35;pointer-events:none}
@@ -88,7 +88,7 @@ button,input,textarea,select{font:inherit;color:inherit}
 button,.filebtn{appearance:none;background:rgba(8,6,22,0.42);border:1px solid rgba(169,120,255,.22);
   color:rgba(226,209,255,.85);padding:.22rem .38rem;border-radius:6px;cursor:pointer;font-size:.5rem;letter-spacing:.02em}
 button:hover,.filebtn:hover{border-color:#be99ff;box-shadow:0 0 10px rgba(157,100,255,.22)}
-button.primary{border-color:rgba(126,86,194,.55);color:#e0f8fc;box-shadow:0 0 12px rgba(126,86,194,.12)}
+button.primary{border-color:rgba(126,86,194,.55);color:#f0e8ff;box-shadow:0 0 12px rgba(126,86,194,.12)}
 button.primary:hover{border-color:rgba(126,86,194,.75);box-shadow:0 0 14px rgba(126,86,194,.22)}
 #demoStory.ghost-chip{border-color:rgba(255,255,255,.1);color:rgba(178,160,210,.55);background:rgba(0,0,0,.2);font-size:.44rem;padding:.14rem .3rem;letter-spacing:.02em;opacity:.75}
 button.ghost{border-color:rgba(255,255,255,.14);color:#9b88bb}
@@ -152,7 +152,7 @@ select{appearance:none;background:rgba(8,6,22,0.5);border:1px solid rgba(169,120
 #cheat.open{display:flex}
 #cheat .card{width:min(540px,92vw);padding:1.35rem 1.45rem;border-radius:16px;
   background:rgba(8,4,20,.96);border:1px solid rgba(137,86,224,.4);
-  font-size:.78rem;line-height:1.7;color:#e0e6f6;
+  font-size:.78rem;line-height:1.7;color:#ece6fa;
   box-shadow:0 16px 48px rgba(0,0,0,.55),0 0 32px rgba(137,86,224,.1)}
 #cheat h3{font-size:.88rem;letter-spacing:.16em;margin-bottom:.75rem;color:var(--cyan)}
 #cheat kbd{display:inline-block;min-width:1.6em;padding:.12rem .4rem;margin-right:.22rem;
@@ -1043,6 +1043,9 @@ body.lanesReady #mtWires{opacity:1}
 @media (prefers-reduced-motion:reduce){#bgField::after{animation:none!important}#specBar i{transition:none!important;animation:none!important}}
 #uploadBox .uh{flex-wrap:wrap;row-gap:0}
 #uploadBox .uh b{white-space:nowrap;flex:none}
+/* polish: quiet v-next link in the desk footer (out of flow, so the desk layout does not move) */
+#vnextLink{position:absolute;right:1.7rem;bottom:.12rem;z-index:1;font-size:.5rem;line-height:1;letter-spacing:.08em;color:rgba(168,138,228,.52);text-decoration:none;text-shadow:none;pointer-events:auto}
+#vnextLink:hover,#vnextLink:focus-visible{color:rgba(222,206,255,.92);outline:none;text-decoration:underline;text-underline-offset:2px}
 </style>
 </head>
 <body>
@@ -1099,6 +1102,7 @@ body.lanesReady #mtWires{opacity:1}
       <div class="chips" id="figRelease"><div class="empty">nothing aside yet</div></div>
     </div>
   </div>
+  <a id="vnextLink" href="vnext.html" target="_blank" rel="noopener" title="Seraphim Desk v-next: the seal-gate edition">v-next ↗</a>
 </section>
 <div id="navhint"><button type="button" id="resetView" aria-label="Reset orbit view">RESET</button></div>
 <div id="log" aria-hidden="true"></div>
@@ -1325,11 +1329,11 @@ const mintMesh={verts:[],edges:[],parts:[]};
 const ghostOrbits=[]; // ring buffer last 2–3 organize shells
 const orient={x:0,y:0,ok:false}; // DeviceOrientation gentle
 const KIND_HUE_BAND={
-  /* holoPalette: kinds live in cyan(185)→indigo(250)→magenta(295)→orchid(325); no green mint */
-  doc:[195,215],pdf:[210,230],text:[185,205],image:[250,275],
-  code:[230,250],folder:[275,295],video:[295,315],audio:[305,325],
-  archive:[185,200],slides:[280,300],sheet:[200,220],html:[205,225],
-  json:[220,240],csv:[190,210],docx:[215,235],xlsx:[225,245],other:[200,220]
+  /* holoPalette: each kind owns a band of on-screen violet hues (VH, 265–278); no green mint */
+  doc:[VH(266.25),VH(267.916667)],pdf:[VH(267.5),VH(269.166667)],text:[VH(265.416667),VH(267.083333)],image:[VH(270.833333),VH(272.916667)],
+  code:[VH(269.166667),VH(270.833333)],folder:[VH(272.916667),VH(274.583333)],video:[VH(274.583333),VH(276.25)],audio:[VH(275.416667),VH(277.083333)],
+  archive:[VH(265.416667),VH(266.666667)],slides:[VH(273.333333),VH(275)],sheet:[VH(266.666667),VH(268.333333)],html:[VH(267.083333),VH(268.75)],
+  json:[VH(268.333333),VH(270)],csv:[VH(265.833333),VH(267.5)],docx:[VH(267.916667),VH(269.583333)],xlsx:[VH(268.75),VH(270.416667)],other:[VH(266.666667),VH(268.333333)]
 };
 function kindHueOf(kind,salt){
   const b=KIND_HUE_BAND[kind]||KIND_HUE_BAND.other;
@@ -1796,6 +1800,8 @@ function seedFog(){
   for(let i=0;i<16;i++) fogShards.push({x:(Math.random()-0.5)*3.2,y:(Math.random()-0.5)*2.4,z:(Math.random()-0.5)*3.2,s:0.01+Math.random()*0.03,spin:TEMPO.base*(TEMPO.dust||1.2)*0.85+(Math.random()-0.5)*TEMPO.base*(TEMPO.dust||1.2)*0.45,ph:Math.random()*Math.PI*2});
 }
 /* holoPalette: prefer hues in ~185–325 (cyan→indigo→magenta→orchid); clamp L≤68 */
+/* VH(v): v is the violet hue (250–280) that hsl() below displays; VH returns the engine hue unit for it (exact to 0.01°), so every hue literal names its on-screen violet. */
+function VH(v){return Math.round((v-250)*1200)/100;}
 function hsl(h,s,l,a=1){const L=Math.min(68,Math.max(0,l)); const H=(((h%360)+360)%360); const P=250+Math.round(H/360*30); return`hsla(${P},${Math.min(s,62)}%,${L}%,${a})`;} /* mtRestore palette: purple/black/white */
 function addStops(g, pairs){
   const sorted=pairs.map(([o,c])=>{let x=Number(o); if(!Number.isFinite(x))x=0; return[Math.max(0,Math.min(1,x)),c];}).sort((a,b)=>a[0]-b[0]);
@@ -1870,7 +1876,7 @@ function drawAurora(cx,cy,s,t){
   if(reduceMotion||skipHeavy||W<=900) return;
   ctx.save(); ctx.globalCompositeOperation="lighter";
   for(let r=0;r<2;r++){
-    const hue=200+r*22+Math.sin(t*0.3+r)*10; /* holo cyan-indigo */
+    const hue=VH(266.666667)+r*22+Math.sin(t*0.3+r)*10; /* holo cyan-indigo */
     ctx.strokeStyle=hsl(hue,80,46,0.008+r*0.002);
     ctx.lineWidth=4+r*2; ctx.beginPath();
     for(let i=0;i<=40;i++){
@@ -1893,7 +1899,7 @@ function drawDualHexGhost(cx,cy,s,t){ /* hexCoreGyroSeal */ return;
   const gyaw=-(cam.userYaw)*0.35+t*(TEMPO.base*0.12), gpitch=-(cam.userPitch)*0.25;
   const cosy=Math.cos(gyaw),siny=Math.sin(gyaw),cosp=Math.cos(gpitch),sinp=Math.sin(gpitch);
   const sc=1.18;
-  ctx.strokeStyle=hsl(200+t*20,90,50,0.20); ctx.lineWidth=1.1;
+  ctx.strokeStyle=hsl(VH(266.666667)+t*20,90,50,0.20); ctx.lineWidth=1.1;
   for(const [i,j] of DODECA.edges){
     const A=DODECA.verts[i], B=DODECA.verts[j];
     const xf=(x,y,z)=>{
@@ -1932,7 +1938,7 @@ function drawChromaticHexEdges(verts,t){ /* hexCoreGyroSeal: skip drawChromaticH
     /* sparse anamorphic flare tick mid-edge */
     if(k<3 && fres>0.7){
       const mx=(a.x+b.x)*0.5, my=(a.y+b.y)*0.5;
-      ctx.strokeStyle=hsl(200+iri,100,75,0.08*fres);
+      ctx.strokeStyle=hsl(VH(266.666667)+iri,100,75,0.08*fres);
       ctx.lineWidth=0.5;
       ctx.beginPath(); ctx.moveTo(mx-2.2,my); ctx.lineTo(mx+2.2,my); ctx.stroke();
     }
@@ -2004,7 +2010,7 @@ function triggerUploadFX(phase, verdicts){
       u:Math.random()*0.25, /* start delay */
       life:0.55+Math.random()*0.55,
       axis:i%3, /* sameVectors: travel seal triad ray */
-      hue:admit?195+Math.random()*25:300+Math.random()*25,
+      hue:admit?VH(266.25)+Math.random()*25:VH(275)+Math.random()*25,
       admit:!!admit,
       sz:1.2+Math.random()*2.2
     });
@@ -2027,8 +2033,8 @@ function drawUploadStream(cx,cy,s,t){
   /* intake bloom at desk */
   if(uploadFX.flash>0.05){
     const g=ctx.createRadialGradient(ox,oy,0,ox,oy,80+uploadFX.flash*60);
-    g.addColorStop(0,hsl(195,95,65,uploadFX.flash*0.22));
-    g.addColorStop(0.5,hsl(280,90,55,uploadFX.flash*0.08));
+    g.addColorStop(0,hsl(VH(266.25),95,65,uploadFX.flash*0.22));
+    g.addColorStop(0.5,hsl(VH(273.333333),90,55,uploadFX.flash*0.08));
     g.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(ox,oy,120,0,Math.PI*2); ctx.fill();
   }
@@ -2063,7 +2069,7 @@ function drawUploadStream(cx,cy,s,t){
   /* seal hitch flash when streams arrive */
   if(age>0.35 && age<0.95){
     const hit=Math.sin((age-0.35)*Math.PI/(0.6))*0.35;
-    ctx.strokeStyle=hsl(200,100,70,hit*0.4);
+    ctx.strokeStyle=hsl(VH(266.666667),100,70,hit*0.4);
     ctx.lineWidth=2;
     ctx.beginPath(); ctx.arc(cx,cy,s*0.42*(1+hit*0.08),0,Math.PI*2); ctx.stroke();
   }
@@ -2081,17 +2087,17 @@ function drawSortShockwave(cx,cy,s){
   const rot=(_sealHub.corridor!=null?_sealHub.corridor:((cam&&cam.roll)||0)*0.35); /* gyro roll only — VP stays at seal */
   const fade=(1-u)*(1-u);
   ctx.save(); ctx.globalCompositeOperation="lighter";
-  ctx.strokeStyle=hsl(192,100,58,fade*0.40);
+  ctx.strokeStyle=hsl(VH(266),100,58,fade*0.40);
   ctx.lineWidth=2.0*(1-u*0.45);
   ctx.beginPath();ctx.ellipse(cx,cy,R,R*aspect,rot,0,Math.PI*2);ctx.stroke();
-  ctx.strokeStyle=hsl(305,92,56,fade*0.40);
+  ctx.strokeStyle=hsl(VH(275.416667),92,56,fade*0.40);
   ctx.lineWidth=1.35; ctx.beginPath();ctx.ellipse(cx,cy,R*0.86,R*0.86*aspect,rot,0,Math.PI*2);ctx.stroke();
   /* triad ray ticks — same axes as funnels/beams */
   for(let i=0;i<3;i++){
     const ang=_sealTriadLive[i];
     const [x1,y1]=sealRayAt(cx,cy,ang,R*0.92);
     const [x0,y0]=sealRayAt(cx,cy,ang,R*0.55);
-    ctx.strokeStyle=hsl(i===1?305:192,90,60,fade*0.22);
+    ctx.strokeStyle=hsl(i===1?VH(275.416667):VH(266),90,60,fade*0.22);
     ctx.lineWidth=1.0; ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
   }
   ctx.restore();
@@ -2128,7 +2134,7 @@ function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(
     for(let i=0;i<cubeProj.corners.length;i++){
       const c=cubeProj.corners[i];
       if(!c||c.d<-0.12) continue;
-      flares.push({x:c.x,y:c.y,hue:198+i*8,pow:0.55+0.35*Math.max(0,c.d)});
+      flares.push({x:c.x,y:c.y,hue:VH(266.5)+i*8,pow:0.55+0.35*Math.max(0,c.d)});
     }
   }
   /* face-center micro-hubs on desktop only — still receive admit tethers */
@@ -2136,7 +2142,7 @@ function drawCrtPolish(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawCrtPolish */ if(
     for(let i=0;i<cubeProj.faceCenters.length;i++){
       const c=cubeProj.faceCenters[i];
       if(!c||c.d<-0.1) continue;
-      flares.push({x:c.x,y:c.y,hue:210+i*10,pow:0.28+0.22*Math.max(0,c.d)});
+      flares.push({x:c.x,y:c.y,hue:VH(267.5)+i*10,pow:0.28+0.22*Math.max(0,c.d)});
     }
   }
   const breath=0.86+0.14*Math.sin(t*TEMPO.base*TEMPO.spark*0.55);
@@ -2199,9 +2205,9 @@ function drawBoxSphereVents(cx,cy,s,t){
     const near=Math.max(0,Math.min(1,(ed.md+0.55)/1.1));
     /* iridescent thin-film sheen: 270→310→280 */
     const g=ctx.createLinearGradient(A.x,A.y,B.x,B.y);
-    g.addColorStop(0,hsl(270,95,58,0.82+near*0.12));
-    g.addColorStop(0.5,hsl(310,100,64,0.92+near*0.06));
-    g.addColorStop(1,hsl(280,92,56,0.80+near*0.12));
+    g.addColorStop(0,hsl(VH(272.5),95,58,0.82+near*0.12));
+    g.addColorStop(0.5,hsl(VH(275.833333),100,64,0.92+near*0.06));
+    g.addColorStop(1,hsl(VH(273.333333),92,56,0.80+near*0.12));
     ctx.strokeStyle=g; ctx.lineWidth=lwBase*(0.85+near*0.45);
     ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
   }
@@ -2384,9 +2390,9 @@ function drawDodecaLatticeCage(cx,cy,s,t){
     const pulse=0.75+0.25*Math.sin(t*TEMPO.base+ed.ei*0.4);
     /* iridescent edge sheen 270→310→280 */
     const g=ctx.createLinearGradient(ed.a.x,ed.a.y,ed.b.x,ed.b.y);
-    g.addColorStop(0,hsl(270,95,54,(0.36+near*0.42)*pulse));
-    g.addColorStop(0.5,hsl(310,100,64,(0.55+near*0.38)*pulse));
-    g.addColorStop(1,hsl(280,92,52,(0.36+near*0.42)*pulse));
+    g.addColorStop(0,hsl(VH(272.5),95,54,(0.36+near*0.42)*pulse));
+    g.addColorStop(0.5,hsl(VH(275.833333),100,64,(0.55+near*0.38)*pulse));
+    g.addColorStop(1,hsl(VH(273.333333),92,52,(0.36+near*0.42)*pulse));
     ctx.strokeStyle=g; ctx.lineWidth=lw*(0.55+near*0.85);
     ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
     /* lattice node jewels */
@@ -2436,9 +2442,9 @@ function drawDodecaLatticeCage(cx,cy,s,t){
       const pulse=0.7+0.3*Math.sin(t*TEMPO.base*1.1+ed.ei*0.35);
       /* hue-shifted ~+18° lilac→magenta */
       const g=ctx.createLinearGradient(ed.a.x,ed.a.y,ed.b.x,ed.b.y);
-      g.addColorStop(0,hsl(288,95,58,(0.32+near*0.35)*pulse));
-      g.addColorStop(0.5,hsl(328,100,62,(0.45+near*0.3)*pulse));
-      g.addColorStop(1,hsl(298,92,56,(0.32+near*0.35)*pulse));
+      g.addColorStop(0,hsl(VH(274),95,58,(0.32+near*0.35)*pulse));
+      g.addColorStop(0.5,hsl(VH(277.333333),100,62,(0.45+near*0.3)*pulse));
+      g.addColorStop(1,hsl(VH(274.833333),92,56,(0.32+near*0.35)*pulse));
       ctx.strokeStyle=g; ctx.lineWidth=glw*(0.5+near*0.55);
       ctx.beginPath(); ctx.moveTo(ed.a.x,ed.a.y); ctx.lineTo(ed.b.x,ed.b.y); ctx.stroke();
     }
@@ -2459,7 +2465,7 @@ function drawCyberNatureField(cx,cy,s,t){
   /* mergePolish — one Magpie instrument: soft rings + seal + node-net lattice + quiet streams + thematic glow */
   if(reduceMotion && skipHeavy) return;
   const thin=W<=480, mobile=W<=900;
-  const hues=[262,284,300,272]; /* mtRestore: violet hull (was cyan/magenta/gold/orange) */
+  const hues=[VH(271.833333),VH(273.666667),VH(275),VH(272.666667)]; /* mtRestore: violet hull (was cyan/magenta/gold/orange) */
   const sealP=(typeof sealPulse==="number"?sealPulse:0);
   const cel=(typeof celebrate==="number"?celebrate:0);
   const flash=(typeof sealLockFlash==="number"?sealLockFlash:0);
@@ -2583,8 +2589,8 @@ function drawCyberNatureField(cx,cy,s,t){
         x*=breathe; y*=breathe; z*=breathe;
         const pr=project(x,y,z,cx,cy,s);
         const nx=(x+1)*0.5, ny=(y+1)*0.5;
-        let hue=186+nx*90+(1-ny)*80;
-        if(Math.hypot(x,y,z)<0.28) hue=48+16*Math.sin(t*TEMPO.base+p.phase);
+        let hue=VH(265.5)+nx*90+(1-ny)*80;
+        if(Math.hypot(x,y,z)<0.28) hue=VH(254)+16*Math.sin(t*TEMPO.base+p.phase);
         projected.push({x:pr[0],y:pr[1],d:pr[2],hue,hub:p.hub,phase:p.phase,lx:x,ly:y,lz:z,shell:p.shell});
       }
       /* wire outer shell → seal verts */
@@ -2660,13 +2666,13 @@ function drawCyberNatureField(cx,cy,s,t){
   const breath=0.55+0.45*Math.sin(t*TEMPO.base*PHI)+0.35*sealP+0.25*flash;
   const R=s*(0.16+0.04*breath);
   const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R*2.4);
-  g.addColorStop(0,hsl(186,100,72,0.28*breath*pulseBoost));
-  g.addColorStop(0.35,hsl(48,95,62,0.12*breath));
-  g.addColorStop(0.65,hsl(312,90,58,0.08*breath));
+  g.addColorStop(0,hsl(VH(265.5),100,72,0.28*breath*pulseBoost));
+  g.addColorStop(0.35,hsl(VH(254),95,62,0.12*breath));
+  g.addColorStop(0.65,hsl(VH(276),90,58,0.08*breath));
   g.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*2.4,0,Math.PI*2); ctx.fill();
   if(flash>0.05||sealP>0.2){
-    ctx.strokeStyle=hsl(186,100,70,(0.25+0.35*flash+0.2*sealP)*pulseBoost);
+    ctx.strokeStyle=hsl(VH(265.5),100,70,(0.25+0.35*flash+0.2*sealP)*pulseBoost);
     ctx.lineWidth=1.6;
     ctx.beginPath(); ctx.arc(cx,cy,R*(1.15+0.2*flash),0,Math.PI*2); ctx.stroke();
   }
@@ -2698,7 +2704,7 @@ function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWir
   for(const ed of edged){
     const {a,b,ei,md}=ed;
     const near=Math.max(0, Math.min(1, (md+0.45)/0.95));
-    const hue=280+ei*5+t*18;
+    const hue=VH(273.333333)+ei*5+t*18;
     const g=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
     addStops(g,[
       [0,hsl(hue,100,56,0.50+near*0.38+sealBoost)],
@@ -2718,7 +2724,7 @@ function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWir
     const pulse=0.55+0.45*Math.sin(t*2.8+i*0.9)+sealBoost;
     const near=Math.max(0.35, Math.min(1,(v.d+0.45)/0.9));
     const rad=(thin?1.7:2.7)*(0.94+0.2*pulse);
-    ctx.fillStyle=hsl(275+i*8+t*18,95,68,Math.min(0.98,0.82*pulse*near));
+    ctx.fillStyle=hsl(VH(272.916667)+i*8+t*18,95,68,Math.min(0.98,0.82*pulse*near));
     ctx.beginPath(); ctx.arc(v.x,v.y,rad,0,Math.PI*2); ctx.fill();
     ctx.fillStyle="#fff"; ctx.globalAlpha=aHex*Math.min(0.85,0.55*pulse*near);
     ctx.beginPath(); ctx.arc(v.x,v.y,thin?0.95:1.15,0,Math.PI*2); ctx.fill();
@@ -2730,7 +2736,7 @@ function drawInnerCubeWire(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawInnerCubeWir
       const v=proj.faceCenters[i];
       const near=Math.max(0.25, Math.min(1,(v.d+0.4)/0.85));
       const facePulse=0.85+0.15*Math.sin(t*2.6+i*1.1)+sealBoost*0.5;
-      ctx.fillStyle=hsl(205+i*14+t*20,92,60,Math.min(0.7,0.42*near*facePulse));
+      ctx.fillStyle=hsl(VH(267.083333)+i*14+t*20,92,60,Math.min(0.7,0.42*near*facePulse));
       ctx.beginPath(); ctx.arc(v.x,v.y,(mobile?1.15:1.55)*facePulse,0,Math.PI*2); ctx.fill();
     }
   }
@@ -2776,12 +2782,12 @@ function drawChimeraTerrain(cx,cy,s,t){
       const y=j*cellH + Math.cos(u*5+t*0.35)*cellH*0.07*und;
       /* surface grid tick */
       if(i<cols-1){
-        ctx.strokeStyle=hsl(185+warp*40,70,55,0.035+pit*0.04);
+        ctx.strokeStyle=hsl(VH(265.416667)+warp*40,70,55,0.035+pit*0.04);
         ctx.lineWidth=0.55;
         ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo((i+1)*cellW, y+Math.sin((u+0.05)*5)*2); ctx.stroke();
       }
       if(j<rows-1){
-        ctx.strokeStyle=hsl(200+warp*30,65,50,0.03+pit*0.035);
+        ctx.strokeStyle=hsl(VH(266.666667)+warp*30,65,50,0.03+pit*0.035);
         ctx.lineWidth=0.5;
         ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+Math.cos(v*4)*2,(j+1)*cellH); ctx.stroke();
       }
@@ -2789,7 +2795,7 @@ function drawChimeraTerrain(cx,cy,s,t){
       if(pit>0.08){
         const dx=cx-x, dy=cy-y, d=Math.hypot(dx,dy)||1;
         const pull=Math.min(1, (s*1.8)/d);
-        const hue=190+pit*35+(i%2?110:0); /* cyan or magenta bias */
+        const hue=VH(265.833333)+pit*35+(i%2?110:0); /* cyan or magenta bias */
         const depth=4+pit*18*pull;
         ctx.strokeStyle=hsl(hue,85,58,0.045+pit*0.08*(0.4+0.6*pull));
         ctx.lineWidth=0.7+pit;
@@ -2798,7 +2804,7 @@ function drawChimeraTerrain(cx,cy,s,t){
         ctx.lineTo(x, y+depth);
         ctx.lineTo(x+cellW*0.25,y);
         ctx.stroke();
-        ctx.strokeStyle=hsl(300-pit*40,80,55,0.03+pit*0.06*pull);
+        ctx.strokeStyle=hsl(VH(275)-pit*40,80,55,0.03+pit*0.06*pull);
         ctx.beginPath();
         ctx.moveTo(x,y); ctx.lineTo(x+dx/d*depth*0.6, y+dy/d*depth*0.6); ctx.stroke();
       }
@@ -2818,7 +2824,7 @@ function drawChimeraGlintHUD(cx,cy,s,t){
     const r=s*(0.7+seed*1.6+0.2*Math.sin(t*TEMPO.base+i));
     const x=cx+Math.cos(a)*r, y=cy+Math.sin(a)*r*0.9;
     const w=6+seed*28, h=3+seed*14;
-    const hue=190+seed*50;
+    const hue=VH(265.833333)+seed*50;
     ctx.strokeStyle=hsl(hue,75,60,0.04+0.05*Math.sin(t+i));
     ctx.lineWidth=0.6;
     ctx.strokeRect(x-w*0.5, y-h*0.5, w, h);
@@ -2849,7 +2855,7 @@ function drawChimeraSculpture(cx,cy,s,t){
     const len=s*(0.55+1.35*n + 0.25*Math.sin(t*TEMPO.base+i*0.31));
     const x2=cx+Math.cos(a)*len, y2=cy+Math.sin(a)*len*0.92;
     /* balancePolish: Organized cyan / Aside magenta fibers — equal L/R */
-    const hue=(Math.cos(a)>=0)?(300+u*25+12*Math.sin(t*0.4+i*0.05)):(185+u*30+12*Math.cos(t*0.35+i*0.05));
+    const hue=(Math.cos(a)>=0)?(VH(275)+u*25+12*Math.sin(t*0.4+i*0.05)):(VH(265.416667)+u*30+12*Math.cos(t*0.35+i*0.05));
     const alpha=(thin?0.025:0.04)*(0.4+0.5*n);
     const g=ctx.createLinearGradient(cx,cy,x2,y2);
     g.addColorStop(0,hsl(hue,90,62,alpha*1.2));
@@ -2887,7 +2893,7 @@ function drawChimeraNeonGhost(cx,cy,s,t){
     const A=DODECA.verts[i], B=DODECA.verts[j];
     const a=xf(A.x,A.y,A.z), b=xf(B.x,B.y,B.z);
     const near=Math.max(0.2, Math.min(1, ((a[2]+b[2])*0.5+0.4)/0.9));
-    ctx.strokeStyle=hsl(135+near*40+t*12,95,58,0.22*near);
+    ctx.strokeStyle=hsl(VH(261.25)+near*40+t*12,95,58,0.22*near);
     ctx.lineWidth=0.85+near*0.5;
     ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
   }
@@ -2895,7 +2901,7 @@ function drawChimeraNeonGhost(cx,cy,s,t){
   for(const v of DODECA.verts){
     const p=xf(v.x,v.y,v.z);
     const near=Math.max(0.15, Math.min(1,(p[2]+0.4)/0.85));
-    ctx.fillStyle=hsl(145,100,70,0.25*near);
+    ctx.fillStyle=hsl(VH(262.083333),100,70,0.25*near);
     ctx.beginPath(); ctx.arc(p[0],p[1],1.1+near*0.8,0,Math.PI*2); ctx.fill();
   }
   ctx.restore();
@@ -2930,7 +2936,7 @@ function drawInkWashUnderpaint(cx,cy,s,t){
   for(let side=0;side<2;side++){
     const px=cx+(side?1:-1)*s*0.62;
     const py=cy+s*0.05*Math.sin(t*rate+side);
-    const hue=side?302:192;
+    const hue=side?VH(275.166667):VH(266);
     const g=ctx.createRadialGradient(px,py,0,px,py,s*0.28);
     g.addColorStop(0,hsl(hue,80,50,mobile?0.010:0.016));
     g.addColorStop(1,"rgba(0,0,0,0)");
@@ -2953,7 +2959,7 @@ function drawBiomorphicFiligree(cx,cy,s,t){
     const seed=n2(b*1.9, b*4.1);
     const baseAng=-Math.PI*0.65 + (b/(nBranch-1||1))*Math.PI*1.3 + 0.12*Math.sin(t*rate+b);
     const admit=b%2===0;
-    const hue=admit?(188+seed*20):(300+seed*18);
+    const hue=admit?(VH(265.666667)+seed*20):(VH(275)+seed*18);
     /* grow outward then curl — organic ↔ mechanical mash */
     let x=cx+Math.cos(baseAng)*s*0.18;
     let y=cy+Math.sin(baseAng)*s*0.14;
@@ -3015,7 +3021,7 @@ function drawOrnamentalStipple(cx,cy,s,t){
     /* skip hub — surreal scale: tiny marks in vast void */
     if(Math.hypot(x-cx,y-cy)<s*0.32) continue;
     const a=0.035+0.04*((i*7)%5)/5;
-    const hue=(i%2===0)?(195+i%30):(305-i%25);
+    const hue=(i%2===0)?(VH(266.25)+i%30):(VH(275.416667)-i%25);
     ctx.fillStyle=hsl(hue,70,60,a);
     const sz=0.45+0.55*((i*3)%4)/4;
     ctx.beginPath(); ctx.arc(x,y,sz,0,Math.PI*2); ctx.fill();
@@ -3053,7 +3059,7 @@ function drawChimeraInkEcho(cx,cy,s,t){
         ctx.lineWidth=1.1;
         ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
       }
-      const hue=195+((i*11+j*7)%110);
+      const hue=VH(266.25)+((i*11+j*7)%110);
       ctx.strokeStyle=hsl(hue,78,68,alpha);
       ctx.lineWidth=mobile?0.4:0.5;
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
@@ -3094,7 +3100,7 @@ function drawCorePlasma(cx,cy,s,t){
     const wob=0.032*s*Math.sin(t*rate*PHI*PHI+i);
     const px=cx+Math.cos(ang)*rad*(0.50+elev*0.15) + wob;
     const py=cy+Math.sin(ang)*rad*(0.44-elev*0.10) - wob*0.55 + elev*s*0.06;
-    const hue=(i%2===0)?(192+18*Math.sin(t*rate+i)+6*Math.sin(t*TEMPO.base*TEMPO.iri)):(298+20*Math.cos(t*rate*PHI+i)-6*Math.sin(t*TEMPO.base*TEMPO.iri));
+    const hue=(i%2===0)?(VH(266)+18*Math.sin(t*rate+i)+6*Math.sin(t*TEMPO.base*TEMPO.iri)):(VH(274.833333)+20*Math.cos(t*rate*PHI+i)-6*Math.sin(t*TEMPO.base*TEMPO.iri));
     const R=(mobile?15:26)+11*Math.sin(t*rate+i*0.7);
     const a=(mobile?0.016:0.028)*boost*(0.48+0.38*Math.sin(t*rate*PHI+i));
     const g=ctx.createRadialGradient(px,py,0,px,py,R);
@@ -3113,9 +3119,9 @@ function drawCorePlasma(cx,cy,s,t){
   /* soft inner core glow — clipped under seal radius */
   const coreA=0.020*boost*(0.62+0.26*Math.sin(t*rate));
   const cg=ctx.createRadialGradient(cx,cy,0,cx,cy,s*0.30);
-  cg.addColorStop(0,hsl(208,90,60,coreA));
-  cg.addColorStop(0.4,hsl(275,80,54,coreA*0.38));
-  cg.addColorStop(0.75,hsl(300,75,50,coreA*0.12));
+  cg.addColorStop(0,hsl(VH(267.333333),90,60,coreA));
+  cg.addColorStop(0.4,hsl(VH(272.916667),80,54,coreA*0.38));
+  cg.addColorStop(0.75,hsl(VH(275),75,50,coreA*0.12));
   cg.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=cg; ctx.beginPath(); ctx.arc(cx,cy,s*0.30,0,Math.PI*2); ctx.fill();
   ctx.restore();
@@ -3135,13 +3141,13 @@ function drawBeamRain(cx,cy,s,t){
   const ringR=s*(0.52+0.038*Math.sin(t*rate)+0.012*Math.sin(t*rateP));
   ctx.save(); ctx.globalCompositeOperation="lighter";
   /* soft source ring — shares plasma breathe */
-  ctx.strokeStyle=hsl(200,82,70,0.032+0.065*surge);
+  ctx.strokeStyle=hsl(VH(266.666667),82,70,0.032+0.065*surge);
   ctx.lineWidth=1.05;
   ctx.beginPath(); ctx.ellipse(cx, cy-s*0.08, ringR, ringR*0.28, 0.04*Math.sin(t*rate/PHI), 0, Math.PI*2); ctx.stroke();
   if(surge>0.12){
     const rg=ctx.createRadialGradient(cx,cy-s*0.08,0,cx,cy-s*0.08,ringR*1.15);
-    rg.addColorStop(0,hsl(195,95,70,0.065*surge));
-    rg.addColorStop(0.5,hsl(280,85,60,0.025*surge));
+    rg.addColorStop(0,hsl(VH(266.25),95,70,0.065*surge));
+    rg.addColorStop(0.5,hsl(VH(273.333333),85,60,0.025*surge));
     rg.addColorStop(1,"rgba(0,0,0,0)");
     ctx.fillStyle=rg; ctx.beginPath(); ctx.ellipse(cx,cy-s*0.08,ringR,ringR*0.32,0,0,Math.PI*2); ctx.fill();
   }
@@ -3154,7 +3160,7 @@ function drawBeamRain(cx,cy,s,t){
     const fall=((t*rate*0.35 + seed*PHI + i*0.17 + t*rateP*0.08)%1);
     const segs=thin?4:(mobile?7:11);
     const admit=(i%2===0);
-    const hue=admit?(186+seed*24+4*Math.sin(t*TEMPO.base*TEMPO.iri)):(300+seed*20-4*Math.sin(t*TEMPO.base*TEMPO.iri));
+    const hue=admit?(VH(265.5)+seed*24+4*Math.sin(t*TEMPO.base*TEMPO.iri)):(VH(275)+seed*20-4*Math.sin(t*TEMPO.base*TEMPO.iri));
     const trayX=admit?(W*0.22):(W*0.78);
     const curve=0.18+0.58*surge;
     for(let k=0;k<segs;k++){
@@ -3402,7 +3408,7 @@ function drawFunnelsAndBeams(cx,cy,s,t){
     const dx=bx-tx, dy=by-ty, beamAng=Math.atan2(dy,dx);
     const rings=thin?8:12, ribs=thin?0:8;
     /* balancePolish: mouth 0 cyan L, mouth 1 magenta R, mouth 2 cyan — equal weight */
-    const baseHue=(fi===1)?305:(188+fi*4);
+    const baseHue=(fi===1)?VH(275.416667):(VH(265.666667)+fi*4);
     for(let i=0;i<=rings;i++){
       const u=i/rings, along=u*0.62;
       const x=tx+dx*along, y=ty+dy*along;
@@ -3476,16 +3482,16 @@ function drawSphereWire(cx,cy,s,t){ /* box owns sphere */ return;
   /* soft filled glow ball */
   const gR=s*R*(thin?1.05:1.25);
   const g=ctx.createRadialGradient(ex,ey,0,ex,ey,gR);
-  g.addColorStop(0,hsl(198,100,72,0.62*pulse));
-  g.addColorStop(0.22,hsl(210,95,58,0.34*pulse));
-  g.addColorStop(0.48,hsl(285,85,52,0.16*pulse));
-  g.addColorStop(0.78,hsl(310,80,48,0.055*pulse));
+  g.addColorStop(0,hsl(VH(266.5),100,72,0.62*pulse));
+  g.addColorStop(0.22,hsl(VH(267.5),95,58,0.34*pulse));
+  g.addColorStop(0.48,hsl(VH(273.75),85,52,0.16*pulse));
+  g.addColorStop(0.78,hsl(VH(275.833333),80,48,0.055*pulse));
   g.addColorStop(1,"rgba(0,0,0,0)");
   ctx.fillStyle=g; ctx.beginPath(); ctx.arc(ex,ey,gR,0,Math.PI*2); ctx.fill();
   /* hot white core */
   ctx.fillStyle=`rgba(230,248,255,${0.42*pulse})`;
   ctx.beginPath(); ctx.arc(ex,ey,s*R*0.16,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle=hsl(195,100,78,0.28*pulse);
+  ctx.fillStyle=hsl(VH(266.25),100,78,0.28*pulse);
   ctx.beginPath(); ctx.arc(ex,ey,s*R*0.28,0,Math.PI*2); ctx.fill();
   /* lat/lon wireframe */
   const nLat=thin?7:(mobile?11:16);
@@ -3494,7 +3500,7 @@ function drawSphereWire(cx,cy,s,t){ /* box owns sphere */ return;
   for(let i=0;i<nLat;i++){
     const lat=(i/(nLat-1)-0.5)*Math.PI*0.92;
     const near=0.55+0.45*Math.cos(lat);
-    ctx.strokeStyle=hsl(198+i*3+8*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)),85,58,(0.14+0.12*near)*pulse);
+    ctx.strokeStyle=hsl(VH(266.5)+i*3+8*Math.sin(t*TEMPO.base*(TEMPO.iri||PHI)),85,58,(0.14+0.12*near)*pulse);
     ctx.lineWidth=thin?0.55:0.85; ctx.beginPath();
     let first=true;
     for(let j=0;j<=segs;j++){
@@ -3506,7 +3512,7 @@ function drawSphereWire(cx,cy,s,t){ /* box owns sphere */ return;
   }
   for(let i=0;i<nLon;i++){
     const lon=i/nLon*Math.PI;
-    ctx.strokeStyle=hsl(300-i*4+6*Math.cos(t*TEMPO.base*(TEMPO.iri||PHI)),80,56,0.12*pulse);
+    ctx.strokeStyle=hsl(VH(275)-i*4+6*Math.cos(t*TEMPO.base*(TEMPO.iri||PHI)),80,56,0.12*pulse);
     ctx.lineWidth=thin?0.5:0.75; ctx.beginPath();
     let first=true;
     for(let j=0;j<=segs;j++){
@@ -3518,8 +3524,8 @@ function drawSphereWire(cx,cy,s,t){ /* box owns sphere */ return;
   }
   ctx.restore();
 }
-function hueClampAdmit(h){return 140+((h%50+50)%50);} // 140–190 (legacy fallback)
-function hueClampRelease(h){const x=((h%90)+90)%90; return x<60?(300+x):(x-60);} // 300–30 wrap
+function hueClampAdmit(h){return VH(261.666667)+((h%50+50)%50);} // 140–190 (legacy fallback)
+function hueClampRelease(h){const x=((h%90)+90)%90; return x<60?(VH(275)+x):(x-60);} // 300–30 wrap
 function hueForVerdict(v,i,decision){
   // kind-as-hue: spectral band from kind; admit/release = lightness (not hue remap)
   const kind=(v&&v.kind)||"other";
@@ -3650,7 +3656,7 @@ function drawMintRelease(cx,cy,s,t){
   for(const [a,b] of mintMesh.edges){const A=pts[a],B=pts[b]; if(!A||!B)continue; if(A[2]<-0.55&&B[2]<-0.55)continue;
     const hubR=Math.hypot((A[0]+B[0])*0.5-cx,(A[1]+B[1])*0.5-cy)/(s+1e-6);
     const emerge=Math.min(1,0.25+hubR*0.95);
-    ctx.strokeStyle=hsl(305+t*12,90,52,0.20*dim*emerge); ctx.lineWidth=0.7*emerge; ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();}
+    ctx.strokeStyle=hsl(VH(275.416667)+t*12,90,52,0.20*dim*emerge); ctx.lineWidth=0.7*emerge; ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();}
   const coa=0.5+0.5*Math.sin(t*TEMPO.base+1.2);
   const centers=[];
   for(const p of mintMesh.parts){
@@ -3663,7 +3669,7 @@ function drawMintRelease(cx,cy,s,t){
     const yy=Math.sin(p.b)*p.r*0.85+Math.sin(fateA)*fateR*0.55+0.05*Math.sin(t*TEMPO.base*PHI+p.ph)+Math.sin(t*TEMPO.base*0.75+p.ph)*0.01;
     const zz=Math.cos(p.b)*Math.sin(p.a+t*p.spin)*p.r;
     const [px,py,d]=project(xx,yy,zz,cx,cy,s); if(d<-0.5){p._px=null;continue;}
-    const hue=p.hue!=null?p.hue:320;
+    const hue=p.hue!=null?p.hue:VH(276.666667);
     centers.push({px,py,mass:p.size*2.8*(focus?1.7:1),hue,alpha});
     p._px=px;p._py=py;p._rad=p.size; p._focus=focus; p._alpha=alpha; p._hue=hue;
   }
@@ -3783,8 +3789,8 @@ function drawHybridBridgeRays(cx,cy,s,t){
       /* balancePolish: cyan L ↔ magenta R equal weight; no yellow/orange */
       const side=Math.cos(a+jitter); /* -1 left … +1 right */
       const hue=(side<0)
-        ?(185+((-side)*40)+8*Math.sin(t*0.45+i)+sh*6)
-        :(295+(side*28)+8*Math.cos(t*0.4+i)+sh*6);
+        ?(VH(265.416667)+((-side)*40)+8*Math.sin(t*0.45+i)+sh*6)
+        :(VH(274.583333)+(side*28)+8*Math.cos(t*0.4+i)+sh*6);
       const a0=(0.085-sh*0.015)*(0.45+0.35*Math.sin(t*TEMPO.base+i))*(W<=900?0.7:1); /* balancePolish quieter */
       const g=ctx.createLinearGradient(cx,cy,x2,y2);
       g.addColorStop(0,hsl(hue,96,64,a0));
@@ -3820,7 +3826,7 @@ function drawGyroOrbitRings(cx,cy,s,t){
   for(let r=0;r<rings;r++){
     const rad=s*(0.42+r*(0.22+0.04/PHI));
     const spin=t*TEMPO.base*TEMPO.rings*(r%2?1:-1)/Math.pow(PHI,r*0.5)+(cam.roll)*0.5;
-    const hue=(r%2===0)?(195+r*8+10*Math.sin(t*0.3+r)):(305+r*6+10*Math.cos(t*0.3+r));
+    const hue=(r%2===0)?(VH(266.25)+r*8+10*Math.sin(t*0.3+r)):(VH(275.416667)+r*6+10*Math.cos(t*0.3+r));
     const alpha=(0.055-r*0.008)*(0.5+0.3*Math.sin(t*TEMPO.base/PHI+r));
     ctx.strokeStyle=hsl(hue,88,58,Math.max(0.02,alpha));
     ctx.lineWidth=mobile?0.55:0.75;
@@ -3892,7 +3898,7 @@ function drawOrganizeLattice(cx,cy,s,t){ /* magpieImpressSupersede: loud organiz
       const hubR=Math.hypot((a.x+b.x)*0.5-cx,(a.y+b.y)*0.5-cy)/(s+1e-6);
       const emerge=Math.min(1,0.28+hubR*0.9); /* fainter toward seal hub VP */
       const scA=(0.028+0.045*depth)*pulse*(1+0.25*snap)*emerge;
-      ctx.strokeStyle=hsl(155+45*Math.sin(t*0.7+hueDrift)+t*10,82,52,scA);
+      ctx.strokeStyle=hsl(VH(262.916667)+45*Math.sin(t*0.7+hueDrift)+t*10,82,52,scA);
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
@@ -3904,7 +3910,7 @@ function drawOrganizeLattice(cx,cy,s,t){ /* magpieImpressSupersede: loud organiz
       const a=cc[i], b=cc[j]; if(!a||!b) continue;
       const md=(a.d+b.d)*0.5;
       const depth=Math.max(0.15, Math.min(1,(md+0.45)/0.95));
-      ctx.strokeStyle=hsl(140+70*((depth+Math.sin(t+hueDrift))*0.5+0.5),94,58,(0.10+0.16*depth)*pulse*(1+0.4*sealPop));
+      ctx.strokeStyle=hsl(VH(261.666667)+70*((depth+Math.sin(t+hueDrift))*0.5+0.5),94,58,(0.10+0.16*depth)*pulse*(1+0.4*sealPop));
       ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
     }
   }
@@ -3918,7 +3924,7 @@ function drawOrganizeLattice(cx,cy,s,t){ /* magpieImpressSupersede: loud organiz
       if(!dA||!cA) continue;
       const md=((dA.d||0)+(cA.d||0))*0.5;
       const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
-      ctx.strokeStyle=hsl(202+t*10,78,52,(0.025+0.05*depth)*pulse*(0.5+0.5*snap));
+      ctx.strokeStyle=hsl(VH(266.833333)+t*10,78,52,(0.025+0.05*depth)*pulse*(0.5+0.5*snap));
       ctx.setLineDash([3.5,4.5]);
       ctx.lineDashOffset=-crawl*12-i*2;
       ctx.beginPath(); ctx.moveTo(dA.x,dA.y); ctx.lineTo(cA.x,cA.y); ctx.stroke();
@@ -3935,15 +3941,15 @@ function drawOrganizeLattice(cx,cy,s,t){ /* magpieImpressSupersede: loud organiz
       if(!cfc[i]||!cfc[j]) continue;
       const md=(cfc[i].d+cfc[j].d)*0.5;
       const depth=Math.max(0.1, Math.min(1,(md+0.4)/0.95));
-      ctx.strokeStyle=hsl(210+t*10+hueDrift*0.25,80,54,(0.04+0.07*depth)*pulse);
+      ctx.strokeStyle=hsl(VH(267.5)+t*10+hueDrift*0.25,80,54,(0.04+0.07*depth)*pulse);
       ctx.beginPath(); ctx.moveTo(cfc[i].x,cfc[i].y); ctx.lineTo(cfc[j].x,cfc[j].y); ctx.stroke();
     }
   }
   /* fateSplit hues: admit cooler cyan/indigo; release warmer magenta/orchid fray */
   function tetherHue(baseHue, decision){
-    let h=(baseHue==null?200:baseHue)+hueDrift;
-    if(decision==="admit") h=h*0.40+205*0.60; /* cyan-indigo denser */
-    else if(decision==="refuse"||decision==="release") h=h*0.35+310*0.65; /* magenta-orchid fray */
+    let h=(baseHue==null?VH(266.666667):baseHue)+hueDrift;
+    if(decision==="admit") h=h*0.40+VH(267.083333)*0.60; /* cyan-indigo denser */
+    else if(decision==="refuse"||decision==="release") h=h*0.35+VH(275.833333)*0.65; /* magenta-orchid fray */
     return h;
   }
   function pickAnchor(pool, px, py, id, maxR){
@@ -4179,7 +4185,7 @@ function drawQuasicrystalWhisper(cx,cy,s,t){
     const sc=0.38+r*0.14;
     const n=5+r*5; /* pentagonal family */
     const alpha=(0.028-r*0.006)*(0.6+0.3*Math.sin(t*rate+r));
-    ctx.strokeStyle=hsl(200+r*40,75,55,alpha);
+    ctx.strokeStyle=hsl(VH(266.666667)+r*40,75,55,alpha);
     ctx.lineWidth=0.45;
     /* dual rotated pentagons → star / quasicrystal echo */
     for(let dup=0;dup<2;dup++){
@@ -4200,7 +4206,7 @@ function drawQuasicrystalWhisper(cx,cy,s,t){
         const a=spin+i*2.399963;
         const rad=s*sc*0.92;
         const x=cx+Math.cos(a)*rad, y=cy+Math.sin(a)*rad*0.92;
-        ctx.fillStyle=hsl(195+(i%2)*110,90,65,alpha*1.4);
+        ctx.fillStyle=hsl(VH(266.25)+(i%2)*110,90,65,alpha*1.4);
         ctx.beginPath(); ctx.arc(x,y,0.7,0,Math.PI*2); ctx.fill();
       }
     }
@@ -4226,7 +4232,7 @@ function drawGeodesicAccents(cx,cy,s,t){
     const near=Math.max(0.15, Math.min(1,(meanD+0.4)/0.9));
     const cxF=pts.reduce((a,p)=>a+p.x,0)/5, cyF=pts.reduce((a,p)=>a+p.y,0)/5;
     /* pentagram whisper (every 2nd vertex) — φ sacred */
-    ctx.strokeStyle=hsl(205+fi*8+8*Math.sin(t*rate),85,58,(0.03+0.05*near)*(0.7+0.3*sealPulse));
+    ctx.strokeStyle=hsl(VH(267.083333)+fi*8+8*Math.sin(t*rate),85,58,(0.03+0.05*near)*(0.7+0.3*sealPulse));
     ctx.lineWidth=0.5;
     ctx.beginPath();
     for(let k=0;k<=5;k++){
@@ -4236,7 +4242,7 @@ function drawGeodesicAccents(cx,cy,s,t){
     ctx.stroke();
     /* center → vertex spokes (Bauhaus) */
     if(W>900 && near>0.4){
-      ctx.strokeStyle=hsl(300-fi*6,80,55,0.025*near);
+      ctx.strokeStyle=hsl(VH(275)-fi*6,80,55,0.025*near);
       ctx.lineWidth=0.4;
       for(const p of pts){
         ctx.beginPath(); ctx.moveTo(cxF,cyF); ctx.lineTo(p.x,p.y); ctx.stroke();
@@ -4262,7 +4268,7 @@ function drawNestedSeals(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawNestedSeals */
   for(let r=0;r<rings;r++){
     const depthFrac=rings===1?0:r/(rings-1);
     const sc=baseScales[r]*(1+pulse*(r===0?1.0:0.4))*(1+breathe*(1-depthFrac*0.5));
-    const hue=r===0?215:(r===1?198:305);
+    const hue=r===0?VH(267.916667):(r===1?VH(266.5):VH(275.416667));
     const alpha=(0.042+0.028*Math.sin(t*nestRate*PHI*PHI+r*1.35))*(0.65+0.35*sealPulse);
     if(thin||mobile){
       const [ex,ey]=project(0,0,0,cx+po.ox,cy+po.oy,s);
@@ -4356,7 +4362,7 @@ function drawGhostOrbits(cx,cy,s,t){
       const a=xf(A.x,A.y,A.z), b=xf(B.x,B.y,B.z);
       return {a,b,md:(a[2]+b[2])*0.5};
     }).sort((u,v)=>u.md-v.md);
-    ctx.strokeStyle=hsl(190+gi*25+g.ci*0.4,70,48,fade);
+    ctx.strokeStyle=hsl(VH(265.833333)+gi*25+g.ci*0.4,70,48,fade);
     ctx.lineWidth=0.65;
     for(const ed of edged){
       ctx.beginPath(); ctx.moveTo(ed.a[0],ed.a[1]); ctx.lineTo(ed.b[0],ed.b[1]); ctx.stroke();
@@ -4371,7 +4377,7 @@ function drawProveBreak(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawProveBreak */ i
   return;
   /* prove-or-break: geometric residual readout around focus — LIGHT not HTML form */
   if(focusId==null) return;
-  let px=null,py=null,hue=200,vmeta=null;
+  let px=null,py=null,hue=VH(266.666667),vmeta=null;
   for(const v of voxels){
     if(v.id!=null&&String(v.id)===String(focusId)&&v._px!=null){px=v._px;py=v._py;hue=v.hue;vmeta=v;break;}
   }
@@ -4399,9 +4405,9 @@ function drawProveBreak(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawProveBreak */ i
   ctx.save(); ctx.globalCompositeOperation="lighter";
   // expanding residual arc triad: S_solv / R_H / S_H
   const gates=[
-    {ok:S_solv, label:"S", hue:195, a0:-Math.PI*0.9, a1:-Math.PI*0.9+Math.PI*0.55},
-    {ok:R_H, label:"R", hue:250, a0:-Math.PI*0.25, a1:-Math.PI*0.25+Math.PI*0.55},
-    {ok:S_H, label:"H", hue:300, a0:Math.PI*0.4, a1:Math.PI*0.4+Math.PI*0.55}
+    {ok:S_solv, label:"S", hue:VH(266.25), a0:-Math.PI*0.9, a1:-Math.PI*0.9+Math.PI*0.55},
+    {ok:R_H, label:"R", hue:VH(270.833333), a0:-Math.PI*0.25, a1:-Math.PI*0.25+Math.PI*0.55},
+    {ok:S_H, label:"H", hue:VH(275), a0:Math.PI*0.4, a1:Math.PI*0.4+Math.PI*0.55}
   ];
   gates.forEach((g,i)=>{
     const on=g.ok===true;
@@ -4448,9 +4454,9 @@ function drawSealBreath(cx,cy,s,t){ /* hexCoreGyroSeal: skip drawSealBreath */ i
   const fill=Math.max(0,Math.min(1,lastCI/100)), breath=0.5+0.5*Math.sin(t*TEMPO.base*PHI*PHI*PHI), R=s*0.48*(1+0.02*breath+0.08*sealPulse);
   ctx.save(); ctx.globalCompositeOperation="lighter";
   ctx.strokeStyle="rgba(126,86,194,0.18)"; ctx.lineWidth=2; ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
-  ctx.strokeStyle=hsl(195+fill*55,90,58,0.45+0.15*breath); ctx.lineWidth=2.4; ctx.beginPath();ctx.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+Math.PI*2*fill);ctx.stroke();
+  ctx.strokeStyle=hsl(VH(266.25)+fill*55,90,58,0.45+0.15*breath); ctx.lineWidth=2.4; ctx.beginPath();ctx.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+Math.PI*2*fill);ctx.stroke();
   if(sealLockFlash>0){ctx.strokeStyle=`rgba(137,86,224,${sealLockFlash*0.55})`; ctx.lineWidth=3; ctx.beginPath();ctx.arc(cx,cy,R*(1.05+(1-sealLockFlash)*0.2),0,Math.PI*2);ctx.stroke();}
-  if(celebrate>0){for(let i=0;i<6;i++){ctx.strokeStyle=hsl(185+(i*22+t*30)%140,100,58,celebrate*0.25); ctx.lineWidth=1.2; ctx.beginPath();ctx.arc(cx,cy,R*(1.1+i*0.06+(1-celebrate)*0.15),0,Math.PI*2);ctx.stroke();}}
+  if(celebrate>0){for(let i=0;i<6;i++){ctx.strokeStyle=hsl(VH(265.416667)+(i*22+t*30)%140,100,58,celebrate*0.25); ctx.lineWidth=1.2; ctx.beginPath();ctx.arc(cx,cy,R*(1.1+i*0.06+(1-celebrate)*0.15),0,Math.PI*2);ctx.stroke();}}
   ctx.restore();
 }
 function drawFogShards(cx,cy,s,t,orbitSpeed){
@@ -4541,7 +4547,7 @@ function ingestVerdicts(verdicts){
   const admits=verdicts.filter(v=>v.decision==="admit"), refuses=verdicts.filter(v=>v.decision==="refuse");
   buildVoxels(admits); buildMint(refuses); sealPulse=1; celebrate=1; /* sortTheater: strong snap */
   pushGhostOrbit(verdicts, lastCI);
-  afterglow.push({r:0.5,hue:195,life:1},{r:0.65,hue:250,life:0.9},{r:0.8,hue:305,life:0.8});
+  afterglow.push({r:0.5,hue:VH(266.25),life:1},{r:0.65,hue:VH(270.833333),life:0.9},{r:0.8,hue:VH(275.416667),life:0.8});
   shockwave={t0:performance.now()}; // G: sort pulse radial once
   triggerUploadFX("sort", verdicts);
   const shOn=verdicts.some(v=>v.S_H); if(shOn&&!prevSH){sealLockFlash=1; if(chimeOn)softChime();} prevSH=shOn;
@@ -4681,7 +4687,7 @@ requestAnimationFrame(frame); seedField(W<=900?3500:9000); seedFog(); seedInkDro
                +Math.abs(Math.sin(t*TEMPO.base*7.2*drive+i*0.95))*12
                +Math.abs(Math.sin(t*TEMPO.base*2.1+i*0.17))*6;
         els[i].style.height=h.toFixed(1)+"px";
-        const hue=Math.floor(186+((i/els.length)*126)+20*Math.sin(t*TEMPO.base+i));
+        const hue=Math.floor(258+((i/els.length)*126)+20*Math.sin(t*TEMPO.base+i));
         els[i].style.background="linear-gradient(180deg, hsl("+(258+(hue%24))+" 80% 78%) 0%, hsl(262 62% 42%) 100%)";
       }
       if(!reduceMotion) requestAnimationFrame(tickSpec); /* auditPolish: reduced motion = one static frame */
@@ -5116,12 +5122,19 @@ updateMetrics(null);
    purple / white. The core's own stars are nodes in the same mesh: the projected dodeca seal vertices, the sorted-note nodes,
    and every lane / star anchor are inserted into the triangulation each pass, and the ambient density rises toward the core
    and the lanes. A radial + edge vignette fades it into black with no seams. On each sort a pulse ripples outward through the
-   edges from the core. Reduced motion → one still frame (redrawn on resize/sort); paused while the tab is hidden; DPR ≤ 2. */
+   edges from the core. Reduced motion → one still frame (redrawn on resize/sort); paused while the tab is hidden; DPR ≤ 2.
+   Polish (Sep 27): a minimum spanning tree over the Delaunay edges is drawn as a faint always-on skeleton, so every node
+   stays connected even where long or vignetted Delaunay edges are culled; after a sort each sorted line becomes a point
+   placed near its lane (golden-angle cluster, fused into the triangulation); and the six destination lanes own faint 2D
+   Voronoi territories (cells brighten a little for lanes that received lines). Purple / white only. */
 (function hybridMesh(){
   const cv=document.getElementById("mesh"); if(!cv) return;
   const g=cv.getContext("2d",{alpha:true});
   const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let MW=0,MH=0,MD=1,pts=[],tris=null,edges=[],frameN=0,pulse=null,running=false,seedKey="";
+  let MW=0,MH=0,MD=1,pts=[],tris=null,edges=[],mst=[],frameN=0,pulse=null,running=false,seedKey="";
+  let lanePts=[],laneRes=null,laneT0=0,laneHits={};
+  const LANE_KEY={organized:"laneOrganized",hold:"laneHold",watch:"laneWatch",noise:"laneNoise",refuse:"starRefuse",aside:"starAside"};
+  const DEST=Object.values(LANE_KEY);
   const mobile=()=>MW<=900;
   /* glow sprite: white core, lilac halo */
   const spr=document.createElement("canvas"); spr.width=spr.height=32;
@@ -5133,6 +5146,71 @@ updateMetrics(null);
     if(window.__laneXY) return Object.values(window.__laneXY); /* exact on-screen lane positions (after desk clearance) */
     const h=hub(), set=(typeof LANE_POS!=="undefined")?(MW<=900?LANE_POS.narrow:LANE_POS.wide):{};
     return Object.values(set).map(([ux,uy])=>[h.cx+ux*h.s,h.cy+uy*h.s]);
+  }
+  function laneMap(){ /* destination lanes only, keyed by element id */
+    let P=window.__laneXY;
+    if(!P){ const h=hub(), set=(typeof LANE_POS!=="undefined")?(MW<=900?LANE_POS.narrow:LANE_POS.wide):{}; P={}; for(const k in set) P[k]=[h.cx+set[k][0]*h.s,h.cy+set[k][1]*h.s]; }
+    const out={}; for(const k of DEST) if(P[k]&&isFinite(P[k][0])&&isFinite(P[k][1])) out[k]=P[k]; return out;
+  }
+  /* ---- sorted lines → points near their lane ---- */
+  function syncLanePts(){
+    const res=(typeof lastResult!=="undefined")?lastResult:null;
+    if(res===laneRes) return; laneRes=res; lanePts=[]; laneHits={}; laneT0=performance.now();
+    if(!res||!res.verdicts) return;
+    const cap=mobile()?72:132, per=mobile()?14:24, seen={};
+    for(const v of res.verdicts){ const k=LANE_KEY[v.lane]; if(!k) continue; laneHits[k]=(laneHits[k]||0)+1;
+      const i=seen[k]=(seen[k]||0)+1; if(i>per||lanePts.length>=cap) continue;
+      lanePts.push({k,i:i-1,kept:v.decision==="admit",ph:Math.random()*6.283,x:0,y:0}); }
+  }
+  function placeLanePts(t,now,h,L){
+    const dt=(typeof deskTop==="function")?deskTop():null, u=h.s, grow=RM?1:Math.min(1,(now-laneT0)/900), e=1-Math.pow(1-grow,3);
+    for(const q of lanePts){ const a=L[q.k]; if(!a){q.x=NaN;continue;}
+      /* golden-ratio fan in the upper half around the lane dot: clear of the label row and of the desk below */
+      const star=q.k.startsWith("star"), r=u*((star?0.07:0.05)+0.02*Math.sqrt(q.i)), fr=(q.i*0.618034+DEST.indexOf(q.k)*0.13)%1, ang=-Math.PI*(0.08+0.84*fr);
+      let x=a[0]+Math.cos(ang)*r, y=a[1]+Math.sin(ang)*r*0.8;
+      if(!RM){ x+=Math.sin(t*0.37+q.ph)*u*0.004; y+=Math.cos(t*0.31+q.ph)*u*0.004; }
+      if(dt!=null&&y>dt-6) y=Math.min(dt-6,a[1]-(y-a[1]));             /* stay above the desk: mirror upward */
+      q.x=h.cx+(x-h.cx)*e; q.y=h.cy+(y-h.cy)*e;                          /* fly out from the core after a sort */
+    }
+  }
+  /* ---- faint Voronoi lane territories (6 sites: clip the viewport by perpendicular bisectors) ---- */
+  const terr=document.createElement("canvas"), tg=terr.getContext("2d"); let terrKey="", cells=[];
+  function clipHalf(poly,px,py,nx,ny){ /* keep points with (p-P)·n <= 0 */
+    const out=[]; for(let i=0;i<poly.length;i++){ const A=poly[i],B=poly[(i+1)%poly.length];
+      const da=(A[0]-px)*nx+(A[1]-py)*ny, db=(B[0]-px)*nx+(B[1]-py)*ny;
+      if(da<=0) out.push(A); if((da<0&&db>0)||(da>0&&db<0)){ const s=da/(da-db); out.push([A[0]+(B[0]-A[0])*s,A[1]+(B[1]-A[1])*s]); } }
+    return out;
+  }
+  function territories(h,L){
+    const ks=Object.keys(L), key=MW+"x"+MH+"|"+ks.map(k=>k+":"+Math.round(L[k][0]/3)+","+Math.round(L[k][1]/3)+":"+(laneHits[k]?1:0)).join(";");
+    if(key!==terrKey){ terrKey=key;
+      if(terr.width!==cv.width||terr.height!==cv.height){terr.width=cv.width;terr.height=cv.height;}
+      tg.setTransform(MD,0,0,MD,0,0); tg.clearRect(0,0,MW,MH); cells=[];
+      const m=40;
+      for(const k of ks){ const [sx,sy]=L[k]; let poly=[[-m,-m],[MW+m,-m],[MW+m,MH+m],[-m,MH+m]];
+        for(const j of ks){ if(j===k) continue; const [ox,oy]=L[j]; poly=clipHalf(poly,(sx+ox)/2,(sy+oy)/2,ox-sx,oy-sy); if(!poly.length) break; }
+        if(poly.length<3) continue; cells.push({k,poly});
+        const hit=!!laneHits[k], star=k.startsWith("star"), R=h.s*(hit?0.62:0.5);
+        const gr=tg.createRadialGradient(sx,sy,0,sx,sy,R);
+        gr.addColorStop(0,star?`rgba(214,196,255,${hit?0.16:0.06})`:`rgba(170,140,240,${hit?0.15:0.055})`); gr.addColorStop(1,"rgba(120,90,220,0)");
+        tg.beginPath(); poly.forEach((p,i)=>i?tg.lineTo(p[0],p[1]):tg.moveTo(p[0],p[1])); tg.closePath(); tg.fillStyle=gr; tg.fill();
+        tg.lineWidth=0.7; tg.setLineDash([2,5]); tg.strokeStyle=`rgba(206,190,255,${hit?0.2:0.1})`; tg.stroke(); tg.setLineDash([]);
+      }
+      /* fade the territories into black like the mesh (vignette mask) */
+      tg.globalCompositeOperation="destination-in";
+      const vm=tg.createRadialGradient(h.cx,h.cy,h.s*0.12,h.cx,h.cy,Math.max(MW,MH)*0.62);
+      vm.addColorStop(0,"rgba(0,0,0,1)"); vm.addColorStop(0.55,"rgba(0,0,0,.55)"); vm.addColorStop(1,"rgba(0,0,0,0)");
+      tg.fillStyle=vm; tg.fillRect(0,0,MW,MH); tg.globalCompositeOperation="source-over";
+    }
+    g.drawImage(terr,0,0,MW,MH);
+  }
+  /* ---- minimum spanning tree over the Delaunay edges (Kruskal + union-find) ---- */
+  function spanTree(P,E){
+    const n=P.length, par=new Int32Array(n); for(let i=0;i<n;i++) par[i]=i;
+    const f=x=>{while(par[x]!==x){par[x]=par[par[x]];x=par[x];}return x;};
+    const W=E.map(([u,v],i)=>[Math.hypot(P[u].x-P[v].x,P[u].y-P[v].y),i]).sort((a,b)=>a[0]-b[0]);
+    const T=[]; for(const [,i] of W){ const [u,v]=E[i], a=f(u), b=f(v); if(a!==b){par[a]=b;T.push(E[i]); if(T.length===n-1) break;} }
+    return T;
   }
   function resize(){
     MD=Math.min(2,devicePixelRatio||1); MW=innerWidth; MH=innerHeight;
@@ -5202,6 +5280,7 @@ updateMetrics(null);
     for(const v of pv) if(isFinite(v.x)) fused.push({x:v.x,y:v.y,sz:1.5,fused:true,star:false});
     for(const [x,y] of anchors()) fused.push({x,y,sz:1.9,fused:true,star:true});
     if(typeof nodes!=="undefined") for(let i=0;i<nodes.length&&i<60;i++){const q=nodes[i]; if(q._px!=null&&isFinite(q._px)) fused.push({x:q._px,y:q._py,sz:1.2,fused:true,star:false});}
+    for(const q of lanePts) if(isFinite(q.x)&&isFinite(q.y)) fused.push({x:q.x,y:q.y,sz:q.kept?1.05:0.85,fused:true,star:false,lane:true,kept:q.kept});
     /* keep ambient nodes from crowding the fused ones */
     const minD=h.s*0.035;
     const amb=all.filter(p=>{for(const f of fused){if(Math.abs(f.x-p.x)<minD&&Math.abs(f.y-p.y)<minD)return false;}return true;});
@@ -5219,14 +5298,17 @@ updateMetrics(null);
     const t=now*0.001, h=hub();
     const k=[MW,MH,Math.round(h.cx),Math.round(h.cy),Math.round(h.s)].join(",");
     if(k!==seedKey&&frameN%30===0){const [,, ,cxs,cys,ss]=[0,0,0,...seedKey.split(",").slice(2).map(Number)]; if(Math.abs(cxs-h.cx)>40||Math.abs(cys-h.cy)>40||Math.abs(ss-h.s)>60||!seedKey.startsWith(MW+","+MH+",")) seed();}
+    syncLanePts(); const LM=laneMap(); placeLanePts(t,now,h,LM);
     cur=gather(t);
     const every=mobile()?6:4;
     if(!tris||frameN-lastTri>=every||tris.n!==cur.length){ const s=cur.map((p,i)=>i); tris=delaunay(cur); tris.n=cur.length; lastTri=frameN;
       const set=new Set(); edges=[]; const n=cur.length;
       for(let i=0;i<tris.length;i+=3){const a=tris[i],b=tris[i+1],c=tris[i+2];for(const [u,v] of [[a,b],[b,c],[c,a]]){const kk=u<v?u*n+v:v*n+u; if(!set.has(kk)){set.add(kk);edges.push(u<v?[u,v]:[v,u]);}}}
+      mst=spanTree(cur,edges);
     }
     frameN++;
     g.clearRect(0,0,MW,MH);
+    territories(h,LM);
     const P=cur, maxL=Math.min(MW,MH)*0.22, pr=pulse?(now-pulse.t0)/1000:9;
     const pR=pr*Math.max(MW,MH)*0.55, pW=Math.max(MW,MH)*0.07, pOn=pulse&&pr<2.4;
     /* bucket edges by alpha → few stroke calls */
@@ -5240,6 +5322,11 @@ updateMetrics(null);
       if(boost>0.05){const bi=Math.min(B-1,Math.floor(Math.min(1,a+boost*0.8)*B)); hot[bi].moveTo(A.x,A.y);hot[bi].lineTo(C.x,C.y);usedH[bi]=1;}
       else{const bi=Math.min(B-1,Math.floor(Math.min(0.999,a)*B*2.2)); paths[bi].moveTo(A.x,A.y);paths[bi].lineTo(C.x,C.y);used[bi]=1;}
     }
+    /* MST skeleton: every node joined, faint, never culled by length */
+    const S=4, sk=Array.from({length:S},()=>new Path2D()), usedS=new Uint8Array(S);
+    for(const [u,v] of mst){const A=P[u],C=P[v]; if(!A||!C) continue; const vg=vign((A.x+C.x)/2,(A.y+C.y)/2,h); const si=Math.min(S-1,Math.floor(vg*S)); sk[si].moveTo(A.x,A.y); sk[si].lineTo(C.x,C.y); usedS[si]=1;}
+    g.lineWidth=mobile()?0.55:0.65;
+    for(let i=0;i<S;i++) if(usedS[i]){g.strokeStyle=`rgba(226,214,255,${(0.035+0.085*(i+0.5)/S).toFixed(3)})`; g.stroke(sk[i]);}
     g.lineWidth=mobile()?0.6:0.7;
     for(let i=0;i<B;i++) if(used[i]){g.strokeStyle=`rgba(196,178,255,${((i+0.5)/(B*2.2)).toFixed(3)})`; g.stroke(paths[i]);}
     g.lineWidth=1.2;
@@ -5247,17 +5334,24 @@ updateMetrics(null);
     /* glowing nodes */
     g.globalCompositeOperation="lighter";
     for(const p of P){const vg=vign(p.x,p.y,h); if(vg<0.03) continue;
-      let a=vg*(p.fused?0.9:0.62), r=(p.sz||1)*(mobile()?3.1:3.6);
+      let a=p.lane?Math.max(0.35,vg)*(p.kept?0.95:0.6):vg*(p.fused?0.9:0.62), r=(p.sz||1)*(mobile()?3.1:3.6);
       if(pOn){const dd=Math.abs(Math.hypot(p.x-h.cx,p.y-h.cy)-pR); if(dd<pW){const bb=(1-dd/pW)*(1-pr/2.4); a=Math.min(1,a+bb*0.8); r*=1+bb*0.8;}}
       g.globalAlpha=a; g.drawImage(spr,p.x-r*2,p.y-r*2,r*4,r*4);}
     g.globalAlpha=1; g.globalCompositeOperation="source-over";
+    /* sorted-line points: a thin ring marks each one (white = kept, lilac = set aside) */
+    if(lanePts.length){ const rk=new Path2D(), ra=new Path2D(), sp=new Path2D(), rr=mobile()?3.2:3.9;
+      for(const q of lanePts){ if(!isFinite(q.x)) continue; const a=LM[q.k]; if(a){ sp.moveTo(a[0],a[1]); sp.lineTo(q.x,q.y); }
+        const pth=q.kept?rk:ra; pth.moveTo(q.x+rr,q.y); pth.arc(q.x,q.y,rr,0,6.2832); }
+      g.lineWidth=0.6; g.strokeStyle="rgba(214,198,255,.2)"; g.stroke(sp);                 /* faint spoke back to the lane */
+      g.lineWidth=0.9; g.strokeStyle="rgba(246,240,255,.78)"; g.stroke(rk); g.strokeStyle="rgba(192,164,255,.62)"; g.stroke(ra); }
   }
   /* auditPolish: one loop only. Keep the rAF id, cancel it on hide, never start a second loop. */
   let rafId=0, drawN=0;
   function loop(now){ rafId=0; if(!running) return; draw(now); drawN++; rafId=requestAnimationFrame(loop); }
   function start(){ if(RM){ requestAnimationFrame(n=>{draw(n);drawN++;}); return; } if(running||rafId) return; running=true; rafId=requestAnimationFrame(loop); }
   function stop(){ running=false; if(rafId){ cancelAnimationFrame(rafId); rafId=0; } }
-  addEventListener("resize",()=>{resize(); if(RM) requestAnimationFrame(n=>draw(n));});
+  addEventListener("resize",()=>{resize(); terrKey=""; if(RM) requestAnimationFrame(n=>draw(n));});
+  { const cb=document.getElementById("clearDesk"); if(cb) cb.addEventListener("click",()=>{ if(RM) setTimeout(()=>requestAnimationFrame(n=>draw(n)),0); }); }
   document.addEventListener("visibilitychange",()=>{ if(document.hidden) stop(); else start(); });
   addEventListener("seraphim:sort",()=>{
     pulse={t0:performance.now()};
@@ -5268,7 +5362,7 @@ updateMetrics(null);
   /* reduced motion: wait for the core to settle, then one still */
   if(RM) setTimeout(()=>requestAnimationFrame(n=>draw(n)),400);
   if(!document.hidden) start();
-  window.__mesh={count:()=>cur.length,edges:()=>edges.length,running:()=>running,draws:()=>drawN,fused:()=>cur.filter(p=>p.fused).length};
+  window.__mesh={count:()=>cur.length,edges:()=>edges.length,running:()=>running,draws:()=>drawN,fused:()=>cur.filter(p=>p.fused).length,mst:()=>mst.length,lanePts:()=>lanePts.map(q=>({lane:q.k,x:Math.round(q.x),y:Math.round(q.y)})),cells:()=>cells.map(c=>c.k),nodes:()=>cur.length};
 })();
 </script>
 </body>
