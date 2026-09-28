@@ -1046,6 +1046,142 @@ body.lanesReady #mtWires{opacity:1}
 /* polish: quiet v-next link in the desk footer (out of flow, so the desk layout does not move) */
 #vnextLink{position:absolute;right:1.7rem;bottom:.12rem;z-index:1;font-size:.5rem;line-height:1;letter-spacing:.08em;color:rgba(168,138,228,.52);text-decoration:none;text-shadow:none;pointer-events:auto}
 #vnextLink:hover,#vnextLink:focus-visible{color:rgba(222,206,255,.92);outline:none;text-decoration:underline;text-underline-offset:2px}
+/* ================= refine (2026-09-27): premium desk pass — polish only, hero + input unchanged =================
+   One spacing grid (4/8px), one type scale (11 / 12 / 13 / 14px mono on the desk), shared hairline + radius with the
+   title card, readable (>=4.5:1) secondary text, real button states + keyboard focus rings, stable tray wells so a sort
+   no longer shoves the lanes, 44px tap targets on phones. Purple / black / white only. */
+:root{--rf-line:rgba(190,170,255,.26);--rf-line-hi:rgba(205,189,255,.62);--rf-dim:rgba(214,204,255,.80);--rf-mute:rgba(205,192,255,.70);
+  --rf-ring:0 0 0 2px #0a0518,0 0 0 4px #f5f1ff;--rf-r:8px;--rf-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+/* 1 · title card: same hairline + radius as the desk, tighter tracking */
+#top.mtCard{border-radius:var(--rf-r)!important;border-color:var(--rf-line)!important;padding:16px 24px 14px!important}
+#top.mtCard .title{letter-spacing:.06em}
+#top.mtCard .cue{margin-top:6px;letter-spacing:.01em}
+#top.mtCard .claim{margin-top:8px;color:var(--rf-dim)}
+/* 2 · desk frame: no edge mask (it clipped the first glyph of each row), 8px grid padding, hairline frame */
+#sortDesk{-webkit-mask-image:none!important;mask-image:none!important;width:min(600px,calc(100vw - 32px))!important;
+  padding:16px 20px 28px!important;gap:12px!important;border:1px solid var(--rf-line)!important;border-radius:var(--rf-r)!important;
+  box-shadow:0 18px 60px rgba(0,0,0,.72),0 0 0 1px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05)!important;
+  font-family:var(--rf-mono)!important;font-size:12px!important;line-height:1.5!important;text-shadow:none!important;transition:border-color .6s ease,box-shadow .6s ease}
+#sortDesk #phaseWhisper{display:none}
+#sortDesk #uploadBox{display:flex;flex-direction:column;gap:8px}
+#sortDesk #uploadBox .uh,#sortDesk #uploadBox .dropHint,#sortDesk #uploadBox .actions{text-shadow:none!important;margin:0!important;padding:0!important}
+#sortDesk #uploadBox .uh{align-items:baseline;column-gap:12px}
+#sortDesk #uploadBox .uh b{font:650 14px/1.3 var(--rf-mono)!important;letter-spacing:.01em!important}
+#sortDesk #uploadBox .uh span{font-size:11px!important;letter-spacing:.02em!important;color:var(--rf-mute)!important}
+#sortDesk #uploadBox .dropHint{font-size:11px!important;letter-spacing:.02em;color:var(--rf-mute)!important}
+#sortDesk #uploadBox .dropHint code{opacity:1;color:#fff}
+/* 3 · controls: one height, real hover / active / focus-visible states */
+#sortDesk #uploadBox .actions{gap:8px!important}
+#sortDesk #uploadBox .actions .filebtn,#sortDesk #uploadBox .actions button.ghost{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
+  min-height:32px!important;padding:0 12px!important;border:1px solid var(--rf-line)!important;border-radius:6px!important;background:rgba(155,123,255,.05)!important;
+  color:#e6ddff!important;font:500 12px/1 var(--rf-mono)!important;letter-spacing:.02em!important;transition:border-color .15s,background-color .15s,color .15s}
+#sortDesk #uploadBox .actions .filebtn:hover,#sortDesk #uploadBox .actions button.ghost:hover{border-color:var(--rf-line-hi)!important;background:rgba(155,123,255,.14)!important;color:#fff!important;box-shadow:none!important}
+#sortDesk #uploadBox .actions .filebtn:active,#sortDesk #uploadBox .actions button.ghost:active{background:rgba(155,123,255,.24)!important;transform:translateY(1px)}
+#sortDesk #uploadBox .actions #sortBtn{min-height:32px!important;padding:0 16px!important;border-radius:6px!important;font-size:12px!important;transition:background .15s,box-shadow .15s}
+#sortDesk #uploadBox .actions #sortBtn:hover{box-shadow:0 0 22px rgba(160,130,255,.75)!important}
+#sortDesk #uploadBox .actions #sortBtn:active{transform:translateY(1px);background:linear-gradient(180deg,#5a3dd6,#40279f)!important}
+#sortDesk #uploadBox .actions #sortBtn:focus-visible{box-shadow:var(--rf-ring),0 0 18px rgba(160,130,255,.7)!important}
+#sortDesk #uploadBox .actions #clearDesk{margin-left:auto}
+#sortDesk .kbdHint{font-size:11px;color:var(--rf-mute)}
+#sortDesk .kbdHint kbd{padding:2px 5px;border-radius:4px}
+/* keyboard focus: one ring everywhere on the desk */
+#sortDesk button:focus-visible,#sortDesk a:focus-visible,#sortDesk .chipFig:focus-visible,#sortDesk .filebtn:focus-within{outline:none!important;box-shadow:var(--rf-ring)!important}
+#sortDesk .filebtn input{position:absolute!important;width:1px;height:1px;opacity:0;pointer-events:none}
+#sortDesk .filebtn{position:relative}
+/* 4 · the input well */
+#sortDesk #uploadBox textarea{box-sizing:border-box;min-height:80px!important;max-height:22vh!important;padding:10px 12px!important;
+  background:rgba(0,0,0,.38)!important;border:1px solid var(--rf-line)!important;border-radius:6px!important;
+  font:400 12px/1.5 var(--rf-mono)!important;scrollbar-width:thin;scrollbar-color:rgba(155,123,255,.45) transparent;transition:border-color .15s,box-shadow .15s}
+#sortDesk #uploadBox textarea::placeholder{color:var(--rf-mute)!important;opacity:1}
+#sortDesk #uploadBox textarea:hover{border-color:rgba(205,189,255,.4)!important}
+#sortDesk #uploadBox textarea:focus{border-color:#9b7bff!important;box-shadow:0 0 0 3px rgba(155,123,255,.28)!important}
+#sortDesk #uploadBox.drag textarea{border-color:#cdbdff!important;border-style:dashed!important;background:rgba(155,123,255,.08)!important}
+#sortDesk #uploadBox.drag,#sortDesk #uploadBox:focus-within{box-shadow:none!important}
+/* 5 · status line: a quiet readout with a lit marker once a sort lands */
+#sortDesk #deskMsg{margin:0!important;min-height:18px;font:500 11.5px/1.55 var(--rf-mono)!important;letter-spacing:.01em;color:var(--rf-dim)!important}
+#sortDesk #deskMsg .lanesMsg,#sortDesk #deskMsg .skipMsg{color:var(--rf-mute)!important}
+#sortDesk #deskMsg:empty{display:none}
+body.sorted #sortDesk #deskMsg::before{content:"";display:inline-block;width:6px;height:6px;margin:0 8px 1px 0;border-radius:50%;background:#f5f1ff;box-shadow:0 0 8px rgba(190,165,255,.95)}
+#sortDesk.justSorted{border-color:rgba(205,189,255,.7)!important;box-shadow:0 18px 60px rgba(0,0,0,.72),0 0 0 1px rgba(0,0,0,.6),0 0 28px rgba(140,110,255,.35),inset 0 1px 0 rgba(255,255,255,.08)!important;transition:none}
+/* 6 · trays: header row (title left, downloads right), stable scrolling wells, readable rows */
+#sortDesk #sortedFigures{gap:12px 20px!important;max-height:none!important}
+#sortDesk #sortedFigures .tray{display:flex;flex-direction:column;max-height:none!important;overflow:visible!important;min-width:0}
+#sortDesk #sortedFigures .tray h3{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0!important;font:650 13px/1.3 var(--rf-mono)!important;letter-spacing:.01em!important}
+#sortDesk #sortedFigures .tray .count{margin-left:4px;font-size:11px;opacity:1;color:var(--rf-mute)}
+#sortDesk #sortedFigures .tray .dl{gap:12px!important;margin:4px 0 6px!important}
+#sortDesk #sortedFigures .tray .dl button{min-height:24px;padding:2px 0!important;font:600 11px/1.2 var(--rf-mono)!important;color:#ddd2ff!important;border-radius:3px}
+#sortDesk #sortedFigures .tray .dl button:disabled{opacity:1!important;color:rgba(205,192,255,.42)!important}
+#sortDesk #sortedFigures .chips{height:clamp(84px,14vh,128px);overflow-y:auto;overscroll-behavior:contain;padding:4px 0;
+  border-top:1px solid rgba(190,170,255,.14);scrollbar-width:thin;scrollbar-color:rgba(155,123,255,.45) transparent}
+#sortDesk #sortedFigures .chips::-webkit-scrollbar{display:block;width:6px}
+#sortDesk #sortedFigures .chips::-webkit-scrollbar-thumb{background:rgba(155,123,255,.45);border-radius:3px}
+#sortDesk #sortedFigures .chipFig{display:flex;gap:8px;align-items:baseline;padding:2px 6px!important;margin:0 -6px;border-radius:4px;font-size:12px!important;line-height:1.5!important}
+#sortDesk #sortedFigures .chipFig::before{content:none!important}
+#sortDesk #sortedFigures .chipFig .k{flex:none;opacity:1!important;font-size:10.5px;letter-spacing:.02em;color:#b8a4ff!important;margin:0!important}
+#sortDesk #sortedFigures .chipFig .k::after{content:""!important}
+#sortDesk #sortedFigures .chipFig .ttl{min-width:0;flex:1}
+#sortDesk #sortedFigures .chipFig:hover{background:rgba(155,123,255,.12);color:#fff!important}
+/* empty wells: say what will land here */
+#sortDesk #sortedFigures .empty{display:flex;align-items:center;justify-content:center;height:100%;box-sizing:border-box;padding:8px 12px;margin:0;
+  border:1px dashed rgba(190,170,255,.22);border-radius:6px;font:400 11px/1.5 var(--rf-mono)!important;font-style:normal!important;letter-spacing:.02em;text-align:center;color:var(--rf-mute)!important}
+#sortDesk #sortedFigures .empty::before{content:none!important}
+#sortDesk #sortedFigures .empty em{font-style:normal;color:#e6ddff}
+/* v-next: legible, in the desk's bottom gutter, never over a row */
+#sortDesk #vnextLink{right:20px!important;bottom:6px!important;padding:2px 4px;border-radius:3px;font:500 11px/1.4 var(--rf-mono)!important;letter-spacing:.04em!important;color:var(--rf-mute)!important}
+#sortDesk #vnextLink:hover{color:#fff!important}
+/* 7 · phones: no cramping, 44px targets */
+@media (max-width:480px){
+  #sortDesk{width:calc(100vw - 16px)!important;padding:12px 12px 30px!important;gap:10px!important;bottom:max(8px,calc(var(--safe-b,0px) + 8px))!important}
+  #sortDesk #uploadBox{gap:8px}
+  #sortDesk #uploadBox .uh > span{display:none}
+  #sortDesk .kbdHint{display:none}
+  #sortDesk #uploadBox .actions .filebtn,#sortDesk #uploadBox .actions button.ghost,#sortDesk #uploadBox .actions #sortBtn{min-height:44px!important;min-width:44px}
+  #sortDesk #uploadBox .actions #sortBtn{flex:1 1 auto;max-width:160px}
+  #sortDesk #uploadBox textarea{min-height:64px!important;max-height:16vh!important}
+  #sortDesk #sortedFigures{grid-template-columns:1fr!important;gap:8px!important}
+  #sortDesk #sortedFigures .tray{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:8px}
+  #sortDesk #sortedFigures .tray h3{grid-column:1}
+  #sortDesk #sortedFigures .tray .dl{grid-column:2;justify-content:flex-end;margin:0!important;gap:4px!important}
+  #sortDesk #sortedFigures .tray .dl button{min-height:44px;padding:0 6px!important}
+  #sortDesk #sortedFigures .chips{grid-column:1 / -1;height:clamp(58px,9vh,84px)}
+  #sortDesk #vnextLink{bottom:4px!important;right:12px!important;min-height:24px;display:inline-flex;align-items:center}
+}
+@media (pointer:coarse){#sortDesk .kbdHint{display:none}}
+/* refine: keep the desk compact on desktop so the lanes keep their spread; wells grow only once there is something in them */
+#sortDesk{padding:14px 20px 26px!important;gap:10px!important}
+#sortDesk #uploadBox textarea{min-height:64px!important}
+body:not(.sorted) #sortDesk #sortedFigures .chips{height:48px}
+#sortDesk #sortedFigures .chips{height:clamp(72px,12vh,112px)}
+#sortDesk #deskMsg .lanesMsg,#sortDesk #deskMsg .skipMsg{white-space:nowrap}
+@media (max-width:480px){
+  #sortDesk #sortedFigures .tray{display:flex;flex-wrap:wrap;align-items:center}
+  #sortDesk #sortedFigures .tray h3{flex:1 1 auto}
+  #sortDesk #sortedFigures .tray .dl{flex:none;gap:0!important}
+  #sortDesk #sortedFigures .tray .dl button{white-space:nowrap;padding:0 5px!important;font-size:10.5px!important}
+  #sortDesk #sortedFigures .tray .dl button::before{content:none!important}
+  #sortDesk #sortedFigures .chips{flex:1 0 100%;height:clamp(58px,9vh,84px)}
+  body:not(.sorted) #sortDesk #sortedFigures .chips{height:48px}
+  #sortDesk #deskMsg .lanesMsg,#sortDesk #deskMsg .skipMsg{white-space:normal}
+}
+
+/* 8 · weight balance: the core drawing steps back a touch so lanes, territories and labels read */
+#fx{opacity:.84!important}
+@media (prefers-reduced-motion:reduce){#sortDesk,#sortDesk *{transition:none!important}}
+
+/* refine: compact desktop desk. One helper line (the header aside is folded into it), downloads share the tray title row */
+#sortDesk{width:min(680px,calc(100vw - 32px))!important}
+#sortDesk #uploadBox .uh > span{display:none}
+#sortDesk #sortedFigures .tray{flex-direction:row!important;flex-wrap:wrap;align-items:center;column-gap:8px}
+#sortDesk #sortedFigures .tray h3{flex:1 1 auto;min-width:0}
+#sortDesk #sortedFigures .tray .dl{flex:none;margin:0!important;gap:10px!important}
+#sortDesk #sortedFigures .tray .dl button{white-space:nowrap;font-size:10.5px!important}
+#sortDesk #sortedFigures .tray .dl button::before{content:none!important}
+#sortDesk #sortedFigures .chips{flex:1 0 100%;margin-top:4px}
+body:not(.sorted) #sortDesk #sortedFigures .chips{height:40px}
+@media (max-width:480px){body:not(.sorted) #sortDesk #sortedFigures .chips{height:44px}}
+@media (max-width:480px){#sortDesk{width:calc(100vw - 16px)!important}#sortDesk #sortedFigures .tray h3{flex:0 1 auto;margin-right:auto!important}}
+@media (max-width:480px){#sortDesk #sortedFigures .tray{column-gap:4px}#sortDesk #sortedFigures .tray .dl button{padding:0 4px!important}}
+@media (max-width:480px){#sortDesk #vnextLink::after{content:"";position:absolute;left:-8px;right:-8px;top:-10px;bottom:-10px}}
 </style>
 </head>
 <body>
@@ -1058,7 +1194,7 @@ body.lanesReady #mtWires{opacity:1}
 <svg id="mtWires" aria-hidden="true"><line id="wireRefuse"/><line id="wireAside"/></svg>
 <header id="top" class="mtCard">
   <h1 class="title">SERAPHIM ENGINE</h1>
-  <div class="cue">cold open <span class="sep">·</span> refuse stars lit</div>
+  <div class="cue">paste messy notes <span class="sep">·</span> get them sorted</div>
   <p class="claim">Seraphim Organizer <span class="sep">·</span> runs in your browser <span class="sep">·</span> nothing is uploaded</p>
   <div class="metrics mono" id="topMetrics" aria-hidden="true"><span>n <b id="mN">0</b></span><span>organized <b id="mA">0</b></span><span>aside <b id="mR">0</b></span><span id="mSHWrap" class="off">gate <b id="mSH">OFF</b></span></div>
 </header>
@@ -1078,9 +1214,9 @@ body.lanesReady #mtWires{opacity:1}
   <div id="phaseWhisper" class="phaseWhisper" role="status" aria-hidden="true"></div>
   <div id="uploadBox">
     <div class="uh"><b><span class="hash">## </span>Disorganized</b><span>one note per line · open a .txt, .md, .csv or .json file</span></div>
-    <div class="dropHint">drop or paste disorganized notes · <em>choose</em> a file · type <code>&gt; sort</code> on its own line</div>
+    <div class="dropHint">one note per line · paste, drop or <em>choose</em> a .txt/.md/.csv/.json file · end with a <code>&gt; sort</code> line</div>
     <div class="actions">
-      <label class="filebtn">choose<input type="file" id="fileDesk" accept=".txt,.md,.csv,.tsv,.json,.jsonl,.ndjson" hidden/></label>
+      <label class="filebtn">choose<input type="file" id="fileDesk" accept=".txt,.md,.csv,.tsv,.json,.jsonl,.ndjson" aria-label="Choose a notes file"/></label>
       <button type="button" id="sortBtn" class="primary" aria-keyshortcuts="Control+Enter Meta+Enter" title="Sort (Ctrl+Enter)">sort</button>
       <span class="kbdHint" id="shortcutHint"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
       <button type="button" id="clearDesk" class="ghost">clear</button>
@@ -1090,19 +1226,19 @@ body.lanesReady #mtWires{opacity:1}
     <textarea id="pasteDesk" placeholder="- paste disorganized notes…" rows="4" spellcheck="false" autocomplete="off"></textarea>
     <p id="deskMsg" role="status" aria-live="polite"></p>
   </div>
-  <div id="sortedFigures" aria-live="polite">
+  <div id="sortedFigures">
     <div class="tray admit" id="trayAdmit">
       <h3><span class="hash">## </span>Organized <span class="count" id="figAdmitN">0</span></h3>
       <div class="dl"><button type="button" id="exportAdmitCsv" disabled>Download CSV</button><button type="button" id="exportAdmitJson" disabled>Download JSON</button></div>
-      <div class="chips" id="figAdmit"><div class="empty">nothing organized yet</div></div>
+      <div class="chips" id="figAdmit"><div class="empty">kept notes land here</div></div>
     </div>
     <div class="tray release" id="trayRelease">
       <h3><span class="hash">## </span>Aside <span class="count" id="figReleaseN">0</span></h3>
       <div class="dl"><button type="button" id="exportReleaseCsv" disabled>Download CSV</button><button type="button" id="exportReleaseJson" disabled>Download JSON</button></div>
-      <div class="chips" id="figRelease"><div class="empty">nothing aside yet</div></div>
+      <div class="chips" id="figRelease"><div class="empty">spam, duplicates and noise land here</div></div>
     </div>
   </div>
-  <a id="vnextLink" href="vnext.html" target="_blank" rel="noopener" title="Seraphim Desk v-next: the seal-gate edition">v-next ↗</a>
+  <a id="vnextLink" href="vnext.html" target="_blank" rel="noopener" title="Preview the next version of this desk">Try the next version ↗</a>
 </section>
 <div id="navhint"><button type="button" id="resetView" aria-label="Reset orbit view">RESET</button></div>
 <div id="log" aria-hidden="true"></div>
@@ -4974,6 +5110,7 @@ function flightChipsFromDesk(chips){
   });
 }
 const SHOW_MAX=400;
+const EMPTY_ADMIT='<div class="empty">kept notes land here</div>', EMPTY_ASIDE='<div class="empty">spam, duplicates and noise land here</div>';
 function renderSortedFigures(verdicts){
   const a=$("figAdmit"), r=$("figRelease");
   const admits=(verdicts||[]).filter(v=>v.decision==="admit"), releases=(verdicts||[]).filter(v=>v.decision!=="admit");
@@ -4984,6 +5121,7 @@ function renderSortedFigures(verdicts){
     el.dataset.id=v.id; el.dataset.lane=v.lane; el.dataset.tag=tag; el.dataset.text=v.t;
     el.innerHTML='<span class="k">'+esc(tag)+'</span><span class="ttl">'+esc(v.t)+'</span>';
     el.addEventListener("click",()=>focusNode(v.id));
+    el.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); focusNode(v.id); } });
     return el;
   };
   a.innerHTML=""; r.innerHTML=""; const flown=[];
@@ -4992,8 +5130,8 @@ function renderSortedFigures(verdicts){
     const d=document.createElement("div"); d.className="moreNote"; d.dataset.more=String(rest.length);
     d.style.cssText="margin:.45rem 0 .2rem;padding:.3rem .55rem;border:1px dashed rgba(200,182,255,.38);border-radius:4px;color:#dccfff;font-size:.8em;letter-spacing:.01em";
     d.textContent="+"+rest.length+" more in the download ("+Object.keys(c).map(k=>(LANE_NAME[k]||k).toLowerCase()+" "+c[k]).join(" · ")+")"; el.appendChild(d); };
-  if(!admits.length) a.innerHTML='<div class="empty">nothing organized yet</div>'; else { admits.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);a.appendChild(el);flown.push(el);}); more(a,admits.slice(SHOW_MAX)); }
-  if(!releases.length) r.innerHTML='<div class="empty">nothing aside yet</div>'; else { releases.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);r.appendChild(el);flown.push(el);}); more(r,releases.slice(SHOW_MAX)); }
+  if(!admits.length) a.innerHTML=EMPTY_ADMIT; else { admits.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);a.appendChild(el);flown.push(el);}); more(a,admits.slice(SHOW_MAX)); }
+  if(!releases.length) r.innerHTML=EMPTY_ASIDE; else { releases.slice(0,SHOW_MAX).forEach(v=>{const el=mk(v);r.appendChild(el);flown.push(el);}); more(r,releases.slice(SHOW_MAX)); }
   ["exportAdmitCsv","exportAdmitJson"].forEach(id=>$(id).disabled=!admits.length);
   ["exportReleaseCsv","exportReleaseJson"].forEach(id=>$(id).disabled=!releases.length);
   if(flown.length) requestAnimationFrame(()=>flightChipsFromDesk(flown));
@@ -5010,6 +5148,7 @@ function deskMsgFor(res){
 function render(res){
   lastResult=res; updateMetrics(res); pushLog(res?res.verdicts:[]); renderSortedFigures(res?res.verdicts:[]);
   $("deskMsg").innerHTML=deskMsgFor(res);
+  if(res&&!reduceMotion){ const d=$("sortDesk"); if(d){ d.classList.add("justSorted"); clearTimeout(render._js); render._js=setTimeout(()=>d.classList.remove("justSorted"),700); } }
   if(res){ ingestVerdicts(res.verdicts); window.dispatchEvent(new CustomEvent("seraphim:sort",{detail:{organized:res.counts.admit,aside:res.counts.refuse,lanes:laneCounts(res.verdicts),skipped:res.skipped}})); }
 }
 function focusNode(id){
@@ -5095,7 +5234,7 @@ const LANE_POS={
 };
 let _deskTopCache={t:0,v:null};
 function deskTop(){ const now=performance.now(); if(now-_deskTopCache.t<250) return _deskTopCache.v;
-  const el=document.getElementById("uploadBox"); const r=el?el.getBoundingClientRect():null; _deskTopCache={t:now,v:r&&r.height?r.top:null}; return _deskTopCache.v; }
+  const el=document.getElementById("sortDesk")||document.getElementById("uploadBox"); const r=el?el.getBoundingClientRect():null; _deskTopCache={t:now,v:r&&r.height?r.top:null}; return _deskTopCache.v; }
 (function laneLoop(){
   const els={}; for(const k of Object.keys(LANE_POS.wide)) els[k]=$(k);
   const wr=$("wireRefuse"), wa=$("wireAside"); let last="";
@@ -5104,7 +5243,16 @@ function deskTop(){ const now=performance.now(); if(now-_deskTopCache.t<250) ret
     if(h&&h.s>1){
       const P={}; for(const k in set){const [ux,uy]=set[k]; P[k]=[h.cx+ux*h.s,h.cy+uy*h.s];}
       /* clearance: keep every lane (and each star's full glow) above the desk, at every breakpoint */
-      const dt=deskTop(); if(dt!=null){ for(const k in P){ const pad=(k==="starRefuse"||k==="starAside")?(W<=900?34:54):(k==="gateNode"?16:14); if(P[k][1]>dt-pad){ P[k][1]=dt-pad; } } }
+      const dt=deskTop(); if(dt!=null){
+        /* refine: when the desk rises, first lift the whole lane set (not past the title card), then compress it
+           toward its top lane, so lanes keep their arrangement instead of piling into one row; hard clamp stays below */
+        const padOf=k=>(k==="starRefuse"||k==="starAside")?(W<=900?34:54):(k==="gateNode"?16:14);
+        const tc=document.getElementById("top"), topLim=(tc?tc.getBoundingClientRect().bottom:0)+(W<=900?14:22);
+        let need=0, minY=1e9; for(const k in P){ need=Math.min(need,(dt-padOf(k))-P[k][1]); minY=Math.min(minY,P[k][1]-(k.startsWith("star")?22:10)); }
+        if(need<0){ const up=Math.max(need,Math.min(0,topLim-minY)); for(const k in P) P[k][1]+=up;
+          let kk=1; const y0=minY+up+(W<=900?16:22); for(const k in P){ const dy=P[k][1]-y0; if(dy>1) kk=Math.min(kk,((dt-padOf(k))-y0)/dy); }
+          kk=Math.max(0.25,kk); if(kk<1) for(const k in P){ const dy=P[k][1]-y0; if(dy>0) P[k][1]=y0+dy*kk; } }
+        for(const k in P){ const pad=(k==="starRefuse"||k==="starAside")?(W<=900?34:54):(k==="gateNode"?16:14); if(P[k][1]>dt-pad){ P[k][1]=dt-pad; } } }
       window.__laneXY=P;
       const key=Object.values(P).map(p=>p[0].toFixed(0)+","+p[1].toFixed(0)).join(";");
       if(key!==last){ last=key;
@@ -5194,9 +5342,9 @@ updateMetrics(null);
         if(poly.length<3) continue; cells.push({k,poly});
         const hit=!!laneHits[k], star=k.startsWith("star"), R=h.s*(hit?0.62:0.5);
         const gr=tg.createRadialGradient(sx,sy,0,sx,sy,R);
-        gr.addColorStop(0,star?`rgba(214,196,255,${hit?0.16:0.06})`:`rgba(170,140,240,${hit?0.15:0.055})`); gr.addColorStop(1,"rgba(120,90,220,0)");
+        gr.addColorStop(0,star?`rgba(214,196,255,${hit?0.19:0.085})`:`rgba(170,140,240,${hit?0.18:0.08})`); gr.addColorStop(1,"rgba(120,90,220,0)");
         tg.beginPath(); poly.forEach((p,i)=>i?tg.lineTo(p[0],p[1]):tg.moveTo(p[0],p[1])); tg.closePath(); tg.fillStyle=gr; tg.fill();
-        tg.lineWidth=0.7; tg.setLineDash([2,5]); tg.strokeStyle=`rgba(206,190,255,${hit?0.2:0.1})`; tg.stroke(); tg.setLineDash([]);
+        tg.lineWidth=0.8; tg.setLineDash([2,5]); tg.strokeStyle=`rgba(206,190,255,${hit?0.3:0.16})`; tg.stroke(); tg.setLineDash([]);
       }
       /* fade the territories into black like the mesh (vignette mask) */
       tg.globalCompositeOperation="destination-in";
