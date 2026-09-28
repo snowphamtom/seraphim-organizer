@@ -5244,7 +5244,8 @@ function deskMsgFor(res){
   const sk=res.skipped||{command:0,overCap:0}, skips=[];
   if(sk.command) skips.push(sk.command+' command line'+(sk.command===1?'':'s')+' skipped');
   if(sk.header) skips.push('1 header row read as column names');
-  if(sk.overCap) skips.push(sk.overCap+' line'+(sk.overCap===1?'':'s')+' over the '+CAP+'-line cap skipped');
+  if(sk.overCap===1) skips.push('last 1 line skipped (line '+(CAP+1)+', over the '+CAP+'-line cap)');
+  else if(sk.overCap) skips.push('last '+sk.overCap+' lines skipped (lines '+(CAP+1)+'–'+(CAP+sk.overCap)+', over the '+CAP+'-line cap)');
   return 'sorted '+n+' line'+(n===1?'':'s')+': <b>'+res.counts.admit+'</b> organized, <b>'+res.counts.refuse+'</b> aside'+(parts.length?' <span class="lanesMsg">· '+parts.join(' · ')+'</span>':'')+(skips.length?' <span class="skipMsg">· '+skips.join(' · ')+'</span>':'');
 }
 function render(res){
