@@ -1224,6 +1224,21 @@ body.sorted #sortDesk #sortedFigures .chips{height:clamp(96px,16vh,150px)}
 /* "Try the next version": a 44px-tall tap area at every width (was 19px tall at 600 and 1280) */
 #sortDesk #vnextLink{box-sizing:border-box;display:inline-flex!important;align-items:center;min-height:44px!important;bottom:3px!important;padding:0 10px!important}
 @media (prefers-reduced-motion:reduce){#sortDesk details.folder,#sortDesk details.folder *{transition:none!important;animation:none!important}}
+
+/* polish 2026-10-01: (1) ≥44px tap targets on mobile tray rows (2) lane labels fade when crowded
+   (3) ## Organized/Aside (n) count never clipped at ~360px. Hero / ## Disorganized / palette untouched. */
+#sortDesk #sortedFigures .tray h3{display:flex!important;align-items:baseline;gap:4px;overflow:hidden;white-space:nowrap;text-overflow:clip}
+#sortDesk #sortedFigures .tray h3 .hash{flex:none}
+#sortDesk #sortedFigures .tray h3 .trayLabel{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+#sortDesk #sortedFigures .tray h3 .count{flex:none;margin-left:0!important}
+@media (max-width:480px),(pointer:coarse){
+  #sortDesk #sortedFigures .chipFig{box-sizing:border-box;min-height:44px!important;align-items:center!important;padding:8px 6px!important}
+  #sortDesk #sortedFigures details.folder>summary{min-height:44px}
+}
+#lanes .lane .nm,#lanes .star .nm{transition:opacity .35s ease}
+body.lanesCrowded #lanes .lane .nm{opacity:.22}
+body.lanesCrowded #lanes .star .nm{opacity:.42}
+@media (prefers-reduced-motion:reduce){#lanes .lane .nm,#lanes .star .nm{transition:none}}
 </style>
 </head>
 <body>
@@ -1271,12 +1286,12 @@ body.sorted #sortDesk #sortedFigures .chips{height:clamp(96px,16vh,150px)}
   <div id="sortedFigures">
     <div id="folderBar" hidden><button type="button" id="foldAll" aria-controls="figAdmit figRelease" aria-expanded="false">Expand all</button></div>
     <div class="tray admit" id="trayAdmit">
-      <h3><span class="hash">## </span>Organized <span class="count" id="figAdmitN">0</span></h3>
+      <h3><span class="hash">## </span><span class="trayLabel">Organized</span> <span class="count" id="figAdmitN">0</span></h3>
       <div class="dl"><button type="button" id="exportAdmitCsv" disabled>Download CSV</button><button type="button" id="exportAdmitJson" disabled>Download JSON</button></div>
       <div class="chips" id="figAdmit"><div class="empty">kept notes land here</div></div>
     </div>
     <div class="tray release" id="trayRelease">
-      <h3><span class="hash">## </span>Aside <span class="count" id="figReleaseN">0</span></h3>
+      <h3><span class="hash">## </span><span class="trayLabel">Aside</span> <span class="count" id="figReleaseN">0</span></h3>
       <div class="dl"><button type="button" id="exportReleaseCsv" disabled>Download CSV</button><button type="button" id="exportReleaseJson" disabled>Download JSON</button></div>
       <div class="chips" id="figRelease"><div class="empty">spam, duplicates and noise land here</div></div>
     </div>
@@ -5342,12 +5357,13 @@ function deskTop(){ const now=performance.now(); if(now-_deskTopCache.t<250) ret
   const el=document.getElementById("sortDesk")||document.getElementById("uploadBox"); const r=el?el.getBoundingClientRect():null; _deskTopCache={t:now,v:r&&r.height?r.top:null}; return _deskTopCache.v; }
 (function laneLoop(){
   const els={}; for(const k of Object.keys(LANE_POS.wide)) els[k]=$(k);
-  const wr=$("wireRefuse"), wa=$("wireAside"); let last="";
+  const wr=$("wireRefuse"), wa=$("wireAside"); let last="", lastCrowd="";
   function tick(){
     const h=_sealHub, set=(W<=900?LANE_POS.narrow:LANE_POS.wide);
     if(h&&h.s>1){
       const P={}; for(const k in set){const [ux,uy]=set[k]; P[k]=[h.cx+ux*h.s,h.cy+uy*h.s];}
       /* clearance: keep every lane (and each star's full glow) above the desk, at every breakpoint */
+      let crowded=false;
       const dt=deskTop(); if(dt!=null){
         /* refine: when the desk rises, first lift the whole lane set (not past the title card), then compress it
            toward its top lane, so lanes keep their arrangement instead of piling into one row; hard clamp stays below */
@@ -5356,7 +5372,7 @@ function deskTop(){ const now=performance.now(); if(now-_deskTopCache.t<250) ret
         let need=0, minY=1e9; for(const k in P){ need=Math.min(need,(dt-padOf(k))-P[k][1]); minY=Math.min(minY,P[k][1]-(k.startsWith("star")?22:10)); }
         if(need<0){ const up=Math.max(need,Math.min(0,topLim-minY)); for(const k in P) P[k][1]+=up;
           let kk=1; const y0=minY+up+(W<=900?16:22); for(const k in P){ const dy=P[k][1]-y0; if(dy>1) kk=Math.min(kk,((dt-padOf(k))-y0)/dy); }
-          kk=Math.max(0.25,kk); if(kk<1) for(const k in P){ const dy=P[k][1]-y0; if(dy>0) P[k][1]=y0+dy*kk; } }
+          kk=Math.max(0.25,kk); if(kk<1){ crowded=true; for(const k in P){ const dy=P[k][1]-y0; if(dy>0) P[k][1]=y0+dy*kk; } } }
         for(const k in P){ const pad=(k==="starRefuse"||k==="starAside")?(W<=900?34:54):(k==="gateNode"?16:14); if(P[k][1]>dt-pad){ P[k][1]=dt-pad; } } }
       window.__laneXY=P;
       const key=Object.values(P).map(p=>p[0].toFixed(0)+","+p[1].toFixed(0)).join(";");
@@ -5365,6 +5381,10 @@ function deskTop(){ const now=performance.now(); if(now-_deskTopCache.t<250) ret
         const g=P.gateNode; [[wr,P.starRefuse],[wa,P.starAside]].forEach(([ln,p])=>{ln.setAttribute("x1",g[0].toFixed(1));ln.setAttribute("y1",g[1].toFixed(1));ln.setAttribute("x2",p[0].toFixed(1));ln.setAttribute("y2",p[1].toFixed(1));});
         document.body.classList.add("lanesReady");
       }
+      /* fade name labels when desk compression packed the set, or when any two .nm boxes actually overlap */
+      if(!crowded){ const nms=[]; for(const k in els){ const el=els[k]; if(!el||k==="gateNode") continue; const nm=el.querySelector(".nm"); if(!nm) continue; const r=nm.getBoundingClientRect(); if(r.width>1&&r.height>1) nms.push(r); }
+        for(let i=0;i<nms.length&&!crowded;i++) for(let j=i+1;j<nms.length;j++){ const a=nms[i],b=nms[j]; if(a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top) crowded=true; } }
+      const ck=crowded?"1":"0"; if(ck!==lastCrowd){ lastCrowd=ck; document.body.classList.toggle("lanesCrowded",crowded); }
     }
     requestAnimationFrame(tick);
   }
